@@ -23,5 +23,5 @@ export default function useLang(keys, context) {
       return render(lang[key], context);
     });
     return values.length === 1 ? values[0] : values;
-  }, [keys, language, dict]);
+  }, [keys, language, dict, context]);
 }

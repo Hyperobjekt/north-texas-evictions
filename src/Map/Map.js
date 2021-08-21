@@ -1,11 +1,9 @@
-import React, { useMemo } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core";
 import { Mapbox } from "@hyperobjekt/mapbox";
 import useMapLayers from "./hooks/useMapLayers";
 import useMapSources from "./hooks/useMapSources";
-import useBubblesData from "../Data/useBubblesData";
-import useChoroplethData from "../Data/useChoroplethData";
 
 const DEFAULT_VIEWPORT = {
   zoom: 8,
