@@ -21,6 +21,19 @@ export default function useDashboardRoute() {
       start,
       end,
     }).toString(),
+    getCurrentParams: () => {
+      if (!window?.location?.search) return null;
+      const currentParams = new URLSearchParams(window.location.search);
+      return {
+        activeRegion: currentParams.get("region") || "tracts",
+        activeBubble: currentParams.get("bubble") || "efr",
+        activeChoropleth: currentParams.get("choropleth") || "mhi",
+        activeDateRange: [
+          currentParams.get("start") || "2021-07-01",
+          currentParams.get("end") || "2021-07-31",
+        ],
+      };
+    },
     // TODO: provide better parser that validates params are correct
     parseRoute: (routeString) => new URLSearchParams(routeString).entries,
   };

@@ -50,10 +50,15 @@ const getChoroplethLayerStyle = ({
       type: "fill",
       paint: {
         "fill-color": [
-          "interpolate",
-          ["linear"],
-          ["get", activeChoropleth],
-          ...getLinearColorRamp(extent, colors),
+          "case",
+          ["!=", ["get", activeChoropleth], null],
+          [
+            "interpolate",
+            ["linear"],
+            ["get", activeChoropleth],
+            ...getLinearColorRamp(extent, colors),
+          ],
+          "#ccc",
         ],
         "fill-opacity": 0.9,
       },
@@ -100,31 +105,46 @@ const getBubbleLayerStyle = ({
           ["zoom"],
           6,
           [
-            "interpolate",
-            ["linear"],
-            ["get", activeBubble],
-            ...getLinearRamp(
-              [quantile(extent[2], 0.1), quantile(extent[2], 0.99)],
-              [0, 8]
-            ),
+            "case",
+            ["!=", ["get", activeBubble], null],
+            [
+              "interpolate",
+              ["linear"],
+              ["get", activeBubble],
+              ...getLinearRamp(
+                [quantile(extent[2], 0.1), quantile(extent[2], 0.99)],
+                [0, 8]
+              ),
+            ],
+            1,
           ],
           20,
           [
-            "interpolate",
-            ["linear"],
-            ["get", activeBubble],
-            ...getLinearRamp(
-              [quantile(extent[2], 0.01), quantile(extent[2], 0.99)],
-              [4, 48]
-            ),
+            "case",
+            ["!=", ["get", activeBubble], null],
+            [
+              "interpolate",
+              ["linear"],
+              ["get", activeBubble],
+              ...getLinearRamp(
+                [quantile(extent[2], 0.01), quantile(extent[2], 0.99)],
+                [6, 48]
+              ),
+            ],
+            6,
           ],
         ],
         // Color circle by earthquake magnitude
-        "circle-color": DEFAULT_BUBBLE_COLOR,
-        "circle-opacity": ["case", ["has", activeBubble], 0.8, 0],
+        "circle-color": [
+          "case",
+          ["!=", ["get", activeBubble], null],
+          DEFAULT_BUBBLE_COLOR,
+          "#ccc",
+        ],
+        "circle-opacity": ["case", ["!=", ["get", activeBubble], null], 0.8, 0],
         "circle-stroke-color": [
           "case",
-          ["has", activeBubble],
+          ["!=", ["get", activeBubble], null],
           "white",
           "transparent",
         ],

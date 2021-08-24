@@ -8,6 +8,7 @@ import { Map } from "../Map";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Panel from "../Panel/Panel";
 import { withStyles } from "@material-ui/styles";
+import {Tooltip} from "../Tooltip";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -61,6 +62,7 @@ const Dashboard = ({
           <Map />
         </Box>
         <Panel open={true} />
+        <Tooltip />
       </Wrapper>
     </QueryClientProvider>
   );
