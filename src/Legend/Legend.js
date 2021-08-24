@@ -14,23 +14,20 @@ import useSummaryData from "../Data/useSummaryData";
 const styles = (theme) => ({
   root: {
     position: "absolute",
-    bottom: theme.spacing(2),
+    top: theme.spacing(2),
     right: theme.spacing(2),
     padding: theme.spacing(2),
     zIndex: 10,
     width: 320,
+    boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.05)",
   },
 });
 
 const AnimatedPaper = animated(Paper);
 
-const Legend = (props) => {
-  const {
-    activeBubble,
-    activeChoropleth,
-    activeRegion,
-    activeDateRange,
-  } = useDashboardContext();
+const Legend = ({ classes, ...props }) => {
+  const { activeBubble, activeChoropleth, activeRegion, activeDateRange } =
+    useDashboardContext();
 
   const { data: summary } = useSummaryData();
   console.log({ summary });
@@ -52,9 +49,9 @@ const Legend = (props) => {
 
   // move legend if panel is open
   const activePanel = useDashboardStore((state) => state.activePanel);
-  const style = useSpring({ x: activePanel ? 344 : 0 });
+  const style = useSpring({ x: activePanel ? 368 : 0 });
   return (
-    <AnimatedPaper style={style} {...props}>
+    <AnimatedPaper style={style} className={classes.root} {...props}>
       <Typography>{summaryText}</Typography>
       <PanelToggle />
     </AnimatedPaper>
