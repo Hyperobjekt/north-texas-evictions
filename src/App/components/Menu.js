@@ -8,7 +8,8 @@ const styles = (theme) => ({
     display: "block",
   },
   button: {
-    color: theme.palette.primary.contrastText,
+    color: theme.palette.header.text,
+    height: 42,
   },
   drawer: {
     "& .MuiDrawer-paper": {
@@ -51,7 +52,8 @@ const Menu = ({
     <div className={clsx(classes.root, className)} {...props}>
       <Button
         ref={openRef}
-        className={classes.button}
+        className={clsx(classes.button, "dark")}
+        variant="contained"
         onClick={handleToggleMenu}
       >
         {buttonLabel}

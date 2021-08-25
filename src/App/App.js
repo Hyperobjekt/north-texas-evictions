@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { TextField } from "@material-ui/core";
 import useDashboardRoute from "../Dashboard/hooks/useDashboardRoute";
+import Search from "./components/Search";
 
 const App = (props) => {
   const { route, getCurrentParams } = useDashboardRoute();
@@ -20,10 +21,9 @@ const App = (props) => {
   return (
     <>
       <Header>
-        <TextField placeholder="search" />
+        <Search className="dark" placeholder="search" />
       </Header>
       <Dashboard {...defaults} />
-      <Footer />
     </>
   );
 };
