@@ -8,7 +8,7 @@ import { Map } from "../Map";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Panel from "../Panel/Panel";
 import { withStyles } from "@material-ui/styles";
-import {Tooltip} from "../Tooltip";
+import { Tooltip } from "../Tooltip";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -93,7 +93,7 @@ Dashboard.defaultProps = {
       REGION_ZIPS: "ZIP Codes",
       REGION_PLACES: "Cities",
       LEGEND_SUMMARY:
-        "Showing {{bubble}} and {{choropleth}} for {{region}} between {{start}} and {{end}}",
+        "{{bubble}} and {{choropleth}} between {{start}} and {{end}}",
       BUTTON_CHANGE_OPTIONS: "Change Data Options",
       SELECT_CHOROPLETH: "Demographic Metric",
       SELECT_BUBBLE: "Eviction Metric",
