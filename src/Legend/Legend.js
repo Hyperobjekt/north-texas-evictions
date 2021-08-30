@@ -10,6 +10,9 @@ import ChoroplethSelect from "../Dashboard/components/ChoroplethSelect";
 import PanelToggle from "../Panel/PanelToggle";
 import { animated, useSpring } from "react-spring";
 import useSummaryData from "../Data/useSummaryData";
+import Summary from "./components/Summary";
+import BubbleLegend from "./components/BubbleLegend";
+import ChoroplethLegend from "./components/ChoroplethLegend";
 
 const styles = (theme) => ({
   root: {
@@ -21,7 +24,7 @@ const styles = (theme) => ({
     boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.05)",
   },
   eyebrow: {
-    color: theme.palette.text.secondary,
+    color: theme.props.text.secondary,
     textTransform: "uppercase",
     fontSize: theme.typography.pxToRem(12),
     lineHeight: theme.typography.pxToRem(16),
@@ -29,14 +32,14 @@ const styles = (theme) => ({
     margin: theme.spacing(0, 0, 2),
   },
   region: {
-    color: theme.palette.text.primary,
+    color: theme.props.text.primary,
     fontSize: theme.typography.pxToRem(16),
     lineHeight: theme.typography.pxToRem(16),
     margin: theme.spacing(0, 0, 1),
     fontWeight: 500,
   },
   body: {
-    color: theme.palette.text.secondary,
+    color: theme.props.text.secondary,
     fontSize: theme.typography.pxToRem(14),
     lineHeight: theme.typography.pxToRem(19),
     margin: theme.spacing(0, 0, 2),
@@ -44,7 +47,7 @@ const styles = (theme) => ({
   button: {
     textTransform: "none",
     boxShadow: "none",
-    color: theme.palette.text.primary,
+    color: theme.props.text.primary,
     background: "#ECECD5",
     fontWeight: 500,
     "&:hover": {
@@ -67,9 +70,6 @@ const Legend = ({ classes, ...props }) => {
   const { activeBubble, activeChoropleth, activeRegion, activeDateRange } =
     useDashboardContext();
 
-  const { data: summary } = useSummaryData();
-  // console.log({ summary });
-
   // prepare language
   const langKeys = [
     `METRIC_${activeBubble}`,
@@ -81,19 +81,21 @@ const Legend = ({ classes, ...props }) => {
     bubble: bubbleName,
     choropleth: choroplethName,
     region: regionName,
-    start: summary
-      ? new Intl.DateTimeFormat("en-US", {
-          month: "long",
-          day: "numeric",
-        }).format(new Date(activeDateRange[0]))
-      : "",
-    end: summary
-      ? new Intl.DateTimeFormat("en-US", {
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-        }).format(new Date(activeDateRange[1]))
-      : "",
+    start:
+      activeDateRange.length > 0
+        ? new Intl.DateTimeFormat("en-US", {
+            month: "long",
+            day: "numeric",
+          }).format(new Date(activeDateRange[0]))
+        : "",
+    end:
+      activeDateRange.length > 0
+        ? new Intl.DateTimeFormat("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          }).format(new Date(activeDateRange[1]))
+        : "",
   });
 
   // move legend if panel is open
@@ -109,9 +111,12 @@ const Legend = ({ classes, ...props }) => {
       </Box>
       <Box className={classes.box}>
         <Typography className={classes.eyebrow}>Summary</Typography>
+        <Summary />
       </Box>
       <Box className={classes.box}>
         <Typography className={classes.eyebrow}>Map Legend</Typography>
+        <BubbleLegend />
+        <ChoroplethLegend />
       </Box>
     </AnimatedPaper>
   );
