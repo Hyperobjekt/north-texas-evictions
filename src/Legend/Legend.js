@@ -22,6 +22,12 @@ const styles = (theme) => ({
     zIndex: 10,
     width: 320,
     boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.05)",
+    [theme.breakpoints.down("sm")]: {
+      top: "auto",
+      bottom: 0,
+      right: 0,
+      width: "100%",
+    },
   },
   eyebrow: {
     color: theme.props.text.secondary,
@@ -94,19 +100,23 @@ const formatDateRange = (dR) => {
 const Legend = ({ classes, ...props }) => {
   const { activeBubble, activeChoropleth, activeRegion, activeDateRange } =
     useDashboardContext();
+  console.log(activeDateRange);
 
   const startDate =
-    activeDateRange.length > 0 ? new Date(activeDateRange[0]) : new Date();
-
+    activeDateRange.length > 0
+      ? new Date(`${activeDateRange[0]}T00:00:00`)
+      : new Date();
   const endDate =
-    activeDateRange.length > 1 ? new Date(activeDateRange[1]) : new Date();
+    activeDateRange.length > 1
+      ? new Date(`${activeDateRange[1]}T00:00:00`)
+      : new Date();
+
   const startDateLabel = new Intl.DateTimeFormat("en-US", {
     month: "long",
     day: "numeric",
     year:
       startDate.getFullYear() === endDate.getFullYear() ? undefined : "numeric",
   }).format(startDate);
-
   const endDateLabel = new Intl.DateTimeFormat("en-US", {
     month: "long",
     day: "numeric",
