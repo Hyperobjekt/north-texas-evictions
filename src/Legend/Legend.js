@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Box, Paper, Typography, withStyles } from "@material-ui/core";
+import {
+  Box,
+  Paper,
+  Typography,
+  withStyles,
+  useTheme,
+  useMediaQuery,
+} from "@material-ui/core";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import { useLang } from "../Language";
 import useDashboardContext from "../Dashboard/hooks/useDashboardContext";
@@ -13,12 +20,15 @@ import useSummaryData from "../Data/useSummaryData";
 import Summary from "./components/Summary";
 import BubbleLegend from "./components/BubbleLegend";
 import ChoroplethLegend from "./components/ChoroplethLegend";
+import { ArrowDropUp, Close } from "@material-ui/icons";
+import useMeasure from "react-use-measure";
 
 const styles = (theme) => ({
   root: {
     position: "absolute",
     top: theme.spacing(2),
     right: theme.spacing(2),
+    padding: theme.spacing(2, 0, 0),
     zIndex: 10,
     width: 320,
     boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.05)",
@@ -48,7 +58,11 @@ const styles = (theme) => ({
     color: theme.props.text.secondary,
     fontSize: theme.typography.pxToRem(14),
     lineHeight: theme.typography.pxToRem(19),
-    margin: theme.spacing(0, 0, 2),
+    margin: 0,
+    [theme.breakpoints.down("sm")]: {
+      // TODO: abstract the mobile toggle btn width to a constant
+      marginRight: "63px",
+    },
   },
   button: {
     textTransform: "none",
@@ -66,7 +80,11 @@ const styles = (theme) => ({
     padding: theme.spacing(2),
     "&:first-child": {
       borderTop: 0,
+      paddingTop: 0,
     },
+  },
+  toggleContainer: {
+    overflow: "hidden",
   },
 });
 
@@ -97,7 +115,45 @@ const formatDateRange = (dR) => {
       };
 };
 
+const MobileToggle = withStyles((theme) => ({
+  root: {
+    position: "absolute",
+    top: theme.spacing(2),
+    right: theme.spacing(2),
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 63,
+    height: 56,
+    background: ({ active }) => (active ? "transparent" : "#ECECD5"),
+    border: ({ active }) =>
+      active ? "1px solid #EAEAEA" : "1px solid transparent",
+    borderRadius: 2,
+    paddingBottom: ({ active }) => (active ? "0" : "10px"),
+    boxSizing: "border-box",
+    "& span": {
+      fontSize: theme.typography.pxToRem(12),
+      color: theme.props.text.primary,
+      margin: ({ active }) => (active ? "0" : "-7px 0 0"),
+    },
+    "& .MuiSvgIcon-root": {},
+  },
+}))((props) => {
+  return (
+    <Box {...props}>
+      {props.active ? <Close /> : <ArrowDropUp style={{ fontSize: "2rem" }} />}
+      <Typography component="span">
+        {props.active ? "Close" : "Legend"}
+      </Typography>
+    </Box>
+  );
+});
+
 const Legend = ({ classes, ...props }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const { activeBubble, activeChoropleth, activeRegion, activeDateRange } =
     useDashboardContext();
   console.log(activeDateRange);
@@ -138,6 +194,14 @@ const Legend = ({ classes, ...props }) => {
   // move legend if panel is open
   const activePanel = useDashboardStore((state) => state.activePanel);
   const style = useSpring({ x: activePanel ? 368 : 0 });
+
+  const [toggleRef, toggleBounds] = useMeasure();
+  const [showSummary, setShowSummary] = useState(() => !isMobile);
+  const toggleStyle = useSpring({
+    height: showSummary ? toggleBounds.height : 0,
+  });
+  console.log(isMobile, showSummary);
+
   return (
     <AnimatedPaper style={style} className={classes.root} {...props}>
       <Box className={classes.box}>
@@ -149,17 +213,29 @@ const Legend = ({ classes, ...props }) => {
           <strong>{choroplethName}</strong>
           <span> {summaryText}</span>
         </Typography>
-        <PanelToggle className={classes.button} />
       </Box>
-      <Box className={classes.box}>
-        <Typography className={classes.eyebrow}>Summary</Typography>
-        <Summary />
-      </Box>
-      <Box className={classes.box}>
-        <Typography className={classes.eyebrow}>Map Legend</Typography>
-        <BubbleLegend title={bubbleName} />
-        <ChoroplethLegend title={choroplethName} />
-      </Box>
+      <animated.div style={toggleStyle} className={classes.toggleContainer}>
+        <div ref={toggleRef}>
+          <Box className={classes.box}>
+            <PanelToggle className={classes.button} />
+          </Box>
+          <Box className={classes.box}>
+            <Typography className={classes.eyebrow}>Summary</Typography>
+            <Summary />
+          </Box>
+          <Box className={classes.box}>
+            <Typography className={classes.eyebrow}>Map Legend</Typography>
+            <BubbleLegend title={bubbleName} />
+            <ChoroplethLegend title={choroplethName} />
+          </Box>
+        </div>
+      </animated.div>
+      {isMobile && (
+        <MobileToggle
+          active={showSummary}
+          onClick={() => setShowSummary((ss) => !ss)}
+        />
+      )}
     </AnimatedPaper>
   );
 };
