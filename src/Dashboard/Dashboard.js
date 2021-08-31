@@ -92,8 +92,7 @@ Dashboard.defaultProps = {
       REGION_TRACTS: "Census Tracts",
       REGION_ZIPS: "ZIP Codes",
       REGION_PLACES: "Cities",
-      LEGEND_SUMMARY:
-        "{{bubble}} and {{choropleth}} between {{start}} and {{end}}",
+      LEGEND_SUMMARY: "between {{start}} and {{end}}",
       BUTTON_CHANGE_OPTIONS: "Change Data Options",
       SELECT_CHOROPLETH: "Demographic Metric",
       SELECT_BUBBLE: "Eviction Metric",

@@ -121,9 +121,6 @@ const Legend = ({ classes, ...props }) => {
   ];
   const [bubbleName, choroplethName, regionName] = useLang(langKeys);
   const summaryText = useLang("LEGEND_SUMMARY", {
-    bubble: bubbleName,
-    choropleth: choroplethName,
-    region: regionName,
     start: startDateLabel,
     end: endDateLabel,
   });
@@ -136,7 +133,12 @@ const Legend = ({ classes, ...props }) => {
       <Box className={classes.box}>
         <Typography className={classes.eyebrow}>Currently Viewing</Typography>
         <Typography className={classes.region}>{regionName}</Typography>
-        <Typography className={classes.body}>{summaryText}</Typography>
+        <Typography className={classes.body}>
+          <strong>{bubbleName}</strong>
+          <span> and </span>
+          <strong>{choroplethName}</strong>
+          <span> {summaryText}</span>
+        </Typography>
         <PanelToggle className={classes.button} />
       </Box>
       <Box className={classes.box}>
