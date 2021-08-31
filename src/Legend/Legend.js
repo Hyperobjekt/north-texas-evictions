@@ -66,9 +66,52 @@ const styles = (theme) => ({
 
 const AnimatedPaper = animated(Paper);
 
+const formatDateRange = (dR) => {
+  return dR && dR.length > 0
+    ? {
+        start:
+          dR.length > 0
+            ? new Intl.DateTimeFormat("en-US", {
+                month: "long",
+                day: "numeric",
+              }).format(new Date(dR[0]))
+            : "",
+        end:
+          dR.length > 1
+            ? new Intl.DateTimeFormat("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              }).format(new Date(dR[1]))
+            : "",
+      }
+    : {
+        start: "",
+        end: "",
+      };
+};
+
 const Legend = ({ classes, ...props }) => {
   const { activeBubble, activeChoropleth, activeRegion, activeDateRange } =
     useDashboardContext();
+
+  const startDate =
+    activeDateRange.length > 0 ? new Date(activeDateRange[0]) : new Date();
+
+  const endDate =
+    activeDateRange.length > 1 ? new Date(activeDateRange[1]) : new Date();
+  const startDateLabel = new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year:
+      startDate.getFullYear() === endDate.getFullYear() ? undefined : "numeric",
+  }).format(startDate);
+
+  const endDateLabel = new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(endDate);
 
   // prepare language
   const langKeys = [
@@ -81,21 +124,8 @@ const Legend = ({ classes, ...props }) => {
     bubble: bubbleName,
     choropleth: choroplethName,
     region: regionName,
-    start:
-      activeDateRange.length > 0
-        ? new Intl.DateTimeFormat("en-US", {
-            month: "long",
-            day: "numeric",
-          }).format(new Date(activeDateRange[0]))
-        : "",
-    end:
-      activeDateRange.length > 0
-        ? new Intl.DateTimeFormat("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          }).format(new Date(activeDateRange[1]))
-        : "",
+    start: startDateLabel,
+    end: endDateLabel,
   });
 
   // move legend if panel is open
@@ -115,8 +145,8 @@ const Legend = ({ classes, ...props }) => {
       </Box>
       <Box className={classes.box}>
         <Typography className={classes.eyebrow}>Map Legend</Typography>
-        <BubbleLegend />
-        <ChoroplethLegend />
+        <BubbleLegend title={bubbleName} />
+        <ChoroplethLegend title={choroplethName} />
       </Box>
     </AnimatedPaper>
   );

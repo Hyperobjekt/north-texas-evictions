@@ -1,11 +1,18 @@
 import React from "react";
+import { extent, max } from "d3-array";
+import { LinePath } from "@visx/shape";
+import { scaleTime, scaleLinear } from "@visx/scale";
 import PropTypes from "prop-types";
 import { Box, Paper, Typography, withStyles } from "@material-ui/core";
-import useDashboardStore from "../../Dashboard/hooks/useDashboardStore";
-import { useLang } from "../../Language";
-import useDashboardContext from "../../Dashboard/hooks/useDashboardContext";
 import LegendRow from "./LegendRow";
 import useSummaryData from "../../Data/useSummaryData";
+import { format } from "d3-format";
+
+const formatInteger = format(",d");
+
+// data accessors
+const getX = (d) => new Date(`${d.date}T00:00:00`);
+const getY = (d) => Number(d.filings);
 
 const styles = (theme) => ({
   root: {},
@@ -16,26 +23,49 @@ const styles = (theme) => ({
   },
 });
 
-const SummaryTrend = () => (
-  <svg
-    width="117"
-    height="24"
-    viewBox="0 0 117 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M1 20C4.09383 16.0835 13.2244 8.25047 24.9961 8.25047C39.7106 8.25047 49.6713 -1.31309 57.5945 8.25047C65.5177 17.814 69.3661 18.6338 79.7795 18.6338C88.1102 18.6338 107.398 16.9943 116 16.1746"
-      stroke="#EC7406"
-      strokeWidth="2"
-    />
-    <path
-      d="M24.9961 8.25047C13.2244 8.25047 4.09383 16.0835 1 20H116V16.1746C107.398 16.9943 88.1102 18.6338 79.7795 18.6338C69.3661 18.6338 65.5177 17.814 57.5945 8.25047C49.6713 -1.31309 39.7106 8.25047 24.9961 8.25047Z"
-      fill="#EC7406"
-      fillOpacity="0.3"
-    />
-  </svg>
-);
+const SummaryTrend = ({ lineData }) => {
+  // scales
+  const xScale = scaleTime({
+    domain: extent(lineData, getX),
+  });
+  const yScale = scaleLinear({
+    domain: [0, max(lineData, getY)],
+  });
+
+  // update scale output ranges
+  xScale.range([1, 116]);
+  yScale.range([21, 1]);
+
+  return (
+    <svg
+      width="117"
+      height="24"
+      viewBox="0 0 117 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <LinePath
+        data={[{ ...lineData[0], filings: 0 }]
+          .concat(lineData)
+          .concat([{ ...lineData[lineData.length - 1], filings: 0 }])}
+        x={(d) => xScale(getX(d)) ?? 0}
+        y={(d) => yScale(getY(d)) ?? 0}
+        fill="#EC7406"
+        opacity={0.3}
+        shapeRendering="geometricPrecision"
+      />
+      <LinePath
+        data={lineData}
+        x={(d) => xScale(getX(d)) ?? 0}
+        y={(d) => yScale(getY(d)) ?? 0}
+        stroke="#EC7406"
+        strokeWidth={2}
+        strokeOpacity={1}
+        shapeRendering="geometricPrecision"
+      />
+    </svg>
+  );
+};
 
 const Summary = ({ classes, ...props }) => {
   const { data: summary } = useSummaryData();
@@ -48,16 +78,23 @@ const Summary = ({ classes, ...props }) => {
       <LegendRow
         title={"Total Eviction Filings"}
         value={
-          <Typography className={classes.value}>{summary.filings}</Typography>
+          <Typography className={classes.value}>
+            {formatInteger(summary.filings)}
+          </Typography>
         }
       />
       <LegendRow
         title={"Total Amount Filed"}
         value={
-          <Typography className={classes.value}>${summary.amount}</Typography>
+          <Typography className={classes.value}>
+            ${formatInteger(summary.amount)}
+          </Typography>
         }
       />
-      <LegendRow title={"Filings By Day"} value={<SummaryTrend />} />
+      <LegendRow
+        title={"Filings By Day"}
+        value={<SummaryTrend lineData={summary.series} />}
+      />
     </Box>
   );
 };

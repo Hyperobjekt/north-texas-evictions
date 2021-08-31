@@ -69,7 +69,7 @@ const Bubbles = () => (
 const BubbleLegend = ({ classes, ...props }) => {
   return (
     <Box>
-      <LegendRow title={"Filings Per 1,000 Renters"} value={<Bubbles />} />
+      <LegendRow {...props} value={<Bubbles />} />
     </Box>
   );
 };

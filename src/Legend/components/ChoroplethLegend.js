@@ -59,9 +59,7 @@ const ChoroplethScale = () => (
 );
 
 const ChoroplethLegend = ({ classes, ...props }) => {
-  return (
-    <LegendRow title={"Median Household Income"} value={<ChoroplethScale />} />
-  );
+  return <LegendRow {...props} value={<ChoroplethScale />} />;
 };
 
 ChoroplethLegend.propTypes = {};
