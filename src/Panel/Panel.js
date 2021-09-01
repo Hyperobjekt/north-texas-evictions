@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { animated, useSpring } from "react-spring";
 import { Box, IconButton, Paper, Typography } from "@material-ui/core";
 import clsx from "clsx";
@@ -76,7 +75,5 @@ const Panel = ({ classes, position = "right" }) => {
     </AnimatedPaper>
   );
 };
-
-Panel.propTypes = {};
 
 export default withStyles(styles)(Panel);

@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import PropTypes from "prop-types";
 import { Box } from "@material-ui/core";
 import useLanguageStore from "../Language/useLanguageStore";
 import useSetDashboardState from "./hooks/useSetDashboardState";
@@ -8,7 +7,7 @@ import { Map } from "../Map";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Panel from "../Panel/Panel";
 import { withStyles } from "@material-ui/styles";
-import {Tooltip} from "../Tooltip";
+import { Tooltip } from "../Tooltip";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -52,7 +51,7 @@ const Dashboard = ({
   const setLanguage = useLanguageStore((state) => state.setLanguage);
   useEffect(() => {
     setLanguage(lang, langDict);
-  }, [lang]);
+  }, [lang, langDict, setLanguage]);
 
   return (
     <QueryClientProvider client={queryClient}>

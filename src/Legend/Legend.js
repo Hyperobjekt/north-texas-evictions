@@ -1,12 +1,8 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { Box, Paper, Typography, withStyles } from "@material-ui/core";
+import { Paper, Typography, withStyles } from "@material-ui/core";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import { useLang } from "../Language";
 import useDashboardContext from "../Dashboard/hooks/useDashboardContext";
-import RegionSelect from "../Dashboard/components/RegionSelect";
-import BubbleSelect from "../Dashboard/components/BubbleSelect";
-import ChoroplethSelect from "../Dashboard/components/ChoroplethSelect";
 import PanelToggle from "../Panel/PanelToggle";
 import { animated, useSpring } from "react-spring";
 import useSummaryData from "../Data/useSummaryData";
@@ -25,12 +21,8 @@ const styles = (theme) => ({
 const AnimatedPaper = animated(Paper);
 
 const Legend = (props) => {
-  const {
-    activeBubble,
-    activeChoropleth,
-    activeRegion,
-    activeDateRange,
-  } = useDashboardContext();
+  const { activeBubble, activeChoropleth, activeRegion, activeDateRange } =
+    useDashboardContext();
 
   const { data: summary } = useSummaryData();
   console.log({ summary });
@@ -60,7 +52,5 @@ const Legend = (props) => {
     </AnimatedPaper>
   );
 };
-
-Legend.propTypes = {};
 
 export default withStyles(styles)(Legend);

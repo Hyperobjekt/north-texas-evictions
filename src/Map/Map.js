@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core";
 import { Mapbox } from "@hyperobjekt/mapbox";
 import useMapLayers from "./hooks/useMapLayers";
@@ -48,7 +47,5 @@ const Map = (props) => {
     />
   );
 };
-
-Map.propTypes = {};
 
 export default withStyles(styles)(Map);
