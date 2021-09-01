@@ -1,114 +1,62 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { Box, Paper, Typography, withStyles } from "@material-ui/core";
-import useDashboardStore from "../../Dashboard/hooks/useDashboardStore";
-import { useLang } from "../../Language";
+import { useTheme, withStyles } from "@material-ui/core";
 import useDashboardContext from "../../Dashboard/hooks/useDashboardContext";
 import LegendRow from "./LegendRow";
 import { useTooltipData } from "../../Tooltip";
+import { BubbleScale } from "@hyperobjekt/legend";
+import useDataExtents from "../../Data/useDataExtents";
+import { DEFAULT_BUBBLE_COLOR } from "../../Dashboard/constants";
+import useFormatter from "../../Dashboard/hooks/useFormatter";
 
 const styles = (theme) => ({
   root: {},
 });
 
-const mapBubbleValue = (v) => (v / 78) * (22 - 5.5) + 5.5;
-
-const Bubbles = ({ data }) => (
-  <svg
-    width="147"
-    height="48"
-    viewBox="0 0 147 48"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    {data ? (
-      <g>
-        <circle
-          cx="36"
-          cy={48 - mapBubbleValue(data)}
-          r={mapBubbleValue(data)}
-          fill="white"
-        />
-        <circle
-          opacity="0.7"
-          cx="36"
-          cy={48 - mapBubbleValue(data)}
-          r={mapBubbleValue(data)}
-          fill="#EC7406"
-        />
-        <circle
-          cx="36"
-          cy={48 - mapBubbleValue(data)}
-          r={mapBubbleValue(data) - 0.5}
-          stroke="#EC7406"
-        />
-      </g>
-    ) : (
-      <g>
-        <circle cx="36" cy="24" r="22" fill="white" />
-        <circle opacity="0.7" cx="36" cy="24" r="22" fill="#EC7406" />
-        <circle cx="36" cy="24" r="21.5" stroke="#EC7406" />
-
-        <circle cx="35.75" cy="31.75" r="13.75" fill="white" />
-        <circle opacity="0.7" cx="35.75" cy="31.75" r="13.75" fill="#EC7406" />
-        <circle cx="35.75" cy="31.75" r="13.25" stroke="#EC7406" />
-
-        <circle cx="35.5" cy="40.5" r="5.5" fill="white" />
-        <circle opacity="0.7" cx="35.5" cy="40.5" r="5.5" fill="#EC7406" />
-        <circle cx="35.5" cy="40.5" r="5" stroke="#EC7406" />
-      </g>
-    )}
-
-    <line
-      x1="36"
-      y1="28.5"
-      x2="101"
-      y2="28.5"
-      stroke="black"
-      strokeOpacity="0.15"
-    />
-    <line
-      x1="36"
-      y1="41.5"
-      x2="101"
-      y2="41.5"
-      stroke="black"
-      strokeOpacity="0.15"
-    />
-    <line
-      x1="36"
-      y1="11.5"
-      x2="101"
-      y2="11.5"
-      stroke="black"
-      strokeOpacity="0.15"
-    />
-    <path
-      d="M115.672 44.244H113.368V36.768H112.624C111.964 37.62 111.064 38.256 110.104 38.748V39.768C110.956 39.324 111.712 38.712 112.372 38.016V44.244H109.912V45H115.672V44.244Z"
-      fill="#72746D"
-    />
-    <path
-      d="M115.672 30.244H113.368V22.768H112.624C111.964 23.62 111.064 24.256 110.104 24.748V25.768C110.956 25.324 111.712 24.712 112.372 24.016V30.244H109.912V31H115.672V30.244ZM120.071 31.12C122.267 31.12 123.155 28.744 123.155 26.92C123.155 25.96 122.939 24.904 122.447 24.076C121.883 23.128 121.103 22.648 119.975 22.648C117.707 22.648 116.915 25.024 116.915 26.896C116.915 28.792 117.803 31.12 120.071 31.12ZM120.071 30.328C118.295 30.328 117.971 28.18 117.971 26.824C117.971 25.54 118.283 23.44 119.975 23.44C121.787 23.44 122.099 25.684 122.099 27.064C122.099 28.348 121.727 30.328 120.071 30.328ZM127.507 31.12C129.703 31.12 130.591 28.744 130.591 26.92C130.591 25.96 130.375 24.904 129.883 24.076C129.319 23.128 128.539 22.648 127.411 22.648C125.143 22.648 124.351 25.024 124.351 26.896C124.351 28.792 125.239 31.12 127.507 31.12ZM127.507 30.328C125.731 30.328 125.407 28.18 125.407 26.824C125.407 25.54 125.719 23.44 127.411 23.44C129.223 23.44 129.535 25.684 129.535 27.064C129.535 28.348 129.163 30.328 127.507 30.328Z"
-      fill="#72746D"
-    />
-    <path
-      d="M115.084 6.768H110.212L109.936 11.196L110.752 11.364C111.172 10.68 111.88 10.248 112.696 10.248C113.836 10.248 114.628 11.088 114.628 12.204C114.628 13.512 113.764 14.304 112.48 14.304C111.508 14.304 110.788 13.776 110.464 12.876L109.576 13.176C109.936 14.412 111.22 15.12 112.456 15.12C114.184 15.12 115.624 14.028 115.624 12.216C115.624 10.608 114.364 9.42 112.756 9.42C111.964 9.42 111.328 9.768 110.776 10.308L110.956 7.656H115L115.084 6.768ZM120.071 15.12C122.267 15.12 123.155 12.744 123.155 10.92C123.155 9.96 122.939 8.904 122.447 8.076C121.883 7.128 121.103 6.648 119.975 6.648C117.707 6.648 116.915 9.024 116.915 10.896C116.915 12.792 117.803 15.12 120.071 15.12ZM120.071 14.328C118.295 14.328 117.971 12.18 117.971 10.824C117.971 9.54 118.283 7.44 119.975 7.44C121.787 7.44 122.099 9.684 122.099 11.064C122.099 12.348 121.727 14.328 120.071 14.328ZM127.507 15.12C129.703 15.12 130.591 12.744 130.591 10.92C130.591 9.96 130.375 8.904 129.883 8.076C129.319 7.128 128.539 6.648 127.411 6.648C125.143 6.648 124.351 9.024 124.351 10.896C124.351 12.792 125.239 15.12 127.507 15.12ZM127.507 14.328C125.731 14.328 125.407 12.18 125.407 10.824C125.407 9.54 125.719 7.44 127.411 7.44C129.223 7.44 129.535 9.684 129.535 11.064C129.535 12.348 129.163 14.328 127.507 14.328Z"
-      fill="#72746D"
-    />
-  </svg>
-);
-
 const BubbleLegend = (props) => {
   const tooltipData = useTooltipData();
   const { activeBubble } = useDashboardContext();
+  const extents = useDataExtents();
+  const theme = useTheme();
+  const highlight = tooltipData && tooltipData[activeBubble];
+  const formatter = useFormatter(activeBubble);
 
   return (
-    <Box>
-      <LegendRow
-        {...props}
-        value={<Bubbles data={tooltipData?.[activeBubble]} />}
+    <LegendRow {...props}>
+      <BubbleScale
+        extent={extents[activeBubble]}
+        lineLength={12}
+        margin={[1, 48, 1, 1]}
+        sizes={[8, 16, 24]}
+        highlight={highlight}
+        formatLabel={formatter}
+        theme={{
+          bubble: {
+            fill: DEFAULT_BUBBLE_COLOR,
+            stroke: "#fff",
+            fillOpacity: 0.8,
+            strokeWidth: 0.5,
+          },
+          line: {
+            stroke: theme.palette.divider,
+          },
+          text: {
+            fill: theme.palette.text.secondary,
+            fontFamily: theme.typography.fontFamily,
+            fontSize: theme.typography.pxToRem(12),
+            transform: "translate(-4,0)",
+          },
+          highlightBubble: {
+            fill: theme.palette.primary.main,
+          },
+          highlightText: {
+            fill: theme.palette.text.primary,
+          },
+          highlightLine: {
+            stroke: theme.palette.primary.main,
+          },
+        }}
       />
-    </Box>
+    </LegendRow>
   );
 };
 

@@ -7,7 +7,6 @@ import {
 } from "../../Dashboard/constants";
 import useDashboardStore from "../../Dashboard/hooks/useDashboardStore";
 import shallow from "zustand/shallow";
-import { quantile } from "d3-array";
 import useDataExtents from "../../Data/useDataExtents";
 
 const getLinearRamp = (from, to, steps = 1) => {
@@ -111,10 +110,7 @@ const getBubbleLayerStyle = ({
               "interpolate",
               ["linear"],
               ["get", activeBubble],
-              ...getLinearRamp(
-                [quantile(extent[2], 0.1), quantile(extent[2], 0.99)],
-                [0, 8]
-              ),
+              ...getLinearRamp([extent[0], extent[1]], [0, 8]),
             ],
             1,
           ],
@@ -126,10 +122,7 @@ const getBubbleLayerStyle = ({
               "interpolate",
               ["linear"],
               ["get", activeBubble],
-              ...getLinearRamp(
-                [quantile(extent[2], 0.01), quantile(extent[2], 0.99)],
-                [6, 48]
-              ),
+              ...getLinearRamp([extent[0], extent[1]], [6, 48]),
             ],
             6,
           ],

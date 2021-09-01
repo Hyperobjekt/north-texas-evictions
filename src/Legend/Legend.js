@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import {
   Box,
   Paper,
@@ -13,7 +12,6 @@ import { useLang } from "../Language";
 import useDashboardContext from "../Dashboard/hooks/useDashboardContext";
 import PanelToggle from "../Panel/PanelToggle";
 import { animated, useSpring } from "react-spring";
-import useSummaryData from "../Data/useSummaryData";
 import Summary from "./components/Summary";
 import BubbleLegend from "./components/BubbleLegend";
 import ChoroplethLegend from "./components/ChoroplethLegend";
@@ -59,17 +57,6 @@ const styles = (theme) => ({
     [theme.breakpoints.down("sm")]: {
       // TODO: abstract the mobile toggle btn width to a constant
       marginRight: "63px",
-    },
-  },
-  button: {
-    textTransform: "none",
-    boxShadow: "none",
-    color: theme.props.text.primary,
-    background: "#ECECD5",
-    fontWeight: 500,
-    "&:hover": {
-      background: "#D6D6B6",
-      boxShadow: "none",
     },
   },
   box: {
@@ -188,7 +175,7 @@ const Legend = ({ classes, ...props }) => {
       <animated.div className={classes.toggleContainer}>
         <div ref={toggleRef}>
           <Box className={classes.box}>
-            <PanelToggle className={classes.button} />
+            <PanelToggle />
           </Box>
           <Box className={classes.box}>
             <Typography className={classes.eyebrow}>Summary</Typography>
