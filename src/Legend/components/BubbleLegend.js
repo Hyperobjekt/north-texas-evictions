@@ -5,12 +5,15 @@ import useDashboardStore from "../../Dashboard/hooks/useDashboardStore";
 import { useLang } from "../../Language";
 import useDashboardContext from "../../Dashboard/hooks/useDashboardContext";
 import LegendRow from "./LegendRow";
+import { useTooltipData } from "../../Tooltip";
 
 const styles = (theme) => ({
   root: {},
 });
 
-const Bubbles = () => (
+const mapBubbleValue = (v) => (v / 78) * (22 - 5.5) + 5.5;
+
+const Bubbles = ({ data }) => (
   <svg
     width="147"
     height="48"
@@ -18,15 +21,44 @@ const Bubbles = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <circle cx="36" cy="24" r="22" fill="white" />
-    <circle opacity="0.7" cx="36" cy="24" r="22" fill="#EC7406" />
-    <circle cx="36" cy="24" r="21.5" stroke="#EC7406" />
-    <circle cx="35.75" cy="31.75" r="13.75" fill="white" />
-    <circle opacity="0.7" cx="35.75" cy="31.75" r="13.75" fill="#EC7406" />
-    <circle cx="35.75" cy="31.75" r="13.25" stroke="#EC7406" />
-    <circle cx="35.5" cy="40.5" r="5.5" fill="white" />
-    <circle opacity="0.7" cx="35.5" cy="40.5" r="5.5" fill="#EC7406" />
-    <circle cx="35.5" cy="40.5" r="5" stroke="#EC7406" />
+    {data ? (
+      <g>
+        <circle
+          cx="36"
+          cy={48 - mapBubbleValue(data)}
+          r={mapBubbleValue(data)}
+          fill="white"
+        />
+        <circle
+          opacity="0.7"
+          cx="36"
+          cy={48 - mapBubbleValue(data)}
+          r={mapBubbleValue(data)}
+          fill="#EC7406"
+        />
+        <circle
+          cx="36"
+          cy={48 - mapBubbleValue(data)}
+          r={mapBubbleValue(data) - 0.5}
+          stroke="#EC7406"
+        />
+      </g>
+    ) : (
+      <g>
+        <circle cx="36" cy="24" r="22" fill="white" />
+        <circle opacity="0.7" cx="36" cy="24" r="22" fill="#EC7406" />
+        <circle cx="36" cy="24" r="21.5" stroke="#EC7406" />
+
+        <circle cx="35.75" cy="31.75" r="13.75" fill="white" />
+        <circle opacity="0.7" cx="35.75" cy="31.75" r="13.75" fill="#EC7406" />
+        <circle cx="35.75" cy="31.75" r="13.25" stroke="#EC7406" />
+
+        <circle cx="35.5" cy="40.5" r="5.5" fill="white" />
+        <circle opacity="0.7" cx="35.5" cy="40.5" r="5.5" fill="#EC7406" />
+        <circle cx="35.5" cy="40.5" r="5" stroke="#EC7406" />
+      </g>
+    )}
+
     <line
       x1="36"
       y1="28.5"
@@ -66,10 +98,16 @@ const Bubbles = () => (
   </svg>
 );
 
-const BubbleLegend = ({ classes, ...props }) => {
+const BubbleLegend = (props) => {
+  const tooltipData = useTooltipData();
+  const { activeBubble } = useDashboardContext();
+
   return (
     <Box>
-      <LegendRow {...props} value={<Bubbles />} />
+      <LegendRow
+        {...props}
+        value={<Bubbles data={tooltipData?.[activeBubble]} />}
+      />
     </Box>
   );
 };

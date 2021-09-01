@@ -156,7 +156,7 @@ const Legend = ({ classes, ...props }) => {
 
   const { activeBubble, activeChoropleth, activeRegion, activeDateRange } =
     useDashboardContext();
-  console.log(activeDateRange);
+  // console.log(activeDateRange);
 
   const startDate =
     activeDateRange.length > 0

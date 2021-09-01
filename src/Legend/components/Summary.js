@@ -69,7 +69,7 @@ const SummaryTrend = ({ lineData }) => {
 
 const Summary = ({ classes, ...props }) => {
   const { data: summary } = useSummaryData();
-  console.log({ summary });
+  //   console.log({ summary });
 
   if (!summary) return null;
 

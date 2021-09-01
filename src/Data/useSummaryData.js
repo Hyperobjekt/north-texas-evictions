@@ -10,7 +10,7 @@ const fetchSummary = ({ start, end }) => {
   return fetch(`${EVICTION_DATA_ENDPOINT}/summary?${paramString}`)
     .then((response) => response.json())
     .then((json) => {
-      console.log("json", json);
+      // console.log("json", json);
       return {
         filings: json.result.reduce((sum, entry) => sum + entry.ef, 0),
         amount: json.result.reduce((sum, entry) => sum + entry.tfa, 0),
