@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Header as HypHeader } from "@hyperobjekt/material-ui-website";
 import { Box, List, ListItem } from "@material-ui/core";
 import Menu from "./Menu";

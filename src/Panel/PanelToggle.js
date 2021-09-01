@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Button } from "@material-ui/core";
 import { useLang } from "../Language";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
@@ -20,7 +19,5 @@ const PanelToggle = (props) => {
     </Button>
   );
 };
-
-PanelToggle.propTypes = {};
 
 export default PanelToggle;

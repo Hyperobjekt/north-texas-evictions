@@ -11,9 +11,6 @@ import {
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import { useLang } from "../Language";
 import useDashboardContext from "../Dashboard/hooks/useDashboardContext";
-import RegionSelect from "../Dashboard/components/RegionSelect";
-import BubbleSelect from "../Dashboard/components/BubbleSelect";
-import ChoroplethSelect from "../Dashboard/components/ChoroplethSelect";
 import PanelToggle from "../Panel/PanelToggle";
 import { animated, useSpring } from "react-spring";
 import useSummaryData from "../Data/useSummaryData";
@@ -89,31 +86,6 @@ const styles = (theme) => ({
 });
 
 const AnimatedPaper = animated(Paper);
-
-const formatDateRange = (dR) => {
-  return dR && dR.length > 0
-    ? {
-        start:
-          dR.length > 0
-            ? new Intl.DateTimeFormat("en-US", {
-                month: "long",
-                day: "numeric",
-              }).format(new Date(dR[0]))
-            : "",
-        end:
-          dR.length > 1
-            ? new Intl.DateTimeFormat("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              }).format(new Date(dR[1]))
-            : "",
-      }
-    : {
-        start: "",
-        end: "",
-      };
-};
 
 const MobileToggle = withStyles((theme) => ({
   root: {
@@ -238,7 +210,5 @@ const Legend = ({ classes, ...props }) => {
     </AnimatedPaper>
   );
 };
-
-Legend.propTypes = {};
 
 export default withStyles(styles)(Legend);

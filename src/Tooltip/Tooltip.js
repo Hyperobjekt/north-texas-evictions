@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core";
 import { useTooltipData } from ".";
 
@@ -20,7 +19,5 @@ const Tooltip = ({ classes, ...props }) => {
     </pre>
   ) : null;
 };
-
-Tooltip.propTypes = {};
 
 export default withStyles(styles)(Tooltip);

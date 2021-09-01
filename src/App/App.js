@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
-import PropTypes from "prop-types";
 import Dashboard from "../Dashboard";
-import Footer from "./components/Footer";
 import Header from "./components/Header";
-import { TextField } from "@material-ui/core";
 import useDashboardRoute from "../Dashboard/hooks/useDashboardRoute";
 import Search from "./components/Search";
 
