@@ -36,7 +36,7 @@ const styles = (theme) => ({
       top: "auto",
       bottom: 0,
       right: 0,
-      width: "100%",
+      width: "100vw",
     },
   },
   eyebrow: {
@@ -152,7 +152,7 @@ const MobileToggle = withStyles((theme) => ({
 
 const Legend = ({ classes, ...props }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = !useMediaQuery(theme.breakpoints.up("sm"));
 
   const { activeBubble, activeChoropleth, activeRegion, activeDateRange } =
     useDashboardContext();
@@ -191,16 +191,15 @@ const Legend = ({ classes, ...props }) => {
     end: endDateLabel,
   });
 
+  const [toggleRef, toggleBounds] = useMeasure();
+  const [showSummary, setShowSummary] = useState(false);
+
   // move legend if panel is open
   const activePanel = useDashboardStore((state) => state.activePanel);
-  const style = useSpring({ x: activePanel ? 368 : 0 });
-
-  const [toggleRef, toggleBounds] = useMeasure();
-  const [showSummary, setShowSummary] = useState(() => !isMobile);
-  const toggleStyle = useSpring({
-    height: showSummary ? toggleBounds.height : 0,
+  const style = useSpring({
+    x: activePanel ? toggleBounds.width + theme.spacing(2) : 0,
+    y: isMobile && !showSummary ? toggleBounds.height : 0,
   });
-  console.log(isMobile, showSummary);
 
   return (
     <AnimatedPaper style={style} className={classes.root} {...props}>
@@ -214,7 +213,7 @@ const Legend = ({ classes, ...props }) => {
           <span> {summaryText}</span>
         </Typography>
       </Box>
-      <animated.div style={toggleStyle} className={classes.toggleContainer}>
+      <animated.div className={classes.toggleContainer}>
         <div ref={toggleRef}>
           <Box className={classes.box}>
             <PanelToggle className={classes.button} />
