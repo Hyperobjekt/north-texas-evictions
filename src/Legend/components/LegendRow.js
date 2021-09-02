@@ -1,9 +1,6 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { Box, Paper, Typography, withStyles } from "@material-ui/core";
-import useDashboardStore from "../../Dashboard/hooks/useDashboardStore";
-import { useLang } from "../../Language";
-import useDashboardContext from "../../Dashboard/hooks/useDashboardContext";
+import { Box, Typography, withStyles } from "@material-ui/core";
+import clsx from "clsx";
 
 const styles = (theme) => ({
   root: {
@@ -19,11 +16,11 @@ const styles = (theme) => ({
   },
 });
 
-const LegendRow = ({ classes, title, value }) => {
+const LegendRow = ({ classes, className, title, children, ...props }) => {
   return (
-    <Box className={classes.root}>
+    <Box className={clsx(classes.root, className)} {...props}>
       <Typography className={classes.title}>{title}</Typography>
-      {value}
+      {children}
     </Box>
   );
 };

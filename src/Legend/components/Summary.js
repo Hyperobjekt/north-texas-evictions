@@ -2,8 +2,7 @@ import React from "react";
 import { extent, max } from "d3-array";
 import { LinePath } from "@visx/shape";
 import { scaleTime, scaleLinear } from "@visx/scale";
-import PropTypes from "prop-types";
-import { Box, Paper, Typography, withStyles } from "@material-ui/core";
+import { Box, Typography, withStyles } from "@material-ui/core";
 import LegendRow from "./LegendRow";
 import useSummaryData from "../../Data/useSummaryData";
 import { format } from "d3-format";
@@ -75,26 +74,19 @@ const Summary = ({ classes, ...props }) => {
 
   return (
     <Box>
-      <LegendRow
-        title={"Total Eviction Filings"}
-        value={
-          <Typography className={classes.value}>
-            {formatInteger(summary.filings)}
-          </Typography>
-        }
-      />
-      <LegendRow
-        title={"Total Amount Filed"}
-        value={
-          <Typography className={classes.value}>
-            ${formatInteger(summary.amount)}
-          </Typography>
-        }
-      />
-      <LegendRow
-        title={"Filings By Day"}
-        value={<SummaryTrend lineData={summary.series} />}
-      />
+      <LegendRow title={"Total Eviction Filings"}>
+        <Typography className={classes.value}>
+          {formatInteger(summary.filings)}
+        </Typography>
+      </LegendRow>
+      <LegendRow title={"Total Amount Filed"}>
+        <Typography className={classes.value}>
+          ${formatInteger(summary.amount)}
+        </Typography>
+      </LegendRow>
+      <LegendRow title={"Filings By Day"}>
+        <SummaryTrend lineData={summary.series} />
+      </LegendRow>
     </Box>
   );
 };
