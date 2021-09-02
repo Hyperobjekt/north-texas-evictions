@@ -1300,10 +1300,10 @@
   resolved "https://registry.yarnpkg.com/@hyperobjekt/hooks/-/hooks-1.1.1.tgz#ce9d3e2912ac0f965d33c15763e09eed8275566e"
   integrity sha512-biKhX/hILFw1Ww/9Qu17iMwmYhDMUaGaYCQj79phceajvI94w6pLqTfSI/yQiF3H+hpm9L52RyykHEkc2HftWQ==
 
-"@hyperobjekt/legend@1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@hyperobjekt/legend/-/legend-1.1.1.tgz#f0b95caab3f5f0a58b86507dcc87e1e702baa3e4"
-  integrity sha512-1IcLp0KttTkqVpaDfUHuv7NAAuu8iBlBuPGNQKKh/Ekf1hM7K4898lcMW/46yLPnLPcXQpJJURIMmoTnD6Qtjg==
+"@hyperobjekt/legend@2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@hyperobjekt/legend/-/legend-2.0.1.tgz#3bb02e9de325b0867857b20d4ab8a6c429ed4d74"
+  integrity sha512-O4Q1UZXfGm6plwHCvdgEMOjFZ4OnI4nil/5SXLyLj8fnMPaO4Gpjz/fZ28yDu7lZsjiOi5tap/hOTKMdjvjsbA==
   dependencies:
     clsx "^1.1.1"
     d3-array "^2.12.1"
