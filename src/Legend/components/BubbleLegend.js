@@ -18,7 +18,9 @@ const BubbleLegend = (props) => {
   const extents = useDataExtents();
   const theme = useTheme();
   const highlight = tooltipData && tooltipData[activeBubble];
-  const formatter = useFormatter(activeBubble);
+  const formatter = useFormatter(activeBubble, {
+    short: true,
+  });
 
   return (
     <LegendRow {...props}>

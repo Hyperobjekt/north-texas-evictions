@@ -38,7 +38,9 @@ const ChoroplethLegend = (props) => {
   const height = 24;
   const activeValue = tooltipData && tooltipData[activeChoropleth];
   const margin = { left: 24, right: 16, top: 4, bottom: 4 };
-  const formatter = useFormatter(activeChoropleth);
+  const formatter = useFormatter(activeChoropleth, {
+    short: true,
+  });
   if (!extents || !extents[activeChoropleth]) return null;
   return (
     <LegendRow {...props}>
