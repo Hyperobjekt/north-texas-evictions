@@ -7,6 +7,7 @@ import LegendRow from "./LegendRow";
 import useSummaryData from "../../Data/useSummaryData";
 import { format } from "d3-format";
 import { useLang } from "../../Language";
+import useFormatter from "../../Dashboard/hooks/useFormatter";
 
 const formatInteger = format(",d");
 
@@ -75,6 +76,8 @@ const Summary = ({ classes, ...props }) => {
   const { data: summary } = useSummaryData();
   const langKeys = [`SUMMARY_EF`, `SUMMARY_TFA`, `SUMMARY_SERIES`];
   const [filingsLabel, amountLabel, seriesLabel] = useLang(langKeys);
+  const intFormatter = useFormatter("ef");
+  const currencyFormatter = useFormatter("mfa");
 
   if (!summary) return null;
 
@@ -82,12 +85,12 @@ const Summary = ({ classes, ...props }) => {
     <Box>
       <LegendRow title={filingsLabel}>
         <Typography className={classes.value}>
-          {formatInteger(summary.filings)}
+          {intFormatter(summary.filings)}
         </Typography>
       </LegendRow>
       <LegendRow title={amountLabel}>
         <Typography className={classes.value}>
-          ${formatInteger(summary.amount)}
+          {currencyFormatter(summary.amount)}
         </Typography>
       </LegendRow>
       <LegendRow title={seriesLabel}>
