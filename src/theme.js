@@ -10,8 +10,8 @@ const DARK_FOCUS_STATE = {
   boxShadow: `0 0 0 2px ${HEADER_BACKGROUND_COLOR}, 0 0 0 4px #649BA6`,
 };
 
-const fontFamily = `"ITC Franklin Gothic Std", "Roboto", "Helvetica", "Arial", sans-serif`;
-const altFontFamily = `"Degular", "Roboto", "Helvetica", "Arial", sans-serif`;
+const fontFamily = `"franklin-gothic-urw", "Roboto", "Helvetica", "Arial", sans-serif`;
+const altFontFamily = `"degular", "Roboto", "Helvetica", "Arial", sans-serif`;
 
 export default createTheme({
   palette: {
