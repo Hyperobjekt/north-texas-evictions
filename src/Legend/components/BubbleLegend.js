@@ -1,5 +1,5 @@
 import React from "react";
-import { useTheme, withStyles } from "@material-ui/core";
+import { darken, lighten, useTheme, withStyles } from "@material-ui/core";
 import useDashboardContext from "../../Dashboard/hooks/useDashboardContext";
 import LegendRow from "./LegendRow";
 import { useTooltipData } from "../../Tooltip";
@@ -25,7 +25,7 @@ const BubbleLegend = (props) => {
   return (
     <LegendRow {...props}>
       <BubbleScale
-        extent={extents[activeBubble]}
+        extent={extents[activeBubble] && extents[activeBubble].slice(0, 2)}
         lineLength={12}
         margin={[1, 48, 1, 1]}
         sizes={[8, 16, 24]}
@@ -33,9 +33,8 @@ const BubbleLegend = (props) => {
         formatLabel={formatter}
         theme={{
           bubble: {
-            fill: DEFAULT_BUBBLE_COLOR,
+            fill: lighten(DEFAULT_BUBBLE_COLOR, 0.2),
             stroke: "#fff",
-            fillOpacity: 0.8,
             strokeWidth: 0.5,
           },
           line: {
@@ -48,13 +47,14 @@ const BubbleLegend = (props) => {
             transform: "translate(-4,0)",
           },
           highlightBubble: {
-            fill: theme.palette.primary.main,
+            fill: lighten(DEFAULT_BUBBLE_COLOR, 0.2),
+            stroke: darken(theme.palette.primary.main, 0.1),
           },
           highlightText: {
             fill: theme.palette.text.primary,
           },
           highlightLine: {
-            stroke: theme.palette.primary.main,
+            stroke: darken(theme.palette.primary.main, 0.1),
           },
         }}
       />

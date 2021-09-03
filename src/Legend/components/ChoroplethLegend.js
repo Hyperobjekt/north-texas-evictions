@@ -5,7 +5,7 @@ import useDashboardContext from "../../Dashboard/hooks/useDashboardContext";
 import LegendRow from "./LegendRow";
 import { useTooltipData } from "../../Tooltip";
 import useDataExtents from "../../Data/useDataExtents";
-import { ContinuousScale } from "@hyperobjekt/legend";
+import { Scale } from "@hyperobjekt/legend";
 import { DEFAULT_CHOROPLETH_COLORS } from "../../Dashboard/constants";
 import useFormatter from "../../Dashboard/hooks/useFormatter";
 
@@ -35,34 +35,35 @@ const ChoroplethLegend = (props) => {
   const { activeChoropleth } = useDashboardContext();
   const extents = useDataExtents();
   const width = 200;
-  const height = 24;
   const activeValue = tooltipData && tooltipData[activeChoropleth];
-  const margin = { left: 24, right: 16, top: 4, bottom: 4 };
+  const margin = { left: 24, right: 16, top: 0, bottom: 2 };
   const formatter = useFormatter(activeChoropleth, {
     short: true,
   });
   if (!extents || !extents[activeChoropleth]) return null;
   return (
     <LegendRow {...props}>
-      <ContinuousScale
+      <Scale
+        type="continuous"
         width={width}
-        height={height}
         margin={margin}
         data={extents[activeChoropleth][2]}
         colors={DEFAULT_CHOROPLETH_COLORS}
-        marker={
-          (activeValue || activeValue === 0) && {
-            value: activeValue,
-          }
-        }
-        tickProps={{
-          tickValues: [
+      >
+        <Scale.Marker
+          value={activeValue}
+          label={!isNaN(activeValue) && formatter(activeValue)}
+        />
+        <Scale.Colors height={16} />
+        <Scale.Ticks
+          tickValues={[
             extents[activeChoropleth][0],
             extents[activeChoropleth][1],
-          ],
-          tickFormat: formatter,
-        }}
-      />
+          ]}
+          height={32}
+          tickFormat={formatter}
+        />
+      </Scale>
     </LegendRow>
   );
 };
