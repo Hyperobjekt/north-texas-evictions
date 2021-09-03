@@ -1,3 +1,5 @@
+import { quantile } from "d3-array";
+
 /**
  * adds integer ids to each feature (for mapbox state)
  */
@@ -16,22 +18,29 @@ export const addFeatureIds = (geojson) => {
 };
 
 /**
- * Pulls min/max for all feature properties from the GeoJSON collection
+ * Pulls min/max for all feature properties from the GeoJSON collection.
+ * Can specify an optional min / max quantile in options to reduce outliers.
  */
-export const extractExtentsFromGeojson = (geojson) => {
+export const extractExtentsFromGeojson = (geojson, options = {}) => {
+  const { minQuantile = 0, maxQuantile = 1 } = options;
   const { features } = geojson;
-  return features.reduce((data, feature) => {
-    if (!feature.properties) return data;
-    Object.entries(feature.properties).forEach(([key, value]) => {
-      if (!value) return;
-      if (!data[key])
-        data[key] = [Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER, []];
-      data[key][0] = Math.min(data[key][0], value);
-      data[key][1] = Math.max(data[key][1], value);
-      data[key][2].push(value);
-    });
-    return data;
-  }, {});
+  // grab superset of all feature properties (keys)
+  const keys = Object.keys(
+    features.reduce(
+      (collection, feature) => ({ ...collection, ...feature.properties }),
+      {}
+    )
+  );
+  const extents = {};
+  for (let i = 0; i < keys.length; i++) {
+    extents[keys[i]] = [
+      quantile(features, minQuantile, (f) => f.properties[keys[i]]), // min value
+      quantile(features, maxQuantile, (f) => f.properties[keys[i]]), // max value
+      features.map((f) => f.properties[keys[i]]).filter(Boolean), // all values
+    ];
+  }
+  console.log(extents);
+  return extents;
 };
 
 /**

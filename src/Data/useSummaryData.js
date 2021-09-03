@@ -9,14 +9,17 @@ const fetchSummary = ({ start, end }) => {
   const paramString = new URLSearchParams({ start, end }).toString();
   return fetch(`${EVICTION_DATA_ENDPOINT}/summary?${paramString}`)
     .then((response) => response.json())
-    .then((json) => ({
-      filings: json.result.reduce((sum, entry) => sum + entry.ef, 0),
-      amount: 1234567, // TODO: replace with real value from API when available
-      series: [
-        { date: start, filings: 10 },
-        { date: end, filings: 20 },
-      ], // TODO: replace with real value from API when available
-    }));
+    .then((summary) => {
+      return fetch(`${EVICTION_DATA_ENDPOINT}/filings?${paramString}`)
+        .then((response) => response.json())
+        .then((series) => {
+          return {
+            filings: summary.result.reduce((sum, entry) => sum + entry.ef, 0),
+            amount: summary.result.reduce((sum, entry) => sum + entry.tfa, 0),
+            series: series.result,
+          };
+        });
+    });
 };
 
 /**
