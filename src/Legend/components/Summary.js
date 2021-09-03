@@ -6,12 +6,13 @@ import { Box, Typography, withStyles } from "@material-ui/core";
 import LegendRow from "./LegendRow";
 import useSummaryData from "../../Data/useSummaryData";
 import { format } from "d3-format";
+import { useLang } from "../../Language";
 
 const formatInteger = format(",d");
 
 // data accessors
 const getX = (d) => new Date(`${d.date}T00:00:00`);
-const getY = (d) => Number(d.filings);
+const getY = (d) => Number(d.ef);
 
 const styles = (theme) => ({
   root: {},
@@ -35,6 +36,12 @@ const SummaryTrend = ({ lineData }) => {
   xScale.range([1, 116]);
   yScale.range([21, 1]);
 
+  // add some extra points for the filled shape
+  const lineDataFilled = lineData.concat([
+    { ...lineData[lineData.length - 1], ef: 0 },
+    { ...lineData[0], ef: 0 },
+  ]);
+
   return (
     <svg
       width="117"
@@ -44,9 +51,7 @@ const SummaryTrend = ({ lineData }) => {
       xmlns="http://www.w3.org/2000/svg"
     >
       <LinePath
-        data={[{ ...lineData[0], filings: 0 }]
-          .concat(lineData)
-          .concat([{ ...lineData[lineData.length - 1], filings: 0 }])}
+        data={lineDataFilled}
         x={(d) => xScale(getX(d)) ?? 0}
         y={(d) => yScale(getY(d)) ?? 0}
         fill="#EC7406"
@@ -58,7 +63,7 @@ const SummaryTrend = ({ lineData }) => {
         x={(d) => xScale(getX(d)) ?? 0}
         y={(d) => yScale(getY(d)) ?? 0}
         stroke="#EC7406"
-        strokeWidth={2}
+        strokeWidth={1}
         strokeOpacity={1}
         shapeRendering="geometricPrecision"
       />
@@ -68,23 +73,24 @@ const SummaryTrend = ({ lineData }) => {
 
 const Summary = ({ classes, ...props }) => {
   const { data: summary } = useSummaryData();
-  //   console.log({ summary });
+  const langKeys = [`SUMMARY_EF`, `SUMMARY_TFA`, `SUMMARY_SERIES`];
+  const [filingsLabel, amountLabel, seriesLabel] = useLang(langKeys);
 
   if (!summary) return null;
 
   return (
     <Box>
-      <LegendRow title={"Total Eviction Filings"}>
+      <LegendRow title={filingsLabel}>
         <Typography className={classes.value}>
           {formatInteger(summary.filings)}
         </Typography>
       </LegendRow>
-      <LegendRow title={"Total Amount Filed"}>
+      <LegendRow title={amountLabel}>
         <Typography className={classes.value}>
           ${formatInteger(summary.amount)}
         </Typography>
       </LegendRow>
-      <LegendRow title={"Filings By Day"}>
+      <LegendRow title={seriesLabel}>
         <SummaryTrend lineData={summary.series} />
       </LegendRow>
     </Box>

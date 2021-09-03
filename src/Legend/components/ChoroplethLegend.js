@@ -52,7 +52,7 @@ const ChoroplethLegend = (props) => {
         colors={DEFAULT_CHOROPLETH_COLORS}
         marker={
           (activeValue || activeValue === 0) && {
-            value: activeValue, // TODO: update the core component to allow proper value formatting
+            value: activeValue,
           }
         }
         tickProps={{
@@ -60,7 +60,7 @@ const ChoroplethLegend = (props) => {
             extents[activeChoropleth][0],
             extents[activeChoropleth][1],
           ],
-          tickFormat: formatter, // TODO: update `useFormatter` to provide an additional tick formatter for shortened values
+          tickFormat: formatter,
         }}
       />
     </LegendRow>
