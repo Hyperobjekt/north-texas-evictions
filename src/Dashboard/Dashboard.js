@@ -101,7 +101,8 @@ Dashboard.defaultProps = {
       REGION_COUNTIES: "Counties",
       REGION_TRACTS: "Census Tracts",
       REGION_ZIPS: "ZIP Codes",
-      REGION_PLACES: "Cities",
+      REGION_CITIES: "Cities",
+      REGION_DISTRICTS: "Council Districts",
       LEGEND_SUMMARY: "between {{start}} and {{end}}",
       BUTTON_CHANGE_OPTIONS: "Change Data Options",
       SELECT_CHOROPLETH: "Demographic Metric",
@@ -131,7 +132,7 @@ Dashboard.defaultProps = {
         "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/bubble/NTEP_bubble_county.geojson",
     },
     {
-      id: "places",
+      id: "cities",
       type: "geojson",
       choropleth:
         "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/demo/NTEP_demographics_place.geojson",
@@ -145,6 +146,14 @@ Dashboard.defaultProps = {
         "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/demo/NTEP_demographics_zip.geojson",
       bubble:
         "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/bubble/NTEP_bubble_zip.geojson",
+    },
+    {
+      id: "districts",
+      type: "geojson",
+      choropleth:
+        "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/demo/NTEP_demographics_council.geojson",
+      bubble:
+        "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/bubble/NTEP_bubble_council.geojson",
     },
     {
       id: "tracts",

@@ -6,6 +6,9 @@ import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
  * Fetches eviction filings data from the API
  */
 const fetchSummary = ({ start, end }) => {
+  if (!start || !end) {
+    return Promise.reject("start and end dates are required");
+  }
   const paramString = new URLSearchParams({ start, end }).toString();
   return fetch(`${EVICTION_DATA_ENDPOINT}/summary?${paramString}`)
     .then((response) => response.json())

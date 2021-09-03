@@ -2,7 +2,11 @@ import { useQuery } from "react-query";
 import { EVICTION_DATA_ENDPOINT } from "../Dashboard/constants";
 import useDashboardContext from "../Dashboard/hooks/useDashboardContext";
 import useDashboardRegion from "../Dashboard/hooks/useDashboardRegion";
-import { addDataToGeojson, extractExtentsFromGeojson } from "./utils";
+import {
+  addDataToGeojson,
+  addFeatureIds,
+  extractExtentsFromGeojson,
+} from "./utils";
 
 /**
  * Fetches bubble GeoJSON and returns and object
@@ -20,9 +24,9 @@ const fetchBubbleGeojson = (url) => {
 const fetchBubbleData = ({ region, start, end }) => {
   if (!region) return Promise.reject("no region provided for bubble data");
   const paramString = new URLSearchParams({ region, start, end }).toString();
-  return fetch(
-    `${EVICTION_DATA_ENDPOINT}/summary?${paramString}`
-  ).then((response) => response.json());
+  return fetch(`${EVICTION_DATA_ENDPOINT}/summary?${paramString}`).then(
+    (response) => response.json()
+  );
 };
 
 /**
@@ -57,7 +61,7 @@ const fetchAllBubbleData = (params, geojsonUrl) => {
   ]).then(([geojson, evictionData]) => {
     if (!geojson || !evictionData) return null;
     const mergedGeojson = addFilingRatesToGeojson(
-      addDataToGeojson(geojson, evictionData.result)
+      addDataToGeojson(addFeatureIds(geojson), evictionData.result)
     );
     return {
       extents: extractExtentsFromGeojson(mergedGeojson),

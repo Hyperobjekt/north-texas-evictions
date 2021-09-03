@@ -12,6 +12,8 @@ const App = (props) => {
 
   // update route on state changes
   useEffect(() => {
+    // do not set undefined route
+    if (route.indexOf("undefined") > -1) return null;
     window.history && window.history.replaceState(null, null, "?" + route);
   }, [route]);
 

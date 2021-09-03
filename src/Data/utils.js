@@ -6,14 +6,20 @@ import { quantile } from "d3-array";
 export const addFeatureIds = (geojson) => {
   return {
     ...geojson,
-    features: geojson.features.map((feature, i) =>
-      feature.id
-        ? feature
-        : {
-            id: feature.properties.id ? Number(feature.properties.id) : i + 1,
-            ...feature,
-          }
-    ),
+    features: geojson.features.map((feature, i) => {
+      // feature ID should only contain numbers
+      const newFeatureId = feature.properties.id
+        ? feature.properties.id.replace(/\D/g, "")
+        : i + 1;
+      return {
+        ...feature,
+        id: newFeatureId,
+        properties: {
+          ...feature.properties,
+          id: newFeatureId,
+        },
+      };
+    }),
   };
 };
 
