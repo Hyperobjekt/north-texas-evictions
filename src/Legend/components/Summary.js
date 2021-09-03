@@ -5,11 +5,8 @@ import { scaleTime, scaleLinear } from "@visx/scale";
 import { Box, Typography, withStyles } from "@material-ui/core";
 import LegendRow from "./LegendRow";
 import useSummaryData from "../../Data/useSummaryData";
-import { format } from "d3-format";
 import { useLang } from "../../Language";
 import useFormatter from "../../Dashboard/hooks/useFormatter";
-
-const formatInteger = format(",d");
 
 // data accessors
 const getX = (d) => new Date(`${d.date}T00:00:00`);
