@@ -7,7 +7,7 @@ import Branding from "./Branding";
 
 const Header = ({ children, ...props }) => {
   return (
-    <HypHeader {...props}>
+    <HypHeader elevation={1} {...props}>
       <Box
         px={[2, 3]}
         display="flex"

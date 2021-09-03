@@ -9,17 +9,14 @@ const styles = (theme) => ({
     alignItems: "center",
     margin: theme.spacing(2, 0, 0),
   },
-  title: {
-    color: theme.props.text.secondary,
-    fontSize: theme.typography.pxToRem(12),
-    lineHeight: theme.typography.pxToRem(16),
-  },
 });
 
 const LegendRow = ({ classes, className, title, children, ...props }) => {
   return (
     <Box className={clsx(classes.root, className)} {...props}>
-      <Typography className={classes.title}>{title}</Typography>
+      <Typography variant="caption" color="textSecondary">
+        {title}
+      </Typography>
       {children}
     </Box>
   );

@@ -39,7 +39,6 @@ export const extractExtentsFromGeojson = (geojson, options = {}) => {
       features.map((f) => f.properties[keys[i]]).filter(Boolean), // all values
     ];
   }
-  console.log(extents);
   return extents;
 };
 

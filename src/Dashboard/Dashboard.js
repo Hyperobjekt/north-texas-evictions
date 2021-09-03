@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Box } from "@material-ui/core";
 import useLanguageStore from "../Language/useLanguageStore";
 import useSetDashboardState from "./hooks/useSetDashboardState";
@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import Panel from "../Panel/Panel";
 import { withStyles } from "@material-ui/styles";
 import { Tooltip } from "../Tooltip";
+import useDashboardStore from "./hooks/useDashboardStore";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -53,9 +54,18 @@ const Dashboard = ({
     setLanguage(lang, langDict);
   }, [lang, langDict, setLanguage]);
 
+  // track mouse coords for tooltip
+  const setHoverCoords = useDashboardStore((state) => state.setHoverCoords);
+  const handleMouseMove = useCallback(
+    (e) => {
+      setHoverCoords([e.clientX, e.clientY]);
+    },
+    [setHoverCoords]
+  );
+
   return (
     <QueryClientProvider client={queryClient}>
-      <Wrapper>
+      <Wrapper onMouseMove={handleMouseMove}>
         <Box position="relative" style={{ flex: 1 }}>
           <Legend />
           <Map />
@@ -87,6 +97,7 @@ Dashboard.defaultProps = {
       METRIC_MPV: "Median Property Value",
       METRIC_PRH: "% Renter Homes",
       METRIC_RB: "Rent Burden",
+      METRIC_TFA: "Total Filing Amount",
       REGION_COUNTIES: "Counties",
       REGION_TRACTS: "Census Tracts",
       REGION_ZIPS: "ZIP Codes",
@@ -148,6 +159,7 @@ Dashboard.defaultProps = {
     { id: "ef", type: "bubble", format: "integer" },
     { id: "efr", type: "bubble", format: "integer" },
     { id: "mfa", type: "bubble", format: "currency" },
+    { id: "tfa", type: "secondary", format: "currency" },
     { id: "cpr", type: "choropleth", format: "percent" },
     { id: "mgr", type: "choropleth", format: "currency" },
     { id: "mhi", type: "choropleth", format: "currency" },

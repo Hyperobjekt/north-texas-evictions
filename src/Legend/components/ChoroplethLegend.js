@@ -34,7 +34,7 @@ const ChoroplethLegend = (props) => {
   const tooltipData = useTooltipData();
   const { activeChoropleth } = useDashboardContext();
   const extents = useDataExtents();
-  const width = 200;
+  const width = 188;
   const activeValue = tooltipData && tooltipData[activeChoropleth];
   const margin = { left: 24, right: 16, top: 0, bottom: 2 };
   const formatter = useFormatter(activeChoropleth, {

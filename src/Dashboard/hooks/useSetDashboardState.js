@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import shallow from "zustand/shallow";
 import useDashboardStore from "./useDashboardStore";
 
 /**
@@ -22,15 +23,18 @@ export default function useSetDashboardState({
     setActiveRegion,
     setDateRange,
     setActiveDateRange,
-  ] = useDashboardStore((state) => [
-    state.setMetrics,
-    state.setRegions,
-    state.setActiveBubble,
-    state.setActiveChoropleth,
-    state.setActiveRegion,
-    state.setDateRange,
-    state.setActiveDateRange,
-  ]);
+  ] = useDashboardStore(
+    (state) => [
+      state.setMetrics,
+      state.setRegions,
+      state.setActiveBubble,
+      state.setActiveChoropleth,
+      state.setActiveRegion,
+      state.setDateRange,
+      state.setActiveDateRange,
+    ],
+    shallow
+  );
 
   // update active bubble on changes
   useEffect(() => {

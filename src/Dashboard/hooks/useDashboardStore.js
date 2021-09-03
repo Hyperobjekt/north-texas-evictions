@@ -22,6 +22,8 @@ const useDashboardStore = create((set) => ({
   setFilters: (filters) => set({ filters }),
   activePanel: null,
   setActivePanel: (activePanel) => set({ activePanel }),
+  hoverCoords: [0, 0],
+  setHoverCoords: (hoverCoords) => set({ hoverCoords }),
 }));
 
 export default useDashboardStore;

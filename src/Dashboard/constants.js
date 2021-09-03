@@ -7,3 +7,6 @@ export const DEFAULT_BUBBLE_COLOR = "#e98816";
 
 export const EVICTION_DATA_ENDPOINT =
   "https://cnvdr1v7ki.execute-api.us-east-1.amazonaws.com";
+
+// metrics to show in the tooltip (TODO: move to config props)
+export const TOOLTIP_METRICS = ["ef", "efr", "mfa", "tfa"];
