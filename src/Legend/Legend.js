@@ -143,8 +143,18 @@ const Legend = ({ classes, ...props }) => {
     `METRIC_${activeBubble}`,
     `METRIC_${activeChoropleth}`,
     `REGION_${activeRegion}`,
+    `SUMMARY`,
+    `LEGEND`,
+    `LEGEND_TITLE`,
   ];
-  const [bubbleName, choroplethName, regionName] = useLang(langKeys);
+  const [
+    bubbleName,
+    choroplethName,
+    regionName,
+    summaryHeading,
+    legendHeading,
+    legendTitle,
+  ] = useLang(langKeys);
   const summaryText = useLang("LEGEND_SUMMARY", {
     start: startDateLabel,
     end: endDateLabel,
@@ -163,7 +173,7 @@ const Legend = ({ classes, ...props }) => {
   return (
     <AnimatedPaper style={style} className={classes.root} {...props}>
       <Box className={classes.box}>
-        <Typography className={classes.eyebrow}>Currently Viewing</Typography>
+        <Typography className={classes.eyebrow}>{legendTitle}</Typography>
         <Typography className={classes.region}>{regionName}</Typography>
         <Typography className={classes.body}>
           <strong>{bubbleName}</strong>
@@ -178,11 +188,13 @@ const Legend = ({ classes, ...props }) => {
             <PanelToggle />
           </Box>
           <Box className={classes.box}>
-            <Typography className={classes.eyebrow}>Summary</Typography>
+            <Typography className={classes.eyebrow}>
+              {summaryHeading}
+            </Typography>
             <Summary />
           </Box>
           <Box className={classes.box}>
-            <Typography className={classes.eyebrow}>Map Legend</Typography>
+            <Typography className={classes.eyebrow}>{legendHeading}</Typography>
             <BubbleLegend title={bubbleName} />
             <ChoroplethLegend title={choroplethName} />
           </Box>
