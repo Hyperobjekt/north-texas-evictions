@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { Box } from "@material-ui/core";
 import useLanguageStore from "../Language/useLanguageStore";
-import useSetDashboardState from "./hooks/useSetDashboardState";
 import { Legend } from "../Legend";
 import { Map } from "../Map";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -24,30 +23,7 @@ const Wrapper = withStyles({
   },
 })(Box);
 
-const Dashboard = ({
-  activeBubble,
-  activeChoropleth,
-  activeRegion,
-  activeDateRange,
-  regions,
-  metrics,
-  dateRange,
-  filters,
-  lang = "en",
-  langDict,
-}) => {
-  // set up the app store and update when new props are received
-  useSetDashboardState({
-    activeBubble,
-    activeChoropleth,
-    activeRegion,
-    activeDateRange,
-    regions,
-    metrics,
-    dateRange,
-    filters,
-  });
-
+const Dashboard = ({ lang = "en", langDict }) => {
   // update language on changes
   const setLanguage = useLanguageStore((state) => state.setLanguage);
   useEffect(() => {
@@ -119,71 +95,6 @@ Dashboard.defaultProps = {
       LEGEND_TITLE: "CURRENTLY VIEWING",
     },
   },
-  activeBubble: "ef",
-  activeChoropleth: "mhi",
-  activeRegion: "tracts",
-  regions: [
-    {
-      id: "counties",
-      type: "geojson",
-      choropleth:
-        "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/demo/NTEP_demographics_county.geojson",
-      bubble:
-        "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/bubble/NTEP_bubble_county.geojson",
-    },
-    {
-      id: "cities",
-      type: "geojson",
-      choropleth:
-        "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/demo/NTEP_demographics_place.geojson",
-      bubble:
-        "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/bubble/NTEP_bubble_place.geojson",
-    },
-    {
-      id: "zips",
-      type: "geojson",
-      choropleth:
-        "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/demo/NTEP_demographics_zip.geojson",
-      bubble:
-        "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/bubble/NTEP_bubble_zip.geojson",
-    },
-    {
-      id: "districts",
-      type: "geojson",
-      choropleth:
-        "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/demo/NTEP_demographics_council.geojson",
-      bubble:
-        "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/bubble/NTEP_bubble_council.geojson",
-    },
-    {
-      id: "tracts",
-      type: "geojson",
-      choropleth:
-        "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/demo/NTEP_demographics_tract.geojson",
-      bubble:
-        "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/bubble/NTEP_bubble_tract.geojson",
-    },
-  ],
-  metrics: [
-    { id: "ef", type: "bubble", format: "integer" },
-    { id: "efr", type: "bubble", format: "integer" },
-    { id: "mfa", type: "bubble", format: "currency" },
-    { id: "tfa", type: "secondary", format: "currency" },
-    { id: "cpr", type: "choropleth", format: "percent" },
-    { id: "mgr", type: "choropleth", format: "currency" },
-    { id: "mhi", type: "choropleth", format: "currency" },
-    { id: "mpv", type: "choropleth", format: "currency" },
-    { id: "pca", type: "choropleth", format: "percent" },
-    { id: "pcb", type: "choropleth", format: "percent" },
-    { id: "pch", type: "choropleth", format: "percent" },
-    { id: "pcw", type: "choropleth", format: "percent" },
-    { id: "prh", type: "choropleth", format: "percent" },
-    { id: "pvr", type: "choropleth", format: "percent" },
-    { id: "rb", type: "choropleth", format: "percent" },
-  ],
-  dateRange: ["2018-01-01", "2021-05-01"],
-  activeDateRange: ["2020-07-01", "2021-07-31"],
-  filters: [],
 };
 
 Dashboard.propTypes = {};

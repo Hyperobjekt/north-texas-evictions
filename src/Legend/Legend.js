@@ -189,12 +189,7 @@ const Legend = ({ classes, ...props }) => {
           </Box>
         </div>
       </animated.div>
-      {isMobile && (
-        <MobileToggle
-          active={showSummary}
-          onClick={() => setShowSummary((ss) => !ss)}
-        />
-      )}
+      {isMobile && <MobileToggle onClick={() => setShowSummary((ss) => !ss)} />}
     </AnimatedPaper>
   );
 };

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@hyperobjekt/hooks": "1.1.0",
+    "@hyperobjekt/hooks": "^1.1.1",
     "@hyperobjekt/legend": "2.0.1",
     "@hyperobjekt/mapbox": "2.0.1",
     "@hyperobjekt/material-ui-website": "^1.0.26",

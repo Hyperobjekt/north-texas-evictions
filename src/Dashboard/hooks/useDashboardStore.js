@@ -4,6 +4,8 @@ import create from "zustand";
  * This store contains app state.  For hovered + selected locations use the map store
  */
 const useDashboardStore = create((set) => ({
+  ready: false,
+  setReady: (ready) => set({ ready }),
   activeBubble: null,
   setActiveBubble: (activeBubble) => set({ activeBubble }),
   activeChoropleth: null,

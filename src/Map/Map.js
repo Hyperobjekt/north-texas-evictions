@@ -4,12 +4,6 @@ import { Mapbox } from "@hyperobjekt/mapbox";
 import useMapLayers from "./hooks/useMapLayers";
 import useMapSources from "./hooks/useMapSources";
 
-const DEFAULT_VIEWPORT = {
-  zoom: 8,
-  latitude: 32.74,
-  longitude: -96.96,
-};
-
 const styles = (theme) => ({
   root: {
     position: "absolute",
@@ -36,7 +30,6 @@ const Map = (props) => {
       mapboxApiAccessToken="pk.eyJ1IjoiaHlwZXJvYmpla3QiLCJhIjoiY2pzZ3Bnd3piMGV6YTQzbjVqa3Z3dHQxZyJ9.rHobqsY_BjkNbqNQS4DNYw"
       sources={sources}
       layers={layers}
-      defaultViewport={DEFAULT_VIEWPORT}
       maxBounds={[
         [-107.6, 33.8],
         [-65, 49.9],
