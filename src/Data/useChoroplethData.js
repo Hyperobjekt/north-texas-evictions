@@ -25,10 +25,10 @@ const fetchChoroplethData = (url) => {
  * @returns { data: { geojson: object, extents: object }, status: string }
  */
 export default function useChoroplethData() {
-  const activeRegion = useDashboardRegion();
-  const geojsonUrl = activeRegion && activeRegion["choropleth"];
-  const region = activeRegion && activeRegion.id;
-  return useQuery(["choropleth", region], () =>
+  const [activeRegion, , regions] = useDashboardRegion();
+  const region = regions.find((r) => r.id === activeRegion);
+  const geojsonUrl = region && region["choropleth"];
+  return useQuery(["choropleth", activeRegion], () =>
     fetchChoroplethData(geojsonUrl)
   );
 }

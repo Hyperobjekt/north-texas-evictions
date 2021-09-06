@@ -9,15 +9,107 @@ import {
 } from "@material-ui/core";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import { useLang } from "../Language";
-import useDashboardContext from "../Dashboard/hooks/useDashboardContext";
 import PanelToggle from "../Panel/PanelToggle";
 import { animated, useSpring } from "react-spring";
 import Summary from "./components/Summary";
 import BubbleLegend from "./components/BubbleLegend";
 import ChoroplethLegend from "./components/ChoroplethLegend";
-import { ArrowDropUp, Close } from "@material-ui/icons";
+import { ArrowDropDown, ArrowDropUp, Close } from "@material-ui/icons";
 import useMeasure from "react-use-measure";
 import { Stack } from "@hyperobjekt/material-ui-website";
+import InlineMenu from "./components/InlineMenu";
+import useDashboardBubble from "../Dashboard/hooks/useDashboardBubble";
+import useDashboardChoropleth from "../Dashboard/hooks/useDashboardChoropleth";
+import useDashboardRegion from "../Dashboard/hooks/useDashboardRegion";
+import useDashboardDateRange from "../Dashboard/hooks/useDashboardDateRange";
+import { formatDate, parseDate } from "../Dashboard/utils";
+
+const DATE_OPTIONS = [
+  {
+    label: "last 7 days",
+    value: [
+      formatDate(new Date(new Date().setDate(new Date().getDate() - 7))),
+      formatDate(new Date()),
+    ],
+  },
+  {
+    label: "last 30 days",
+    value: [
+      formatDate(new Date(new Date().setDate(new Date().getDate() - 30))),
+      formatDate(new Date()),
+    ],
+  },
+  {
+    label: "last 90 days",
+    value: [
+      formatDate(new Date(new Date().setDate(new Date().getDate() - 90))),
+      formatDate(new Date()),
+    ],
+  },
+  {
+    label: "last 365 days",
+    value: [
+      formatDate(new Date(new Date().setDate(new Date().getDate() - 365))),
+      formatDate(new Date()),
+    ],
+  },
+  {
+    label: "All Time",
+    value: [
+      formatDate(new Date(new Date().setDate(new Date().getDate() - 365 * 5))),
+      formatDate(new Date()),
+    ],
+  },
+  {
+    label: "Custom...",
+    value: null,
+  },
+];
+
+/**
+ * Returns a prefix and label for the date range text in the legend
+ * TODO: move hard coded strings to language dictionary
+ * @param {*} start
+ * @param {*} end
+ * @returns
+ */
+const getDateRangeLabel = (start, end) => {
+  if (!start || !end) return "";
+  const selectedOption = DATE_OPTIONS.find((option) => {
+    if (!option.value || option.value.length !== 2) return false;
+    console.log(option.value);
+    return option.value[0] === start && option.value[1] === end;
+  });
+  if (!selectedOption)
+    return ["between", formatDateString(start, end).join(" and ")];
+  if (selectedOption.label === "All Time") return ["for", "all time"];
+  return ["in the", selectedOption.label];
+};
+
+/**
+ * Formats the custom date range lable for the legend
+ * @param {*} start
+ * @param {*} end
+ * @returns
+ */
+const formatDateString = (start, end) => {
+  if (!start || !end) return ["", ""];
+  const startDate = parseDate(start);
+  const endDate = parseDate(end);
+
+  const startDateLabel = new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year:
+      startDate.getFullYear() === endDate.getFullYear() ? undefined : "numeric",
+  }).format(startDate);
+  const endDateLabel = new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(endDate);
+  return [startDateLabel, endDateLabel];
+};
 
 const styles = (theme) => ({
   root: {
@@ -91,30 +183,12 @@ const Legend = ({ classes, ...props }) => {
   const theme = useTheme();
   const isMobile = !useMediaQuery(theme.breakpoints.up("sm"));
 
-  const { activeBubble, activeChoropleth, activeRegion, activeDateRange } =
-    useDashboardContext();
-  // console.log(activeDateRange);
-
-  const startDate =
-    activeDateRange.length > 0
-      ? new Date(`${activeDateRange[0]}T00:00:00`)
-      : new Date();
-  const endDate =
-    activeDateRange.length > 1
-      ? new Date(`${activeDateRange[1]}T00:00:00`)
-      : new Date();
-
-  const startDateLabel = new Intl.DateTimeFormat("en-US", {
-    month: "long",
-    day: "numeric",
-    year:
-      startDate.getFullYear() === endDate.getFullYear() ? undefined : "numeric",
-  }).format(startDate);
-  const endDateLabel = new Intl.DateTimeFormat("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  }).format(endDate);
+  const setActivePanel = useDashboardStore((state) => state.setActivePanel);
+  const [activeDateRange, setActiveDateRange] = useDashboardDateRange();
+  const [activeRegion, setActiveRegion, regions] = useDashboardRegion();
+  const [activeBubble, setActiveBubble, bubbleMetrics] = useDashboardBubble();
+  const [activeChoropleth, setActiveChoropleth, choroplethMetrics] =
+    useDashboardChoropleth();
 
   // prepare language
   const langKeys = [
@@ -133,10 +207,6 @@ const Legend = ({ classes, ...props }) => {
     legendHeading,
     legendTitle,
   ] = useLang(langKeys);
-  const summaryText = useLang("LEGEND_SUMMARY", {
-    start: startDateLabel,
-    end: endDateLabel,
-  });
 
   const [toggleRef, toggleBounds] = useMeasure();
   const [showSummary, setShowSummary] = useState(false);
@@ -147,6 +217,13 @@ const Legend = ({ classes, ...props }) => {
     x: activePanel ? toggleBounds.width + theme.spacing(2) : 0,
     y: isMobile && !showSummary ? toggleBounds.height : 0,
   });
+
+  const handleSetDateRange = (e, option) => {
+    option?.value && setActiveDateRange(option.value);
+    if (!option?.value) {
+      setActivePanel("DATA_OPTIONS");
+    }
+  };
 
   return (
     <AnimatedPaper
@@ -159,14 +236,40 @@ const Legend = ({ classes, ...props }) => {
         <Typography component="h2" variant="overline" color="textSecondary">
           {legendTitle}
         </Typography>
-        <Typography variant="h2" component="h3">
-          {regionName}
-        </Typography>
-        <Typography variant="body1" color="textSecondary">
-          <strong>{bubbleName}</strong>
+        <InlineMenu
+          variant="h2"
+          color="textPrimary"
+          options={regions}
+          onSelect={(e, option) => {
+            option?.id && setActiveRegion(option.id);
+          }}
+        >
+          {regionName} <ArrowDropDown style={{ margin: "-0.6em 0 -0.5em" }} />
+        </InlineMenu>
+        <Typography color="textSecondary">
+          <InlineMenu
+            options={bubbleMetrics}
+            color="primary"
+            onSelect={(e, option) => {
+              option?.id && setActiveBubble(option.id);
+            }}
+          >
+            {bubbleName}
+          </InlineMenu>
           <span> and </span>
-          <strong>{choroplethName}</strong>
-          <span> {summaryText}</span>
+          <InlineMenu
+            options={choroplethMetrics}
+            color="secondary"
+            onSelect={(e, option) => {
+              option?.id && setActiveChoropleth(option.id);
+            }}
+          >
+            {choroplethName}
+          </InlineMenu>
+          <span> {getDateRangeLabel(...activeDateRange)[0]} </span>
+          <InlineMenu options={DATE_OPTIONS} onSelect={handleSetDateRange}>
+            {getDateRangeLabel(...activeDateRange)[1]}
+          </InlineMenu>
         </Typography>
       </Stack>
       <animated.div className={classes.toggleContainer}>

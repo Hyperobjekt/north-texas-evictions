@@ -6,8 +6,8 @@ import useChoroplethData from "../../Data/useChoroplethData";
 export default function useMapSources() {
   const bubble = useBubblesData();
   const choropleth = useChoroplethData();
-
-  const region = useDashboardRegion();
+  const [activeRegion, , regions] = useDashboardRegion();
+  const region = regions.find((r) => r.id === activeRegion);
   return useMemo(() => {
     const data = { bubble, choropleth };
     return region

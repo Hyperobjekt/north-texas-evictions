@@ -79,11 +79,11 @@ export default function useBubblesData() {
   const {
     activeDateRange: [start, end],
   } = useDashboardContext();
-  const activeRegion = useDashboardRegion();
-  const region = activeRegion && activeRegion.id;
-  const geojsonUrl = activeRegion && activeRegion["bubble"];
+  const [activeRegion, , regions] = useDashboardRegion();
+  const region = regions.find((r) => r.id === activeRegion);
+  const geojsonUrl = region && region["bubble"];
   // update the data on changes
-  return useQuery(["bubbles", region, start, end], () =>
-    fetchAllBubbleData({ region, start, end }, geojsonUrl)
+  return useQuery(["bubbles", activeRegion, start, end], () =>
+    fetchAllBubbleData({ region: activeRegion, start, end }, geojsonUrl)
   );
 }

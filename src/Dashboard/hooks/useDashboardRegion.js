@@ -1,14 +1,22 @@
 import shallow from "zustand/shallow";
+import { useLang } from "../../Language";
 import useDashboardStore from "./useDashboardStore";
 
 /**
  * Provides the active region along with GeoJSON data
  */
 export default function useDashboardRegion() {
-  const [activeRegionId, regions] = useDashboardStore(
-    (state) => [state.activeRegion, state.regions],
+  const [activeRegion, setActiveRegion, regions] = useDashboardStore(
+    (state) => [state.activeRegion, state.setActiveRegion, state.regions],
     shallow
   );
+  const regionLabels = useLang(
+    regions.map((region) => `region_${region.id}`.toUpperCase())
+  );
   // get the active region object
-  return regions.find((region) => region.id === activeRegionId);
+  return [
+    activeRegion,
+    setActiveRegion,
+    regions.map((r, i) => ({ ...r, label: regionLabels[i] })),
+  ];
 }
