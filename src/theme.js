@@ -3,7 +3,7 @@ import { createTheme } from "@material-ui/core";
 export const HEADER_TEXT_COLOR = "#E1DFDF";
 export const HEADER_BACKGROUND_COLOR = "#292929";
 
-const FOCUS_STATE = {
+export const FOCUS_STATE = {
   boxShadow: "0 0 0 2px #fff, 0 0 0 4px #649BA6",
 };
 const DARK_FOCUS_STATE = {
@@ -130,6 +130,10 @@ export default createTheme({
       },
       contained: {
         backgroundColor: "#ECECD5",
+        "&.MuiButton-disableElevation.Mui-focusVisible, &.MuiButton-disableElevation:focus":
+          {
+            ...FOCUS_STATE,
+          },
         "&:hover": {
           backgroundColor: "#D6D6B6",
         },

@@ -116,7 +116,6 @@ const styles = (theme) => ({
     position: "absolute",
     top: theme.spacing(2),
     right: theme.spacing(2),
-    padding: theme.spacing(2, 0, 0),
     zIndex: 10,
     width: 320,
     [theme.breakpoints.down("sm")]: {
@@ -129,17 +128,11 @@ const styles = (theme) => ({
   box: {
     borderTop: "1px solid #E0E0E0",
     padding: theme.spacing(2),
-    "&:first-child": {
-      borderTop: 0,
-      paddingTop: 0,
-    },
     "& strong": {
       fontWeight: 500,
     },
   },
-  toggleContainer: {
-    overflow: "hidden",
-  },
+  toggleContainer: {},
 });
 
 const AnimatedPaper = animated(Paper);
@@ -232,7 +225,7 @@ const Legend = ({ classes, ...props }) => {
       className={classes.root}
       {...props}
     >
-      <Stack direction="vertical" between="sm" className={classes.box}>
+      <Stack direction="vertical" between="sm" around="md">
         <Typography component="h2" variant="overline" color="textSecondary">
           {legendTitle}
         </Typography>
@@ -244,7 +237,8 @@ const Legend = ({ classes, ...props }) => {
             option?.id && setActiveRegion(option.id);
           }}
         >
-          {regionName} <ArrowDropDown style={{ margin: "-0.6em 0 -0.5em" }} />
+          {regionName}{" "}
+          <ArrowDropDown style={{ margin: "-0.75em 0px -0.3em" }} />
         </InlineMenu>
         <Typography color="textSecondary">
           <InlineMenu
@@ -271,26 +265,22 @@ const Legend = ({ classes, ...props }) => {
             {getDateRangeLabel(...activeDateRange)[1]}
           </InlineMenu>
         </Typography>
+        <PanelToggle />
       </Stack>
-      <animated.div className={classes.toggleContainer}>
-        <div ref={toggleRef}>
-          <Box className={classes.box}>
-            <PanelToggle />
-          </Box>
-          <Box className={classes.box}>
-            <Typography variant="overline" color="textSecondary">
-              {summaryHeading}
-            </Typography>
-            <Summary />
-          </Box>
-          <Box className={classes.box}>
-            <Typography variant="overline" color="textSecondary">
-              {legendHeading}
-            </Typography>
-            <BubbleLegend title={bubbleName} />
-            <ChoroplethLegend title={choroplethName} />
-          </Box>
-        </div>
+      <animated.div ref={toggleRef} className={classes.toggleContainer}>
+        <Box className={classes.box}>
+          <Typography variant="overline" color="textSecondary">
+            {summaryHeading}
+          </Typography>
+          <Summary />
+        </Box>
+        <Box className={classes.box}>
+          <Typography variant="overline" color="textSecondary">
+            {legendHeading}
+          </Typography>
+          <BubbleLegend title={bubbleName} />
+          <ChoroplethLegend title={choroplethName} />
+        </Box>
       </animated.div>
       {isMobile && <MobileToggle onClick={() => setShowSummary((ss) => !ss)} />}
     </AnimatedPaper>
