@@ -57,8 +57,8 @@ const InlineMenu = ({ children, options, onSelect, ...props }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {options.map((option) => (
-          <MenuItem key={option.key} onClick={(e) => handleClose(e, option)}>
+        {options.map((option, i) => (
+          <MenuItem key={i} onClick={(e) => handleClose(e, option)}>
             {option?.label ? option.label : option}
           </MenuItem>
         ))}
