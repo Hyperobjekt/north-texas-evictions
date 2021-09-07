@@ -3,6 +3,12 @@ import { withStyles } from "@material-ui/core";
 import { Mapbox } from "@hyperobjekt/mapbox";
 import useMapLayers from "./hooks/useMapLayers";
 import useMapSources from "./hooks/useMapSources";
+import { NavigationControl } from "react-map-gl";
+import FitBoundsControl from "./components/FitBoundsControl";
+import { Stack } from "@hyperobjekt/material-ui-website";
+import clsx from "clsx";
+import { FOCUS_STATE } from "../theme";
+import { AspectRatio } from "@material-ui/icons";
 
 const styles = (theme) => ({
   root: {
@@ -13,9 +19,41 @@ const styles = (theme) => ({
     height: "100%",
     zIndex: 1,
   },
+  fitBoundsControl: {
+    backgroundColor: theme.palette.background.paper,
+    borderColor: theme.palette.divider,
+    "& .MuiSvgIcon-root": {
+      color: theme.palette.text.primary,
+    },
+    "&:hover": {
+      backgroundColor: "#eee",
+    },
+  },
+  navigationControl: {
+    "& .mapboxgl-ctrl-group:not(:empty)": {
+      boxShadow: "none",
+      background: "transparent",
+    },
+    "& .mapboxgl-ctrl-group button+button": {
+      marginTop: 4,
+    },
+    "& button.mapboxgl-ctrl-icon": {
+      background: "#fff",
+      border: `1px solid`,
+      borderColor: theme.palette.divider,
+      borderRadius: theme.shape.borderRadius,
+      "&:focus:focus-visible, &:focus:not(:focus-visible)": {
+        ...FOCUS_STATE,
+        borderRadius: `${theme.shape.borderRadius}px!important`,
+      },
+      "&:not(:disabled):hover": {
+        backgroundColor: "#eee",
+      },
+    },
+  },
 });
 
-const Map = (props) => {
+const Map = ({ classes, className, ...props }) => {
   // sources for the map based on current dashboard state
   const sources = useMapSources();
   // layers for the map based on the current dashboard state
@@ -31,14 +69,29 @@ const Map = (props) => {
       sources={sources}
       layers={layers}
       maxBounds={[
-        [-107.6, 33.8],
-        [-65, 49.9],
+        [-98, 32],
+        [-96, 34],
       ]}
-      minZoom={2}
       mapStyle="mapbox://styles/untd/cktapb92z086e17qvsxdkzvyf"
+      minZoom={7}
       interactiveLayerIds={interactiveLayers}
+      className={clsx(classes.root, className)}
       {...props}
-    />
+    >
+      <Stack
+        direction="vertical"
+        style={{ position: "absolute", bottom: 24, right: 16 }}
+      >
+        <FitBoundsControl disableRipple className={classes.fitBoundsControl}>
+          <AspectRatio style={{ fontSize: 20 }} />
+        </FitBoundsControl>
+        <NavigationControl
+          className={classes.navigationControl}
+          style={{ position: "relative" }}
+          showCompass={false}
+        />
+      </Stack>
+    </Mapbox>
   );
 };
 

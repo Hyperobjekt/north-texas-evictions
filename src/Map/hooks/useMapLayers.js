@@ -76,8 +76,14 @@ const getChoroplethLayerStyle = ({
           3,
           ["case", ["boolean", ["feature-state", "selected"], false], 3, 0.5],
         ],
+        "line-opacity": [
+          "case",
+          ["boolean", ["feature-state", "hover"], false],
+          1,
+          ["case", ["boolean", ["feature-state", "selected"], false], 1, 0.1],
+        ],
       },
-      beforeId: "road-label",
+      beforeId: "road-label-simple",
     },
   ];
 };
@@ -97,6 +103,7 @@ const getBubbleLayerStyle = ({
       id: `${activeRegion}-bubble`,
       source: `${activeRegion}-bubble`,
       type: "circle",
+      beforeId: "road-label-simple",
       paint: {
         "circle-radius": [
           "interpolate",
