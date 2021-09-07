@@ -27,7 +27,7 @@ const Map = (props) => {
 
   return (
     <Mapbox
-      mapboxApiAccessToken="pk.eyJ1IjoiaHlwZXJvYmpla3QiLCJhIjoiY2pzZ3Bnd3piMGV6YTQzbjVqa3Z3dHQxZyJ9.rHobqsY_BjkNbqNQS4DNYw"
+      mapboxApiAccessToken="pk.eyJ1IjoidW50ZCIsImEiOiJja2gyYzVxanQwMzhoMnFxcjlxZnUwMHkzIn0.xKV8oPfM6BUJ9EcpGqAwVQ"
       sources={sources}
       layers={layers}
       maxBounds={[
@@ -35,6 +35,7 @@ const Map = (props) => {
         [-65, 49.9],
       ]}
       minZoom={2}
+      mapStyle="mapbox://styles/untd/cktapb92z086e17qvsxdkzvyf"
       interactiveLayerIds={interactiveLayers}
       {...props}
     />
