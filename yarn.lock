@@ -1310,10 +1310,10 @@
     d3-selection "^2.0.0"
     deepmerge "^4.2.2"
 
-"@hyperobjekt/mapbox@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@hyperobjekt/mapbox/-/mapbox-2.0.1.tgz#a30bb93ab7d624fae586aece52e036f1a090b3b9"
-  integrity sha512-qbcxgzxda4G+K7RCvHVxCCKKmmwxioeqQXmufTKOyjJrav3OPX+BZM2ovnVUWQInMAADAX3KBzr4H2liD465vg==
+"@hyperobjekt/mapbox@2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@hyperobjekt/mapbox/-/mapbox-2.0.3.tgz#998a4b9b54e00564192bf001c13e7567d9c78666"
+  integrity sha512-QHyD7J9M2/ns2yzwgLrqgdAGHarRiJ53cy9X7XO2jbvRbZchIfl2mUy4BNAq1SET1s3UBdCIq1ljL2LjmMN5fw==
   dependencies:
     "@hyperobjekt/hooks" "^1.1.1"
     "@hyperobjekt/us-states" "^1.0.4"
@@ -2026,7 +2026,7 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
-"@turf/bbox@^6.0.1":
+"@turf/bbox@^6.0.1", "@turf/bbox@^6.5.0":
   version "6.5.0"
   resolved "https://registry.yarnpkg.com/@turf/bbox/-/bbox-6.5.0.tgz#bec30a744019eae420dac9ea46fb75caa44d8dc5"
   integrity sha512-RBbLaao5hXTYyyg577iuMtDB8ehxMlUqHEJiMs8jT1GHkFhr6sYre3lmLsPeYEi/ZKj5TP5tt7fkzNdJ4GIVyw==

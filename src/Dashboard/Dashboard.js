@@ -93,6 +93,7 @@ Dashboard.defaultProps = {
       SUMMARY_SERIES: "Filings By Day",
       LEGEND: "MAP LEGEND",
       LEGEND_TITLE: "CURRENTLY VIEWING",
+      LABEL_FIT_BOUNDS: "Zoom to all {{region}}",
     },
   },
 };

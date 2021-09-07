@@ -5,7 +5,7 @@
   "dependencies": {
     "@hyperobjekt/hooks": "^1.1.1",
     "@hyperobjekt/legend": "2.0.1",
-    "@hyperobjekt/mapbox": "2.0.1",
+    "@hyperobjekt/mapbox": "2.0.3",
     "@hyperobjekt/material-ui-website": "^1.0.26",
     "@material-ui/core": "^4.12.2",
     "@material-ui/icons": "^4.11.2",
@@ -13,6 +13,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "@turf/bbox": "^6.5.0",
     "@visx/scale": "^2.1.0",
     "@visx/shape": "^2.1.0",
     "clsx": "^1.1.1",
