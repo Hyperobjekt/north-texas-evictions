@@ -8,6 +8,8 @@ import Panel from "../Panel/Panel";
 import { withStyles } from "@material-ui/styles";
 import { Tooltip } from "../Tooltip";
 import useDashboardStore from "./hooks/useDashboardStore";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -41,14 +43,16 @@ const Dashboard = ({ lang = "en", langDict }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Wrapper onMouseMove={handleMouseMove}>
-        <Box position="relative" style={{ flex: 1 }}>
-          <Legend />
-          <Map />
-        </Box>
-        <Panel open={true} />
-        <Tooltip />
-      </Wrapper>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <Wrapper onMouseMove={handleMouseMove}>
+          <Box position="relative" style={{ flex: 1 }}>
+            <Legend />
+            <Map />
+          </Box>
+          <Panel open={true} />
+          <Tooltip />
+        </Wrapper>
+      </MuiPickersUtilsProvider>
     </QueryClientProvider>
   );
 };
@@ -86,6 +90,7 @@ Dashboard.defaultProps = {
       SELECT_REGION: "Region",
       SELECT_DATE_START: "Start Date",
       SELECT_DATE_END: "End Date",
+      SELECT_DATE_RANGE: "Date Range",
       TITLE_DATA_OPTIONS: "Data Options",
       SUMMARY: "SUMMARY",
       SUMMARY_EF: "Total Eviction Filings",
