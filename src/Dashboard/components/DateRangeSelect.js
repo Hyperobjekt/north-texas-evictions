@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Box,
-  FormControlLabel,
-  FormLabel,
-  InputLabel,
-  Typography,
-} from "@material-ui/core";
+import { Box, FormLabel, Typography } from "@material-ui/core";
 import clsx from "clsx";
 import { useLang } from "../../Language";
 import { withStyles } from "@material-ui/styles";
