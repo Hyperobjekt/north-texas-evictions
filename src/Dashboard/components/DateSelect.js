@@ -30,8 +30,7 @@ const isValidDate = (dateString, dateRange) => {
 };
 
 /**
- * Text field for start date
- * TODO: switch to date picker for entry
+ * Start/end date picker
  */
 const DateSelect = ({ type = "start", classes, ...props }) => {
   const [dateRange, activeDateRange, setActiveDateRange] = useDashboardStore(
@@ -65,6 +64,7 @@ const DateSelect = ({ type = "start", classes, ...props }) => {
       format={"MM/dd/yyyy"}
       keyboardIcon={<ArrowDropDown />}
       className={clsx(classes.root)}
+      autoOk
     />
   ) : null;
 };
