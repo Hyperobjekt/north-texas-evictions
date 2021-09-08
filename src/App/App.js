@@ -28,6 +28,11 @@ const App = ({ config }) => {
   useDashboardDefaults({
     ...config,
     ...routeDefaults,
+    defaultViewport: {
+      zoom: config.zoom,
+      latitude: config.latitude,
+      longitude: config.longitude,
+    },
   });
 
   return (
@@ -108,8 +113,8 @@ App.defaultProps = {
     dateRange: ["2018-01-01", "2021-05-01"],
     filters: [],
     zoom: 8,
-    lat: 32.74,
-    lon: -96.96,
+    latitude: 32.74,
+    longitude: -96.96,
   },
 };
 

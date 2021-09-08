@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { withStyles } from "@material-ui/core";
 import { Mapbox } from "@hyperobjekt/mapbox";
 import useMapLayers from "./hooks/useMapLayers";
@@ -9,6 +9,9 @@ import { Stack } from "@hyperobjekt/material-ui-website";
 import clsx from "clsx";
 import { FOCUS_STATE } from "../theme";
 import { AspectRatio } from "@material-ui/icons";
+import useFlyToFitBounds from "./hooks/useFlyToFitBounds";
+import { parseRouteValues } from "../Dashboard/hooks/useDashboardRoute";
+import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 
 const styles = (theme) => ({
   root: {
@@ -62,6 +65,24 @@ const Map = ({ classes, className, ...props }) => {
   const interactiveLayers = layers
     .filter((l) => l.interactive)
     .map((l) => l.id);
+
+  // zoom to region bounds if no viewport set in the URL
+  const hasZoomed = useRef(false);
+  const flyToBounds = useFlyToFitBounds();
+  const defaultViewport = useDashboardStore((state) => state.defaultViewport);
+  if (sources.length > 0 && !hasZoomed.current) {
+    hasZoomed.current = true;
+    const { zoom, latitude, longitude } = parseRouteValues(
+      undefined,
+      window.location.hash
+    );
+    console.log({ zoom, latitude, longitude }, defaultViewport);
+    // fly to bounds if map has loaded with default viewport
+    zoom === defaultViewport.zoom &&
+      latitude === defaultViewport.latitude &&
+      longitude === defaultViewport.longitude &&
+      flyToBounds();
+  }
 
   return (
     <Mapbox

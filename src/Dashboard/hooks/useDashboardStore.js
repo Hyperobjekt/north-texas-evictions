@@ -26,6 +26,8 @@ const useDashboardStore = create((set) => ({
   setActivePanel: (activePanel) => set({ activePanel }),
   hoverCoords: [0, 0],
   setHoverCoords: (hoverCoords) => set({ hoverCoords }),
+  defaultViewport: null,
+  setDefaultViewport: (defaultViewport) => set({ defaultViewport }),
 }));
 
 export default useDashboardStore;
