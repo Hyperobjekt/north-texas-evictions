@@ -130,10 +130,10 @@ export default createTheme({
       },
       contained: {
         backgroundColor: "#ECECD5",
-        "&.MuiButton-disableElevation.Mui-focusVisible, &.MuiButton-disableElevation:focus":
-          {
-            ...FOCUS_STATE,
-          },
+        boxShadow: "none",
+        "&.Mui-focusVisible, &:focus": {
+          ...FOCUS_STATE,
+        },
         "&:hover": {
           backgroundColor: "#D6D6B6",
         },
@@ -220,7 +220,6 @@ export default createTheme({
     },
     MuiButton: {
       variant: "outlined",
-      disableElevation: true,
     },
     text: {
       primary: "#444743",
