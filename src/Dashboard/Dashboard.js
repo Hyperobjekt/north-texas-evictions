@@ -3,14 +3,10 @@ import { Box } from "@material-ui/core";
 import useLanguageStore from "../Language/useLanguageStore";
 import { Legend } from "../Legend";
 import { Map } from "../Map";
-import { QueryClient, QueryClientProvider } from "react-query";
 import Panel from "../Panel/Panel";
 import { withStyles } from "@material-ui/styles";
 import { Tooltip } from "../Tooltip";
 import useDashboardStore from "./hooks/useDashboardStore";
-
-// Create a client
-const queryClient = new QueryClient();
 
 const Wrapper = withStyles({
   root: {
@@ -40,16 +36,14 @@ const Dashboard = ({ lang = "en", langDict }) => {
   );
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Wrapper onMouseMove={handleMouseMove}>
-        <Box position="relative" style={{ flex: 1 }}>
-          <Legend />
-          <Map />
-        </Box>
-        <Panel open={true} />
-        <Tooltip />
-      </Wrapper>
-    </QueryClientProvider>
+    <Wrapper onMouseMove={handleMouseMove}>
+      <Box position="relative" style={{ flex: 1 }}>
+        <Legend />
+        <Map />
+      </Box>
+      <Panel open={true} />
+      <Tooltip />
+    </Wrapper>
   );
 };
 
