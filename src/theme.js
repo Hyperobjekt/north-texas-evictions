@@ -10,6 +10,8 @@ const DARK_FOCUS_STATE = {
   boxShadow: `0 0 0 2px ${HEADER_BACKGROUND_COLOR}, 0 0 0 4px #649BA6`,
 };
 
+const SECONDARY = "#008097";
+
 const fontFamily = `"franklin-gothic-urw", "Roboto", "Helvetica", "Arial", sans-serif`;
 const altFontFamily = `"degular", "Roboto", "Helvetica", "Arial", sans-serif`;
 
@@ -17,7 +19,7 @@ export default createTheme({
   palette: {
     primary: { main: "#EC7406" },
     secondary: {
-      main: "#008097",
+      main: SECONDARY,
     },
     text: {
       primary: "rgba(68, 71, 67, 1)",
@@ -211,6 +213,28 @@ export default createTheme({
     MuiInputLabel: {
       formControl: {
         top: -4,
+      },
+    },
+    MuiPickersToolbar: {
+      toolbar: {
+        backgroundColor: SECONDARY,
+      },
+    },
+    MuiPickersToolbarText: {
+      toolbarTxt: {
+        color: "white",
+      },
+      toolbarBtnSelected: {
+        color: "white",
+      },
+    },
+    MuiPickersDay: {
+      daySelected: {
+        backgroundColor: SECONDARY,
+        color: "white",
+        "&:hover": {
+          backgroundColor: SECONDARY,
+        },
       },
     },
   },
