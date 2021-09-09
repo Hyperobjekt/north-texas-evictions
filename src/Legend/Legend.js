@@ -224,6 +224,7 @@ const Legend = ({ classes, ...props }) => {
         <InlineMenu
           variant="h2"
           color="textPrimary"
+          selected={activeRegion}
           options={regions}
           onSelect={(e, option) => {
             option?.id && setActiveRegion(option.id);
@@ -236,6 +237,7 @@ const Legend = ({ classes, ...props }) => {
           <InlineMenu
             options={bubbleMetrics}
             color="primary"
+            selected={activeBubble}
             onSelect={(e, option) => {
               option?.id && setActiveBubble(option.id);
             }}
@@ -246,6 +248,7 @@ const Legend = ({ classes, ...props }) => {
           <InlineMenu
             options={choroplethMetrics}
             color="secondary"
+            selected={activeChoropleth}
             onSelect={(e, option) => {
               option?.id && setActiveChoropleth(option.id);
             }}

@@ -34,7 +34,7 @@ const InlineMenuButton = styled("button")({
   },
 });
 
-const InlineMenu = ({ children, options, onSelect, ...props }) => {
+const InlineMenu = ({ children, options, selected, onSelect, ...props }) => {
   const id = useMemo(uuid, []);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -70,7 +70,11 @@ const InlineMenu = ({ children, options, onSelect, ...props }) => {
         {options
           .filter((o) => !o.unavailable)
           .map((option, i) => (
-            <MenuItem key={option.id} onClick={(e) => handleClose(e, option)}>
+            <MenuItem
+              key={option.id}
+              selected={option.active || selected === option.id}
+              onClick={(e) => handleClose(e, option)}
+            >
               {option?.label ? option.label : option}
             </MenuItem>
           ))}
