@@ -30,6 +30,7 @@ import LegendRow from "./components/LegendRow";
 
 const DATE_OPTIONS = [
   {
+    id: "7",
     label: "last 7 days",
     value: [
       formatDate(new Date(new Date().setDate(new Date().getDate() - 7))),
@@ -37,6 +38,7 @@ const DATE_OPTIONS = [
     ],
   },
   {
+    id: "30",
     label: "last 30 days",
     value: [
       formatDate(new Date(new Date().setDate(new Date().getDate() - 30))),
@@ -44,6 +46,7 @@ const DATE_OPTIONS = [
     ],
   },
   {
+    id: "90",
     label: "last 90 days",
     value: [
       formatDate(new Date(new Date().setDate(new Date().getDate() - 90))),
@@ -51,6 +54,7 @@ const DATE_OPTIONS = [
     ],
   },
   {
+    id: "365",
     label: "last 365 days",
     value: [
       formatDate(new Date(new Date().setDate(new Date().getDate() - 365))),
@@ -58,6 +62,7 @@ const DATE_OPTIONS = [
     ],
   },
   {
+    id: "alltime",
     label: "All Time",
     value: [
       formatDate(new Date(new Date().setDate(new Date().getDate() - 365 * 5))),
@@ -65,6 +70,7 @@ const DATE_OPTIONS = [
     ],
   },
   {
+    id: "custom",
     label: "Custom...",
     value: null,
   },
@@ -243,6 +249,7 @@ const Legend = ({ classes, ...props }) => {
         <InlineMenu
           variant="h2"
           color="textPrimary"
+          selected={activeRegion}
           options={regions}
           onSelect={(e, option) => {
             option?.id && setActiveRegion(option.id);
@@ -255,6 +262,7 @@ const Legend = ({ classes, ...props }) => {
           <InlineMenu
             options={bubbleMetrics}
             color="primary"
+            selected={activeBubble}
             onSelect={(e, option) => {
               option?.id && setActiveBubble(option.id);
             }}
@@ -265,6 +273,7 @@ const Legend = ({ classes, ...props }) => {
           <InlineMenu
             options={choroplethMetrics}
             color="secondary"
+            selected={activeChoropleth}
             onSelect={(e, option) => {
               option?.id && setActiveChoropleth(option.id);
             }}
