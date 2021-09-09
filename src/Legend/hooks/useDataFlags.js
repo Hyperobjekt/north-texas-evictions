@@ -13,6 +13,5 @@ export default function useDataFlags() {
   // flag when viewing median filing amounts
   if (activeBubble === "mfa") flags.push("FLAG_MFA");
   const flagLabels = useLang(flags);
-  console.log({ daysBetween, flags, flagLabels });
   return Array.isArray(flagLabels) ? flagLabels.join(" ") : flagLabels;
 }
