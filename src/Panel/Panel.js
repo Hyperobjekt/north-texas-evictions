@@ -11,6 +11,7 @@ import ChoroplethSelect from "../Dashboard/components/ChoroplethSelect";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import shallow from "zustand/shallow";
 import CloseIcon from "@material-ui/icons/Close";
+import CourtSelect from "../Dashboard/components/CourtSelect";
 import DateRangeSelect from "../Dashboard/components/DateRangeSelect";
 const styles = (theme) => ({
   root: {
@@ -68,6 +69,7 @@ const Panel = ({ classes, position = "right" }) => {
             <BubbleSelect />
             <ChoroplethSelect />
             <DateRangeSelect />
+            <CourtSelect />
           </Stack>
         </Box>
       </Box>

@@ -23,6 +23,8 @@ import useDashboardChoropleth from "../Dashboard/hooks/useDashboardChoropleth";
 import useDashboardRegion from "../Dashboard/hooks/useDashboardRegion";
 import useDashboardDateRange from "../Dashboard/hooks/useDashboardDateRange";
 import { formatDate, parseDate } from "../Dashboard/utils";
+import usePrecinctFilter from "../Data/usePrecinctFilter";
+import usePrecinctNames from "../Data/usePrecinctNames";
 
 const DATE_OPTIONS = [
   {
@@ -200,8 +202,16 @@ const Legend = ({ classes, ...props }) => {
     legendTitle,
   ] = useLang(langKeys);
 
+  // date labels
+  const [datePrefix, dateLabel] = getDateRangeLabel(...activeDateRange);
+
   const [toggleRef, toggleBounds] = useMeasure();
   const [showSummary, setShowSummary] = useState(false);
+
+  // get active precinct filter (if any)
+  const [precinct] = usePrecinctFilter();
+  const precinctNames = usePrecinctNames();
+  const precinctLabel = <span> for {precinctNames[precinct]}</span>;
 
   // move legend if panel is open
   const activePanel = useDashboardStore((state) => state.activePanel);
@@ -259,10 +269,11 @@ const Legend = ({ classes, ...props }) => {
           >
             {choroplethName}
           </InlineMenu>
-          <span> {getDateRangeLabel(...activeDateRange)[0]} </span>
+          <span> {datePrefix} </span>
           <InlineMenu options={DATE_OPTIONS} onSelect={handleSetDateRange}>
-            {getDateRangeLabel(...activeDateRange)[1]}
+            {dateLabel}
           </InlineMenu>
+          {precinct && precinctLabel}
         </Typography>
         <PanelToggle />
       </Stack>

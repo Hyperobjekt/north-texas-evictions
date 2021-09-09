@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import { EVICTION_DATA_ENDPOINT } from "../Dashboard/constants";
 import useDashboardContext from "../Dashboard/hooks/useDashboardContext";
 import useDashboardRegion from "../Dashboard/hooks/useDashboardRegion";
+import usePrecinctFilter from "./usePrecinctFilter";
 import {
   addDataToGeojson,
   addFeatureIds,
@@ -21,9 +22,11 @@ const fetchBubbleGeojson = (url) => {
 /**
  * Fetches eviction filings data from the API
  */
-const fetchBubbleData = ({ region, start, end }) => {
+const fetchBubbleData = ({ region, start, end, precinct }) => {
   if (!region) return Promise.reject("no region provided for bubble data");
-  const paramString = new URLSearchParams({ region, start, end }).toString();
+  const params = { region, start, end };
+  if (precinct) params.precinct = precinct;
+  const paramString = new URLSearchParams(params).toString();
   return fetch(`${EVICTION_DATA_ENDPOINT}/summary?${paramString}`).then(
     (response) => response.json()
   );
@@ -80,10 +83,15 @@ export default function useBubblesData() {
     activeDateRange: [start, end],
   } = useDashboardContext();
   const [activeRegion, , regions] = useDashboardRegion();
+  const [precinct] = usePrecinctFilter();
+
   const region = regions.find((r) => r.id === activeRegion);
   const geojsonUrl = region && region["bubble"];
   // update the data on changes
-  return useQuery(["bubbles", activeRegion, start, end], () =>
-    fetchAllBubbleData({ region: activeRegion, start, end }, geojsonUrl)
+  return useQuery(["bubbles", activeRegion, start, end, precinct], () =>
+    fetchAllBubbleData(
+      { region: activeRegion, start, end, precinct },
+      geojsonUrl
+    )
   );
 }
