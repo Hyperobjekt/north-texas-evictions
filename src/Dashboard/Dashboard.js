@@ -93,6 +93,10 @@ Dashboard.defaultProps = {
       SUMMARY_SERIES: "Filings By Day",
       LEGEND: "MAP LEGEND",
       LEGEND_TITLE: "CURRENTLY VIEWING",
+      FLAG_MFA: "Filing amounts are only available for ",
+      HINT_TOTAL_FILINGS: "",
+      HINT_TOTAL_AMOUNT:
+        "Filing amounts are only reported within Dallas County, the actual total is much higher.",
     },
   },
 };
