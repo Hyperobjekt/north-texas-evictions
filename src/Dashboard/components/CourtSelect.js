@@ -23,7 +23,7 @@ const CourtSelect = (props) => {
       id="court-select"
       select
       label={courtSelectLabel}
-      value={`${precinct}` || "all"}
+      value={precinct ? `${precinct}` : "all"}
       onChange={handleChange}
       {...props}
     >
