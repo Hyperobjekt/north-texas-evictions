@@ -1,7 +1,6 @@
 import React from "react";
-import { darken, lighten, useTheme, withStyles } from "@material-ui/core";
+import { Box, darken, lighten, useTheme, withStyles } from "@material-ui/core";
 import useDashboardContext from "../../Dashboard/hooks/useDashboardContext";
-import LegendRow from "./LegendRow";
 import { useTooltipData } from "../../Tooltip";
 import { BubbleScale } from "@hyperobjekt/legend";
 import useDataExtents from "../../Data/useDataExtents";
@@ -23,7 +22,7 @@ const BubbleLegend = (props) => {
   });
 
   return (
-    <LegendRow {...props}>
+    <Box {...props}>
       <BubbleScale
         extent={extents[activeBubble] && extents[activeBubble].slice(0, 2)}
         lineLength={12}
@@ -58,7 +57,7 @@ const BubbleLegend = (props) => {
           },
         }}
       />
-    </LegendRow>
+    </Box>
   );
 };
 

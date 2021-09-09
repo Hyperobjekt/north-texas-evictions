@@ -8,7 +8,9 @@ const styles = (theme) => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    margin: theme.spacing(2, 0, 0),
+    margin: 0,
+    flex: 1,
+    minHeight: 20,
   },
 });
 

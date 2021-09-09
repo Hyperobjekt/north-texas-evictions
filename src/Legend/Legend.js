@@ -26,6 +26,7 @@ import { formatDate, parseDate } from "../Dashboard/utils";
 import DataFlags from "./components/DataFlags";
 import usePrecinctFilter from "../Data/usePrecinctFilter";
 import usePrecinctNames from "../Data/usePrecinctNames";
+import LegendRow from "./components/LegendRow";
 
 const DATE_OPTIONS = [
   {
@@ -289,9 +290,15 @@ const Legend = ({ classes, ...props }) => {
           <Typography variant="overline" color="textSecondary">
             {legendHeading}
           </Typography>
-          <BubbleLegend title={bubbleName} />
-          <ChoroplethLegend title={choroplethName} />
-          <DataFlags />
+          <Stack direction="vertical" alignItems="stretch" between="xs">
+            <LegendRow title={bubbleName}>
+              <BubbleLegend />
+            </LegendRow>
+            <LegendRow title={choroplethName}>
+              <ChoroplethLegend />
+            </LegendRow>
+            <DataFlags />
+          </Stack>
         </Box>
       </animated.div>
       {isMobile && <MobileToggle onClick={() => setShowSummary((ss) => !ss)} />}

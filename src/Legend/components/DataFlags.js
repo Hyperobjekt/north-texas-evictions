@@ -15,7 +15,7 @@ const styles = (theme) => ({
   root: {
     backgroundColor: alpha(theme.palette.primary.main, 0.1),
     color: theme.palette.primary.dark,
-    margin: `0 -0.5rem -0.5rem`,
+    margin: `0.5rem -0.5rem -0.5rem`,
     borderRadius: theme.shape.borderRadius,
     padding: theme.spacing(1, 1, 1, 2),
     "& .MuiIconButton-root": {
@@ -48,7 +48,7 @@ const DataFlags = (props) => {
   // smooth transition when dismissing
   const style = useSpring({
     opacity: filteredFlagText ? 1 : 0,
-    marginBottom: filteredFlagText ? -8 : -1 * rect.height,
+    marginBottom: filteredFlagText ? -8 : -1 * rect.height - 16,
     y: filteredFlagText ? 0 : -16,
   });
 

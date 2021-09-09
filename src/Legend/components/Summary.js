@@ -2,11 +2,12 @@ import React from "react";
 import { extent, max } from "d3-array";
 import { LinePath } from "@visx/shape";
 import { scaleTime, scaleLinear } from "@visx/scale";
-import { Box, Typography, withStyles } from "@material-ui/core";
+import { Typography, withStyles } from "@material-ui/core";
 import LegendRow from "./LegendRow";
 import useSummaryData from "../../Data/useSummaryData";
 import { useLang } from "../../Language";
 import useFormatter from "../../Dashboard/hooks/useFormatter";
+import { Stack } from "@hyperobjekt/material-ui-website";
 
 // data accessors
 const getX = (d) => new Date(`${d.date}T00:00:00`);
@@ -80,7 +81,14 @@ const Summary = ({ classes, ...props }) => {
   const isReady = status === "success";
 
   return (
-    <Box>
+    <Stack
+      direction="vertical"
+      alignItems="stretch"
+      flex="1"
+      between="md"
+      mt={2}
+      {...props}
+    >
       <LegendRow
         title={filingsLabel}
         hint={hintKeys[0] !== hintValues[0] && hintValues[0]}
@@ -100,7 +108,7 @@ const Summary = ({ classes, ...props }) => {
       <LegendRow title={seriesLabel}>
         <SummaryTrend lineData={isReady ? summary.series : []} />
       </LegendRow>
-    </Box>
+    </Stack>
   );
 };
 

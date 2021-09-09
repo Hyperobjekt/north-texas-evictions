@@ -1,8 +1,7 @@
 import React from "react";
-import { Typography, withStyles } from "@material-ui/core";
+import { Box, Typography, withStyles } from "@material-ui/core";
 
 import useDashboardContext from "../../Dashboard/hooks/useDashboardContext";
-import LegendRow from "./LegendRow";
 import { useTooltipData } from "../../Tooltip";
 import useDataExtents from "../../Data/useDataExtents";
 import { Scale } from "@hyperobjekt/legend";
@@ -47,7 +46,7 @@ const ChoroplethLegend = (props) => {
     !Number.isFinite(extents[activeChoropleth][0]) ||
     !Number.isFinite(extents[activeChoropleth][1]);
   return (
-    <LegendRow {...props}>
+    <Box {...props}>
       {isUnavailable ? (
         <Typography
           variant="caption"
@@ -79,7 +78,7 @@ const ChoroplethLegend = (props) => {
           />
         </Scale>
       )}
-    </LegendRow>
+    </Box>
   );
 };
 
