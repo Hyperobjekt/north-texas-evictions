@@ -109,7 +109,7 @@ App.defaultProps = {
       { id: "pvr", type: "choropleth", format: "percent" },
       { id: "rb", type: "choropleth", format: "percent" },
     ],
-    dateRange: ["2018-01-01", "2021-05-01"],
+    dateRange: ["2018-01-01", "2022-05-01"],
     filters: [],
     zoom: 8,
     lat: 32.74,
