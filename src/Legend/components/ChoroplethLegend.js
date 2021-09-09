@@ -1,13 +1,13 @@
 import React from "react";
-import { withStyles } from "@material-ui/core";
+import { Box, Typography, withStyles } from "@material-ui/core";
 
 import useDashboardContext from "../../Dashboard/hooks/useDashboardContext";
-import LegendRow from "./LegendRow";
 import { useTooltipData } from "../../Tooltip";
 import useDataExtents from "../../Data/useDataExtents";
 import { Scale } from "@hyperobjekt/legend";
 import { DEFAULT_CHOROPLETH_COLORS } from "../../Dashboard/constants";
 import useFormatter from "../../Dashboard/hooks/useFormatter";
+import { useLang } from "../../Language";
 
 const styles = (theme) => ({
   root: {
@@ -40,31 +40,45 @@ const ChoroplethLegend = (props) => {
   const formatter = useFormatter(activeChoropleth, {
     short: true,
   });
-  if (!extents || !extents[activeChoropleth]) return null;
+  const unavailable = useLang("LABEL_UNAVAILABLE");
+  const isUnavailable =
+    !extents[activeChoropleth] ||
+    !Number.isFinite(extents[activeChoropleth][0]) ||
+    !Number.isFinite(extents[activeChoropleth][1]);
   return (
-    <LegendRow {...props}>
-      <Scale
-        type="continuous"
-        width={width}
-        margin={margin}
-        data={extents[activeChoropleth][2]}
-        colors={DEFAULT_CHOROPLETH_COLORS}
-      >
-        <Scale.Marker
-          value={activeValue}
-          label={!isNaN(activeValue) && formatter(activeValue)}
-        />
-        <Scale.Colors height={16} />
-        <Scale.Ticks
-          tickValues={[
-            extents[activeChoropleth][0],
-            extents[activeChoropleth][1],
-          ]}
-          height={32}
-          tickFormat={formatter}
-        />
-      </Scale>
-    </LegendRow>
+    <Box {...props}>
+      {isUnavailable ? (
+        <Typography
+          variant="caption"
+          color="textSecondary"
+          style={{ margin: "0 auto" }}
+        >
+          {unavailable}
+        </Typography>
+      ) : (
+        <Scale
+          type="continuous"
+          width={width}
+          margin={margin}
+          data={extents[activeChoropleth][2]}
+          colors={DEFAULT_CHOROPLETH_COLORS}
+        >
+          <Scale.Marker
+            value={activeValue}
+            label={!isNaN(activeValue) && formatter(activeValue)}
+          />
+          <Scale.Colors height={16} />
+          <Scale.Ticks
+            tickValues={[
+              extents[activeChoropleth][0],
+              extents[activeChoropleth][1],
+            ]}
+            height={32}
+            tickFormat={formatter}
+          />
+        </Scale>
+      )}
+    </Box>
   );
 };
 

@@ -1,4 +1,4 @@
-import { createTheme } from "@material-ui/core";
+import { alpha, createTheme, darken } from "@material-ui/core";
 
 export const HEADER_TEXT_COLOR = "#E1DFDF";
 export const HEADER_BACKGROUND_COLOR = "#292929";
@@ -237,6 +237,18 @@ export default createTheme({
         "&:hover": {
           backgroundColor: SECONDARY,
         },
+      },
+    },
+    MuiTooltip: {
+      tooltip: {
+        backgroundColor: alpha(darken(SECONDARY, 0.6), 0.9),
+        fontWeight: 400,
+        fontSize: "0.8125rem",
+        padding: "0.5rem",
+        maxWidth: "14rem",
+      },
+      arrow: {
+        color: alpha(darken(SECONDARY, 0.6), 0.9),
       },
     },
   },

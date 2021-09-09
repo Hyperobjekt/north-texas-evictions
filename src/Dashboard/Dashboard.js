@@ -94,8 +94,17 @@ Dashboard.defaultProps = {
       SUMMARY_UPDATED: "Data last updated on {{date}}.",
       LEGEND: "MAP LEGEND",
       LEGEND_TITLE: "CURRENTLY VIEWING",
+      FLAG_MFA:
+        "Median filings amounts are only available within Dallas County. ",
+      FLAG_SHORT_EFR:
+        "Filings per 1,000 renters will be small for short time ranges.",
+      HINT_TOTAL_FILINGS: "",
+      HINT_TOTAL_AMOUNT:
+        "Filing amounts are only reported within Dallas County, the actual total is much higher.",
       LABEL_ALL_COURTS: "All Courts",
       LABEL_FIT_BOUNDS: "Zoom to all {{region}}",
+      LABEL_UNAVAILABLE: "Unavailable",
+      LABEL_REGION_UNAVAILABLE: "Unavailable for {{region}}",
     },
   },
 };

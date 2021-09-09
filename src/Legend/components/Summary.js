@@ -2,15 +2,16 @@ import React from "react";
 import { extent, max } from "d3-array";
 import { LinePath } from "@visx/shape";
 import { scaleTime, scaleLinear } from "@visx/scale";
-import { Box, Typography, withStyles } from "@material-ui/core";
+import { Typography, withStyles } from "@material-ui/core";
 import LegendRow from "./LegendRow";
 import useSummaryData from "../../Data/useSummaryData";
 import { useLang } from "../../Language";
 import useFormatter from "../../Dashboard/hooks/useFormatter";
-import shallow from "zustand/shallow";
+import { Stack } from "@hyperobjekt/material-ui-website";
 import useDashboardStore from "../../Dashboard/hooks/useDashboardStore";
-import { parseDate } from "../../Dashboard/utils";
+import shallow from "zustand/shallow";
 import { timeFormat } from "d3-time-format";
+import { parseDate } from "../../Dashboard/utils";
 
 // data accessors
 const getX = (d) => new Date(`${d.date}T00:00:00`);
@@ -74,7 +75,7 @@ const SummaryTrend = ({ lineData }) => {
 };
 
 const Summary = ({ classes, ...props }) => {
-  const { data: summary } = useSummaryData();
+  const { data: summary, status } = useSummaryData();
   const dateRange = useDashboardStore((state) => state.dateRange, shallow);
   const langKeys = [
     `SUMMARY_EF`,
@@ -84,33 +85,49 @@ const Summary = ({ classes, ...props }) => {
   ];
   const [filingsLabel, amountLabel, seriesLabel, lastUpdated] =
     useLang(langKeys);
+
   const intFormatter = useFormatter("ef");
   const currencyFormatter = useFormatter("mfa");
-
-  if (!summary) return null;
+  const hintKeys = ["HINT_TOTAL_FILINGS", "HINT_TOTAL_AMOUNT"];
+  const hintValues = useLang(hintKeys);
+  const isReady = status === "success";
 
   return (
-    <Box>
-      <LegendRow title={filingsLabel}>
+    <Stack
+      direction="vertical"
+      alignItems="stretch"
+      flex="1"
+      between="md"
+      mt={2}
+      {...props}
+    >
+      <LegendRow
+        title={filingsLabel}
+        hint={hintKeys[0] !== hintValues[0] && hintValues[0]}
+      >
         <Typography className={classes.value}>
-          {intFormatter(summary.filings)}
+          {isReady ? intFormatter(summary.filings) : "..."}
         </Typography>
       </LegendRow>
-      <LegendRow title={amountLabel}>
+      <LegendRow
+        title={amountLabel}
+        hint={hintKeys[1] !== hintValues[1] && hintValues[1]}
+      >
         <Typography className={classes.value}>
-          {currencyFormatter(summary.amount)}
+          {isReady ? currencyFormatter(summary.amount) : "..."}
         </Typography>
       </LegendRow>
       <LegendRow title={seriesLabel}>
-        <SummaryTrend lineData={summary.series} />
+        <SummaryTrend lineData={isReady ? summary.series : []} />
       </LegendRow>
+
       <LegendRow
         title={lastUpdated.replace(
           "{{date}}",
           timeFormat("%b %e, %Y")(parseDate(dateRange[1]))
         )}
       ></LegendRow>
-    </Box>
+    </Stack>
   );
 };
 

@@ -14,6 +14,7 @@ export default function useLang(keys, context) {
   ]);
 
   return useMemo(() => {
+    if (Array.isArray(keys) && keys.length === 0) return [];
     const mapKeys = typeof keys === "string" ? [keys] : keys;
     const lang = dict[language];
     const values = mapKeys.map((key) => {

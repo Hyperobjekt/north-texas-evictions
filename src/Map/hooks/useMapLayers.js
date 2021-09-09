@@ -21,6 +21,7 @@ const getLinearRamp = (from, to, steps = 1) => {
 };
 
 const getLinearColorRamp = (from, to, steps = 1) => {
+  if (!from || !from[0] || !from[1]) from = [0, 1];
   const fromInterpolator = getPositionScale("linear", [0, 1], from);
   const toInterpolator = getColorInterpolator(to);
   const values = [];
@@ -41,7 +42,7 @@ const getChoroplethLayerStyle = ({
   colors = DEFAULT_CHOROPLETH_COLORS,
 }) => {
   const extent = extents && extents[activeChoropleth];
-  if (!extent) return [];
+  // const isUnavailable = !extent || !extent[0] || !extent[1];
   return [
     {
       id: `${activeRegion}-choropleth`,

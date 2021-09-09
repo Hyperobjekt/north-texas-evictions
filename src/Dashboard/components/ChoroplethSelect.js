@@ -1,30 +1,19 @@
 import React from "react";
-import useDashboardStore from "../hooks/useDashboardStore";
-import { TextField } from "@material-ui/core";
+import { ListSubheader, TextField } from "@material-ui/core";
 import { MenuItem } from "@material-ui/core";
 import { useLang } from "../../Language";
-import shallow from "zustand/shallow";
+import useDashboardChoropleth from "../hooks/useDashboardChoropleth";
 
 const ChoroplethSelect = (props) => {
-  const [metrics, activeChoropleth, setActiveChoropleth] = useDashboardStore(
-    (state) => [
-      state.metrics,
-      state.activeChoropleth,
-      state.setActiveChoropleth,
-    ],
-    shallow
-  );
-  const choroplethMetrics = metrics.filter(
-    (metric) => metric.type === "choropleth"
-  );
-  const label = useLang(`SELECT_CHOROPLETH`);
-  const metricLabels = useLang(
-    choroplethMetrics.map((metric) => `METRIC_${metric.id}`)
-  );
+  const [activeChoropleth, setActiveChoropleth, options] =
+    useDashboardChoropleth();
+  const unavailableOptions = options.filter((o) => o.unavailable);
   const handleChange = (event) => {
     setActiveChoropleth(event.target.value);
   };
-  const isReady = choroplethMetrics.length > 0 && activeChoropleth;
+  const label = useLang("SELECT_CHOROPLETH");
+  const unavailableLabel = useLang("LABEL_UNAVAILABLE");
+  const isReady = options.length > 0 && activeChoropleth;
   return (
     isReady && (
       <TextField
@@ -35,9 +24,19 @@ const ChoroplethSelect = (props) => {
         onChange={handleChange}
         {...props}
       >
-        {choroplethMetrics.map((metric, i) => (
-          <MenuItem key={metric.id} value={metric.id}>
-            {metricLabels[i]}
+        {options
+          .filter((o) => !o.unavailable)
+          .map((metric, i) => (
+            <MenuItem key={metric.id} value={metric.id}>
+              {metric.label}
+            </MenuItem>
+          ))}
+        {unavailableOptions.length > 0 && (
+          <ListSubheader>{unavailableLabel}</ListSubheader>
+        )}
+        {unavailableOptions.map((metric, i) => (
+          <MenuItem key={metric.id} value={metric.id} disabled>
+            {metric.label}
           </MenuItem>
         ))}
       </TextField>

@@ -1,6 +1,13 @@
 import React, { useMemo } from "react";
-import { Menu, MenuItem, styled, Typography } from "@material-ui/core";
+import {
+  ListSubheader,
+  Menu,
+  MenuItem,
+  styled,
+  Typography,
+} from "@material-ui/core";
 import { FOCUS_STATE } from "../../theme";
+import { useLang } from "../../Language";
 
 function uuid(a) {
   return a
@@ -31,6 +38,9 @@ const InlineMenu = ({ children, options, onSelect, ...props }) => {
   const id = useMemo(uuid, []);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
+  const unavailableOptions = options.filter((o) => o.unavailable);
+  const unavailableLabel = useLang("LABEL_UNAVAILABLE");
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -57,8 +67,18 @@ const InlineMenu = ({ children, options, onSelect, ...props }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {options.map((option, i) => (
-          <MenuItem key={i} onClick={(e) => handleClose(e, option)}>
+        {options
+          .filter((o) => !o.unavailable)
+          .map((option, i) => (
+            <MenuItem key={option.id} onClick={(e) => handleClose(e, option)}>
+              {option?.label ? option.label : option}
+            </MenuItem>
+          ))}
+        {unavailableOptions.length > 0 && (
+          <ListSubheader>{unavailableLabel}</ListSubheader>
+        )}
+        {unavailableOptions.map((option, i) => (
+          <MenuItem key={option.id} disabled>
             {option?.label ? option.label : option}
           </MenuItem>
         ))}

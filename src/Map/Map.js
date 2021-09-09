@@ -76,7 +76,6 @@ const Map = ({ classes, className, ...props }) => {
       undefined,
       window.location.hash
     );
-    console.log({ zoom, latitude, longitude }, defaultViewport);
     // fly to bounds if map has loaded with default viewport
     zoom === defaultViewport.zoom &&
       latitude === defaultViewport.latitude &&

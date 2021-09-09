@@ -22,10 +22,12 @@ import useDashboardBubble from "../Dashboard/hooks/useDashboardBubble";
 import useDashboardChoropleth from "../Dashboard/hooks/useDashboardChoropleth";
 import useDashboardRegion from "../Dashboard/hooks/useDashboardRegion";
 import useDashboardDateRange from "../Dashboard/hooks/useDashboardDateRange";
+import DataFlags from "./components/DataFlags";
 import useDateOptions from "../Dashboard/hooks/useDateOptions";
 import { parseDate } from "../Dashboard/utils";
 import usePrecinctFilter from "../Data/usePrecinctFilter";
 import usePrecinctNames from "../Data/usePrecinctNames";
+import LegendRow from "./components/LegendRow";
 
 /**
  * Returns a prefix and label for the date range text in the legend
@@ -272,8 +274,15 @@ const Legend = ({ classes, ...props }) => {
           <Typography variant="overline" color="textSecondary">
             {legendHeading}
           </Typography>
-          <BubbleLegend title={bubbleName} />
-          <ChoroplethLegend title={choroplethName} />
+          <Stack direction="vertical" alignItems="stretch" between="xs">
+            <LegendRow title={bubbleName}>
+              <BubbleLegend />
+            </LegendRow>
+            <LegendRow title={choroplethName}>
+              <ChoroplethLegend />
+            </LegendRow>
+            <DataFlags />
+          </Stack>
         </Box>
       </animated.div>
       {isMobile && <MobileToggle onClick={() => setShowSummary((ss) => !ss)} />}
