@@ -14,6 +14,36 @@ const format = (formatString) => {
 };
 
 /**
+ * Returns short format for large integers (e.g. 1.2M)
+ * but keeps numbers below 1000 as normal integers (e.g. 531)
+ * @param {number} value
+ * @returns {string}
+ */
+const shortIntFormatter = (value) => {
+  const smallIntFormatter = format(",d");
+  const largeIntFormatter = format(".2~s");
+  if (value < 1000) {
+    return smallIntFormatter(value);
+  }
+  return largeIntFormatter(value);
+};
+
+/**
+ * Returns short format for large currencies (e.g. $1.2M)
+ * but keeps numbers below 1000 as integers (e.g. $531)
+ * @param {number} value
+ * @returns {string}
+ */
+const shortCurrencyFormatter = (value) => {
+  const smallFormatter = format("$,d");
+  const largeFormatter = format("$.2~s");
+  if (value < 1000) {
+    return smallFormatter(value);
+  }
+  return largeFormatter(value);
+};
+
+/**
  * Returns a formatter function for the given format string.
  * @param {*} format
  * @param {*} options
@@ -26,9 +56,9 @@ export const getFormatter = (type, options = { short: false }) => {
     case "number":
       return format(".2s");
     case "currency":
-      return options.short ? format("$.2~s") : format("$,.2f");
+      return options.short ? shortCurrencyFormatter : format("$,.2f");
     case "integer":
-      return options.short ? format(".2~s") : format(",d");
+      return options.short ? shortIntFormatter : format(",d");
     default:
       return format(".2s");
   }
