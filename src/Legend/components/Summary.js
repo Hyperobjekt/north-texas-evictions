@@ -7,6 +7,10 @@ import LegendRow from "./LegendRow";
 import useSummaryData from "../../Data/useSummaryData";
 import { useLang } from "../../Language";
 import useFormatter from "../../Dashboard/hooks/useFormatter";
+import shallow from "zustand/shallow";
+import useDashboardStore from "../../Dashboard/hooks/useDashboardStore";
+import { formatDate, parseDate } from "../../Dashboard/utils";
+import { timeFormat } from "d3-time-format";
 
 // data accessors
 const getX = (d) => new Date(`${d.date}T00:00:00`);
@@ -71,8 +75,15 @@ const SummaryTrend = ({ lineData }) => {
 
 const Summary = ({ classes, ...props }) => {
   const { data: summary } = useSummaryData();
-  const langKeys = [`SUMMARY_EF`, `SUMMARY_TFA`, `SUMMARY_SERIES`];
-  const [filingsLabel, amountLabel, seriesLabel] = useLang(langKeys);
+  const dateRange = useDashboardStore((state) => state.dateRange, shallow);
+  const langKeys = [
+    `SUMMARY_EF`,
+    `SUMMARY_TFA`,
+    `SUMMARY_SERIES`,
+    `SUMMARY_UPDATED`,
+  ];
+  const [filingsLabel, amountLabel, seriesLabel, lastUpdated] =
+    useLang(langKeys);
   const intFormatter = useFormatter("ef");
   const currencyFormatter = useFormatter("mfa");
 
@@ -93,6 +104,12 @@ const Summary = ({ classes, ...props }) => {
       <LegendRow title={seriesLabel}>
         <SummaryTrend lineData={summary.series} />
       </LegendRow>
+      <LegendRow
+        title={lastUpdated.replace(
+          "{{date}}",
+          timeFormat("%b %e, %Y")(parseDate(dateRange[1]))
+        )}
+      ></LegendRow>
     </Box>
   );
 };

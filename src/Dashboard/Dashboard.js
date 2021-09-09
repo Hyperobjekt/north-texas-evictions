@@ -91,6 +91,7 @@ Dashboard.defaultProps = {
       SUMMARY_EF: "Total Eviction Filings",
       SUMMARY_TFA: "Total Amount Filed",
       SUMMARY_SERIES: "Filings By Day",
+      SUMMARY_UPDATED: "Data last updated on {{date}}.",
       LEGEND: "MAP LEGEND",
       LEGEND_TITLE: "CURRENTLY VIEWING",
     },

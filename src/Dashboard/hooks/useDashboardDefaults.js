@@ -1,6 +1,7 @@
 import { useMapStore } from "@hyperobjekt/mapbox";
 import { useEffect } from "react";
 import shallow from "zustand/shallow";
+import { EVICTION_DATA_ENDPOINT } from "../constants";
 import useDashboardStore from "./useDashboardStore";
 
 /**
@@ -13,7 +14,6 @@ export default function useDashboardDefaults({
   activeDateRange,
   regions,
   metrics,
-  dateRange,
   zoom,
   lat,
   lon,
@@ -88,7 +88,6 @@ export default function useDashboardDefaults({
       activeDateRange,
       regions,
       metrics,
-      dateRange,
       zoom,
       lat,
       lon,
@@ -104,8 +103,13 @@ export default function useDashboardDefaults({
     setActiveDateRange(activeDateRange);
     setMetrics(metrics);
     setRegions(regions);
-    setDateRange(dateRange);
-    setTimeout(() => setReady(true), 0);
+    fetch(`${EVICTION_DATA_ENDPOINT}/meta`)
+      .then((response) => response.json())
+      .then(([meta]) => {
+        const dateRange = [meta.first_filing, meta.last_filing];
+        setDateRange(dateRange);
+        setTimeout(() => setReady(true), 0);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }
