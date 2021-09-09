@@ -87,10 +87,11 @@ Dashboard.defaultProps = {
       SELECT_COURT: "Court",
       SELECT_DATE_RANGE: "Date Range",
       TITLE_DATA_OPTIONS: "Data Options",
-      SUMMARY: "SUMMARY",
+      SUMMARY: "SUMMARY ({{dateRange}})",
       SUMMARY_EF: "Total Eviction Filings",
       SUMMARY_TFA: "Total Amount Filed",
       SUMMARY_SERIES: "Filings By Day",
+      SUMMARY_UPDATED: "Data last updated on {{date}}.",
       LEGEND: "MAP LEGEND",
       LEGEND_TITLE: "CURRENTLY VIEWING",
       FLAG_MFA:
