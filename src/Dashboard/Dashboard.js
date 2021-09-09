@@ -3,14 +3,12 @@ import { Box } from "@material-ui/core";
 import useLanguageStore from "../Language/useLanguageStore";
 import { Legend } from "../Legend";
 import { Map } from "../Map";
-import { QueryClient, QueryClientProvider } from "react-query";
 import Panel from "../Panel/Panel";
 import { withStyles } from "@material-ui/styles";
 import { Tooltip } from "../Tooltip";
 import useDashboardStore from "./hooks/useDashboardStore";
-
-// Create a client
-const queryClient = new QueryClient();
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 const Wrapper = withStyles({
   root: {
@@ -40,7 +38,7 @@ const Dashboard = ({ lang = "en", langDict }) => {
   );
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Wrapper onMouseMove={handleMouseMove}>
         <Box position="relative" style={{ flex: 1 }}>
           <Legend />
@@ -49,7 +47,7 @@ const Dashboard = ({ lang = "en", langDict }) => {
         <Panel open={true} />
         <Tooltip />
       </Wrapper>
-    </QueryClientProvider>
+    </MuiPickersUtilsProvider>
   );
 };
 
@@ -86,6 +84,7 @@ Dashboard.defaultProps = {
       SELECT_REGION: "Region",
       SELECT_DATE_START: "Start Date",
       SELECT_DATE_END: "End Date",
+      SELECT_DATE_RANGE: "Date Range",
       TITLE_DATA_OPTIONS: "Data Options",
       SUMMARY: "SUMMARY",
       SUMMARY_EF: "Total Eviction Filings",
@@ -94,9 +93,13 @@ Dashboard.defaultProps = {
       LEGEND: "MAP LEGEND",
       LEGEND_TITLE: "CURRENTLY VIEWING",
       FLAG_MFA: "Filing amounts are only available for ",
+      FLAG_SHORT_EFR: "",
       HINT_TOTAL_FILINGS: "",
       HINT_TOTAL_AMOUNT:
         "Filing amounts are only reported within Dallas County, the actual total is much higher.",
+      LABEL_FIT_BOUNDS: "Zoom to all {{region}}",
+      LABEL_UNAVAILABLE: "Unavailable",
+      LABEL_REGION_UNAVAILABLE: "Unavailable for {{region}}",
     },
   },
 };

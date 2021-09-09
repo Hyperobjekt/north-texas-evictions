@@ -2,10 +2,14 @@ import React, { useEffect } from "react";
 import Dashboard from "../Dashboard";
 import Header from "./components/Header";
 import useDashboardRoute from "../Dashboard/hooks/useDashboardRoute";
-import Search from "./components/Search";
+import Search from "../Search";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import useDashboardDefaults from "../Dashboard/hooks/useDashboardDefaults";
 import { CircularProgress } from "@material-ui/core";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+// Create a client
+const queryClient = new QueryClient();
 
 const App = ({ config }) => {
   // pull ready state from the store
@@ -28,15 +32,20 @@ const App = ({ config }) => {
   useDashboardDefaults({
     ...config,
     ...routeDefaults,
+    defaultViewport: {
+      zoom: config.zoom,
+      latitude: config.latitude,
+      longitude: config.longitude,
+    },
   });
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Header>
-        <Search className="dark" placeholder="search" />
+        <Search />
       </Header>
       {ready ? <Dashboard /> : <CircularProgress />}
-    </>
+    </QueryClientProvider>
   );
 };
 
@@ -94,7 +103,12 @@ App.defaultProps = {
       { id: "mfa", type: "bubble", format: "currency" },
       { id: "tfa", type: "secondary", format: "currency" },
       { id: "cpr", type: "choropleth", format: "percent" },
-      { id: "mgr", type: "choropleth", format: "currency" },
+      {
+        id: "mgr",
+        type: "choropleth",
+        format: "currency",
+        unavailable: ["tracts", "districts"],
+      },
       { id: "mhi", type: "choropleth", format: "currency" },
       { id: "mpv", type: "choropleth", format: "currency" },
       { id: "pca", type: "choropleth", format: "percent" },
@@ -103,13 +117,18 @@ App.defaultProps = {
       { id: "pcw", type: "choropleth", format: "percent" },
       { id: "prh", type: "choropleth", format: "percent" },
       { id: "pvr", type: "choropleth", format: "percent" },
-      { id: "rb", type: "choropleth", format: "percent" },
+      {
+        id: "rb",
+        type: "choropleth",
+        format: "percent",
+        unavailable: ["tracts"],
+      },
     ],
-    dateRange: ["2018-01-01", "2021-05-01"],
+    dateRange: ["2018-01-01", "2022-05-01"],
     filters: [],
     zoom: 8,
-    lat: 32.74,
-    lon: -96.96,
+    latitude: 32.74,
+    longitude: -96.96,
   },
 };
 

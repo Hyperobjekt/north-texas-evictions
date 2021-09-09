@@ -1,6 +1,7 @@
 import React from "react";
-import { Box, Typography, withStyles } from "@material-ui/core";
+import { Box, Tooltip, Typography, withStyles } from "@material-ui/core";
 import clsx from "clsx";
+import { InfoOutlined } from "@material-ui/icons";
 
 const styles = (theme) => ({
   root: {
@@ -11,14 +12,27 @@ const styles = (theme) => ({
   },
 });
 
-const LegendRow = ({ classes, className, title, children, ...props }) => {
-  return (
+const LegendRow = ({ classes, className, title, hint, children, ...props }) => {
+  const inner = (
     <Box className={clsx(classes.root, className)} {...props}>
       <Typography variant="caption" color="textSecondary">
-        {title}
+        {title}{" "}
+        {hint && (
+          <InfoOutlined
+            style={{ fontSize: 12, position: "relative", top: 2 }}
+            aria-hidden="true"
+          />
+        )}
       </Typography>
       {children}
     </Box>
+  );
+  return hint ? (
+    <Tooltip title={hint} arrow placement="left">
+      {inner}
+    </Tooltip>
+  ) : (
+    inner
   );
 };
 

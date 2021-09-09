@@ -75,17 +75,25 @@ const Summary = ({ classes, ...props }) => {
   const [filingsLabel, amountLabel, seriesLabel] = useLang(langKeys);
   const intFormatter = useFormatter("ef");
   const currencyFormatter = useFormatter("mfa");
+  const hintKeys = ["HINT_TOTAL_FILINGS", "HINT_TOTAL_AMOUNT"];
+  const hintValues = useLang(hintKeys);
 
   if (!summary) return null;
 
   return (
     <Box>
-      <LegendRow title={filingsLabel}>
+      <LegendRow
+        title={filingsLabel}
+        hint={hintKeys[0] !== hintValues[0] && hintValues[0]}
+      >
         <Typography className={classes.value}>
           {intFormatter(summary.filings)}
         </Typography>
       </LegendRow>
-      <LegendRow title={amountLabel}>
+      <LegendRow
+        title={amountLabel}
+        hint={hintKeys[1] !== hintValues[1] && hintValues[1]}
+      >
         <Typography className={classes.value}>
           {currencyFormatter(summary.amount)}
         </Typography>
