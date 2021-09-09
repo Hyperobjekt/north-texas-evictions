@@ -7,6 +7,7 @@ export default function useDateOptions() {
 
   return [
     {
+      id: "7",
       label: "last 7 days",
       value: [
         formatDate(
@@ -16,6 +17,7 @@ export default function useDateOptions() {
       ],
     },
     {
+      id: "30",
       label: "last 30 days",
       value: [
         formatDate(
@@ -27,6 +29,7 @@ export default function useDateOptions() {
       ],
     },
     {
+      id: "90",
       label: "last 90 days",
       value: [
         formatDate(
@@ -38,6 +41,7 @@ export default function useDateOptions() {
       ],
     },
     {
+      id: "365",
       label: "last 365 days",
       value: [
         formatDate(
@@ -49,6 +53,7 @@ export default function useDateOptions() {
       ],
     },
     {
+      id: "alltime",
       label: "All Time",
       value: [
         formatDate(parseDate(dateRange[0])),
@@ -56,6 +61,7 @@ export default function useDateOptions() {
       ],
     },
     {
+      id: "custom",
       label: "Custom...",
       value: null,
     },
