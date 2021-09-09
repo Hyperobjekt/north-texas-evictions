@@ -10,6 +10,8 @@ const DARK_FOCUS_STATE = {
   boxShadow: `0 0 0 2px ${HEADER_BACKGROUND_COLOR}, 0 0 0 4px #649BA6`,
 };
 
+const SECONDARY = "#008097";
+
 const fontFamily = `"franklin-gothic-urw", "Roboto", "Helvetica", "Arial", sans-serif`;
 const altFontFamily = `"degular", "Roboto", "Helvetica", "Arial", sans-serif`;
 
@@ -17,7 +19,7 @@ export default createTheme({
   palette: {
     primary: { main: "#EC7406" },
     secondary: {
-      main: "#008097",
+      main: SECONDARY,
     },
     text: {
       primary: "rgba(68, 71, 67, 1)",
@@ -130,10 +132,10 @@ export default createTheme({
       },
       contained: {
         backgroundColor: "#ECECD5",
-        "&.MuiButton-disableElevation.Mui-focusVisible, &.MuiButton-disableElevation:focus":
-          {
-            ...FOCUS_STATE,
-          },
+        boxShadow: "none",
+        "&.Mui-focusVisible, &:focus": {
+          ...FOCUS_STATE,
+        },
         "&:hover": {
           backgroundColor: "#D6D6B6",
         },
@@ -156,6 +158,7 @@ export default createTheme({
       },
     },
     MuiInputBase: {
+      root: {},
       input: {
         padding: "0.75rem 0.75rem 0.6666rem",
       },
@@ -175,6 +178,7 @@ export default createTheme({
         "&.dark": {
           background: "#4a4646",
           border: 0,
+          transition: `background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms`,
           "& $input": {
             color: HEADER_TEXT_COLOR,
           },
@@ -189,7 +193,7 @@ export default createTheme({
         marginLeft: "0.75rem",
         marginRight: 0,
         position: "relative",
-        top: "0.06125rem",
+        top: "0.0625rem",
       },
     },
     MuiSelect: {
@@ -213,6 +217,28 @@ export default createTheme({
         top: -4,
       },
     },
+    MuiPickersToolbar: {
+      toolbar: {
+        backgroundColor: SECONDARY,
+      },
+    },
+    MuiPickersToolbarText: {
+      toolbarTxt: {
+        color: "white",
+      },
+      toolbarBtnSelected: {
+        color: "white",
+      },
+    },
+    MuiPickersDay: {
+      daySelected: {
+        backgroundColor: SECONDARY,
+        color: "white",
+        "&:hover": {
+          backgroundColor: SECONDARY,
+        },
+      },
+    },
   },
   props: {
     MuiInput: {
@@ -220,7 +246,6 @@ export default createTheme({
     },
     MuiButton: {
       variant: "outlined",
-      disableElevation: true,
     },
     text: {
       primary: "#444743",

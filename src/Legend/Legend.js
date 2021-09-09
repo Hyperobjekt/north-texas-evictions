@@ -22,8 +22,10 @@ import useDashboardBubble from "../Dashboard/hooks/useDashboardBubble";
 import useDashboardChoropleth from "../Dashboard/hooks/useDashboardChoropleth";
 import useDashboardRegion from "../Dashboard/hooks/useDashboardRegion";
 import useDashboardDateRange from "../Dashboard/hooks/useDashboardDateRange";
-import { parseDate } from "../Dashboard/utils";
 import useDateOptions from "../Dashboard/hooks/useDateOptions";
+import { parseDate } from "../Dashboard/utils";
+import usePrecinctFilter from "../Data/usePrecinctFilter";
+import usePrecinctNames from "../Data/usePrecinctNames";
 
 /**
  * Returns a prefix and label for the date range text in the legend
@@ -36,7 +38,6 @@ const getDateRangeLabel = (start, end, dateOptions) => {
   if (!start || !end) return "";
   const selectedOption = dateOptions.find((option) => {
     if (!option.value || option.value.length !== 2) return false;
-    console.log(option.value);
     return option.value[0] === start && option.value[1] === end;
   });
   if (!selectedOption)
@@ -65,7 +66,6 @@ const getShortDateRangeLabel = (start, end) => {
  * @returns
  */
 const formatDateString = (start, end, options = { short: false }) => {
-  console.log("jfc", start, end);
   if (!start || !end) return ["", ""];
   const startDate = parseDate(start);
   const endDate = parseDate(end);
@@ -77,15 +77,16 @@ const formatDateString = (start, end, options = { short: false }) => {
       startDate.getFullYear() === endDate.getFullYear() ? undefined : "numeric",
   }).format(startDate);
   const endDateLabel = new Intl.DateTimeFormat("en-US", {
-    month: options.short
-      ? startDate.getMonth() === endDate.getMonth()
-        ? undefined
-        : "short"
-      : "long",
+    month: options.short ? "short" : "long",
     day: "numeric",
     year: "numeric",
   }).format(endDate);
-  return [startDateLabel, endDateLabel];
+  const shortEndDateLabel = endDateLabel.split(" ").slice(1).join(" ");
+  return options.short &&
+    startDate.getFullYear() === endDate.getFullYear() &&
+    startDate.getMonth() === endDate.getMonth()
+    ? [startDateLabel, shortEndDateLabel]
+    : [startDateLabel, endDateLabel];
 };
 
 const styles = (theme) => ({
@@ -179,8 +180,19 @@ const Legend = ({ classes, ...props }) => {
     legendTitle,
   ] = useLang(langKeys);
 
+  // date labels
+  const [datePrefix, dateLabel] = getDateRangeLabel(
+    ...activeDateRange,
+    dateOptions
+  );
+
   const [toggleRef, toggleBounds] = useMeasure();
   const [showSummary, setShowSummary] = useState(false);
+
+  // get active precinct filter (if any)
+  const [precinct] = usePrecinctFilter();
+  const precinctNames = usePrecinctNames();
+  const precinctLabel = <span> for {precinctNames[precinct]}</span>;
 
   // move legend if panel is open
   const activePanel = useDashboardStore((state) => state.activePanel);
@@ -238,10 +250,11 @@ const Legend = ({ classes, ...props }) => {
           >
             {choroplethName}
           </InlineMenu>
-          <span> {getDateRangeLabel(...activeDateRange, dateOptions)[0]} </span>
+          <span> {datePrefix} </span>
           <InlineMenu options={dateOptions} onSelect={handleSetDateRange}>
-            {getDateRangeLabel(...activeDateRange, dateOptions)[1]}
+            {dateLabel}
           </InlineMenu>
+          {precinct && precinctLabel}
         </Typography>
         <PanelToggle />
       </Stack>

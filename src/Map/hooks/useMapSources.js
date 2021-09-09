@@ -8,6 +8,7 @@ export default function useMapSources() {
   const choropleth = useChoroplethData();
   const [activeRegion, , regions] = useDashboardRegion();
   const region = regions.find((r) => r.id === activeRegion);
+
   return useMemo(() => {
     const data = { bubble, choropleth };
     return region
