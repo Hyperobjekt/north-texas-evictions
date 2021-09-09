@@ -9,7 +9,7 @@ import { useLang } from "../../Language";
 import useFormatter from "../../Dashboard/hooks/useFormatter";
 import shallow from "zustand/shallow";
 import useDashboardStore from "../../Dashboard/hooks/useDashboardStore";
-import { formatDate, parseDate } from "../../Dashboard/utils";
+import { parseDate } from "../../Dashboard/utils";
 import { timeFormat } from "d3-time-format";
 
 // data accessors

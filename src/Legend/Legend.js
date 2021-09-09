@@ -22,49 +22,8 @@ import useDashboardBubble from "../Dashboard/hooks/useDashboardBubble";
 import useDashboardChoropleth from "../Dashboard/hooks/useDashboardChoropleth";
 import useDashboardRegion from "../Dashboard/hooks/useDashboardRegion";
 import useDashboardDateRange from "../Dashboard/hooks/useDashboardDateRange";
-import { formatDate, parseDate } from "../Dashboard/utils";
-
-const DATE_OPTIONS = [
-  {
-    label: "last 7 days",
-    value: [
-      formatDate(new Date(new Date().setDate(new Date().getDate() - 7))),
-      formatDate(new Date()),
-    ],
-  },
-  {
-    label: "last 30 days",
-    value: [
-      formatDate(new Date(new Date().setDate(new Date().getDate() - 30))),
-      formatDate(new Date()),
-    ],
-  },
-  {
-    label: "last 90 days",
-    value: [
-      formatDate(new Date(new Date().setDate(new Date().getDate() - 90))),
-      formatDate(new Date()),
-    ],
-  },
-  {
-    label: "last 365 days",
-    value: [
-      formatDate(new Date(new Date().setDate(new Date().getDate() - 365))),
-      formatDate(new Date()),
-    ],
-  },
-  {
-    label: "All Time",
-    value: [
-      formatDate(new Date(new Date().setDate(new Date().getDate() - 365 * 5))),
-      formatDate(new Date()),
-    ],
-  },
-  {
-    label: "Custom...",
-    value: null,
-  },
-];
+import { parseDate } from "../Dashboard/utils";
+import useDateOptions from "../Dashboard/hooks/useDateOptions";
 
 /**
  * Returns a prefix and label for the date range text in the legend
@@ -73,9 +32,9 @@ const DATE_OPTIONS = [
  * @param {*} end
  * @returns
  */
-const getDateRangeLabel = (start, end) => {
+const getDateRangeLabel = (start, end, dateOptions) => {
   if (!start || !end) return "";
-  const selectedOption = DATE_OPTIONS.find((option) => {
+  const selectedOption = dateOptions.find((option) => {
     if (!option.value || option.value.length !== 2) return false;
     console.log(option.value);
     return option.value[0] === start && option.value[1] === end;
@@ -178,6 +137,7 @@ const Legend = ({ classes, ...props }) => {
 
   const setActivePanel = useDashboardStore((state) => state.setActivePanel);
   const [activeDateRange, setActiveDateRange] = useDashboardDateRange();
+  const dateOptions = useDateOptions();
   const [activeRegion, setActiveRegion, regions] = useDashboardRegion();
   const [activeBubble, setActiveBubble, bubbleMetrics] = useDashboardBubble();
   const [activeChoropleth, setActiveChoropleth, choroplethMetrics] =
@@ -260,9 +220,9 @@ const Legend = ({ classes, ...props }) => {
           >
             {choroplethName}
           </InlineMenu>
-          <span> {getDateRangeLabel(...activeDateRange)[0]} </span>
-          <InlineMenu options={DATE_OPTIONS} onSelect={handleSetDateRange}>
-            {getDateRangeLabel(...activeDateRange)[1]}
+          <span> {getDateRangeLabel(...activeDateRange, dateOptions)[0]} </span>
+          <InlineMenu options={dateOptions} onSelect={handleSetDateRange}>
+            {getDateRangeLabel(...activeDateRange, dateOptions)[1]}
           </InlineMenu>
         </Typography>
         <PanelToggle />
