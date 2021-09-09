@@ -1,5 +1,6 @@
 import { useQuery } from "react-query";
 import useDashboardRegion from "../Dashboard/hooks/useDashboardRegion";
+import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import { addFeatureIds, extractExtentsFromGeojson } from "./utils";
 
 /**
@@ -19,16 +20,34 @@ const fetchChoroplethData = (url) => {
     });
 };
 
+function useRegionGeojson(regionId) {
+  const regions = useDashboardStore((state) => state.regions);
+  const region = regions.find((r) => r.id === regionId);
+  const geojsonUrl = region && region["choropleth"];
+  return useQuery(["choropleth", regionId], () =>
+    fetchChoroplethData(geojsonUrl)
+  );
+}
+
 /**
  * Returns a [query object](https://react-query.tanstack.com/guides/queries#query-basics)
  * containing choropleth data and fetch status
  * @returns { data: { geojson: object, extents: object }, status: string }
  */
 export default function useChoroplethData() {
-  const [activeRegion, , regions] = useDashboardRegion();
-  const region = regions.find((r) => r.id === activeRegion);
-  const geojsonUrl = region && region["choropleth"];
-  return useQuery(["choropleth", activeRegion], () =>
-    fetchChoroplethData(geojsonUrl)
-  );
+  const [activeRegion] = useDashboardRegion();
+  return useRegionGeojson(activeRegion);
+}
+
+export function useRegionNames(regionId) {
+  const result = useRegionGeojson(regionId);
+  return {
+    ...result,
+    data: result.data?.geojson?.features
+      ? result.data.geojson.features.reduce((dict, current) => {
+          dict[current.properties.id] = current.properties.name.split(",")[0];
+          return dict;
+        }, {})
+      : result.data,
+  };
 }

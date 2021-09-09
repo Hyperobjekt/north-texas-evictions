@@ -86,6 +86,7 @@ Dashboard.defaultProps = {
       SELECT_REGION: "Region",
       SELECT_DATE_START: "Start Date",
       SELECT_DATE_END: "End Date",
+      SELECT_COURT: "Court",
       TITLE_DATA_OPTIONS: "Data Options",
       SUMMARY: "SUMMARY",
       SUMMARY_EF: "Total Eviction Filings",
@@ -93,6 +94,7 @@ Dashboard.defaultProps = {
       SUMMARY_SERIES: "Filings By Day",
       LEGEND: "MAP LEGEND",
       LEGEND_TITLE: "CURRENTLY VIEWING",
+      LABEL_ALL_COURTS: "All Courts",
     },
   },
 };

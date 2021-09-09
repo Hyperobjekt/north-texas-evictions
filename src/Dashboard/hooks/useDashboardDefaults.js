@@ -17,6 +17,7 @@ export default function useDashboardDefaults({
   zoom,
   lat,
   lon,
+  precinct,
 }) {
   // pull app state setters from store
   const [
@@ -27,6 +28,7 @@ export default function useDashboardDefaults({
     setActiveRegion,
     setDateRange,
     setActiveDateRange,
+    setFilters,
     setReady,
   ] = useDashboardStore(
     (state) => [
@@ -37,6 +39,7 @@ export default function useDashboardDefaults({
       state.setActiveRegion,
       state.setDateRange,
       state.setActiveDateRange,
+      state.setFilters,
       state.setReady,
     ],
     shallow
@@ -92,6 +95,7 @@ export default function useDashboardDefaults({
       zoom,
       lat,
       lon,
+      precinct,
     });
     setViewport({
       zoom,
@@ -105,7 +109,8 @@ export default function useDashboardDefaults({
     setMetrics(metrics);
     setRegions(regions);
     setDateRange(dateRange);
-    setTimeout(() => setReady(true), 0);
+    precinct && setFilters([["precinct", precinct]]);
+    setTimeout(() => setReady(true), 100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }
