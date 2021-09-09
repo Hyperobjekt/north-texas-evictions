@@ -46,24 +46,41 @@ const getDateRangeLabel = (start, end, dateOptions) => {
 };
 
 /**
+ * Returns a shortened label for the date range text in the legend
+ * @param {*} start
+ * @param {*} end
+ * @returns
+ */
+const getShortDateRangeLabel = (start, end) => {
+  if (!start || !end) return "";
+  return formatDateString(start, end, {
+    short: true,
+  }).join(" - ");
+};
+
+/**
  * Formats the custom date range lable for the legend
  * @param {*} start
  * @param {*} end
  * @returns
  */
-const formatDateString = (start, end) => {
+const formatDateString = (start, end, options = { short: false }) => {
   if (!start || !end) return ["", ""];
   const startDate = parseDate(start);
   const endDate = parseDate(end);
 
   const startDateLabel = new Intl.DateTimeFormat("en-US", {
-    month: "long",
+    month: options.short ? "short" : "long",
     day: "numeric",
     year:
       startDate.getFullYear() === endDate.getFullYear() ? undefined : "numeric",
   }).format(startDate);
   const endDateLabel = new Intl.DateTimeFormat("en-US", {
-    month: "long",
+    month: options.short
+      ? startDate.getFullYear() === endDate.getFullYear()
+        ? undefined
+        : "short"
+      : "long",
     day: "numeric",
     year: "numeric",
   }).format(endDate);
@@ -173,7 +190,7 @@ const Legend = ({ classes, ...props }) => {
 
   const handleSetDateRange = (e, option) => {
     option?.value && setActiveDateRange(option.value);
-    if (!option?.value) {
+    if (!option?.value && option !== "backdropClick") {
       setActivePanel("DATA_OPTIONS");
     }
   };
@@ -230,7 +247,10 @@ const Legend = ({ classes, ...props }) => {
       <animated.div ref={toggleRef} className={classes.toggleContainer}>
         <Box className={classes.box}>
           <Typography variant="overline" color="textSecondary">
-            {summaryHeading}
+            {summaryHeading.replace(
+              "{{dateRange}}",
+              getShortDateRangeLabel(...activeDateRange, dateOptions)
+            )}
           </Typography>
           <Summary />
         </Box>

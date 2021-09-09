@@ -87,7 +87,7 @@ Dashboard.defaultProps = {
       SELECT_DATE_START: "Start Date",
       SELECT_DATE_END: "End Date",
       TITLE_DATA_OPTIONS: "Data Options",
-      SUMMARY: "SUMMARY",
+      SUMMARY: "SUMMARY ({{dateRange}})",
       SUMMARY_EF: "Total Eviction Filings",
       SUMMARY_TFA: "Total Amount Filed",
       SUMMARY_SERIES: "Filings By Day",
