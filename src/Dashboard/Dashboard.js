@@ -84,6 +84,7 @@ Dashboard.defaultProps = {
       SELECT_REGION: "Region",
       SELECT_DATE_START: "Start Date",
       SELECT_DATE_END: "End Date",
+      SELECT_COURT: "Court",
       SELECT_DATE_RANGE: "Date Range",
       TITLE_DATA_OPTIONS: "Data Options",
       SUMMARY: "SUMMARY",
@@ -99,6 +100,7 @@ Dashboard.defaultProps = {
       HINT_TOTAL_FILINGS: "",
       HINT_TOTAL_AMOUNT:
         "Filing amounts are only reported within Dallas County, the actual total is much higher.",
+      LABEL_ALL_COURTS: "All Courts",
       LABEL_FIT_BOUNDS: "Zoom to all {{region}}",
       LABEL_UNAVAILABLE: "Unavailable",
       LABEL_REGION_UNAVAILABLE: "Unavailable for {{region}}",

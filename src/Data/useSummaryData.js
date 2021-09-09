@@ -1,15 +1,20 @@
 import { useQuery } from "react-query";
 import { EVICTION_DATA_ENDPOINT } from "../Dashboard/constants";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
+import usePrecinctFilter from "./usePrecinctFilter";
 
 /**
  * Fetches eviction filings data from the API
  */
-const fetchSummary = ({ start, end }) => {
+const fetchSummary = ({ start, end, precinct }) => {
   if (!start || !end) {
     return Promise.reject("start and end dates are required");
   }
-  const paramString = new URLSearchParams({ start, end }).toString();
+  const params = { start, end };
+  if (precinct) {
+    params["precinct"] = precinct;
+  }
+  const paramString = new URLSearchParams(params).toString();
   return fetch(`${EVICTION_DATA_ENDPOINT}/summary?${paramString}`)
     .then((response) => response.json())
     .then((summary) => {
@@ -32,7 +37,12 @@ const fetchSummary = ({ start, end }) => {
  */
 export default function useSummaryData() {
   const activeDateRange = useDashboardStore((state) => state.activeDateRange);
-  return useQuery(["summary", ...activeDateRange], () =>
-    fetchSummary({ start: activeDateRange[0], end: activeDateRange[1] })
+  const [precinct] = usePrecinctFilter();
+  return useQuery(["summary", ...activeDateRange, precinct], () =>
+    fetchSummary({
+      start: activeDateRange[0],
+      end: activeDateRange[1],
+      precinct,
+    })
   );
 }
