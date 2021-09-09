@@ -64,6 +64,16 @@ const DateSelect = ({ type = "start", classes, ...props }) => {
       format={"MM/dd/yyyy"}
       className={clsx(classes.root)}
       keyboardIcon={<ArrowDropDown />}
+      minDate={
+        isStart
+          ? new Date(`${dateRange[0]}T00:00:00`)
+          : new Date(`${activeDateRange[0]}T00:00:00`)
+      }
+      maxDate={
+        isStart
+          ? new Date(`${activeDateRange[1]}T00:00:00`)
+          : new Date(`${dateRange[1]}T00:00:00`)
+      }
       autoOk
     />
   ) : null;
