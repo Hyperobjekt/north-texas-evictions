@@ -65,13 +65,14 @@ const Map = ({ classes, className, ...props }) => {
 
   return (
     <Mapbox
-      mapboxApiAccessToken="pk.eyJ1IjoiaHlwZXJvYmpla3QiLCJhIjoiY2pzZ3Bnd3piMGV6YTQzbjVqa3Z3dHQxZyJ9.rHobqsY_BjkNbqNQS4DNYw"
+      mapboxApiAccessToken="pk.eyJ1IjoidW50ZCIsImEiOiJja2gyYzVxanQwMzhoMnFxcjlxZnUwMHkzIn0.xKV8oPfM6BUJ9EcpGqAwVQ"
       sources={sources}
       layers={layers}
       maxBounds={[
         [-98, 32],
         [-96, 34],
       ]}
+      mapStyle="mapbox://styles/untd/cktapb92z086e17qvsxdkzvyf"
       minZoom={7}
       interactiveLayerIds={interactiveLayers}
       className={clsx(classes.root, className)}
