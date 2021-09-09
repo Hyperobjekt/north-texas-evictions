@@ -130,10 +130,10 @@ export default createTheme({
       },
       contained: {
         backgroundColor: "#ECECD5",
-        "&.MuiButton-disableElevation.Mui-focusVisible, &.MuiButton-disableElevation:focus":
-          {
-            ...FOCUS_STATE,
-          },
+        boxShadow: "none",
+        "&.Mui-focusVisible, &:focus": {
+          ...FOCUS_STATE,
+        },
         "&:hover": {
           backgroundColor: "#D6D6B6",
         },
@@ -156,6 +156,7 @@ export default createTheme({
       },
     },
     MuiInputBase: {
+      root: {},
       input: {
         padding: "0.75rem 0.75rem 0.6666rem",
       },
@@ -175,6 +176,7 @@ export default createTheme({
         "&.dark": {
           background: "#4a4646",
           border: 0,
+          transition: `background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms`,
           "& $input": {
             color: HEADER_TEXT_COLOR,
           },
@@ -189,7 +191,7 @@ export default createTheme({
         marginLeft: "0.75rem",
         marginRight: 0,
         position: "relative",
-        top: "0.06125rem",
+        top: "0.0625rem",
       },
     },
     MuiSelect: {
@@ -220,7 +222,6 @@ export default createTheme({
     },
     MuiButton: {
       variant: "outlined",
-      disableElevation: true,
     },
     text: {
       primary: "#444743",

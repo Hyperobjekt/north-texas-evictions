@@ -3,16 +3,12 @@ import { Box } from "@material-ui/core";
 import useLanguageStore from "../Language/useLanguageStore";
 import { Legend } from "../Legend";
 import { Map } from "../Map";
-import { QueryClient, QueryClientProvider } from "react-query";
 import Panel from "../Panel/Panel";
 import { withStyles } from "@material-ui/styles";
 import { Tooltip } from "../Tooltip";
 import useDashboardStore from "./hooks/useDashboardStore";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-
-// Create a client
-const queryClient = new QueryClient();
 
 const Wrapper = withStyles({
   root: {
@@ -42,18 +38,16 @@ const Dashboard = ({ lang = "en", langDict }) => {
   );
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Wrapper onMouseMove={handleMouseMove}>
-          <Box position="relative" style={{ flex: 1 }}>
-            <Legend />
-            <Map />
-          </Box>
-          <Panel open={true} />
-          <Tooltip />
-        </Wrapper>
-      </MuiPickersUtilsProvider>
-    </QueryClientProvider>
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <Wrapper onMouseMove={handleMouseMove}>
+        <Box position="relative" style={{ flex: 1 }}>
+          <Legend />
+          <Map />
+        </Box>
+        <Panel open={true} />
+        <Tooltip />
+      </Wrapper>
+    </MuiPickersUtilsProvider>
   );
 };
 
@@ -98,6 +92,7 @@ Dashboard.defaultProps = {
       SUMMARY_SERIES: "Filings By Day",
       LEGEND: "MAP LEGEND",
       LEGEND_TITLE: "CURRENTLY VIEWING",
+      LABEL_FIT_BOUNDS: "Zoom to all {{region}}",
     },
   },
 };
