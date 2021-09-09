@@ -95,6 +95,7 @@ Dashboard.defaultProps = {
       LEGEND: "MAP LEGEND",
       LEGEND_TITLE: "CURRENTLY VIEWING",
       LABEL_ALL_COURTS: "All Courts",
+      LABEL_FIT_BOUNDS: "Zoom to all {{region}}",
     },
   },
 };

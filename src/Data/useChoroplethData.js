@@ -1,3 +1,4 @@
+import bbox from "@turf/bbox";
 import { useQuery } from "react-query";
 import useDashboardRegion from "../Dashboard/hooks/useDashboardRegion";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
@@ -13,9 +14,11 @@ const fetchChoroplethData = (url) => {
   return fetch(url)
     .then((response) => response.json())
     .then((json) => {
+      const geojson = addFeatureIds(json);
       return {
         extents: extractExtentsFromGeojson(json),
-        geojson: addFeatureIds(json),
+        geojson,
+        bounds: bbox(geojson),
       };
     });
 };

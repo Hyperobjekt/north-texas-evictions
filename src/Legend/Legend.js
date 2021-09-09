@@ -79,7 +79,6 @@ const getDateRangeLabel = (start, end) => {
   if (!start || !end) return "";
   const selectedOption = DATE_OPTIONS.find((option) => {
     if (!option.value || option.value.length !== 2) return false;
-    // console.log(option.value);
     return option.value[0] === start && option.value[1] === end;
   });
   if (!selectedOption)
