@@ -2,10 +2,10 @@ import useDashboardContext from "./useDashboardContext";
 import useDebouncedViewport from "./useDebouncedViewport";
 
 // default route template
-const ROUTE_TEMPLATE =
-  "#/:activeRegion/:activeBubble/:activeChoropleth/:start/:end/:zoom/:lat/:lon";
+export const ROUTE_TEMPLATE =
+  "#/:activeRegion/:activeBubble/:activeChoropleth/:start/:end/:zoom/:latitude/:longitude";
 
-const parseRouteValues = (template, routeString) => {
+export const parseRouteValues = (template = ROUTE_TEMPLATE, routeString) => {
   if (!routeString) return {};
   const regex = template.replace(/:[A-Za-z]+/g, "(:?[.A-Za-z0-9-]+)");
   // pull the keys from the route template
@@ -24,14 +24,14 @@ const parseRouteValues = (template, routeString) => {
   keys.forEach(
     (key, i) =>
       (result[key] =
-        ["lat", "lon", "zoom"].indexOf(key) > -1
+        ["latitude", "longitude", "zoom"].indexOf(key) > -1
           ? Number(values[i])
           : values[i])
   );
   return result;
 };
 
-const populateRouteValues = (template, values) => {
+export const populateRouteValues = (template = ROUTE_TEMPLATE, values) => {
   const regex = template.replace(/:[A-Za-z]+/g, "(:?[.A-Za-z0-9-]+)");
   // pull the keys from the route template
   const templateKeys = template
@@ -72,9 +72,9 @@ export default function useDashboardRoute(routeTemplate = ROUTE_TEMPLATE) {
     start: context?.activeDateRange[0],
     end: context?.activeDateRange[1],
     zoom,
-    lat: latitude,
-    lon: longitude,
     precinct: context?.filters.find((f) => f[0] === "precinct")?.[1],
+    latitude,
+    longitude,
   };
   return {
     route: populateRouteValues(routeTemplate, routeValues),
