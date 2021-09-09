@@ -11,8 +11,8 @@ import ChoroplethSelect from "../Dashboard/components/ChoroplethSelect";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import shallow from "zustand/shallow";
 import CloseIcon from "@material-ui/icons/Close";
-import DateSelect from "../Dashboard/components/DateSelect";
 import CourtSelect from "../Dashboard/components/CourtSelect";
+import DateRangeSelect from "../Dashboard/components/DateRangeSelect";
 const styles = (theme) => ({
   root: {
     position: "relative",
@@ -68,8 +68,7 @@ const Panel = ({ classes, position = "right" }) => {
             <RegionSelect />
             <BubbleSelect />
             <ChoroplethSelect />
-            <DateSelect type="start" />
-            <DateSelect type="end" />
+            <DateRangeSelect />
             <CourtSelect />
           </Stack>
         </Box>

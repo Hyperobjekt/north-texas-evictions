@@ -2,10 +2,14 @@ import React, { useEffect } from "react";
 import Dashboard from "../Dashboard";
 import Header from "./components/Header";
 import useDashboardRoute from "../Dashboard/hooks/useDashboardRoute";
-import Search from "./components/Search";
+import Search from "../Search";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import useDashboardDefaults from "../Dashboard/hooks/useDashboardDefaults";
 import { CircularProgress } from "@material-ui/core";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+// Create a client
+const queryClient = new QueryClient();
 
 const App = ({ config }) => {
   // pull ready state from the store
@@ -31,12 +35,12 @@ const App = ({ config }) => {
   });
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Header>
-        <Search className="dark" placeholder="search" />
+        <Search />
       </Header>
       {ready ? <Dashboard /> : <CircularProgress />}
-    </>
+    </QueryClientProvider>
   );
 };
 
@@ -105,7 +109,7 @@ App.defaultProps = {
       { id: "pvr", type: "choropleth", format: "percent" },
       { id: "rb", type: "choropleth", format: "percent" },
     ],
-    dateRange: ["2018-01-01", "2021-05-01"],
+    dateRange: ["2018-01-01", "2022-05-01"],
     filters: [],
     zoom: 8,
     lat: 32.74,
