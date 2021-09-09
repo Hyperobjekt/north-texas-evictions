@@ -70,15 +70,14 @@ const SummaryTrend = ({ lineData }) => {
 };
 
 const Summary = ({ classes, ...props }) => {
-  const { data: summary } = useSummaryData();
+  const { data: summary, status } = useSummaryData();
   const langKeys = [`SUMMARY_EF`, `SUMMARY_TFA`, `SUMMARY_SERIES`];
   const [filingsLabel, amountLabel, seriesLabel] = useLang(langKeys);
   const intFormatter = useFormatter("ef");
   const currencyFormatter = useFormatter("mfa");
   const hintKeys = ["HINT_TOTAL_FILINGS", "HINT_TOTAL_AMOUNT"];
   const hintValues = useLang(hintKeys);
-
-  if (!summary) return null;
+  const isReady = status === "success";
 
   return (
     <Box>
@@ -87,7 +86,7 @@ const Summary = ({ classes, ...props }) => {
         hint={hintKeys[0] !== hintValues[0] && hintValues[0]}
       >
         <Typography className={classes.value}>
-          {intFormatter(summary.filings)}
+          {isReady ? intFormatter(summary.filings) : "..."}
         </Typography>
       </LegendRow>
       <LegendRow
@@ -95,11 +94,11 @@ const Summary = ({ classes, ...props }) => {
         hint={hintKeys[1] !== hintValues[1] && hintValues[1]}
       >
         <Typography className={classes.value}>
-          {currencyFormatter(summary.amount)}
+          {isReady ? currencyFormatter(summary.amount) : "..."}
         </Typography>
       </LegendRow>
       <LegendRow title={seriesLabel}>
-        <SummaryTrend lineData={summary.series} />
+        <SummaryTrend lineData={isReady ? summary.series : []} />
       </LegendRow>
     </Box>
   );

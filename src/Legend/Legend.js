@@ -23,6 +23,7 @@ import useDashboardChoropleth from "../Dashboard/hooks/useDashboardChoropleth";
 import useDashboardRegion from "../Dashboard/hooks/useDashboardRegion";
 import useDashboardDateRange from "../Dashboard/hooks/useDashboardDateRange";
 import { formatDate, parseDate } from "../Dashboard/utils";
+import DataFlags from "./components/DataFlags";
 
 const DATE_OPTIONS = [
   {
@@ -279,6 +280,7 @@ const Legend = ({ classes, ...props }) => {
           </Typography>
           <BubbleLegend title={bubbleName} />
           <ChoroplethLegend title={choroplethName} />
+          <DataFlags />
         </Box>
       </animated.div>
       {isMobile && <MobileToggle onClick={() => setShowSummary((ss) => !ss)} />}
