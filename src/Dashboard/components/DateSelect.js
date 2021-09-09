@@ -3,15 +3,15 @@ import useDashboardStore from "../hooks/useDashboardStore";
 import { withStyles } from "@material-ui/core";
 import shallow from "zustand/shallow";
 import { KeyboardDatePicker } from "@material-ui/pickers";
-import clsx from "clsx";
 import { ArrowDropDown } from "@material-ui/icons";
 import { format } from "date-fns";
+import clsx from "clsx";
 
 const styles = (theme) => ({
   root: {
     "& .MuiInputAdornment-root": {
       position: "absolute",
-      right: theme.spacing(-1),
+      right: theme.spacing(-0.5),
     },
   },
 });
@@ -30,8 +30,7 @@ const isValidDate = (dateString, dateRange) => {
 };
 
 /**
- * Text field for start date
- * TODO: switch to date picker for entry
+ * Start/end date picker
  */
 const DateSelect = ({ type = "start", classes, ...props }) => {
   const [dateRange, activeDateRange, setActiveDateRange] = useDashboardStore(
@@ -63,8 +62,9 @@ const DateSelect = ({ type = "start", classes, ...props }) => {
       }
       onChange={handleChange}
       format={"MM/dd/yyyy"}
-      keyboardIcon={<ArrowDropDown />}
       className={clsx(classes.root)}
+      keyboardIcon={<ArrowDropDown />}
+      autoOk
     />
   ) : null;
 };
