@@ -65,6 +65,7 @@ const getShortDateRangeLabel = (start, end) => {
  * @returns
  */
 const formatDateString = (start, end, options = { short: false }) => {
+  console.log("jfc", start, end);
   if (!start || !end) return ["", ""];
   const startDate = parseDate(start);
   const endDate = parseDate(end);
@@ -77,7 +78,7 @@ const formatDateString = (start, end, options = { short: false }) => {
   }).format(startDate);
   const endDateLabel = new Intl.DateTimeFormat("en-US", {
     month: options.short
-      ? startDate.getFullYear() === endDate.getFullYear()
+      ? startDate.getMonth() === endDate.getMonth()
         ? undefined
         : "short"
       : "long",
