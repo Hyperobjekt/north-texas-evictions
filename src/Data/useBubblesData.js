@@ -33,18 +33,33 @@ const fetchBubbleData = ({ region, start, end, precinct }) => {
 };
 
 /**
+ * Calculates the eviction filing rate from the feature properties (eviction filings / renter households)
+ * @param {*} feature
+ * @returns
+ */
+const getFilingRate = (feature) => {
+  if (!feature.properties) return feature;
+  const { properties } = feature;
+  const { pop, ef, id } = properties;
+  // TODO: temporarily filtering out filing rate for specific tract, remove this when it has a more accurate rental households value
+  if (id === "48113014002") {
+    console.warn("filtering out eviction filing rate for census tract 140.02");
+    return null;
+  }
+  return ef && pop ? (ef / pop) * 1000 : null;
+};
+
+/**
  * Adds filings per 1000 renters metric to geojson
  */
 const addFilingRatesToGeojson = (geojson) => {
   const features = geojson.features.map((feature) => {
     if (!feature.properties) return feature;
-    const { properties } = feature;
-    const { pop, ef } = properties;
     return {
       ...feature,
       properties: {
-        ...properties,
-        efr: ef && pop ? (ef / pop) * 1000 : null, // filings per 1000 renters
+        ...feature.properties,
+        efr: getFilingRate(feature),
       },
     };
   });
