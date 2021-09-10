@@ -1329,10 +1329,10 @@
     d3-selection "^2.0.0"
     deepmerge "^4.2.2"
 
-"@hyperobjekt/mapbox@2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@hyperobjekt/mapbox/-/mapbox-2.0.3.tgz#998a4b9b54e00564192bf001c13e7567d9c78666"
-  integrity sha512-QHyD7J9M2/ns2yzwgLrqgdAGHarRiJ53cy9X7XO2jbvRbZchIfl2mUy4BNAq1SET1s3UBdCIq1ljL2LjmMN5fw==
+"@hyperobjekt/mapbox@2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@hyperobjekt/mapbox/-/mapbox-2.0.4.tgz#abd723067fcbbeadea7dd7c7801de2c875809d8e"
+  integrity sha512-6Lp3LvmWbX7WU6c3bZyzlBAJXy1Dq9C7g3FpxxwjAbI7dbzzS98ruobClZuKKMj2Lba98Uy8eStjtJYZydE7QA==
   dependencies:
     "@hyperobjekt/hooks" "^1.1.1"
     "@hyperobjekt/us-states" "^1.0.4"
