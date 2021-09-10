@@ -1,13 +1,12 @@
 import React from "react";
 import { Box, Typography, withStyles } from "@material-ui/core";
-
-import useDashboardContext from "../../Dashboard/hooks/useDashboardContext";
 import { useTooltipData } from "../../Tooltip";
 import useDataExtents from "../../Data/useDataExtents";
 import { Scale } from "@hyperobjekt/legend";
 import { DEFAULT_CHOROPLETH_COLORS } from "../../Dashboard/constants";
 import useFormatter from "../../Dashboard/hooks/useFormatter";
 import { useLang } from "../../Language";
+import useDashboardChoropleth from "../../Dashboard/hooks/useDashboardChoropleth";
 
 const styles = (theme) => ({
   root: {
@@ -32,7 +31,10 @@ const styles = (theme) => ({
 
 const ChoroplethLegend = (props) => {
   const tooltipData = useTooltipData();
-  const { activeChoropleth } = useDashboardContext();
+  const [activeChoropleth, , choropleths] = useDashboardChoropleth();
+  const choroplethConfig = choropleths.find((c) => c.id === activeChoropleth);
+  const scaleType = choroplethConfig?.scale || "continuous";
+  const scaleOptions = choroplethConfig?.scaleOptions || {};
   const extents = useDataExtents();
   const width = 188;
   const activeValue = tooltipData && tooltipData[activeChoropleth];
@@ -57,15 +59,18 @@ const ChoroplethLegend = (props) => {
         </Typography>
       ) : (
         <Scale
-          type="continuous"
+          type={scaleType}
           width={width}
           margin={margin}
           data={extents[activeChoropleth][2]}
           colors={DEFAULT_CHOROPLETH_COLORS}
+          {...scaleOptions}
         >
           <Scale.Marker
             value={activeValue}
-            label={!isNaN(activeValue) && formatter(activeValue)}
+            label={
+              Number.isFinite(activeValue) ? formatter(activeValue) : undefined
+            }
           />
           <Scale.Colors height={16} />
           <Scale.Ticks
