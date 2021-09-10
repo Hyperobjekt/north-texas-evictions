@@ -277,7 +277,7 @@ const Legend = ({ classes, ...props }) => {
           <Typography variant="overline" color="textSecondary">
             {legendHeading}
           </Typography>
-          <Stack direction="vertical" alignItems="stretch" between="xs">
+          <Stack direction="vertical" alignItems="stretch" between="none">
             <LegendRow title={bubbleName}>
               <BubbleLegend />
             </LegendRow>

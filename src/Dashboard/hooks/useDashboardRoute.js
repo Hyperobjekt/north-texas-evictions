@@ -21,13 +21,16 @@ export const parseRouteValues = (template = ROUTE_TEMPLATE, routeString) => {
   if (keys.length !== values.length) return {};
   // map keys and values to object
   var result = {};
-  keys.forEach(
-    (key, i) =>
-      (result[key] =
-        ["latitude", "longitude", "zoom"].indexOf(key) > -1
-          ? Number(values[i])
-          : values[i])
-  );
+  keys
+    // .filter((k) => ["start", "end"].indexOf(k) === -1)
+    .forEach(
+      (key, i) =>
+        (result[key] =
+          ["latitude", "longitude", "zoom"].indexOf(key) > -1
+            ? Number(values[i])
+            : values[i])
+    );
+  result.activeDateRange = [result.start, result.end];
   return result;
 };
 
