@@ -35,6 +35,7 @@ const ChoroplethLegend = (props) => {
   const choroplethConfig = choropleths.find((c) => c.id === activeChoropleth);
   const scaleType = choroplethConfig?.scale || "continuous";
   const scaleOptions = choroplethConfig?.scaleOptions || {};
+  const scaleColors = choroplethConfig?.colors || DEFAULT_CHOROPLETH_COLORS;
   const extents = useDataExtents();
   const width = 188;
   const activeValue = tooltipData && tooltipData[activeChoropleth];
@@ -63,7 +64,7 @@ const ChoroplethLegend = (props) => {
           width={width}
           margin={margin}
           data={extents[activeChoropleth][2]}
-          colors={DEFAULT_CHOROPLETH_COLORS}
+          colors={scaleColors}
           {...scaleOptions}
         >
           <Scale.Marker

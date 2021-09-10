@@ -61,7 +61,7 @@ const getChoroplethLayerStyle = ({
   const fillRule = hasSteps
     ? ["step", ["get", activeChoropleth], ...steps]
     : ["interpolate", ["linear"], ["get", activeChoropleth], ...steps];
-
+  const colorArray = scales.color.range();
   // const isUnavailable = !extent || !extent[0] || !extent[1];
   return [
     {
@@ -85,7 +85,7 @@ const getChoroplethLayerStyle = ({
       source: `${activeRegion}-choropleth`,
       type: "line",
       paint: {
-        "line-color": colors[colors.length - 1],
+        "line-color": colorArray[colorArray.length - 1], // use the darkest color on the scale for borders
         "line-width": [
           "case",
           ["boolean", ["feature-state", "hover"], false],
@@ -195,7 +195,6 @@ export default function useMapLayers() {
     );
   const extents = useDataExtents();
 
-  // console.log({ scaleData, scaleType, scaleOptions, metricConfig, extents });
   return useMemo(() => {
     const metricConfig = metrics.find((m) => m.id === activeChoropleth);
     const scaleType = metricConfig?.scale || "continuous";
