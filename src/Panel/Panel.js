@@ -29,7 +29,7 @@ const styles = (theme) => ({
       right: 0,
       top: 0,
       width: "100%",
-      zIndex: 9999,
+      zIndex: 1101,
     },
   },
   contentWrapper: {
