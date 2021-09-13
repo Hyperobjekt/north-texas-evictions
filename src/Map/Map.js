@@ -10,14 +10,12 @@ import clsx from "clsx";
 import { FOCUS_STATE } from "../theme";
 import { AspectRatio } from "@material-ui/icons";
 import useFlyToFitBounds from "./hooks/useFlyToFitBounds";
-import { parseRouteValues } from "../Dashboard/hooks/useDashboardRoute";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
+import { parseRoute } from "../App/router";
 
 const styles = (theme) => ({
   root: {
-    position: "absolute",
-    top: 0,
-    left: 0,
+    position: "relative",
     width: "100%",
     height: "100%",
     zIndex: 1,
@@ -56,7 +54,7 @@ const styles = (theme) => ({
   },
 });
 
-const Map = ({ classes, className, ...props }) => {
+const Map = ({ classes, className, children, ...props }) => {
   // sources for the map based on current dashboard state
   const sources = useMapSources();
   // layers for the map based on the current dashboard state
@@ -72,7 +70,7 @@ const Map = ({ classes, className, ...props }) => {
   const defaultViewport = useDashboardStore((state) => state.defaultViewport);
   if (sources.length > 0 && !hasZoomed.current) {
     hasZoomed.current = true;
-    const { zoom, latitude, longitude } = parseRouteValues(
+    const { zoom, latitude, longitude } = parseRoute(
       undefined,
       window.location.hash
     );
@@ -111,6 +109,7 @@ const Map = ({ classes, className, ...props }) => {
           showCompass={false}
         />
       </Stack>
+      {children}
     </Mapbox>
   );
 };
