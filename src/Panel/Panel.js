@@ -13,6 +13,10 @@ import shallow from "zustand/shallow";
 import CloseIcon from "@material-ui/icons/Close";
 import CourtSelect from "../Dashboard/components/CourtSelect";
 import DateRangeSelect from "../Dashboard/components/DateRangeSelect";
+import useMediaQueries from "../App/hooks/useMediaQueries";
+
+const PANEL_MAX_WIDTH = 320;
+
 const styles = (theme) => ({
   root: {
     position: "relative",
@@ -20,6 +24,13 @@ const styles = (theme) => ({
     height: "100%",
     zIndex: 100,
     overflow: "visible",
+    [theme.breakpoints.down("xs")]: {
+      position: "fixed",
+      right: 0,
+      top: 0,
+      width: "100%",
+      zIndex: 9999,
+    },
   },
   contentWrapper: {
     minWidth: 320,
@@ -38,9 +49,10 @@ const Panel = ({ classes, position = "right" }) => {
     (state) => [state.activePanel, state.setActivePanel],
     shallow
   );
+  const { isMobile } = useMediaQueries();
   const open = activePanel === "DATA_OPTIONS";
   const style = useSpring({
-    maxWidth: open ? 320 : 0,
+    maxWidth: open ? (isMobile ? window.innerWidth : PANEL_MAX_WIDTH) : 0,
   });
 
   const title = useLang("TITLE_DATA_OPTIONS");
@@ -58,7 +70,7 @@ const Panel = ({ classes, position = "right" }) => {
           alignItems="center"
           className={clsx(classes.header)}
         >
-          <Typography>{title}</Typography>
+          <Typography variant="h2">{title}</Typography>
           <IconButton onClick={() => setActivePanel(null)}>
             <CloseIcon />
           </IconButton>

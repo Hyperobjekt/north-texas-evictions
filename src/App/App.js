@@ -5,7 +5,7 @@ import useDashboardRoute from "../Dashboard/hooks/useDashboardRoute";
 import Search from "../Search";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import useDashboardDefaults from "../Dashboard/hooks/useDashboardDefaults";
-import { CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 // Create a client
@@ -44,7 +44,19 @@ const App = ({ config }) => {
       <Header>
         <Search />
       </Header>
-      {ready ? <Dashboard /> : <CircularProgress />}
+      {ready ? (
+        <Dashboard />
+      ) : (
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          width="100%"
+          height="100%"
+        >
+          <CircularProgress />
+        </Box>
+      )}
     </QueryClientProvider>
   );
 };
