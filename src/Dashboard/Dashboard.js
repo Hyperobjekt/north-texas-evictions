@@ -1,8 +1,7 @@
 import React from "react";
 import { Box } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const Wrapper = withStyles({
@@ -25,9 +24,7 @@ const queryClient = new QueryClient();
 const Dashboard = ({ children, ...props }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Wrapper {...props}>{children}</Wrapper>
-      </MuiPickersUtilsProvider>
+      <Wrapper {...props}>{children}</Wrapper>
     </QueryClientProvider>
   );
 };

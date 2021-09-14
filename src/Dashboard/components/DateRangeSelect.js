@@ -4,6 +4,8 @@ import clsx from "clsx";
 import { useLang } from "../../Language";
 import { withStyles } from "@material-ui/styles";
 import DateSelect from "./DateSelect";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 const styles = (theme) => ({
   root: {
@@ -25,19 +27,21 @@ const styles = (theme) => ({
 const DateRangeSelect = ({ classes }) => {
   const title = useLang("SELECT_DATE_RANGE");
   return (
-    <Box className={clsx(classes.root)}>
-      <FormLabel className={clsx(classes.label)}>{title}</FormLabel>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        className={clsx(classes.row)}
-      >
-        <DateSelect type="start" />
-        <Typography className={clsx(classes.to)}>to</Typography>
-        <DateSelect type="end" />
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <Box className={clsx(classes.root)}>
+        <FormLabel className={clsx(classes.label)}>{title}</FormLabel>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          className={clsx(classes.row)}
+        >
+          <DateSelect type="start" />
+          <Typography className={clsx(classes.to)}>to</Typography>
+          <DateSelect type="end" />
+        </Box>
       </Box>
-    </Box>
+    </MuiPickersUtilsProvider>
   );
 };
 
