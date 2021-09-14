@@ -8,7 +8,12 @@ import { DEFAULT_BUBBLE_COLOR } from "../../Dashboard/constants";
 import useFormatter from "../../Dashboard/hooks/useFormatter";
 
 const styles = (theme) => ({
-  root: {},
+  root: {
+    width: 180,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });
 
 const BubbleLegend = (props) => {

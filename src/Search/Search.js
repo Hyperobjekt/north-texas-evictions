@@ -5,7 +5,7 @@ import {
   makeStyles,
   withStyles,
 } from "@material-ui/core";
-import SearchIcon from "@material-ui/icons/Search";
+import SearchIcon from "../Icons/SearchIcon";
 import useSearchData from "./hooks/useSearchData";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import clsx from "clsx";
@@ -15,7 +15,6 @@ import useDashboardRegion from "../Dashboard/hooks/useDashboardRegion";
 const SearchInput = withStyles((theme) => ({
   root: {
     marginLeft: "auto",
-    marginRight: theme.spacing(2),
     height: 42,
     paddingRight: theme.spacing(2),
   },
@@ -26,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     maxWidth: 280,
     marginLeft: "auto",
-    marginRight: theme.spacing(2),
+    marginRight: 0,
     '& .MuiAutocomplete-inputRoot[class*="MuiInput-root"] .MuiAutocomplete-input':
       {
         padding: `0.2rem 0.5rem 0`,
@@ -35,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
       {
         paddingRight: "3rem",
       },
+    // add spacing to the element beside the input (if any)
+    "& + *": {
+      marginLeft: theme.spacing(2),
+    },
   },
   clearIndicator: {
     visibility: "visible",
