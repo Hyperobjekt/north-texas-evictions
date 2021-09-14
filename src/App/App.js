@@ -67,41 +67,51 @@ App.defaultProps = {
         id: "counties",
         type: "geojson",
         choropleth:
-          "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/demo/NTEP_demographics_county.geojson",
+          process.env.REACT_APP_GEOJSON_ENDPOINT +
+          "demo/NTEP_demographics_county.geojson",
         bubble:
-          "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/bubble/NTEP_bubble_county.geojson",
+          process.env.REACT_APP_GEOJSON_ENDPOINT +
+          "bubble/NTEP_bubble_county.geojson",
       },
       {
         id: "cities",
         type: "geojson",
         choropleth:
-          "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/demo/NTEP_demographics_place.geojson",
+          process.env.REACT_APP_GEOJSON_ENDPOINT +
+          "demo/NTEP_demographics_place.geojson",
         bubble:
-          "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/bubble/NTEP_bubble_place.geojson",
+          process.env.REACT_APP_GEOJSON_ENDPOINT +
+          "bubble/NTEP_bubble_place.geojson",
       },
       {
         id: "zips",
         type: "geojson",
         choropleth:
-          "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/demo/NTEP_demographics_zip.geojson",
+          process.env.REACT_APP_GEOJSON_ENDPOINT +
+          "demo/NTEP_demographics_zip.geojson",
         bubble:
-          "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/bubble/NTEP_bubble_zip.geojson",
+          process.env.REACT_APP_GEOJSON_ENDPOINT +
+          "bubble/NTEP_bubble_zip.geojson",
       },
       {
         id: "districts",
         type: "geojson",
         choropleth:
-          "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/demo/NTEP_demographics_council.geojson",
+          process.env.REACT_APP_GEOJSON_ENDPOINT +
+          "demo/NTEP_demographics_council.geojson",
         bubble:
-          "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/bubble/NTEP_bubble_council.geojson",
+          process.env.REACT_APP_GEOJSON_ENDPOINT +
+          "bubble/NTEP_bubble_council.geojson",
       },
       {
         id: "tracts",
         type: "geojson",
         choropleth:
-          "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/demo/NTEP_demographics_tract.geojson",
+          process.env.REACT_APP_GEOJSON_ENDPOINT +
+          "demo/NTEP_demographics_tract.geojson",
         bubble:
-          "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/bubble/NTEP_bubble_tract.geojson",
+          process.env.REACT_APP_GEOJSON_ENDPOINT +
+          "bubble/NTEP_bubble_tract.geojson",
       },
     ],
     metrics: [
