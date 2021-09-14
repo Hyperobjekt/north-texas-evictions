@@ -83,14 +83,14 @@ const Map = ({ classes, className, children, ...props }) => {
 
   return (
     <Mapbox
-      mapboxApiAccessToken="pk.eyJ1IjoidW50ZCIsImEiOiJja2gyYzVxanQwMzhoMnFxcjlxZnUwMHkzIn0.xKV8oPfM6BUJ9EcpGqAwVQ"
+      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+      mapStyle={process.env.REACT_APP_MAPBOX_STYLE}
       sources={sources}
       layers={layers}
       maxBounds={[
         [-98, 32],
         [-96, 34],
       ]}
-      mapStyle="mapbox://styles/untd/cktapb92z086e17qvsxdkzvyf"
       minZoom={7}
       interactiveLayerIds={interactiveLayers}
       className={clsx(classes.root, className)}
