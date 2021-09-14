@@ -137,7 +137,6 @@ const Legend = ({ classes, ...props }) => {
   const [activeChoropleth, setActiveChoropleth, choroplethMetrics] =
     useDashboardChoropleth();
 
-  console.count("Legend");
   // prepare language
   const langKeys = [
     `METRIC_${activeBubble}`,
