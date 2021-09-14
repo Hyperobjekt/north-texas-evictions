@@ -8,6 +8,7 @@ import useMediaQueries from "../hooks/useMediaQueries";
 
 const Header = ({ children, ...props }) => {
   const { isMobile } = useMediaQueries();
+
   return (
     <HypHeader stickyOffset={0} elevation={1} {...props}>
       <Box

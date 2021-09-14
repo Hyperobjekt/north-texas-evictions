@@ -1,11 +1,14 @@
-import useDashboardContext from "./useDashboardContext";
-import useDebouncedViewport from "./useDebouncedViewport";
-
 // default route template
 export const ROUTE_TEMPLATE =
   "#/:activeRegion/:activeBubble/:activeChoropleth/:start/:end/:zoom/:latitude/:longitude";
 
-export const parseRouteValues = (template = ROUTE_TEMPLATE, routeString) => {
+/**
+ * Parses route values from the provided route string.
+ * @param {*} template
+ * @param {*} routeString
+ * @returns
+ */
+export const parseRoute = (template = ROUTE_TEMPLATE, routeString) => {
   if (!routeString) return {};
   const regex = template.replace(/:[A-Za-z]+/g, "(:?[.A-Za-z0-9-]+)");
   // pull the keys from the route template
@@ -31,10 +34,16 @@ export const parseRouteValues = (template = ROUTE_TEMPLATE, routeString) => {
             : values[i])
     );
   result.activeDateRange = [result.start, result.end];
+  const searchParams = new URLSearchParams(
+    window.location.hash.split("?")?.[1]
+  );
+  result.precinct = searchParams.get("precinct");
   return result;
 };
 
-export const populateRouteValues = (template = ROUTE_TEMPLATE, values) => {
+/** Inserts route values into the provided template */
+export const populateRoute = (template = ROUTE_TEMPLATE, values) => {
+  if (!values) return "none";
   const regex = template.replace(/:[A-Za-z]+/g, "(:?[.A-Za-z0-9-]+)");
   // pull the keys from the route template
   const templateKeys = template
@@ -46,7 +55,7 @@ export const populateRouteValues = (template = ROUTE_TEMPLATE, values) => {
   // only update route if all values are present
   if (templateKeys.sort().join(",") !== valueKeys.sort().join(",")) {
     console.warn("could not update route, invalid values provided");
-    return;
+    return "#/invalid";
   }
   // populate the template with the values
   const hashRoute = Object.entries(hashValues).reduce(
@@ -58,36 +67,14 @@ export const populateRouteValues = (template = ROUTE_TEMPLATE, values) => {
   return precinct ? `${hashRoute}?precinct=${precinct}` : hashRoute;
 };
 
-/**
- * Returns an object that contains the dashboard route query params string,
- * and a parser function.
- * @returns { route: string, parseRoute: function }
- */
-export default function useDashboardRoute(routeTemplate = ROUTE_TEMPLATE) {
-  // pull current dashboard values from the store
-  const context = useDashboardContext();
-  // pull current viewport values for the map
-  const { latitude, longitude, zoom } = useDebouncedViewport();
-  const routeValues = {
-    activeRegion: context?.activeRegion,
-    activeBubble: context?.activeBubble,
-    activeChoropleth: context?.activeChoropleth,
-    start: context?.activeDateRange[0],
-    end: context?.activeDateRange[1],
-    zoom,
-    precinct: context?.filters.find((f) => f[0] === "precinct")?.[1],
-    latitude,
-    longitude,
-  };
-  return {
-    route: populateRouteValues(routeTemplate, routeValues),
-    getCurrentParams: () => {
-      const params = parseRouteValues(routeTemplate, window.location.hash);
-      const searchParams = new URLSearchParams(
-        window.location.hash.split("?")?.[1]
-      );
-      params.precinct = searchParams.get("precinct");
-      return params;
-    },
-  };
-}
+export const validateRoute = ({ route, values }) => {
+  if (!values) return false;
+  if (route.indexOf("null") > -1 || route.indexOf("undefined") > -1)
+    return false;
+  return true;
+};
+
+export const getCurrentRouteParams = () => {
+  const params = parseRoute(ROUTE_TEMPLATE, window.location.hash);
+  return params;
+};
