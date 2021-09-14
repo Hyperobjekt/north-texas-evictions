@@ -11,15 +11,20 @@ const round = (value, decimals = 3) => {
  * @returns
  */
 export default function useDebouncedViewport() {
-  const [{ latitude, longitude, zoom }] = useMapViewport();
-  const debouncedLatitude = useDebounce(round(latitude), 100);
-  const debouncedLongitude = useDebounce(round(longitude), 100);
-  const debouncedZoom = useDebounce(round(zoom), 100);
+  const [viewport] = useMapViewport();
+  const value = [
+    round(viewport.latitude),
+    round(viewport.longitude),
+    round(viewport.zoom),
+  ].join(",");
+  const debouncedValue = useDebounce(value, 1000);
   return useMemo(() => {
+    if (!debouncedValue) return {};
+    const [latitude, longitude, zoom] = debouncedValue.split(",");
     return {
-      latitude: debouncedLatitude,
-      longitude: debouncedLongitude,
-      zoom: debouncedZoom,
+      latitude,
+      longitude,
+      zoom,
     };
-  }, [debouncedLatitude, debouncedLongitude, debouncedZoom]);
+  }, [debouncedValue]);
 }

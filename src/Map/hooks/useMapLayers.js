@@ -8,6 +8,7 @@ import {
 import useDashboardStore from "../../Dashboard/hooks/useDashboardStore";
 import shallow from "zustand/shallow";
 import useDataExtents from "../../Data/useDataExtents";
+import { getScales } from "@hyperobjekt/legend/lib/Scales/utils";
 
 const getLinearRamp = (from, to, steps = 1) => {
   const fromInterpolator = getPositionScale("linear", [0, 1], from);
@@ -32,6 +33,16 @@ const getLinearColorRamp = (from, to, steps = 1) => {
   return values;
 };
 
+const getStepsFromChunks = (chunks) => {
+  const steps = [];
+  chunks.forEach((chunk, i) => {
+    if (i === 0) steps.push(chunk.color);
+    steps.push(chunk.value[0]);
+    steps.push(chunk.color);
+  });
+  return steps;
+};
+
 /**
  * Returns a mapboxgl style object for choropleth layers
  */
@@ -40,8 +51,17 @@ const getChoroplethLayerStyle = ({
   activeRegion = "tracts",
   extents = [0, 1],
   colors = DEFAULT_CHOROPLETH_COLORS,
+  scales,
 }) => {
   const extent = extents && extents[activeChoropleth];
+  const hasSteps = scales.chunks;
+  const steps = hasSteps
+    ? getStepsFromChunks(scales.chunks)
+    : getLinearColorRamp(extent, colors);
+  const fillRule = hasSteps
+    ? ["step", ["get", activeChoropleth], ...steps]
+    : ["interpolate", ["linear"], ["get", activeChoropleth], ...steps];
+  const colorArray = scales.color.range();
   // const isUnavailable = !extent || !extent[0] || !extent[1];
   return [
     {
@@ -52,12 +72,7 @@ const getChoroplethLayerStyle = ({
         "fill-color": [
           "case",
           ["!=", ["get", activeChoropleth], null],
-          [
-            "interpolate",
-            ["linear"],
-            ["get", activeChoropleth],
-            ...getLinearColorRamp(extent, colors),
-          ],
+          fillRule,
           "#ccc",
         ],
         "fill-opacity": 0.9,
@@ -70,7 +85,7 @@ const getChoroplethLayerStyle = ({
       source: `${activeRegion}-choropleth`,
       type: "line",
       paint: {
-        "line-color": colors[colors.length - 1],
+        "line-color": colorArray[colorArray.length - 1], // use the darkest color on the scale for borders
         "line-width": [
           "case",
           ["boolean", ["feature-state", "hover"], false],
@@ -168,20 +183,35 @@ const getLayerStyle = (layerId, context) => {
 
 export default function useMapLayers() {
   // TODO: pull required props from store
-  const [activeBubble, activeChoropleth, activeRegion] = useDashboardStore(
-    (state) => [state.activeBubble, state.activeChoropleth, state.activeRegion],
-    shallow
-  );
+  const [activeBubble, activeChoropleth, activeRegion, metrics] =
+    useDashboardStore(
+      (state) => [
+        state.activeBubble,
+        state.activeChoropleth,
+        state.activeRegion,
+        state.metrics,
+      ],
+      shallow
+    );
   const extents = useDataExtents();
+
   return useMemo(() => {
+    const metricConfig = metrics.find((m) => m.id === activeChoropleth);
+    const scaleType = metricConfig?.scale || "continuous";
+    const scaleData = extents?.[activeChoropleth]?.[2] || [];
+    const scaleOptions = metricConfig?.scaleOptions || {};
+    const scaleColors = metricConfig?.colors || DEFAULT_CHOROPLETH_COLORS;
+    const context = {
+      activeBubble,
+      activeChoropleth,
+      activeRegion,
+      extents,
+      colors: scaleColors,
+      scales: getScales(scaleType, scaleData, scaleColors, scaleOptions),
+    };
     const layers = REGION_LAYERS.map((layerId) =>
-      getLayerStyle(layerId, {
-        activeBubble,
-        activeChoropleth,
-        activeRegion,
-        extents,
-      })
+      getLayerStyle(layerId, context)
     ).filter(Boolean);
     return layers.flat();
-  }, [activeBubble, activeChoropleth, activeRegion, extents]);
+  }, [activeBubble, activeChoropleth, activeRegion, extents, metrics]);
 }

@@ -52,7 +52,7 @@ const shortCurrencyFormatter = (value) => {
 export const getFormatter = (type, options = { short: false }) => {
   switch (type) {
     case "percent":
-      return format(".1%");
+      return options.short ? format(".0%") : format(".1%");
     case "number":
       return format(".2s");
     case "currency":

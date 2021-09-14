@@ -5,16 +5,15 @@ import {
   Typography,
   withStyles,
   useTheme,
-  useMediaQuery,
+  Button,
 } from "@material-ui/core";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import { useLang } from "../Language";
-import PanelToggle from "../Panel/PanelToggle";
 import { animated, useSpring } from "react-spring";
 import Summary from "./components/Summary";
 import BubbleLegend from "./components/BubbleLegend";
 import ChoroplethLegend from "./components/ChoroplethLegend";
-import { ArrowDropDown, ArrowDropUp, Close } from "@material-ui/icons";
+import { ArrowDropDown } from "@material-ui/icons";
 import useMeasure from "react-use-measure";
 import { Stack } from "@hyperobjekt/material-ui-website";
 import InlineMenu from "./components/InlineMenu";
@@ -28,6 +27,8 @@ import { parseDate } from "../Dashboard/utils";
 import usePrecinctFilter from "../Data/usePrecinctFilter";
 import usePrecinctNames from "../Data/usePrecinctNames";
 import LegendRow from "./components/LegendRow";
+import useTogglePanel from "../Panel/useTogglePanel";
+import useMediaQueries from "../App/hooks/useMediaQueries";
 
 /**
  * Returns a prefix and label for the date range text in the legend
@@ -98,7 +99,7 @@ const styles = (theme) => ({
     right: theme.spacing(2),
     zIndex: 10,
     width: 320,
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("xs")]: {
       top: "auto",
       bottom: 0,
       right: 0,
@@ -112,49 +113,21 @@ const styles = (theme) => ({
       fontWeight: 500,
     },
   },
+  buttonRow: {
+    width: "100%",
+    // first button is full width
+    "& > *:first-child": {
+      flex: 1,
+    },
+  },
   toggleContainer: {},
 });
 
 const AnimatedPaper = animated(Paper);
 
-const MobileToggle = withStyles((theme) => ({
-  root: {
-    position: "absolute",
-    top: theme.spacing(2),
-    right: theme.spacing(2),
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    width: 63,
-    height: 56,
-    background: ({ active }) => (active ? "transparent" : "#ECECD5"),
-    border: ({ active }) =>
-      active ? "1px solid #EAEAEA" : "1px solid transparent",
-    borderRadius: 2,
-    paddingBottom: ({ active }) => (active ? "0" : "10px"),
-    boxSizing: "border-box",
-    "& span": {
-      fontSize: theme.typography.pxToRem(12),
-      color: theme.props.text.primary,
-      margin: ({ active }) => (active ? "0" : "-7px 0 0"),
-    },
-    "& .MuiSvgIcon-root": {},
-  },
-}))((props) => {
-  return (
-    <Box {...props}>
-      {props.active ? <Close /> : <ArrowDropUp style={{ fontSize: "2rem" }} />}
-      <Typography component="span">
-        {props.active ? "Close" : "Legend"}
-      </Typography>
-    </Box>
-  );
-});
-
 const Legend = ({ classes, ...props }) => {
   const theme = useTheme();
-  const isMobile = !useMediaQuery(theme.breakpoints.up("sm"));
+  const { isMobile } = useMediaQueries();
 
   const setActivePanel = useDashboardStore((state) => state.setActivePanel);
   const [activeDateRange, setActiveDateRange] = useDashboardDateRange();
@@ -172,6 +145,9 @@ const Legend = ({ classes, ...props }) => {
     `SUMMARY`,
     `LEGEND`,
     `LEGEND_TITLE`,
+    `LABEL_SHOW_LEGEND`,
+    `LABEL_HIDE_LEGEND`,
+    `LABEL_SHOW_DATA_OPTIONS`,
   ];
   const [
     bubbleName,
@@ -180,6 +156,9 @@ const Legend = ({ classes, ...props }) => {
     summaryHeading,
     legendHeading,
     legendTitle,
+    showLegendLabel,
+    hideLegendLabel,
+    showDataOptionsLabel,
   ] = useLang(langKeys);
 
   // date labels
@@ -202,6 +181,7 @@ const Legend = ({ classes, ...props }) => {
     x: activePanel ? toggleBounds.width + theme.spacing(2) : 0,
     y: isMobile && !showSummary ? toggleBounds.height : 0,
   });
+  const handleToggle = useTogglePanel();
 
   const handleSetDateRange = (e, option) => {
     option?.value && setActiveDateRange(option.value);
@@ -261,7 +241,26 @@ const Legend = ({ classes, ...props }) => {
           </InlineMenu>
           {precinct && precinctLabel}
         </Typography>
-        <PanelToggle />
+        <Stack
+          display="flex"
+          direction="horizontal"
+          justifyContent="stretch"
+          around="none"
+          between="sm"
+          className={classes.buttonRow}
+        >
+          {isMobile && (
+            <Button
+              variant="outlined"
+              onClick={() => setShowSummary((ss) => !ss)}
+            >
+              {showSummary ? hideLegendLabel : showLegendLabel}
+            </Button>
+          )}
+          <Button variant="contained" onClick={handleToggle}>
+            {showDataOptionsLabel}
+          </Button>
+        </Stack>
       </Stack>
       <animated.div ref={toggleRef} className={classes.toggleContainer}>
         <Box className={classes.box}>
@@ -277,7 +276,7 @@ const Legend = ({ classes, ...props }) => {
           <Typography variant="overline" color="textSecondary">
             {legendHeading}
           </Typography>
-          <Stack direction="vertical" alignItems="stretch" between="xs">
+          <Stack direction="vertical" alignItems="stretch" between="none">
             <LegendRow title={bubbleName}>
               <BubbleLegend />
             </LegendRow>
@@ -288,7 +287,6 @@ const Legend = ({ classes, ...props }) => {
           </Stack>
         </Box>
       </animated.div>
-      {isMobile && <MobileToggle onClick={() => setShowSummary((ss) => !ss)} />}
     </AnimatedPaper>
   );
 };

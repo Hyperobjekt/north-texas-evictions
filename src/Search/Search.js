@@ -23,6 +23,8 @@ const SearchInput = withStyles((theme) => ({
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    width: "100%",
+    maxWidth: 280,
     marginLeft: "auto",
     marginRight: theme.spacing(2),
     '& .MuiAutocomplete-inputRoot[class*="MuiInput-root"] .MuiAutocomplete-input':
@@ -97,7 +99,6 @@ const Search = (props) => {
       options={options.sort((a, b) => -b.region.localeCompare(a.region))}
       groupBy={(option) => option.region}
       getOptionLabel={(option) => option.name}
-      style={{ width: 280 }}
       loading={status === "loading"}
       fullWidth={false}
       onChange={handleChange}

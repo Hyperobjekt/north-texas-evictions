@@ -4,8 +4,11 @@ import { Box, List, ListItem } from "@material-ui/core";
 import Menu from "./Menu";
 import MenuIcon from "@material-ui/icons/Menu";
 import Branding from "./Branding";
+import useMediaQueries from "../hooks/useMediaQueries";
 
 const Header = ({ children, ...props }) => {
+  const { isMobile } = useMediaQueries();
+
   return (
     <HypHeader stickyOffset={0} elevation={1} {...props}>
       <Box
@@ -15,12 +18,12 @@ const Header = ({ children, ...props }) => {
         justifyContent="space-between"
         flex={1}
       >
-        <Branding />
+        {!isMobile && <Branding />}
         {children}
         <Menu
           buttonLabel={
             <>
-              <MenuIcon /> Menu
+              <MenuIcon /> {!isMobile && "Menu"}
             </>
           }
         >
