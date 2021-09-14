@@ -95,7 +95,7 @@ const getVerticalOffset = (y) => {
   return 0;
 };
 
-const Tooltip = ({ classes, ...props }) => {
+const Tooltip = ({ classes, yOffset = 0, xOffset = 0, ...props }) => {
   // retrieve required data for rendering the tooltip
   const data = useTooltipData();
   const hoverCoords = useDashboardStore((state) => state.hoverCoords);
@@ -106,8 +106,8 @@ const Tooltip = ({ classes, ...props }) => {
 
   // animate position and opacity
   const style = useSpring({
-    x: (hoverCoords[0] || 0) + offsetScale(hoverCoords[0]),
-    y: (hoverCoords[1] || 0) + getVerticalOffset(hoverCoords[1]),
+    x: (hoverCoords[0] || 0) + offsetScale(hoverCoords[0]) + xOffset,
+    y: (hoverCoords[1] || 0) + getVerticalOffset(hoverCoords[1]) + yOffset,
     opacity: data ? 1 : 0,
   });
 

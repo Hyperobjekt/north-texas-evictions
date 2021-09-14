@@ -51,7 +51,7 @@ const App = ({ lang = "en", langDict, config }) => {
       ) : (
         <Loading />
       )}
-      <Tooltip />
+      <Tooltip yOffset={40} />
     </Dashboard>
   );
 };
