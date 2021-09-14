@@ -12,6 +12,7 @@ import { Tooltip } from "../Tooltip";
 import Body from "./components/Body";
 import Loading from "./components/Loading";
 import { getCurrentRouteParams } from "./router";
+import Router from "./components/Router";
 
 const App = ({ lang = "en", langDict, config }) => {
   // pull ready state from the store
@@ -36,6 +37,7 @@ const App = ({ lang = "en", langDict, config }) => {
 
   return (
     <Dashboard>
+      <Router />
       <Header>
         <Search />
       </Header>

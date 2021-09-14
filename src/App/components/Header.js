@@ -5,14 +5,9 @@ import Menu from "./Menu";
 import MenuIcon from "@material-ui/icons/Menu";
 import Branding from "./Branding";
 import useMediaQueries from "../hooks/useMediaQueries";
-import useAppRouter from "../hooks/useAppRouter";
 
 const Header = ({ children, ...props }) => {
   const { isMobile } = useMediaQueries();
-
-  // put router on the header for now, it triggers re-render of child components, doesn't seem like the best solution
-  // TODO: put routr in its own component? use RouteProvider with no children? (tbd)
-  useAppRouter();
 
   return (
     <HypHeader stickyOffset={0} elevation={1} {...props}>
