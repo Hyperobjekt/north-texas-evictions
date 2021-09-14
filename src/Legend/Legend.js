@@ -29,7 +29,6 @@ import usePrecinctNames from "../Data/usePrecinctNames";
 import LegendRow from "./components/LegendRow";
 import useTogglePanel from "../Panel/useTogglePanel";
 import useMediaQueries from "../App/hooks/useMediaQueries";
-import useDashboardStatus from "../Dashboard/hooks/useDashboardStatus";
 
 /**
  * Returns a prefix and label for the date range text in the legend
@@ -138,9 +137,7 @@ const Legend = ({ classes, ...props }) => {
   const [activeChoropleth, setActiveChoropleth, choroplethMetrics] =
     useDashboardChoropleth();
 
-  // useDashboardStatus();
   console.count("Legend");
-
   // prepare language
   const langKeys = [
     `METRIC_${activeBubble}`,

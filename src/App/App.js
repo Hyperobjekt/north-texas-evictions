@@ -11,16 +11,7 @@ import Panel from "../Panel/Panel";
 import { Tooltip } from "../Tooltip";
 import Body from "./components/Body";
 import Loading from "./components/Loading";
-import {
-  getCurrentRouteParams,
-  parseRoute,
-  populateRoute,
-  ROUTE_TEMPLATE,
-  validateRoute,
-} from "./router";
-import RouteProvider from "../Router/Router";
-import useAppRouter from "./hooks/useAppRouter";
-import useRouter from "../Router/useRouter";
+import { getCurrentRouteParams } from "./router";
 
 const App = ({ lang = "en", langDict, config }) => {
   // pull ready state from the store
@@ -43,16 +34,7 @@ const App = ({ lang = "en", langDict, config }) => {
     },
   });
 
-  useAppRouter();
-
   return (
-    // <RouteProvider
-    //   template={ROUTE_TEMPLATE}
-    //   parse={parseRoute}
-    //   populate={populateRoute}
-    //   validator={validateRoute}
-    //   values={routeValues}
-    // >
     <Dashboard>
       <Header>
         <Search />
@@ -69,7 +51,6 @@ const App = ({ lang = "en", langDict, config }) => {
       )}
       <Tooltip />
     </Dashboard>
-    // </RouteProvider>
   );
 };
 
