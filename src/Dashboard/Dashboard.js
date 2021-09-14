@@ -87,13 +87,13 @@ Dashboard.defaultProps = {
       SELECT_COURT: "Court",
       SELECT_DATE_RANGE: "Date Range",
       TITLE_DATA_OPTIONS: "Data Options",
-      SUMMARY: "SUMMARY ({{dateRange}})",
+      SUMMARY: "Summary ({{dateRange}})",
       SUMMARY_EF: "Total Eviction Filings",
       SUMMARY_TFA: "Total Amount Filed",
       SUMMARY_SERIES: "Filings By Day",
       SUMMARY_UPDATED: "Data last updated on {{date}}.",
-      LEGEND: "MAP LEGEND",
-      LEGEND_TITLE: "CURRENTLY VIEWING",
+      LEGEND: "Map Legend",
+      LEGEND_TITLE: "Currently Viewing",
       FLAG_MFA:
         "Median filings amounts are only available within Dallas County. ",
       FLAG_SHORT_EFR:
@@ -105,6 +105,9 @@ Dashboard.defaultProps = {
       LABEL_FIT_BOUNDS: "Zoom to all {{region}}",
       LABEL_UNAVAILABLE: "Unavailable",
       LABEL_REGION_UNAVAILABLE: "Unavailable for {{region}}",
+      LABEL_SHOW_LEGEND: "Show Full Legend",
+      LABEL_HIDE_LEGEND: "Show Full Map",
+      LABEL_SHOW_DATA_OPTIONS: "Show All Data Options",
     },
   },
 };
