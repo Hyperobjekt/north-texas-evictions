@@ -267,6 +267,8 @@ App.defaultProps = {
         "Median filings amounts are only available within Dallas County. ",
       FLAG_SHORT_EFR:
         "Filings per 1,000 renters will be small for short time ranges.",
+      FLAG_OLD:
+        "Data is unavailable for Denton and Colin county before 2020. You will be unable to make cross-county comparisons with your currently selected time range.",
       HINT_TOTAL_FILINGS: "",
       HINT_TOTAL_AMOUNT:
         "Filing amounts are only reported within Dallas County, the actual total is much higher.",
