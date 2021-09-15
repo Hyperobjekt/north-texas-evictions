@@ -10,6 +10,9 @@ import useDataExtents from "../../Data/useDataExtents";
 import { getScales } from "@hyperobjekt/legend/lib/Scales/utils";
 
 const getLinearRamp = (from, to, steps = 1) => {
+  // adjust from extent if values are equal
+  if (from && from[0] === from[1]) from = [0, from[1]];
+  if (from[0] === from[1]) from = [0, 1];
   const fromInterpolator = getPositionScale("linear", [0, 1], from);
   const toInterpolator = getPositionScale("linear", [0, 1], to);
   const values = [];
