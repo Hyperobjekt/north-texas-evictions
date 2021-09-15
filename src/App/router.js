@@ -43,7 +43,7 @@ export const parseRoute = (template = ROUTE_TEMPLATE, routeString) => {
 
 /** Inserts route values into the provided template */
 export const populateRoute = (template = ROUTE_TEMPLATE, values) => {
-  if (!values) return "none";
+  if (!values) return "";
   const regex = template.replace(/:[A-Za-z]+/g, "(:?[.A-Za-z0-9-]+)");
   // pull the keys from the route template
   const templateKeys = template
@@ -67,6 +67,7 @@ export const populateRoute = (template = ROUTE_TEMPLATE, values) => {
   return precinct ? `${hashRoute}?precinct=${precinct}` : hashRoute;
 };
 
+/** Returns true if the route should update */
 export const validateRoute = ({ route, values }) => {
   if (!values) return false;
   if (route.indexOf("null") > -1 || route.indexOf("undefined") > -1)

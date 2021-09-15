@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { withStyles } from "@material-ui/core";
 import { Mapbox } from "@hyperobjekt/mapbox";
 import useMapLayers from "./hooks/useMapLayers";
@@ -9,9 +9,7 @@ import { Stack } from "@hyperobjekt/material-ui-website";
 import clsx from "clsx";
 import { FOCUS_STATE } from "../theme";
 import { AspectRatio } from "@material-ui/icons";
-import useFlyToFitBounds from "./hooks/useFlyToFitBounds";
-import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
-import { parseRoute } from "../App/router";
+import useFlyOnLoad from "./hooks/useFlyOnLoad";
 
 const styles = (theme) => ({
   root: {
@@ -64,22 +62,8 @@ const Map = ({ classes, className, children, ...props }) => {
     .filter((l) => l.interactive)
     .map((l) => l.id);
 
-  // zoom to region bounds if no viewport set in the URL
-  const hasZoomed = useRef(false);
-  const flyToBounds = useFlyToFitBounds();
-  const defaultViewport = useDashboardStore((state) => state.defaultViewport);
-  if (sources.length > 0 && !hasZoomed.current) {
-    hasZoomed.current = true;
-    const { zoom, latitude, longitude } = parseRoute(
-      undefined,
-      window.location.hash
-    );
-    // fly to bounds if map has loaded with default viewport
-    zoom === defaultViewport.zoom &&
-      latitude === defaultViewport.latitude &&
-      longitude === defaultViewport.longitude &&
-      flyToBounds();
-  }
+  // trigger a fly to fit bounds on the map when data loads
+  useFlyOnLoad();
 
   return (
     <Mapbox
