@@ -3,7 +3,6 @@ import { getColorInterpolator, getPositionScale } from "@hyperobjekt/legend";
 import {
   DEFAULT_BUBBLE_COLOR,
   DEFAULT_CHOROPLETH_COLORS,
-  REGION_LAYERS,
 } from "../../Dashboard/constants";
 import useDashboardStore from "../../Dashboard/hooks/useDashboardStore";
 import shallow from "zustand/shallow";
@@ -46,13 +45,16 @@ const getStepsFromChunks = (chunks) => {
 /**
  * Returns a mapboxgl style object for choropleth layers
  */
-const getChoroplethLayerStyle = ({
-  activeChoropleth = "pcw",
-  activeRegion = "tracts",
-  extents = [0, 1],
-  colors = DEFAULT_CHOROPLETH_COLORS,
-  scales,
-}) => {
+const getChoroplethLayerStyle = (
+  {
+    activeChoropleth = "pcw",
+    activeRegion = "tracts",
+    extents = [0, 1],
+    colors = DEFAULT_CHOROPLETH_COLORS,
+    scales,
+  },
+  options
+) => {
   const extent = extents && extents[activeChoropleth];
   const hasSteps = scales.chunks;
   const steps = hasSteps
@@ -107,13 +109,14 @@ const getChoroplethLayerStyle = ({
 /**
  * Returns a mapboxgl style object for bubble layers
  */
-const getBubbleLayerStyle = ({
-  activeRegion,
-  activeBubble = "pop",
-  extents,
-}) => {
+const getBubbleLayerStyle = (
+  { activeRegion, activeBubble = "pop", extents },
+  options
+) => {
   const extent = extents && extents[activeBubble];
   if (!extent) return [];
+  const scaleFactor = options?.scaleFactor || 1;
+  const adjustSizeFactor = (v) => v * scaleFactor;
   return [
     {
       id: `${activeRegion}-bubble`,
@@ -133,7 +136,10 @@ const getBubbleLayerStyle = ({
               "interpolate",
               ["linear"],
               ["get", activeBubble],
-              ...getLinearRamp([extent[0], extent[1]], [0, 8]),
+              ...getLinearRamp(
+                [extent[0], extent[1]],
+                [1, 8].map(adjustSizeFactor)
+              ),
             ],
             1,
           ],
@@ -145,7 +151,10 @@ const getBubbleLayerStyle = ({
               "interpolate",
               ["linear"],
               ["get", activeBubble],
-              ...getLinearRamp([extent[0], extent[1]], [6, 48]),
+              ...getLinearRamp(
+                [extent[0], extent[1]],
+                [6, 48].map(adjustSizeFactor)
+              ),
             ],
             6,
           ],
@@ -170,12 +179,12 @@ const getBubbleLayerStyle = ({
   ];
 };
 
-const getLayerStyle = (layerId, context) => {
+const getLayerStyle = (layerId, context, options) => {
   switch (layerId) {
     case "bubble":
-      return getBubbleLayerStyle(context);
+      return getBubbleLayerStyle(context, options);
     case "choropleth":
-      return getChoroplethLayerStyle(context);
+      return getChoroplethLayerStyle(context, options);
     default:
       throw new Error(`no getter for layerId: ${layerId}`);
   }
@@ -194,13 +203,14 @@ export default function useMapLayers() {
       shallow
     );
   const extents = useDataExtents();
-
+  const regions = useDashboardStore((state) => state.regions);
   return useMemo(() => {
     const metricConfig = metrics.find((m) => m.id === activeChoropleth);
     const scaleType = metricConfig?.scale || "continuous";
     const scaleData = extents?.[activeChoropleth]?.[2] || [];
     const scaleOptions = metricConfig?.scaleOptions || {};
     const scaleColors = metricConfig?.colors || DEFAULT_CHOROPLETH_COLORS;
+    const region = regions.find((r) => r.id === activeRegion);
     const context = {
       activeBubble,
       activeChoropleth,
@@ -208,10 +218,12 @@ export default function useMapLayers() {
       extents,
       colors: scaleColors,
       scales: getScales(scaleType, scaleData, scaleColors, scaleOptions),
+      region,
     };
-    const layers = REGION_LAYERS.map((layerId) =>
-      getLayerStyle(layerId, context)
-    ).filter(Boolean);
-    return layers.flat();
-  }, [activeBubble, activeChoropleth, activeRegion, extents, metrics]);
+    const layers = region?.layers
+      ?.map((layer) => getLayerStyle(layer.id, context, layer.options))
+      .filter(Boolean)
+      .flat();
+    return layers;
+  }, [activeBubble, activeChoropleth, activeRegion, extents, metrics, regions]);
 }

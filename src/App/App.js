@@ -83,33 +83,83 @@ App.defaultProps = {
     regions: [
       {
         id: "counties",
-        type: "geojson",
-        choropleth: GEOJSON_ROOT + "demo/NTEP_demographics_county.geojson",
-        bubble: GEOJSON_ROOT + "bubble/NTEP_bubble_county.geojson",
+        layers: [
+          {
+            id: "bubble",
+            type: "geojson",
+            source: GEOJSON_ROOT + "bubble/NTEP_bubble_county.geojson",
+            options: { scaleFactor: 5 },
+          },
+          {
+            id: "choropleth",
+            type: "geojson",
+            source: GEOJSON_ROOT + "demo/NTEP_demographics_county.geojson",
+          },
+        ],
       },
       {
         id: "cities",
-        type: "geojson",
-        choropleth: GEOJSON_ROOT + "demo/NTEP_demographics_place.geojson",
-        bubble: GEOJSON_ROOT + "bubble/NTEP_bubble_place.geojson",
+        layers: [
+          {
+            id: "bubble",
+            type: "geojson",
+            source: GEOJSON_ROOT + "bubble/NTEP_bubble_place.geojson",
+            options: { scaleFactor: 3 },
+          },
+          {
+            id: "choropleth",
+            type: "geojson",
+            source: GEOJSON_ROOT + "demo/NTEP_demographics_place.geojson",
+          },
+        ],
       },
       {
         id: "zips",
-        type: "geojson",
-        choropleth: GEOJSON_ROOT + "demo/NTEP_demographics_zip.geojson",
-        bubble: GEOJSON_ROOT + "bubble/NTEP_bubble_zip.geojson",
+        layers: [
+          {
+            id: "bubble",
+            type: "geojson",
+            source: GEOJSON_ROOT + "bubble/NTEP_bubble_zip.geojson",
+            options: { scaleFactor: 1.5 },
+          },
+          {
+            id: "choropleth",
+            type: "geojson",
+            source: GEOJSON_ROOT + "demo/NTEP_demographics_zip.geojson",
+          },
+        ],
       },
       {
         id: "districts",
-        type: "geojson",
-        choropleth: GEOJSON_ROOT + "demo/NTEP_demographics_council.geojson",
-        bubble: GEOJSON_ROOT + "bubble/NTEP_bubble_council.geojson",
+        layers: [
+          {
+            id: "bubble",
+            type: "geojson",
+            source: GEOJSON_ROOT + "bubble/NTEP_bubble_council.geojson",
+            options: { scaleFactor: 1.5 },
+          },
+          {
+            id: "choropleth",
+            type: "geojson",
+            source: GEOJSON_ROOT + "demo/NTEP_demographics_council.geojson",
+          },
+        ],
       },
       {
         id: "tracts",
-        type: "geojson",
-        choropleth: GEOJSON_ROOT + "demo/NTEP_demographics_tract.geojson",
-        bubble: GEOJSON_ROOT + "bubble/NTEP_bubble_tract.geojson",
+        layers: [
+          {
+            id: "bubble",
+            type: "geojson",
+            source: GEOJSON_ROOT + "bubble/NTEP_bubble_tract.geojson",
+            options: { scaleFactor: 1.1 },
+          },
+          {
+            id: "choropleth",
+            type: "geojson",
+            source: GEOJSON_ROOT + "demo/NTEP_demographics_tract.geojson",
+          },
+        ],
       },
     ],
     metrics: [
@@ -117,7 +167,6 @@ App.defaultProps = {
       { id: "efr", type: "bubble", format: "integer" },
       { id: "mfa", type: "bubble", format: "currency" },
       { id: "tfa", type: "secondary", format: "currency" },
-
       {
         id: "mgr",
         type: "choropleth",
