@@ -267,6 +267,10 @@ App.defaultProps = {
         "Median filings amounts are only available within Dallas County. ",
       FLAG_SHORT_EFR:
         "Filings per 1,000 renters will be small for short time ranges.",
+      FLAG_COLLIN_DENTON:
+        "Eviction filing data is not available for Denton and Colin county before 2019.",
+      FLAG_TARRANT:
+        "Eviction filing data is not available for Tarrant county before 2020.",
       HINT_TOTAL_FILINGS: "",
       HINT_TOTAL_AMOUNT:
         "Filing amounts are only reported within Dallas County, the actual total is much higher.",
