@@ -13,6 +13,16 @@ import Body from "./components/Body";
 import Loading from "./components/Loading";
 import { getCurrentRouteParams } from "./router";
 import Router from "./components/Router";
+import { useLang } from "../Language";
+import {
+  BubbleSelect,
+  RegionSelect,
+  ChoroplethSelect,
+  CourtSelect,
+  DateRangeSelect,
+} from "../Controls";
+
+const GEOJSON_ROOT = process.env.REACT_APP_GEOJSON_ENDPOINT;
 
 const App = ({ lang = "en", langDict, config }) => {
   // pull ready state from the store
@@ -35,6 +45,8 @@ const App = ({ lang = "en", langDict, config }) => {
     },
   });
 
+  const dataOptionsTitle = useLang("TITLE_DATA_OPTIONS");
+
   return (
     <Dashboard>
       <Router />
@@ -46,7 +58,13 @@ const App = ({ lang = "en", langDict, config }) => {
           <Map>
             <Legend />
           </Map>
-          <Panel />
+          <Panel id="DATA_OPTIONS" position="right" title={dataOptionsTitle}>
+            <RegionSelect />
+            <BubbleSelect />
+            <ChoroplethSelect />
+            <DateRangeSelect />
+            <CourtSelect />
+          </Panel>
         </Body>
       ) : (
         <Loading />
@@ -66,52 +84,32 @@ App.defaultProps = {
       {
         id: "counties",
         type: "geojson",
-        choropleth:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "demo/NTEP_demographics_county.geojson",
-        bubble:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "bubble/NTEP_bubble_county.geojson",
+        choropleth: GEOJSON_ROOT + "demo/NTEP_demographics_county.geojson",
+        bubble: GEOJSON_ROOT + "bubble/NTEP_bubble_county.geojson",
       },
       {
         id: "cities",
         type: "geojson",
-        choropleth:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "demo/NTEP_demographics_place.geojson",
-        bubble:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "bubble/NTEP_bubble_place.geojson",
+        choropleth: GEOJSON_ROOT + "demo/NTEP_demographics_place.geojson",
+        bubble: GEOJSON_ROOT + "bubble/NTEP_bubble_place.geojson",
       },
       {
         id: "zips",
         type: "geojson",
-        choropleth:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "demo/NTEP_demographics_zip.geojson",
-        bubble:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "bubble/NTEP_bubble_zip.geojson",
+        choropleth: GEOJSON_ROOT + "demo/NTEP_demographics_zip.geojson",
+        bubble: GEOJSON_ROOT + "bubble/NTEP_bubble_zip.geojson",
       },
       {
         id: "districts",
         type: "geojson",
-        choropleth:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "demo/NTEP_demographics_council.geojson",
-        bubble:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "bubble/NTEP_bubble_council.geojson",
+        choropleth: GEOJSON_ROOT + "demo/NTEP_demographics_council.geojson",
+        bubble: GEOJSON_ROOT + "bubble/NTEP_bubble_council.geojson",
       },
       {
         id: "tracts",
         type: "geojson",
-        choropleth:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "demo/NTEP_demographics_tract.geojson",
-        bubble:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "bubble/NTEP_bubble_tract.geojson",
+        choropleth: GEOJSON_ROOT + "demo/NTEP_demographics_tract.geojson",
+        bubble: GEOJSON_ROOT + "bubble/NTEP_bubble_tract.geojson",
       },
     ],
     metrics: [

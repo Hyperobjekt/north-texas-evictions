@@ -2,7 +2,7 @@ import React from "react";
 import { ListSubheader, TextField } from "@material-ui/core";
 import { MenuItem } from "@material-ui/core";
 import { useLang } from "../../Language";
-import useDashboardChoropleth from "../hooks/useDashboardChoropleth";
+import { useDashboardChoropleth } from "../../Dashboard";
 
 const ChoroplethSelect = (props) => {
   const [activeChoropleth, setActiveChoropleth, options] =

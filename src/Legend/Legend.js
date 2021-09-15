@@ -127,7 +127,7 @@ const AnimatedPaper = animated(Paper);
 
 const Legend = ({ classes, ...props }) => {
   const theme = useTheme();
-  const { isMobile } = useMediaQueries();
+  const { isMobile, isLargeDisplay } = useMediaQueries();
 
   const setActivePanel = useDashboardStore((state) => state.setActivePanel);
   const [activeDateRange, setActiveDateRange] = useDashboardDateRange();
@@ -167,7 +167,10 @@ const Legend = ({ classes, ...props }) => {
     dateOptions
   );
 
+  // measure the width / height of the bottom sections of the legend
   const [toggleRef, toggleBounds] = useMeasure();
+
+  // state for showing the legend on mobile
   const [showSummary, setShowSummary] = useState(false);
 
   // get active precinct filter (if any)
@@ -178,7 +181,10 @@ const Legend = ({ classes, ...props }) => {
   // move legend if panel is open
   const activePanel = useDashboardStore((state) => state.activePanel);
   const style = useSpring({
-    x: activePanel ? toggleBounds.width + theme.spacing(2) : 0,
+    x:
+      activePanel && !isLargeDisplay
+        ? toggleBounds.width + theme.spacing(2)
+        : 0,
     y: isMobile && !showSummary ? toggleBounds.height : 0,
   });
   const handleToggle = useTogglePanel();

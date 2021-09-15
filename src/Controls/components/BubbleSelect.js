@@ -1,5 +1,5 @@
 import React from "react";
-import useDashboardStore from "../hooks/useDashboardStore";
+import { useDashboardStore } from "../../Dashboard";
 import { TextField } from "@material-ui/core";
 import { MenuItem } from "@material-ui/core";
 import { useLang } from "../../Language";
