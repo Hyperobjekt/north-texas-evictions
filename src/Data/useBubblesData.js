@@ -101,7 +101,8 @@ export default function useBubblesData() {
   const [precinct] = usePrecinctFilter();
 
   const region = regions.find((r) => r.id === activeRegion);
-  const geojsonUrl = region && region["bubble"];
+  const bubbleLayer = region?.layers?.find((l) => l.id === "bubble");
+  const geojsonUrl = bubbleLayer?.source;
   // update the data on changes
   return useQuery(["bubbles", activeRegion, start, end, precinct], () =>
     fetchAllBubbleData(
