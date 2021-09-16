@@ -1,5 +1,5 @@
 import React from "react";
-import { withStyles } from "@material-ui/core";
+import { alpha, withStyles } from "@material-ui/core";
 import { Mapbox } from "@hyperobjekt/mapbox";
 import useMapLayers from "./hooks/useMapLayers";
 import useMapSources from "./hooks/useMapSources";
@@ -17,6 +17,19 @@ const styles = (theme) => ({
     width: "100%",
     height: "100%",
     zIndex: 1,
+
+    "& .HypMapbox-map:before": {
+      content: "''",
+      inset: 0,
+      position: "absolute",
+      border: `4px solid transparent`,
+      zIndex: 100,
+      transition: theme.transitions.create(["border-color"]),
+      pointerEvents: "none",
+    },
+    "& .HypMapbox-map:focus-within:before": {
+      borderColor: alpha(theme.palette.secondary.main, 0.5),
+    },
   },
   fitBoundsControl: {
     backgroundColor: theme.palette.background.paper,
@@ -78,6 +91,12 @@ const Map = ({ classes, className, children, ...props }) => {
       minZoom={7}
       interactiveLayerIds={interactiveLayers}
       className={clsx(classes.root, className)}
+      onLoad={(map) => {
+        // HACK: drop the tabindex attribute on the map wrapper (not needed, canvas has one)
+        map?.target
+          ?.getContainer()
+          ?.parentNode?.parentNode?.removeAttribute("tabindex");
+      }}
       {...props}
     >
       <Stack

@@ -41,7 +41,7 @@ const styles = (theme) => ({
     minWidth: 320,
   },
   header: {
-    padding: theme.spacing(1, 1, 1, 3),
+    padding: theme.spacing(2, 3, 2, 3),
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
   body: { padding: theme.spacing(3, 3) },
@@ -130,7 +130,11 @@ const Panel = ({
           className={clsx(classes.header)}
         >
           <Typography variant="h2">{title}</Typography>
-          <IconButton ref={buttonRef} onClick={() => setActivePanel(null)}>
+          <IconButton
+            ref={buttonRef}
+            size="small"
+            onClick={() => setActivePanel(null)}
+          >
             <CloseIcon />
           </IconButton>
         </Box>

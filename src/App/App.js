@@ -55,9 +55,8 @@ const App = ({ lang = "en", langDict, config }) => {
       </Header>
       {ready ? (
         <Body>
-          <Map>
-            <Legend />
-          </Map>
+          <Legend />
+          <Map></Map>
           <Panel id="DATA_OPTIONS" position="right" title={dataOptionsTitle}>
             <RegionSelect />
             <BubbleSelect />
