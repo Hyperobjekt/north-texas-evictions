@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Paper,
-  Typography,
-  withStyles,
-  useTheme,
-  Button,
-} from "@material-ui/core";
+import { Box, Paper, Typography, withStyles, Button } from "@material-ui/core";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import { useLang } from "../Language";
 import { animated, useSpring } from "react-spring";
@@ -100,6 +93,7 @@ const styles = (theme) => ({
     right: theme.spacing(2),
     zIndex: 10,
     width: 320,
+    pointerEvents: "all",
     [theme.breakpoints.down("xs")]: {
       top: "auto",
       bottom: 0,
@@ -127,8 +121,7 @@ const styles = (theme) => ({
 const AnimatedPaper = animated(Paper);
 
 const Legend = ({ classes, ...props }) => {
-  const theme = useTheme();
-  const { isMobile, isLargeDisplay } = useMediaQueries();
+  const { isMobile } = useMediaQueries();
 
   const setActivePanel = useDashboardStore((state) => state.setActivePanel);
   const [activeDateRange, setActiveDateRange] = useDashboardDateRange();
@@ -183,12 +176,7 @@ const Legend = ({ classes, ...props }) => {
   const flags = useDataFlags();
 
   // move legend if panel is open
-  const activePanel = useDashboardStore((state) => state.activePanel);
   const style = useSpring({
-    x:
-      activePanel && !isLargeDisplay
-        ? toggleBounds.width + theme.spacing(2)
-        : 0,
     y: isMobile && !showSummary ? toggleBounds.height : 0,
   });
   const handleToggle = useTogglePanel();

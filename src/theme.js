@@ -123,6 +123,13 @@ export default createTheme({
         color: HEADER_TEXT_COLOR,
       },
     },
+    MuiIconButton: {
+      root: {
+        "&:focus": {
+          ...FOCUS_STATE,
+        },
+      },
+    },
     MuiButton: {
       root: {
         textTransform: "none",
@@ -189,6 +196,15 @@ export default createTheme({
       },
     },
     MuiInputAdornment: {
+      root: {
+        "& .MuiIconButton-root": {
+          padding: "0.5rem",
+          "&:focus": {
+            // inset the focus state on input adornments so they dont overlap outer control focus
+            boxShadow: "inset 0 0 0 4px #fff, inset 0 0 0 6px #649BA6",
+          },
+        },
+      },
       positionStart: {
         marginLeft: "0.75rem",
         marginRight: 0,
