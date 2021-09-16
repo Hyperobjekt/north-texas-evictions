@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { withStyles } from "@material-ui/core";
+import React from "react";
+import { alpha, withStyles } from "@material-ui/core";
 import { Mapbox } from "@hyperobjekt/mapbox";
 import useMapLayers from "./hooks/useMapLayers";
 import useMapSources from "./hooks/useMapSources";
@@ -9,9 +9,7 @@ import { Stack } from "@hyperobjekt/material-ui-website";
 import clsx from "clsx";
 import { FOCUS_STATE } from "../theme";
 import { AspectRatio } from "@material-ui/icons";
-import useFlyToFitBounds from "./hooks/useFlyToFitBounds";
-import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
-import { parseRoute } from "../App/router";
+import useFlyOnLoad from "./hooks/useFlyOnLoad";
 
 const styles = (theme) => ({
   root: {
@@ -19,6 +17,19 @@ const styles = (theme) => ({
     width: "100%",
     height: "100%",
     zIndex: 1,
+
+    "& .HypMapbox-map:before": {
+      content: "''",
+      inset: 0,
+      position: "absolute",
+      border: `4px solid transparent`,
+      zIndex: 100,
+      transition: theme.transitions.create(["border-color"]),
+      pointerEvents: "none",
+    },
+    "& .HypMapbox-map:focus-within:before": {
+      borderColor: alpha(theme.palette.secondary.main, 0.5),
+    },
   },
   fitBoundsControl: {
     backgroundColor: theme.palette.background.paper,
@@ -64,36 +75,28 @@ const Map = ({ classes, className, children, ...props }) => {
     .filter((l) => l.interactive)
     .map((l) => l.id);
 
-  // zoom to region bounds if no viewport set in the URL
-  const hasZoomed = useRef(false);
-  const flyToBounds = useFlyToFitBounds();
-  const defaultViewport = useDashboardStore((state) => state.defaultViewport);
-  if (sources.length > 0 && !hasZoomed.current) {
-    hasZoomed.current = true;
-    const { zoom, latitude, longitude } = parseRoute(
-      undefined,
-      window.location.hash
-    );
-    // fly to bounds if map has loaded with default viewport
-    zoom === defaultViewport.zoom &&
-      latitude === defaultViewport.latitude &&
-      longitude === defaultViewport.longitude &&
-      flyToBounds();
-  }
+  // trigger a fly to fit bounds on the map when data loads
+  useFlyOnLoad();
 
   return (
     <Mapbox
-      mapboxApiAccessToken="pk.eyJ1IjoidW50ZCIsImEiOiJja2gyYzVxanQwMzhoMnFxcjlxZnUwMHkzIn0.xKV8oPfM6BUJ9EcpGqAwVQ"
+      mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+      mapStyle={process.env.REACT_APP_MAPBOX_STYLE}
       sources={sources}
       layers={layers}
       maxBounds={[
         [-98, 32],
         [-96, 34],
       ]}
-      mapStyle="mapbox://styles/untd/cktapb92z086e17qvsxdkzvyf"
       minZoom={7}
       interactiveLayerIds={interactiveLayers}
       className={clsx(classes.root, className)}
+      onLoad={(map) => {
+        // HACK: drop the tabindex attribute on the map wrapper (not needed, canvas has one)
+        map?.target
+          ?.getContainer()
+          ?.parentNode?.parentNode?.removeAttribute("tabindex");
+      }}
       {...props}
     >
       <Stack

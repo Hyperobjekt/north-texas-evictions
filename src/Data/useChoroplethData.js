@@ -26,7 +26,8 @@ const fetchChoroplethData = (url) => {
 function useRegionGeojson(regionId) {
   const regions = useDashboardStore((state) => state.regions);
   const region = regions.find((r) => r.id === regionId);
-  const geojsonUrl = region && region["choropleth"];
+  const choroplethLayer = region?.layers?.find((l) => l.id === "choropleth");
+  const geojsonUrl = choroplethLayer?.source;
   return useQuery(["choropleth", regionId], () =>
     fetchChoroplethData(geojsonUrl)
   );

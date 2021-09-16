@@ -12,6 +12,16 @@ export default function useDataFlags() {
 
   // flag when viewing median filing amounts
   if (activeBubble === "mfa") flags.push("FLAG_MFA");
+
+  // flag when viewing data before a certain date
+  const noColinDentonData =
+    +parseDate(activeDateRange[0]) < +parseDate("2019-01-01");
+  if (noColinDentonData) flags.push("FLAG_COLLIN_DENTON");
+
+  const noTarrantData =
+    +parseDate(activeDateRange[0]) < +parseDate("2020-01-01");
+  if (noTarrantData) flags.push("FLAG_TARRANT");
+
   const flagLabels = useLang(flags);
-  return Array.isArray(flagLabels) ? flagLabels.join(" ") : flagLabels;
+  return Array.isArray(flagLabels) ? flagLabels : [flagLabels];
 }

@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Paper,
-  Typography,
-  withStyles,
-  useTheme,
-  Button,
-} from "@material-ui/core";
+import { Box, Paper, Typography, withStyles, Button } from "@material-ui/core";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import { useLang } from "../Language";
 import { animated, useSpring } from "react-spring";
@@ -29,6 +22,7 @@ import usePrecinctNames from "../Data/usePrecinctNames";
 import LegendRow from "./components/LegendRow";
 import useTogglePanel from "../Panel/useTogglePanel";
 import useMediaQueries from "../App/hooks/useMediaQueries";
+import useDataFlags from "./hooks/useDataFlags";
 
 /**
  * Returns a prefix and label for the date range text in the legend
@@ -99,6 +93,7 @@ const styles = (theme) => ({
     right: theme.spacing(2),
     zIndex: 10,
     width: 320,
+    pointerEvents: "all",
     [theme.breakpoints.down("xs")]: {
       top: "auto",
       bottom: 0,
@@ -126,7 +121,6 @@ const styles = (theme) => ({
 const AnimatedPaper = animated(Paper);
 
 const Legend = ({ classes, ...props }) => {
-  const theme = useTheme();
   const { isMobile } = useMediaQueries();
 
   const setActivePanel = useDashboardStore((state) => state.setActivePanel);
@@ -167,7 +161,10 @@ const Legend = ({ classes, ...props }) => {
     dateOptions
   );
 
+  // measure the width / height of the bottom sections of the legend
   const [toggleRef, toggleBounds] = useMeasure();
+
+  // state for showing the legend on mobile
   const [showSummary, setShowSummary] = useState(false);
 
   // get active precinct filter (if any)
@@ -175,10 +172,11 @@ const Legend = ({ classes, ...props }) => {
   const precinctNames = usePrecinctNames();
   const precinctLabel = <span> for {precinctNames[precinct]}</span>;
 
+  // pull flags based on current data options
+  const flags = useDataFlags();
+
   // move legend if panel is open
-  const activePanel = useDashboardStore((state) => state.activePanel);
   const style = useSpring({
-    x: activePanel ? toggleBounds.width + theme.spacing(2) : 0,
     y: isMobile && !showSummary ? toggleBounds.height : 0,
   });
   const handleToggle = useTogglePanel();
@@ -283,7 +281,7 @@ const Legend = ({ classes, ...props }) => {
             <LegendRow title={choroplethName}>
               <ChoroplethLegend />
             </LegendRow>
-            <DataFlags />
+            <DataFlags flags={flags} />
           </Stack>
         </Box>
       </animated.div>

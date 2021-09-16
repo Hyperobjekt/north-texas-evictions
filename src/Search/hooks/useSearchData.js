@@ -27,6 +27,10 @@ const fetchGeojson = (region, url) => {
           };
         })
         .filter((l) => l.name !== "Unknown");
+    })
+    .catch((err) => {
+      console.error(`error loading geojson for ${region}`, err);
+      return [];
     });
 };
 
@@ -44,7 +48,10 @@ const fetchSearchData = (urls) => {
 export default function useSearchData() {
   const regions = useDashboardStore((state) => state.regions);
   const ids = regions.map((r) => r.id);
-  const urls = regions.map((r) => [r.id, r.bubble]);
+  const urls = regions.map((r) => [
+    r.id,
+    r.layers?.find((l) => l.id === "bubble")?.source,
+  ]);
   // update the data on changes
   return useQuery(ids, () => fetchSearchData(urls));
 }

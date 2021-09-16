@@ -1,6 +1,3 @@
-// indentifiers for layers corresponding to each region
-export const REGION_LAYERS = [`choropleth`, `bubble`];
-
 // fallbacks for choropleth / bubbles that are secified in the config
 export const DEFAULT_CHOROPLETH_COLORS = ["#f0f7f9", "#a5d5db", "#008097"];
 export const DEFAULT_BUBBLE_COLOR = "#e98816";

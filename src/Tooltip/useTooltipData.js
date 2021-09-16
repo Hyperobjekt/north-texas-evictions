@@ -6,8 +6,7 @@ import useBubblesData from "../Data/useBubblesData";
  */
 export default function useTooltipData() {
   const hoveredFeature = useMapStore((state) => state.hoveredFeature);
-  const selectedFeature = useMapStore((state) => state.selectedFeature);
-  const currentFeature = hoveredFeature || selectedFeature;
+  const currentFeature = hoveredFeature;
   const { data } = useBubblesData();
   const bubbleFeature =
     data?.geojson?.features?.find(

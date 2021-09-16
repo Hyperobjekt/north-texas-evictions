@@ -13,6 +13,16 @@ import Body from "./components/Body";
 import Loading from "./components/Loading";
 import { getCurrentRouteParams } from "./router";
 import Router from "./components/Router";
+import { useLang } from "../Language";
+import {
+  BubbleSelect,
+  RegionSelect,
+  ChoroplethSelect,
+  CourtSelect,
+  DateRangeSelect,
+} from "../Controls";
+
+const GEOJSON_ROOT = process.env.REACT_APP_GEOJSON_ENDPOINT;
 
 const App = ({ lang = "en", langDict, config }) => {
   // pull ready state from the store
@@ -35,6 +45,8 @@ const App = ({ lang = "en", langDict, config }) => {
     },
   });
 
+  const dataOptionsTitle = useLang("TITLE_DATA_OPTIONS");
+
   return (
     <Dashboard>
       <Router />
@@ -43,15 +55,20 @@ const App = ({ lang = "en", langDict, config }) => {
       </Header>
       {ready ? (
         <Body>
-          <Map>
-            <Legend />
-          </Map>
-          <Panel />
+          <Legend />
+          <Map></Map>
+          <Panel id="DATA_OPTIONS" position="right" title={dataOptionsTitle}>
+            <RegionSelect />
+            <BubbleSelect />
+            <ChoroplethSelect />
+            <DateRangeSelect />
+            <CourtSelect />
+          </Panel>
         </Body>
       ) : (
         <Loading />
       )}
-      <Tooltip />
+      <Tooltip yOffset={40} />
     </Dashboard>
   );
 };
@@ -65,53 +82,83 @@ App.defaultProps = {
     regions: [
       {
         id: "counties",
-        type: "geojson",
-        choropleth:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "demo/NTEP_demographics_county.geojson",
-        bubble:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "bubble/NTEP_bubble_county.geojson",
+        layers: [
+          {
+            id: "bubble",
+            type: "geojson",
+            source: GEOJSON_ROOT + "bubble/NTEP_bubble_county.geojson",
+            options: { scaleFactor: 5 },
+          },
+          {
+            id: "choropleth",
+            type: "geojson",
+            source: GEOJSON_ROOT + "demo/NTEP_demographics_county.geojson",
+          },
+        ],
       },
       {
         id: "cities",
-        type: "geojson",
-        choropleth:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "demo/NTEP_demographics_place.geojson",
-        bubble:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "bubble/NTEP_bubble_place.geojson",
+        layers: [
+          {
+            id: "bubble",
+            type: "geojson",
+            source: GEOJSON_ROOT + "bubble/NTEP_bubble_place.geojson",
+            options: { scaleFactor: 3 },
+          },
+          {
+            id: "choropleth",
+            type: "geojson",
+            source: GEOJSON_ROOT + "demo/NTEP_demographics_place.geojson",
+          },
+        ],
       },
       {
         id: "zips",
-        type: "geojson",
-        choropleth:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "demo/NTEP_demographics_zip.geojson",
-        bubble:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "bubble/NTEP_bubble_zip.geojson",
+        layers: [
+          {
+            id: "bubble",
+            type: "geojson",
+            source: GEOJSON_ROOT + "bubble/NTEP_bubble_zip.geojson",
+            options: { scaleFactor: 1.5 },
+          },
+          {
+            id: "choropleth",
+            type: "geojson",
+            source: GEOJSON_ROOT + "demo/NTEP_demographics_zip.geojson",
+          },
+        ],
       },
       {
         id: "districts",
-        type: "geojson",
-        choropleth:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "demo/NTEP_demographics_council.geojson",
-        bubble:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "bubble/NTEP_bubble_council.geojson",
+        layers: [
+          {
+            id: "bubble",
+            type: "geojson",
+            source: GEOJSON_ROOT + "bubble/NTEP_bubble_council.geojson",
+            options: { scaleFactor: 1.5 },
+          },
+          {
+            id: "choropleth",
+            type: "geojson",
+            source: GEOJSON_ROOT + "demo/NTEP_demographics_council.geojson",
+          },
+        ],
       },
       {
         id: "tracts",
-        type: "geojson",
-        choropleth:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "demo/NTEP_demographics_tract.geojson",
-        bubble:
-          process.env.REACT_APP_GEOJSON_ENDPOINT +
-          "bubble/NTEP_bubble_tract.geojson",
+        layers: [
+          {
+            id: "bubble",
+            type: "geojson",
+            source: GEOJSON_ROOT + "bubble/NTEP_bubble_tract.geojson",
+            options: { scaleFactor: 1.1 },
+          },
+          {
+            id: "choropleth",
+            type: "geojson",
+            source: GEOJSON_ROOT + "demo/NTEP_demographics_tract.geojson",
+          },
+        ],
       },
     ],
     metrics: [
@@ -119,7 +166,6 @@ App.defaultProps = {
       { id: "efr", type: "bubble", format: "integer" },
       { id: "mfa", type: "bubble", format: "currency" },
       { id: "tfa", type: "secondary", format: "currency" },
-
       {
         id: "mgr",
         type: "choropleth",
@@ -220,6 +266,10 @@ App.defaultProps = {
         "Median filings amounts are only available within Dallas County. ",
       FLAG_SHORT_EFR:
         "Filings per 1,000 renters will be small for short time ranges.",
+      FLAG_COLLIN_DENTON:
+        "Eviction filing data is not available for Denton and Colin county before 2019.",
+      FLAG_TARRANT:
+        "Eviction filing data is not available for Tarrant county before 2020.",
       HINT_TOTAL_FILINGS: "",
       HINT_TOTAL_AMOUNT:
         "Filing amounts are only reported within Dallas County, the actual total is much higher.",

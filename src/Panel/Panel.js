@@ -1,26 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { animated, useSpring } from "react-spring";
 import { Box, IconButton, Paper, Typography } from "@material-ui/core";
 import clsx from "clsx";
-import { useLang } from "../Language";
 import { withStyles } from "@material-ui/styles";
 import { Stack } from "@hyperobjekt/material-ui-website";
-import BubbleSelect from "../Dashboard/components/BubbleSelect";
-import RegionSelect from "../Dashboard/components/RegionSelect";
-import ChoroplethSelect from "../Dashboard/components/ChoroplethSelect";
+
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import shallow from "zustand/shallow";
 import CloseIcon from "@material-ui/icons/Close";
-import CourtSelect from "../Dashboard/components/CourtSelect";
-import DateRangeSelect from "../Dashboard/components/DateRangeSelect";
 import useMediaQueries from "../App/hooks/useMediaQueries";
-
-const PANEL_MAX_WIDTH = 320;
 
 const styles = (theme) => ({
   root: {
     position: "relative",
-    flex: 1,
+    flex: 0,
     height: "100%",
     zIndex: 100,
     overflow: "visible",
@@ -32,11 +25,23 @@ const styles = (theme) => ({
       zIndex: 1101,
     },
   },
+  left: {},
+  right: {},
+  float: {
+    position: "absolute",
+    top: 0,
+    "&$right": {
+      right: 0,
+    },
+    "&$left": {
+      left: 0,
+    },
+  },
   contentWrapper: {
     minWidth: 320,
   },
   header: {
-    padding: theme.spacing(1, 1, 1, 3),
+    padding: theme.spacing(2, 3, 2, 3),
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
   body: { padding: theme.spacing(3, 3) },
@@ -44,24 +49,78 @@ const styles = (theme) => ({
 
 const AnimatedPaper = animated(Paper);
 
-const Panel = ({ classes, position = "right" }) => {
+const Panel = ({
+  id = "DATA_OPTIONS",
+  classes,
+  className,
+  width = 320,
+  float,
+  position = "left",
+  title,
+  children,
+  onOpen,
+  onClose,
+  ...props
+}) => {
   const [activePanel, setActivePanel] = useDashboardStore(
     (state) => [state.activePanel, state.setActivePanel],
     shallow
   );
   const { isMobile } = useMediaQueries();
-  const open = activePanel === "DATA_OPTIONS";
-  const style = useSpring({
-    maxWidth: open ? (isMobile ? window.innerWidth : PANEL_MAX_WIDTH) : 0,
-  });
+  const open = activePanel === id;
 
-  const title = useLang("TITLE_DATA_OPTIONS");
+  // 👇 setup transforms required (based on float and position)
+  const springOptions = {};
+  const transformProp = float
+    ? "x"
+    : position === "right"
+    ? "marginRight"
+    : "marginLeft";
+  const transformWidth = isMobile ? window.innerWidth : width;
+  const transformAmount =
+    !float || position !== "right" ? -1 * transformWidth : transformWidth;
+  springOptions[transformProp] = open ? 0 : transformAmount;
+  springOptions.width = transformWidth;
+  const style = useSpring(springOptions);
+
+  // 👇  manage focus state
+  const buttonRef = React.useRef();
+  const restoreRef = React.useRef();
+  useEffect(() => {
+    // if opening, set the element to restore to
+    if (open && document.activeElement)
+      restoreRef.current = document.activeElement;
+    // slight delay to allow the panel to open / close
+    setTimeout(() => {
+      open && buttonRef.current?.focus();
+      !open && restoreRef.current?.focus();
+      // trigger callbacks
+      open && onOpen && onOpen();
+      !open && onClose && onClose();
+    }, 400);
+  }, [open, onClose, onOpen]);
+
   return (
     <AnimatedPaper
       square
       elevation={2}
-      className={clsx(classes.root)}
-      style={style}
+      className={clsx(
+        classes.root,
+        {
+          [classes.float]: float,
+          [classes.right]: position === "right",
+          [classes.left]: position === "left",
+        },
+        className
+      )}
+      style={{
+        ...style,
+        // hide visibility when animation is complete and panel is closed
+        visibility: style[transformProp].to((val) =>
+          Math.abs(val) === transformWidth ? "hidden" : "visible"
+        ),
+      }}
+      {...props}
     >
       <Box className={clsx(classes.contentWrapper)}>
         <Box
@@ -71,19 +130,22 @@ const Panel = ({ classes, position = "right" }) => {
           className={clsx(classes.header)}
         >
           <Typography variant="h2">{title}</Typography>
-          <IconButton onClick={() => setActivePanel(null)}>
+          <IconButton
+            ref={buttonRef}
+            size="small"
+            onClick={() => setActivePanel(null)}
+          >
             <CloseIcon />
           </IconButton>
         </Box>
-        <Box className={clsx(classes.body)}>
-          <Stack direction="vertical" between="lg" alignItems="stretch">
-            <RegionSelect />
-            <BubbleSelect />
-            <ChoroplethSelect />
-            <DateRangeSelect />
-            <CourtSelect />
-          </Stack>
-        </Box>
+        <Stack
+          className={clsx(classes.body)}
+          direction="vertical"
+          between="lg"
+          alignItems="stretch"
+        >
+          {children}
+        </Stack>
       </Box>
     </AnimatedPaper>
   );
