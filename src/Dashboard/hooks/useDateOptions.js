@@ -53,6 +53,11 @@ export default function useDateOptions() {
       ],
     },
     {
+      id: "2020",
+      label: "since 2020",
+      value: ["2020-01-01", formatDate(parseDate(dateRange[1]))],
+    },
+    {
       id: "alltime",
       label: "All Time",
       value: [
@@ -62,7 +67,7 @@ export default function useDateOptions() {
     },
     {
       id: "custom",
-      label: "Custom...",
+      label: "Custom range...",
       value: null,
     },
   ];

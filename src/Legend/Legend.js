@@ -39,7 +39,8 @@ const getDateRangeLabel = (start, end, dateOptions) => {
   });
   if (!selectedOption)
     return ["between", formatDateString(start, end).join(" and ")];
-  if (selectedOption.label === "All Time") return ["for", "all time"];
+  if (selectedOption.id === "alltime") return ["for", "all time"];
+  if (selectedOption.id === "2020") return ["", "since 2020"];
   return ["in the", selectedOption.label];
 };
 
