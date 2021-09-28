@@ -13,11 +13,12 @@ import useFlyOnLoad from "./hooks/useFlyOnLoad";
 
 const styles = (theme) => ({
   root: {
-    position: "relative",
-    width: "100%",
-    height: "100%",
+    position: "sticky",
+    top: 24,
     zIndex: 1,
-
+    borderRadius: 8,
+    boxShadow: theme.shadows[1],
+    maxHeight: `calc(100vh - ${theme.spacing(14)}px)`,
     "& .HypMapbox-map:before": {
       content: "''",
       inset: 0,
@@ -29,6 +30,12 @@ const styles = (theme) => ({
     },
     "& .HypMapbox-map:focus-within:before": {
       borderColor: alpha(theme.palette.secondary.main, 0.5),
+    },
+    "& .overlays": {
+      border: `1px solid #e6e6e6`,
+      borderRadius: 8,
+      width: `calc(100% - 2px)!important`,
+      height: `calc(100% - 2px)!important`,
     },
   },
   fitBoundsControl: {

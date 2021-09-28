@@ -1,7 +1,4 @@
 import React from "react";
-import { extent, max } from "d3-array";
-import { LinePath } from "@visx/shape";
-import { scaleTime, scaleLinear } from "@visx/scale";
 import { Typography, withStyles } from "@material-ui/core";
 import LegendRow from "./LegendRow";
 import useSummaryData from "../../Data/useSummaryData";
@@ -12,10 +9,7 @@ import useDashboardStore from "../../Dashboard/hooks/useDashboardStore";
 import shallow from "zustand/shallow";
 import { timeFormat } from "d3-time-format";
 import { parseDate } from "../../Dashboard/utils";
-
-// data accessors
-const getX = (d) => new Date(`${d.date}T00:00:00`);
-const getY = (d) => Number(d.ef);
+import TrendLine from "./TrendLine";
 
 const styles = (theme) => ({
   root: {},
@@ -25,54 +19,6 @@ const styles = (theme) => ({
     fontSize: theme.typography.pxToRem(14),
   },
 });
-
-const SummaryTrend = ({ lineData }) => {
-  // scales
-  const xScale = scaleTime({
-    domain: extent(lineData, getX),
-  });
-  const yScale = scaleLinear({
-    domain: [0, max(lineData, getY)],
-  });
-
-  // update scale output ranges
-  xScale.range([1, 116]);
-  yScale.range([21, 1]);
-
-  // add some extra points for the filled shape
-  const lineDataFilled = lineData.concat([
-    { ...lineData[lineData.length - 1], ef: 0 },
-    { ...lineData[0], ef: 0 },
-  ]);
-
-  return (
-    <svg
-      width="117"
-      height="24"
-      viewBox="0 0 117 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <LinePath
-        data={lineDataFilled}
-        x={(d) => xScale(getX(d)) ?? 0}
-        y={(d) => yScale(getY(d)) ?? 0}
-        fill="#EC7406"
-        opacity={0.3}
-        shapeRendering="geometricPrecision"
-      />
-      <LinePath
-        data={lineData}
-        x={(d) => xScale(getX(d)) ?? 0}
-        y={(d) => yScale(getY(d)) ?? 0}
-        stroke="#EC7406"
-        strokeWidth={1}
-        strokeOpacity={1}
-        shapeRendering="geometricPrecision"
-      />
-    </svg>
-  );
-};
 
 const Summary = ({ classes, ...props }) => {
   const { data: summary, status } = useSummaryData();
@@ -118,7 +64,7 @@ const Summary = ({ classes, ...props }) => {
         </Typography>
       </LegendRow>
       <LegendRow title={seriesLabel}>
-        <SummaryTrend lineData={isReady ? summary.series : []} />
+        <TrendLine data={isReady ? summary.series : []} />
       </LegendRow>
 
       <LegendRow

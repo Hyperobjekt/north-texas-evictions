@@ -56,7 +56,7 @@ export const getFormatter = (type, options = { short: false }) => {
     case "number":
       return format(".2s");
     case "currency":
-      return options.short ? shortCurrencyFormatter : format("$,.2f");
+      return options.short ? shortCurrencyFormatter : format("$,.0f");
     case "integer":
       return options.short ? shortIntFormatter : format(",d");
     default:

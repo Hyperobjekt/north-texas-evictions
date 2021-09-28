@@ -6,3 +6,5 @@ export { default as useDashboardChoropleth } from "./hooks/useDashboardChoroplet
 export { default as useDashboardRegion } from "./hooks/useDashboardRegion";
 export { default as useDashboardDateRange } from "./hooks/useDashboardDateRange";
 export { default as useDashboardContext } from "./hooks/useDashboardContext";
+export { default as useDateOptions } from "./hooks/useDateOptions";
+export { parseDate, formatDate } from "./utils";

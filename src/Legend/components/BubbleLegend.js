@@ -9,7 +9,7 @@ import useFormatter from "../../Dashboard/hooks/useFormatter";
 
 const styles = (theme) => ({
   root: {
-    width: 180,
+    width: 92,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

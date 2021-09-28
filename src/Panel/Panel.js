@@ -4,9 +4,6 @@ import { Box, IconButton, Paper, Typography } from "@material-ui/core";
 import clsx from "clsx";
 import { withStyles } from "@material-ui/styles";
 import { Stack } from "@hyperobjekt/material-ui-website";
-
-import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
-import shallow from "zustand/shallow";
 import CloseIcon from "@material-ui/icons/Close";
 import useMediaQueries from "../App/hooks/useMediaQueries";
 
@@ -28,8 +25,8 @@ const styles = (theme) => ({
   left: {},
   right: {},
   float: {
-    position: "absolute",
-    top: 0,
+    position: "fixed",
+    top: 64,
     "&$right": {
       right: 0,
     },
@@ -51,6 +48,7 @@ const AnimatedPaper = animated(Paper);
 
 const Panel = ({
   id = "DATA_OPTIONS",
+  open,
   classes,
   className,
   width = 320,
@@ -60,14 +58,10 @@ const Panel = ({
   children,
   onOpen,
   onClose,
+  style: styleOverride,
   ...props
 }) => {
-  const [activePanel, setActivePanel] = useDashboardStore(
-    (state) => [state.activePanel, state.setActivePanel],
-    shallow
-  );
   const { isMobile } = useMediaQueries();
-  const open = activePanel === id;
 
   // 👇 setup transforms required (based on float and position)
   const springOptions = {};
@@ -94,11 +88,8 @@ const Panel = ({
     setTimeout(() => {
       open && buttonRef.current?.focus();
       !open && restoreRef.current?.focus();
-      // trigger callbacks
-      open && onOpen && onOpen();
-      !open && onClose && onClose();
     }, 400);
-  }, [open, onClose, onOpen]);
+  }, [open]);
 
   return (
     <AnimatedPaper
@@ -119,6 +110,7 @@ const Panel = ({
         visibility: style[transformProp].to((val) =>
           Math.abs(val) === transformWidth ? "hidden" : "visible"
         ),
+        ...styleOverride,
       }}
       {...props}
     >
@@ -130,11 +122,7 @@ const Panel = ({
           className={clsx(classes.header)}
         >
           <Typography variant="h2">{title}</Typography>
-          <IconButton
-            ref={buttonRef}
-            size="small"
-            onClick={() => setActivePanel(null)}
-          >
+          <IconButton ref={buttonRef} size="small" onClick={onClose}>
             <CloseIcon />
           </IconButton>
         </Box>
@@ -149,6 +137,10 @@ const Panel = ({
       </Box>
     </AnimatedPaper>
   );
+};
+
+Panel.defaultProps = {
+  styleOverride: {},
 };
 
 export default withStyles(styles)(Panel);

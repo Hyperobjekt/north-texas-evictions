@@ -5,7 +5,6 @@ import Search from "../Search";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import useDashboardDefaults from "../Dashboard/hooks/useDashboardDefaults";
 import useLanguageStore from "../Language/useLanguageStore";
-import { Legend } from "../Legend";
 import { Map } from "../Map";
 import Panel from "../Panel/Panel";
 import { Tooltip } from "../Tooltip";
@@ -21,6 +20,17 @@ import {
   CourtSelect,
   DateRangeSelect,
 } from "../Controls";
+import { Stack } from "@hyperobjekt/material-ui-website";
+import { Box } from "@material-ui/core";
+import CurrentView from "../Legend/components/CurrentView";
+import ToggleOptions from "../Legend/components/ToggleOptions";
+import Card from "../Dashboard/components/Card";
+import TotalEvictions from "../Legend/components/TotalEvictions";
+import MapLegend from "../Legend/components/MapLegend";
+
+import LocationsCard from "../Locations/components/LocationsCard";
+import shallow from "zustand/shallow";
+import LocationPanel from "../Locations/components/LocationPanel";
 
 const GEOJSON_ROOT = process.env.REACT_APP_GEOJSON_ENDPOINT;
 
@@ -47,6 +57,11 @@ const App = ({ lang = "en", langDict, config }) => {
 
   const dataOptionsTitle = useLang("TITLE_DATA_OPTIONS");
 
+  const [activePanel, setActivePanel] = useDashboardStore(
+    (state) => [state.activePanel, state.setActivePanel],
+    shallow
+  );
+
   return (
     <Dashboard>
       <Router />
@@ -54,16 +69,64 @@ const App = ({ lang = "en", langDict, config }) => {
         <Search />
       </Header>
       {ready ? (
-        <Body>
-          <Legend />
-          <Map></Map>
-          <Panel id="DATA_OPTIONS" position="right" title={dataOptionsTitle}>
+        <Body bgcolor="background.default" flex={1} overflow="auto">
+          <Panel
+            id="DATA_OPTIONS"
+            open={activePanel === "DATA_OPTIONS"}
+            float
+            position="left"
+            title={dataOptionsTitle}
+            onClose={() => {
+              console.log(activePanel);
+              setActivePanel(null);
+            }}
+          >
             <RegionSelect />
             <BubbleSelect />
             <ChoroplethSelect />
             <DateRangeSelect />
             <CourtSelect />
           </Panel>
+          <LocationPanel float position="right" />
+          <Box
+            display="grid"
+            style={{
+              gridTemplateColumns: "324px auto",
+              gridTemplateRows: "auto",
+            }}
+            minHeight="100%"
+          >
+            <Stack
+              direction="vertical"
+              between="md"
+              around="lg"
+              justifyContent="flex-start"
+              alignItems="stretch"
+              width={300}
+              style={{ gridRow: "1", gridColumn: "1" }}
+            >
+              <Card noPadding title="Currently Viewing">
+                <CurrentView style={{ paddingTop: 8 }} />
+                <ToggleOptions
+                  variant="outlined"
+                  fullWidth
+                  style={{
+                    backgroundColor: "transparent",
+                    borderWidth: 0,
+                    borderTopWidth: 1,
+                  }}
+                />
+              </Card>
+              <Card title="Map Legend">
+                <MapLegend />
+              </Card>
+              <TotalEvictions />
+              <LocationsCard />
+            </Stack>
+            <Box position="relative" gridColumn="2" gridRow="1" m={3} ml={2}>
+              <Map></Map>
+            </Box>
+          </Box>
         </Body>
       ) : (
         <Loading />

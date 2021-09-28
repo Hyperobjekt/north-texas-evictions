@@ -32,6 +32,9 @@ export default createTheme({
       focus: "rgba(236, 236, 213, 0.333)",
     },
     header: { text: HEADER_TEXT_COLOR, background: HEADER_BACKGROUND_COLOR },
+    background: {
+      default: "#f0f3f4",
+    },
   },
   typography: {
     fontFamily: fontFamily,
@@ -125,6 +128,7 @@ export default createTheme({
     },
     MuiIconButton: {
       root: {
+        color: "#92928B",
         "&:focus": {
           ...FOCUS_STATE,
         },
@@ -186,6 +190,9 @@ export default createTheme({
           background: "#4a4646",
           border: 0,
           transition: `background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms`,
+          "& .MuiSvgIcon-root": {
+            color: "#92928B",
+          },
           "& $input": {
             color: HEADER_TEXT_COLOR,
           },
@@ -223,11 +230,11 @@ export default createTheme({
         color: "#92928B",
       },
     },
-    MuiSvgIcon: {
-      root: {
-        color: "#92928B",
-      },
-    },
+    // MuiSvgIcon: {
+    //   root: {
+    //     color: "#92928B",
+    //   },
+    // },
     MuiInputLabel: {
       formControl: {
         top: -4,
