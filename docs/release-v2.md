@@ -6,7 +6,7 @@
 | --------------------------------------------------------- | -------- | ------ | -------------- |
 | [Detailed Location View](#detailed-location-view)         | 1        | 13     | yes            |
 | [Filtering within a region](#filtering-within-a-region)   | 1        | 8      | yes            |
-| [Improve time series](#improve-time-series)               | 1        | 40     | partial        |
+| [Improve time series](#improve-time-series)               | 1        | 40     | yes            |
 | [Region Adjustments](#region-adjustments)                 | 2        | 5      | yes            |
 | [Location Comparison](#location-comparison)               | 3        | 21     | no             |
 | [Table + Export](#table--export)                          | 2        | 40     | no             |
