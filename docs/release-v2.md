@@ -1,4 +1,4 @@
-# North Texas Eviction Project 2.0
+# North Texas Eviction Project 2.0 Discovery
 
 ## Summary
 
