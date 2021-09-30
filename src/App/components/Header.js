@@ -5,6 +5,7 @@ import Menu from "./Menu";
 import MenuIcon from "../../Icons/MenuIcon";
 import Branding from "./Branding";
 import useMediaQueries from "../hooks/useMediaQueries";
+import InfoModal from "./InfoModal";
 
 const Header = ({ children, ...props }) => {
   const { isMobile } = useMediaQueries();
@@ -20,6 +21,7 @@ const Header = ({ children, ...props }) => {
       >
         {!isMobile && <Branding />}
         {children}
+        <InfoModal />
         {process.env.NODE_ENV !== "production" && (
           <Menu
             buttonLabel={
@@ -27,6 +29,7 @@ const Header = ({ children, ...props }) => {
                 <MenuIcon style={{ marginRight: 4 }} /> {!isMobile && "Menu"}
               </>
             }
+            style={{ marginLeft: 16 }}
           >
             <List>
               <ListItem button href="#">
