@@ -4,7 +4,6 @@
 
 **Included in this release:**
 
-- [Roadmap](#roadmap)
 - [Pinned Locations](#pinned-locations)
 - [Detailed Location View](#detailed-location-view)
 - [Time Series View](#time-series-view)
