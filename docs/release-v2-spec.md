@@ -70,7 +70,7 @@ See [live prototype](https://deploy-preview-77--north-texas-evictions.netlify.ap
   - the header has a button group that allows switching between "map view" and "time series view"
   - the placeholder text in the search at the top changes from "find a location" to "add a location"
 - in the sidebar:
-  - there is a "currently viewing" section that contains the current time series metric and date range
+  - there is a "currently viewing" section that contains the current time series metric and date range (eviction filings + eviction filing rate)
   - there is a "summary" section in time series view that contains the same summary as map view
   - there is a "selected locations" section that contains any locations that have been selected, with the addition of an "all data" entry
     - each location has a toggle that adds / removes the corresponding line from the time series
