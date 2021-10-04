@@ -97,6 +97,7 @@ See [figma prototype](https://www.figma.com/proto/dkl0IqDVYtMFLVxIlG4vQM/Dashboa
 ## About Page
 
 - the site should have an "about" page containing content provided by the CPAL team
+- the page has a unique route that can be linked to directly (e.g. https://northtexasevictions.org/about)
 
 ## JP Precinct Regions
 
