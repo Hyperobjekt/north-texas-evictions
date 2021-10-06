@@ -10,11 +10,13 @@ import {
   useDashboardRegion,
   useDashboardDateRange,
   useDateOptions,
+  Card,
+  InlineMenu,
+  formatDateString,
 } from "../../Dashboard";
 import usePrecinctFilter from "../../Data/usePrecinctFilter";
 import usePrecinctNames from "../../Data/usePrecinctNames";
-import InlineMenu from "./InlineMenu";
-import { formatDateString } from "../utils";
+import TogglePanelButton from "../../Panel/TogglePanelButton";
 
 /**
  * Returns a prefix and label for the date range text in the legend
@@ -116,4 +118,21 @@ const CurrentView = ({ ...props }) => {
   );
 };
 
-export default CurrentView;
+const CurrentViewCard = (props) => {
+  return (
+    <Card noPadding title="Currently Viewing" {...props}>
+      <CurrentView />
+      <TogglePanelButton
+        variant="outlined"
+        fullWidth
+        style={{
+          backgroundColor: "transparent",
+          borderWidth: 0,
+          borderTopWidth: 1,
+        }}
+      />
+    </Card>
+  );
+};
+
+export default CurrentViewCard;

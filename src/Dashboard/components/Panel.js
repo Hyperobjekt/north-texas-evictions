@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { withStyles } from "@material-ui/styles";
 import { Stack } from "@hyperobjekt/material-ui-website";
 import CloseIcon from "@material-ui/icons/Close";
-import useMediaQueries from "../App/hooks/useMediaQueries";
+import useMediaQueries from "../../App/hooks/useMediaQueries";
 
 const styles = (theme) => ({
   root: {
@@ -47,8 +47,7 @@ const styles = (theme) => ({
 const AnimatedPaper = animated(Paper);
 
 const Panel = ({
-  id = "DATA_OPTIONS",
-  open,
+  open = false,
   classes,
   className,
   width = 320,
@@ -58,7 +57,6 @@ const Panel = ({
   children,
   onOpen,
   onClose,
-  style: styleOverride,
   ...props
 }) => {
   const { isMobile } = useMediaQueries();
@@ -110,7 +108,6 @@ const Panel = ({
         visibility: style[transformProp].to((val) =>
           Math.abs(val) === transformWidth ? "hidden" : "visible"
         ),
-        ...styleOverride,
       }}
       {...props}
     >
@@ -137,10 +134,6 @@ const Panel = ({
       </Box>
     </AnimatedPaper>
   );
-};
-
-Panel.defaultProps = {
-  styleOverride: {},
 };
 
 export default withStyles(styles)(Panel);

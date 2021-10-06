@@ -1,4 +1,4 @@
-import useDashboardStore from "../../Dashboard/hooks/useDashboardStore";
+import useDashboardStore from "./useDashboardStore";
 import { useLang } from "../../Language";
 
 export default function useMetricOptions() {

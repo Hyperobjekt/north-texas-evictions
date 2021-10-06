@@ -99,7 +99,8 @@ const Map = ({ classes, className, children, ...props }) => {
       interactiveLayerIds={interactiveLayers}
       className={clsx(classes.root, className)}
       onLoad={(map) => {
-        // HACK: drop the tabindex attribute on the map wrapper (not needed, canvas has one)
+        // HACK: drop the tabindex attribute on the map wrapper (tabindex not needed, canvas has one)
+        // TODO: move this to core component
         map?.target
           ?.getContainer()
           ?.parentNode?.parentNode?.removeAttribute("tabindex");

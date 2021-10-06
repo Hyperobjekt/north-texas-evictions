@@ -1,5 +1,5 @@
 import React from "react";
-import Panel from "../../Panel/Panel";
+import Panel from "../../Dashboard/components/Panel";
 import LocationName from "../../App/components/LocationName";
 import useLocationStore from "../hooks/useLocationStore";
 import shallow from "zustand/shallow";
@@ -84,6 +84,7 @@ const LocationPanel = ({ ...props }) => {
 
   return (
     <Panel
+      id="locationPanel"
       open={active}
       title={active && <LocationName name={active.properties.name} />}
       onClose={() => setActive(null)}

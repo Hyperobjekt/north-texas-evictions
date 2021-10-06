@@ -12,12 +12,16 @@ import { animated, useSpring, useTransition } from "react-spring";
 import useMeasure from "react-use-measure";
 
 const styles = (theme) => ({
-  root: {
-    margin: `0.5rem -0.5rem -0.5rem`,
+  root: {},
+  empty: {
+    marginBottom: "-1rem",
   },
   container: {
     display: "flex",
     flexDirection: "column",
+    "&:empty": {
+      marginBottom: "-1rem",
+    },
     "& > * + *": {
       marginTop: theme.spacing(1),
     },
@@ -71,7 +75,11 @@ const DataFlags = ({ classes, className, flags, ...props }) => {
 
   return (
     <AnimatedBox
-      className={clsx(classes.root, className)}
+      className={clsx(
+        classes.root,
+        { [classes.empty]: filteredFlags.length === 0 },
+        className
+      )}
       style={style}
       {...props}
     >

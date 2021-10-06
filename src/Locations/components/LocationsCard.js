@@ -89,7 +89,7 @@ const LocationsCard = (props) => {
         </Box>
       )}
       {locations.length > 0 && (
-        <List noPadding>
+        <List>
           {locations.map((location) => (
             <LocationRow
               key={location.properties.id}

@@ -1,36 +1,22 @@
 import React, { useEffect } from "react";
-import Dashboard from "../Dashboard";
 import Header from "./components/Header";
-import Search from "../Search";
-import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
-import useDashboardDefaults from "../Dashboard/hooks/useDashboardDefaults";
-import useLanguageStore from "../Language/useLanguageStore";
-import { Map } from "../Map";
-import Panel from "../Panel/Panel";
-import { Tooltip } from "../Tooltip";
 import Body from "./components/Body";
 import Loading from "./components/Loading";
-import { getCurrentRouteParams } from "./router";
 import Router from "./components/Router";
-import { useLang } from "../Language";
-import {
-  BubbleSelect,
-  RegionSelect,
-  ChoroplethSelect,
-  CourtSelect,
-  DateRangeSelect,
-} from "../Controls";
-import { Stack } from "@hyperobjekt/material-ui-website";
-import { Box } from "@material-ui/core";
-import CurrentView from "../Legend/components/CurrentView";
-import ToggleOptions from "../Legend/components/ToggleOptions";
-import Card from "../Dashboard/components/Card";
-import TotalEvictions from "../Legend/components/TotalEvictions";
-import MapLegend from "../Legend/components/MapLegend";
+import TwoColumnLayout from "./components/TwoColumnLayout";
 
-import LocationsCard from "../Locations/components/LocationsCard";
-import shallow from "zustand/shallow";
-import LocationPanel from "../Locations/components/LocationPanel";
+import Dashboard, {
+  useDashboardDefaults,
+  useDashboardStore,
+} from "../Dashboard";
+import { Search } from "../Search";
+import { useLanguageStore } from "../Language";
+import { Map } from "../Map";
+import { Tooltip } from "../Tooltip";
+import { LocationPanel } from "../Locations";
+import { ControlsPanel } from "../Controls";
+import { Cards } from "../Cards";
+import { getCurrentRouteParams } from "./router";
 
 const GEOJSON_ROOT = process.env.REACT_APP_GEOJSON_ENDPOINT;
 
@@ -55,13 +41,6 @@ const App = ({ lang = "en", langDict, config }) => {
     },
   });
 
-  const dataOptionsTitle = useLang("TITLE_DATA_OPTIONS");
-
-  const [activePanel, setActivePanel] = useDashboardStore(
-    (state) => [state.activePanel, state.setActivePanel],
-    shallow
-  );
-
   return (
     <Dashboard>
       <Router />
@@ -70,63 +49,9 @@ const App = ({ lang = "en", langDict, config }) => {
       </Header>
       {ready ? (
         <Body bgcolor="background.default" flex={1} overflow="auto">
-          <Panel
-            id="DATA_OPTIONS"
-            open={activePanel === "DATA_OPTIONS"}
-            float
-            position="left"
-            title={dataOptionsTitle}
-            onClose={() => {
-              console.log(activePanel);
-              setActivePanel(null);
-            }}
-          >
-            <RegionSelect />
-            <BubbleSelect />
-            <ChoroplethSelect />
-            <DateRangeSelect />
-            <CourtSelect />
-          </Panel>
+          <ControlsPanel float position="left" />
           <LocationPanel float position="right" />
-          <Box
-            display="grid"
-            style={{
-              gridTemplateColumns: "324px auto",
-              gridTemplateRows: "auto",
-            }}
-            minHeight="100%"
-          >
-            <Stack
-              direction="vertical"
-              between="md"
-              around="lg"
-              justifyContent="flex-start"
-              alignItems="stretch"
-              width={300}
-              style={{ gridRow: "1", gridColumn: "1" }}
-            >
-              <Card noPadding title="Currently Viewing">
-                <CurrentView style={{ paddingTop: 8 }} />
-                <ToggleOptions
-                  variant="outlined"
-                  fullWidth
-                  style={{
-                    backgroundColor: "transparent",
-                    borderWidth: 0,
-                    borderTopWidth: 1,
-                  }}
-                />
-              </Card>
-              <Card title="Map Legend">
-                <MapLegend />
-              </Card>
-              <TotalEvictions />
-              <LocationsCard />
-            </Stack>
-            <Box position="relative" gridColumn="2" gridRow="1" m={3} ml={2}>
-              <Map></Map>
-            </Box>
-          </Box>
+          <TwoColumnLayout left={<Cards />} right={<Map />} />
         </Body>
       ) : (
         <Loading />
@@ -335,8 +260,8 @@ App.defaultProps = {
         "Eviction filing data is not available for Denton and Collin County before 2019.",
       FLAG_TARRANT:
         "Eviction filing data is not available for Tarrant County before 2020.",
-      HINT_TOTAL_FILINGS: "",
-      HINT_TOTAL_AMOUNT:
+      HINT_EF: "",
+      HINT_TFA:
         "Filing amounts are only reported within Dallas County, the actual total is much higher.",
       LABEL_ALL_COURTS: "All Courts",
       LABEL_FIT_BOUNDS: "Zoom to all {{region}}",

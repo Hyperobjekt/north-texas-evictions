@@ -1,13 +1,15 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import { useLang } from "../../Language";
-import BubbleLegend from "./BubbleLegend";
-import ChoroplethLegend from "./ChoroplethLegend";
+import { BubbleLegend, ChoroplethLegend } from "../../Legend";
 import { Stack } from "@hyperobjekt/material-ui-website";
-import useDashboardBubble from "../../Dashboard/hooks/useDashboardBubble";
-import useDashboardChoropleth from "../../Dashboard/hooks/useDashboardChoropleth";
+import {
+  Card,
+  useDashboardChoropleth,
+  useDashboardBubble,
+} from "../../Dashboard";
 
-const MapLegend = ({ classes, ...props }) => {
+export const MapLegend = ({ classes, ...props }) => {
   const [activeBubble] = useDashboardBubble();
   const [activeChoropleth] = useDashboardChoropleth();
 
@@ -38,4 +40,12 @@ const MapLegend = ({ classes, ...props }) => {
   );
 };
 
-export default MapLegend;
+const MapLegendCard = (props) => {
+  return (
+    <Card title="Map Legend" {...props}>
+      <MapLegend />
+    </Card>
+  );
+};
+
+export default MapLegendCard;
