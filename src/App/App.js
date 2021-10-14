@@ -10,13 +10,12 @@ import Dashboard, {
   useDashboardStore,
 } from "../Dashboard";
 import { useLanguageStore } from "../Language";
-import { Map } from "../Map";
 import { Tooltip } from "../Tooltip";
 import { LocationPanel } from "../Locations";
 import { ControlsPanel } from "../Controls";
 import { Cards } from "../Cards";
 import { getCurrentRouteParams } from "./router";
-import { Box } from "@material-ui/core";
+import Visual from "./components/Visual";
 
 const GEOJSON_ROOT = process.env.REACT_APP_GEOJSON_ENDPOINT;
 
@@ -41,8 +40,6 @@ const App = ({ lang = "en", langDict, config }) => {
     },
   });
 
-  const activeView = useDashboardStore((state) => state.activeView);
-
   return (
     <Dashboard>
       <Router />
@@ -51,10 +48,7 @@ const App = ({ lang = "en", langDict, config }) => {
         <Body bgcolor="background.default" flex={1} overflow="auto">
           <ControlsPanel float position="left" />
           <LocationPanel float position="right" />
-          <TwoColumnLayout
-            left={<Cards />}
-            right={activeView === "map" ? <Map /> : <Box>Time Series</Box>}
-          />
+          <TwoColumnLayout left={<Cards />} right={<Visual />} />
         </Body>
       ) : (
         <Loading />
