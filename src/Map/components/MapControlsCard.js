@@ -118,7 +118,7 @@ const MapTextControls = ({ ...props }) => {
   );
 };
 
-const MapTextControlsCard = (props) => {
+const MapControlsCard = (props) => {
   return (
     <Card noPadding title="Currently Viewing" {...props}>
       <MapTextControls />
@@ -135,4 +135,4 @@ const MapTextControlsCard = (props) => {
   );
 };
 
-export default MapTextControlsCard;
+export default MapControlsCard;

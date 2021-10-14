@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack } from "@hyperobjekt/material-ui-website";
-import MapTextControlsCard from "./components/MapTextControlsCard";
-import MapLegendCard from "./components/MapLegendCard";
+import MapTextControlsCard from "../Map/components/MapControlsCard";
+import MapLegendCard from "../Map/components/MapLegendCard";
 import EvictionSummaryCard from "./components/EvictionSummaryCard";
 import LocationsCard from "../Locations/components/LocationsCard";
 import { DataFlags, useDataFlags } from "../Flags";

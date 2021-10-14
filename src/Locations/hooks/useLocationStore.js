@@ -23,7 +23,10 @@ const useLocationStore = create((set) => ({
   pinned: [],
   addPinned: (location) => {
     set((state) => ({
-      pinned: [...state.pinned, location],
+      pinned:
+        state.pinned.findIndex((l) => l.id === location.id) === -1
+          ? [...state.pinned, location]
+          : state.pinned,
     }));
   },
   removePinned: (location) => {

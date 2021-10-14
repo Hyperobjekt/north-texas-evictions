@@ -8,7 +8,6 @@ export default function useSelectedLocations() {
   const setActive = useLocationStore((state) => state.setActive);
   const addPinned = useLocationStore((state) => state.addPinned);
   useEffect(() => {
-    console.log("new selected", selected);
     if (selected) {
       addLocation(selected);
       setActive(selected);

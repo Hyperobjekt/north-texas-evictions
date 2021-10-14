@@ -13,15 +13,24 @@ import {
 import LocationName from "../../App/components/LocationName";
 import { Close, FiberPin } from "@material-ui/icons";
 import shallow from "zustand/shallow";
+import useLocationColors from "../hooks/useLocationColors";
 
-const LocationRow = ({ id, name, pinned, onDismiss, onPin, ...props }) => {
+const LocationRow = ({
+  id,
+  name,
+  pinned,
+  color,
+  onDismiss,
+  onPin,
+  ...props
+}) => {
   return (
     <ListItem button {...props}>
       <LocationName name={name} alignItems="flex-start" textAlign="left" />
       <ListItemSecondaryAction>
         <IconButton
           size="small"
-          style={{ marginRight: 8, color: pinned && "#f00" }}
+          style={{ marginRight: 8, color: pinned && color }}
           onClick={onPin}
         >
           <FiberPin />
@@ -53,6 +62,8 @@ const LocationsCard = (props) => {
     ],
     shallow
   );
+  console.log("locations", locations);
+  const locationColors = useLocationColors(locations);
 
   // adds locations to store when selected
   useSelectedLocations();
@@ -90,11 +101,12 @@ const LocationsCard = (props) => {
       )}
       {locations.length > 0 && (
         <List>
-          {locations.map((location) => (
+          {locations.map((location, i) => (
             <LocationRow
               key={location.properties.id}
               id={location.properties.id}
               name={location.properties.name}
+              color={locationColors[i]}
               pinned={isLocationPinned(location)}
               onClick={handleSelect(location)}
               onDismiss={handleRemove(location)}
