@@ -1,5 +1,6 @@
 import React from "react";
 import { Box } from "@material-ui/core";
+import TimeSeriesChart from "./components/TimeSeriesChart";
 
 const TimeSeries = (props) => {
   return (
@@ -13,7 +14,7 @@ const TimeSeries = (props) => {
       alignItems="center"
       justifyContent="center"
     >
-      <p>time series</p>
+      <TimeSeriesChart />
     </Box>
   );
 };

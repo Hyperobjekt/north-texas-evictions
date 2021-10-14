@@ -6,6 +6,9 @@ import useLocationColors from "./useLocationColors";
  * Returns a mapboxgl style object for choropleth layers
  */
 const getPinnedLayerStyle = (pinnedLocations, colors) => {
+  if (!pinnedLocations?.length) {
+    return [];
+  }
   const colorPairs = pinnedLocations
     .map((location, i) => [location.properties.id, colors[i]])
     .flat();

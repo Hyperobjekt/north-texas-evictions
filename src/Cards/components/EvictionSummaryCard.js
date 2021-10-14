@@ -13,7 +13,7 @@ import { useLang } from "../../Language";
 
 const EvictionSummaryCard = (props) => {
   const { data: summary, status } = useSummaryData();
-  const dateRange = useDashboardStore((state) => state.dateRange);
+  const dateRange = useDashboardStore((state) => state.activeDateRange);
   const langKeys = [`SUMMARY_EF`, `SUMMARY_TFA`, `SUMMARY_UPDATED`, `SUMMARY`];
   const [filingsLabel, amountLabel, lastUpdated, summaryTitle] = useLang(
     langKeys,

@@ -209,7 +209,6 @@ export default function useMapLayers() {
   const extents = useDataExtents();
   const regions = useDashboardStore((state) => state.regions);
   const pinnedLayers = usePinnedLayers();
-  console.log({ pinnedLayers });
   return useMemo(() => {
     const metricConfig = metrics.find((m) => m.id === activeChoropleth);
     const scaleType = metricConfig?.scale || "continuous";
