@@ -3,6 +3,7 @@ import { Button, ButtonGroup, withStyles } from "@material-ui/core";
 import { useDashboardStore } from "../../Dashboard";
 import clsx from "clsx";
 import shallow from "zustand/shallow";
+import { useLocationStore } from "../../Locations";
 
 const DarkButtonGroup = withStyles({
   root: {
@@ -29,8 +30,13 @@ const ViewButtonGroup = (props) => {
     (state) => [state.activeView, state.setActiveView],
     shallow
   );
+  const [activeLocation, setActiveLocation] = useLocationStore(
+    (state) => [state.active, state.setActive],
+    shallow
+  );
   const handleChangeView = (view) => {
     return (e) => {
+      if (activeLocation) setActiveLocation(null);
       setActiveView(view);
     };
   };

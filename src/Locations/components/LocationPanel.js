@@ -60,6 +60,7 @@ const LocationPanel = ({ ...props }) => {
     ],
     shallow
   );
+
   const [activeRegion, setActiveRegion] = useDashboardStore(
     (state) => [state.activeRegion, state.setActiveRegion],
     shallow
