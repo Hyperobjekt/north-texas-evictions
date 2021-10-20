@@ -30,9 +30,18 @@ const fetchLocationSeries = (locationId, dateRange, region) => {
             series: series.result,
             avg7: getDailyAverage(series.result, 7),
             avg30: getDailyAverage(series.result, 30),
-            past7: getDailyAverage(series.result, 7, -7),
-            past30: getDailyAverage(series.result, 30, -30),
+            past7: getDailyAverage(series.result, 7, 7),
+            past30: getDailyAverage(series.result, 30, 30),
           };
+          // add diff values if available
+          result["diff7"] =
+            Number.isFinite(result.avg7) &&
+            Number.isFinite(result.past7) &&
+            Math.round(result.avg7 - result.past7);
+          result["diff30"] =
+            Number.isFinite(result.avg30) &&
+            Number.isFinite(result.past30) &&
+            Math.round(result.avg30 - result.past30);
           return result;
         });
     });

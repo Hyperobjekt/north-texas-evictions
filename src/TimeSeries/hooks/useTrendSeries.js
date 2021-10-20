@@ -17,9 +17,9 @@ export default function useTrendSeries(series, dateRange) {
     return [];
   }
   const daysBetween = timeDay.count(...dateRange.map(parseDate));
-  return daysBetween > 14
+  return daysBetween < 14
+    ? series
+    : daysBetween < 120
     ? movingAverage(series, dateRange, 7)
-    : daysBetween > 120
-    ? movingAverage(series, dateRange, 30)
-    : series;
+    : movingAverage(series, dateRange, 30);
 }

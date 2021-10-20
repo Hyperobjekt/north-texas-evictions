@@ -15,8 +15,6 @@ const TimeSeries = (props) => {
   // get the lines data
   const lines = useTimeSeriesLines();
 
-  console.log({ lines });
-
   return (
     <Box
       position="absolute"

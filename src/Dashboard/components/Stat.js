@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Typography, Tooltip } from "@material-ui/core";
 import { InfoOutlined } from "@material-ui/icons";
+import Diff from "./Diff";
 
 /**
  * Helper component for rendering tooltip stats
@@ -8,6 +9,7 @@ import { InfoOutlined } from "@material-ui/icons";
 const Stat = ({
   label,
   value,
+  diff,
   valueColor = "textPrimary",
   labelColor = "textSecondary",
   hint,
@@ -34,6 +36,7 @@ const Stat = ({
           />
         )}
       </Typography>
+      {Number.isFinite(diff) && <Diff value={diff} />}
       <Typography component="span" variant="h2" color={valueColor}>
         {value}
       </Typography>

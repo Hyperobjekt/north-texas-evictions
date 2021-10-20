@@ -261,6 +261,12 @@ App.defaultProps = {
       HINT_EF: "",
       HINT_TFA:
         "Filing amounts are only reported within Dallas County, the actual total is much higher.",
+      HINT_AVG7:
+        "Average eviction filings per day in the last 7 days.  The leftmost number shows the change compared to the previous 7-day period.",
+      HINT_AVG30:
+        "Average eviction filings per day in the last 30 days.  The leftmost number shows the change compared to the previous 30-day period.",
+      HINT_MFA:
+        "Median filing amounts are only available within Dallas County.",
       LABEL_ALL_COURTS: "All Courts",
       LABEL_FIT_BOUNDS: "Zoom to all {{region}}",
       LABEL_UNAVAILABLE: "Unavailable",

@@ -1,3 +1,4 @@
+import { median } from "d3-array";
 import { useQuery } from "react-query";
 import { EVICTION_DATA_ENDPOINT } from "../Dashboard/constants";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
@@ -22,15 +23,26 @@ const fetchSummary = ({ start, end, precinct }) => {
       return fetch(`${EVICTION_DATA_ENDPOINT}/filings?${paramString}`)
         .then((response) => response.json())
         .then((series) => {
-          return {
+          const result = {
             ef: summary.result.reduce((sum, entry) => sum + entry.ef, 0),
             tfa: summary.result.reduce((sum, entry) => sum + entry.tfa, 0),
+            mfa: median(series.result, (d) => d.mfa),
             series: series.result,
             avg7: getDailyAverage(series.result, 7),
             avg30: getDailyAverage(series.result, 30),
-            past7: getDailyAverage(series.result, 7, -7),
-            past30: getDailyAverage(series.result, 30, -30),
+            past7: getDailyAverage(series.result, 7, 7),
+            past30: getDailyAverage(series.result, 30, 30),
           };
+          // add diff values if available
+          result["diff7"] =
+            Number.isFinite(result.avg7) &&
+            Number.isFinite(result.past7) &&
+            Math.round(result.avg7 - result.past7);
+          result["diff30"] =
+            Number.isFinite(result.avg30) &&
+            Number.isFinite(result.past30) &&
+            Math.round(result.avg30 - result.past30);
+          return result;
         });
     });
 };

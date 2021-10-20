@@ -74,7 +74,6 @@ export function movingAverage(series, dateRange, N = 7) {
     dict[formatDate(day)] = means[i];
     return dict;
   }, {});
-  console.log({ avgDict });
   return series.map((d, i) => {
     return {
       ...d,
@@ -92,8 +91,9 @@ export function movingAverage(series, dateRange, N = 7) {
  */
 export const getDailyAverage = (data, n = 7, offset = 0) => {
   if (!data || data.length < n + offset) return null;
-  const start = data.length - n - offset;
-  const end = data.length - offset;
+
+  const start = offset;
+  const end = offset + n;
   const avg =
     data.slice(start, end).reduce((acc, curr) => {
       return acc + curr.ef;

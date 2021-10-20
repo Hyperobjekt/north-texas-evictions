@@ -73,7 +73,6 @@ const LocationPanel = ({ ...props }) => {
 
   // 👇 Eviction Metric Summary
   const dateOptions = useDateOptions();
-  console.log({ dateOptions });
   const [, dateLabel] = getDateRangeLabel(...dateRange, dateOptions || []);
   // pull eviction summary data for location
   const [summary] = useLocationSeries(active ? [active] : [], dateRange);

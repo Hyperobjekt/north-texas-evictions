@@ -15,9 +15,7 @@ const StatsSummary = ({ value, label, series, stats, children, ...props }) => {
       <StatWithSeries value={value} label={label} series={series} />
       <Divider style={{ marginTop: 4, background: "transparent" }} />
       {Array.isArray(stats) &&
-        stats.map(({ id, label, value, hint }) => (
-          <Stat key={id} label={label} value={value} hint={hint} />
-        ))}
+        stats.map((stat) => <Stat key={stat.id} {...stat} />)}
       {children}
     </Stack>
   );
