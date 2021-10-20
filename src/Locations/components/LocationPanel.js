@@ -3,8 +3,19 @@ import Panel from "../../Dashboard/components/Panel";
 import LocationName from "../../App/components/LocationName";
 import useLocationStore from "../hooks/useLocationStore";
 import shallow from "zustand/shallow";
-import { Button, Divider, FormControlLabel, Switch } from "@material-ui/core";
-import { StatsSummary, useDashboardStore } from "../../Dashboard";
+import {
+  Button,
+  Divider,
+  FormControlLabel,
+  Switch,
+  Typography,
+} from "@material-ui/core";
+import {
+  getDateRangeLabel,
+  StatsSummary,
+  useDashboardStore,
+  useDateOptions,
+} from "../../Dashboard";
 import { Stack } from "@hyperobjekt/material-ui-website";
 import Stat from "../../Dashboard/components/Stat";
 import { useLang } from "../../Language";
@@ -61,6 +72,9 @@ const LocationPanel = ({ ...props }) => {
   const dateRange = useDashboardStore((state) => state.activeDateRange);
 
   // 👇 Eviction Metric Summary
+  const dateOptions = useDateOptions();
+  console.log({ dateOptions });
+  const [, dateLabel] = getDateRangeLabel(...dateRange, dateOptions || []);
   // pull eviction summary data for location
   const [summary] = useLocationSeries(active ? [active] : [], dateRange);
   // formatter + label for eviction filings
@@ -105,6 +119,9 @@ const LocationPanel = ({ ...props }) => {
       onClose={() => setActive(null)}
       {...props}
     >
+      <Typography variant="overline" color="textSecondary">
+        Filings Summary ({dateLabel})
+      </Typography>
       {summary && (
         <StatsSummary
           value={filingsFormatter(summary?.data?.ef)}
@@ -114,6 +131,9 @@ const LocationPanel = ({ ...props }) => {
         />
       )}
       <Divider />
+      <Typography variant="overline" color="textSecondary">
+        Demographics Summary
+      </Typography>
       <Stack
         direction="vertical"
         between="md"
@@ -134,7 +154,7 @@ const LocationPanel = ({ ...props }) => {
             onChange={handlePinToggle}
           />
         }
-        label="Pin to map"
+        label="Show on map + chart"
         labelPlacement="start"
       />
       {regionId !== activeRegion && (

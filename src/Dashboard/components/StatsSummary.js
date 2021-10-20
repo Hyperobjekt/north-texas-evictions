@@ -13,7 +13,7 @@ const StatsSummary = ({ value, label, series, stats, children, ...props }) => {
   return (
     <Stack direction="vertical" alignItems="stretch" between="md" {...props}>
       <StatWithSeries value={value} label={label} series={series} />
-      <Divider />
+      <Divider style={{ marginTop: 4, background: "transparent" }} />
       {Array.isArray(stats) &&
         stats.map(({ id, label, value, hint }) => (
           <Stat key={id} label={label} value={value} hint={hint} />

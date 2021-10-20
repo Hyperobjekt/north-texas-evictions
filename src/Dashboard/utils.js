@@ -33,3 +33,23 @@ export const formatDateString = (start, end, options = { short: false }) => {
     ? [startDateLabel, shortEndDateLabel]
     : [startDateLabel, endDateLabel];
 };
+
+/**
+ * Returns a prefix and label for the date range text in the legend
+ * TODO: move hard coded strings to language dictionary
+ * @param {*} start
+ * @param {*} end
+ * @returns
+ */
+export const getDateRangeLabel = (start, end, dateOptions) => {
+  if (!start || !end) return "";
+  const selectedOption = dateOptions.find((option) => {
+    if (!option.value || option.value.length !== 2) return false;
+    return option.value[0] === start && option.value[1] === end;
+  });
+  if (!selectedOption)
+    return ["between", formatDateString(start, end).join(" and ")];
+  if (selectedOption.id === "alltime") return ["for", "all time"];
+  if (selectedOption.id === "2020") return ["", "since 2020"];
+  return ["in the", selectedOption.label];
+};

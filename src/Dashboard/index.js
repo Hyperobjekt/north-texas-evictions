@@ -20,4 +20,9 @@ export { default as useDateOptions } from "./hooks/useDateOptions";
 export { default as useFormatter } from "./hooks/useFormatter";
 export { default as useDashboardDefaults } from "./hooks/useDashboardDefaults";
 // utils
-export { parseDate, formatDate, formatDateString } from "./utils";
+export {
+  parseDate,
+  formatDate,
+  formatDateString,
+  getDateRangeLabel,
+} from "./utils";
