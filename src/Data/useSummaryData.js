@@ -1,6 +1,7 @@
 import { useQuery } from "react-query";
 import { EVICTION_DATA_ENDPOINT } from "../Dashboard/constants";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
+import { getDailyAverage } from "../TimeSeries/utils";
 import usePrecinctFilter from "./usePrecinctFilter";
 
 /**
@@ -22,9 +23,13 @@ const fetchSummary = ({ start, end, precinct }) => {
         .then((response) => response.json())
         .then((series) => {
           return {
-            filings: summary.result.reduce((sum, entry) => sum + entry.ef, 0),
-            amount: summary.result.reduce((sum, entry) => sum + entry.tfa, 0),
+            ef: summary.result.reduce((sum, entry) => sum + entry.ef, 0),
+            tfa: summary.result.reduce((sum, entry) => sum + entry.tfa, 0),
             series: series.result,
+            avg7: getDailyAverage(series.result, 7),
+            avg30: getDailyAverage(series.result, 30),
+            past7: getDailyAverage(series.result, 7, -7),
+            past30: getDailyAverage(series.result, 30, -30),
           };
         });
     });

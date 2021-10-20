@@ -3,20 +3,18 @@ import Panel from "../../Dashboard/components/Panel";
 import LocationName from "../../App/components/LocationName";
 import useLocationStore from "../hooks/useLocationStore";
 import shallow from "zustand/shallow";
-import {
-  Box,
-  Button,
-  Divider,
-  FormControlLabel,
-  Switch,
-  Typography,
-} from "@material-ui/core";
-import { useDashboardStore } from "../../Dashboard";
+import { Button, Divider, FormControlLabel, Switch } from "@material-ui/core";
+import { StatsSummary, useDashboardStore } from "../../Dashboard";
 import { Stack } from "@hyperobjekt/material-ui-website";
 import Stat from "../../Dashboard/components/Stat";
 import { useLang } from "../../Language";
 import { withStyles } from "@material-ui/styles";
-import { useFormatters } from "../../Dashboard/hooks/useFormatter";
+import useFormatter, {
+  useFormatters,
+} from "../../Dashboard/hooks/useFormatter";
+import useLocationSeries from "../hooks/useLocationSeries";
+import useSummaryStats from "../hooks/useSummaryStats";
+import useTrendSeries from "../../TimeSeries/hooks/useTrendSeries";
 
 const PANEL_METRICS = [
   "pop",
@@ -60,28 +58,44 @@ const LocationPanel = ({ ...props }) => {
     ],
     shallow
   );
+  const dateRange = useDashboardStore((state) => state.activeDateRange);
 
-  const [activeRegion, setActiveRegion] = useDashboardStore(
-    (state) => [state.activeRegion, state.setActiveRegion],
-    shallow
-  );
+  // 👇 Eviction Metric Summary
+  // pull eviction summary data for location
+  const [summary] = useLocationSeries(active ? [active] : [], dateRange);
+  // formatter + label for eviction filings
+  const filingsFormatter = useFormatter("ef");
+  const filingsLabel = useLang("METRIC_EF");
+  // list of secondary stats
+  const stats = useSummaryStats(summary?.data);
+  // use the 7 day moving average if more than 14 days
+  const series = useTrendSeries(summary?.data?.series, dateRange);
 
+  // 👇 Demographic Metric Summary
+  // get formatters and labels for demographic metrics
   const labels = useLang(PANEL_METRICS.map((m) => `METRIC_${m}`));
-
-  // get formatters for metrics
   const formatters = useFormatters(PANEL_METRICS);
-
-  const regionId = getRegionFromFeature(active);
-  const isPinned =
-    pinned.findIndex((feature) => feature.id === active?.id) !== -1;
-
+  // get values for demographic metrics
   const values = PANEL_METRICS.map((m, i) =>
     formatters[i](active?.properties?.[m])
   );
 
+  // 👇 Pinned locations
+  // determine if this location is pinned
+  const isPinned =
+    pinned.findIndex((feature) => feature.id === active?.id) !== -1;
+  // handler for toggling pinned status
   const handlePinToggle = () => {
     isPinned ? removePinned(active) : addPinned(active);
   };
+
+  // 👇 Region Switch (if active region is different)
+  // pull region info for switching region if needed
+  const [activeRegion, setActiveRegion] = useDashboardStore(
+    (state) => [state.activeRegion, state.setActiveRegion],
+    shallow
+  );
+  const regionId = getRegionFromFeature(active);
 
   return (
     <Panel
@@ -91,21 +105,18 @@ const LocationPanel = ({ ...props }) => {
       onClose={() => setActive(null)}
       {...props}
     >
-      <Box
-        height={80}
-        bgcolor="grey.200"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Typography color="textSecondary">
-          Eviction Metric Summary + time series
-        </Typography>
-      </Box>
+      {summary && (
+        <StatsSummary
+          value={filingsFormatter(summary?.data?.ef)}
+          label={filingsLabel}
+          series={series}
+          stats={stats}
+        />
+      )}
       <Divider />
       <Stack
         direction="vertical"
-        between="sm"
+        between="md"
         around="none"
         alignItems="stretch"
       >

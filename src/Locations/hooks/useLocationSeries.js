@@ -1,5 +1,6 @@
 import { useQueries } from "react-query";
 import { EVICTION_DATA_ENDPOINT } from "../../Dashboard/constants";
+import { getDailyAverage } from "../../TimeSeries/utils";
 
 /**
  * Fetches the data series for a single location
@@ -14,13 +15,26 @@ const fetchLocationSeries = (locationId, dateRange, region) => {
   }
   const params = { start, end, location: locationId, region };
   const paramString = new URLSearchParams(params).toString();
-  return fetch(`${EVICTION_DATA_ENDPOINT}/filings?${paramString}`)
+  return fetch(`${EVICTION_DATA_ENDPOINT}/summary?${paramString}`)
     .then((response) => response.json())
-    .then((series) => {
-      return {
-        id: series.location,
-        series: series.result,
-      };
+    .then((summary) => {
+      return fetch(`${EVICTION_DATA_ENDPOINT}/filings?${paramString}`)
+        .then((response) => response.json())
+        .then((series) => {
+          const match = summary.result.find((r) => r.id === locationId);
+          const result = {
+            id: series.location,
+            ef: match?.ef,
+            tfa: match?.tfa,
+            mfa: match?.mfa,
+            series: series.result,
+            avg7: getDailyAverage(series.result, 7),
+            avg30: getDailyAverage(series.result, 30),
+            past7: getDailyAverage(series.result, 7, -7),
+            past30: getDailyAverage(series.result, 30, -30),
+          };
+          return result;
+        });
     });
 };
 

@@ -47,7 +47,7 @@ const App = ({ lang = "en", langDict, config }) => {
       {ready ? (
         <Body bgcolor="background.default" flex={1} overflow="auto">
           <ControlsPanel float position="left" />
-          <LocationPanel float position="right" />
+          <LocationPanel float position="left" />
           <TwoColumnLayout left={<Cards />} right={<Visual />} />
         </Body>
       ) : (
@@ -199,6 +199,8 @@ App.defaultProps = {
         unavailable: ["tracts"],
       },
       { id: "pop", type: "secondary", format: "integer" },
+      { id: "avg7", type: "secondary", format: "integer" },
+      { id: "avg30", type: "secondary", format: "integer" },
     ],
     dateRange: ["2018-01-01", "2022-05-01"],
     filters: [],
@@ -227,6 +229,8 @@ App.defaultProps = {
       METRIC_RB: "Rent Burden",
       METRIC_TFA: "Total Filing Amount",
       METRIC_POP: "Renter Households",
+      METRIC_AVG7: "7-day Average",
+      METRIC_AVG30: "30-day Average",
       REGION_COUNTIES: "Counties",
       REGION_TRACTS: "Census Tracts",
       REGION_ZIPS: "ZIP Codes",
@@ -243,9 +247,6 @@ App.defaultProps = {
       SELECT_DATE_RANGE: "Date Range",
       TITLE_DATA_OPTIONS: "Data Options",
       SUMMARY: "Summary ({{dateRange}})",
-      SUMMARY_EF: "Total Eviction Filings",
-      SUMMARY_TFA: "Total Amount Filed",
-      SUMMARY_SERIES: "Filings By Day",
       SUMMARY_UPDATED: "Data last updated on {{date}}.",
       LEGEND: "Map Legend",
       LEGEND_TITLE: "Currently Viewing",

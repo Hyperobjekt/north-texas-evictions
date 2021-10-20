@@ -14,12 +14,12 @@ const Cards = (props) => {
       ? [
           <MapTextControlsCard key="map-text-controls" />,
           <MapLegendCard key="map-legend" />,
-          <EvictionSummaryCard key="eviction-summary" />,
           <LocationsCard key="locations" />,
+          <EvictionSummaryCard key="eviction-summary" />,
         ]
       : [
-          <EvictionSummaryCard key="eviction-summary" />,
           <LocationsCard key="locations" />,
+          <EvictionSummaryCard key="eviction-summary" />,
         ];
   return (
     <Stack

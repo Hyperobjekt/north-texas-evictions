@@ -13,9 +13,8 @@ const StatsSummary = ({ value, label, series, stats, children, ...props }) => {
   return (
     <Stack direction="vertical" alignItems="stretch" between="md" {...props}>
       <StatWithSeries value={value} label={label} series={series} />
-      <Divider style={{ margin: "16px -16px 0" }} />
-      {stats &&
-        stats.length &&
+      <Divider />
+      {Array.isArray(stats) &&
         stats.map(({ id, label, value, hint }) => (
           <Stat key={id} label={label} value={value} hint={hint} />
         ))}

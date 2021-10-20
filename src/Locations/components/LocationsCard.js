@@ -11,12 +11,14 @@ import {
   Typography,
 } from "@material-ui/core";
 import LocationName from "../../App/components/LocationName";
-import { Close, FiberPin } from "@material-ui/icons";
+import { Close } from "@material-ui/icons";
 import shallow from "zustand/shallow";
 import useLocationColors from "../hooks/useLocationColors";
 import { useDashboardStore } from "../../Dashboard";
 import useTimeSeriesStore from "../../TimeSeries/hooks/useTimeSeriesStore";
 import { Stack } from "@hyperobjekt/material-ui-website";
+import { HiddenIcon, VisibleIcon } from "../../Icons";
+import { ALL_DATA_COLOR } from "../../Dashboard/constants";
 
 const LocationRow = ({
   id,
@@ -35,10 +37,10 @@ const LocationRow = ({
         <Stack around="none" between="sm">
           <IconButton
             size="small"
-            style={{ color: pinned && color }}
+            style={{ color: pinned ? color : "#ddd" }}
             onClick={onPin}
           >
-            <FiberPin />
+            {pinned ? <VisibleIcon /> : <HiddenIcon />}
           </IconButton>
           {onDismiss && (
             <IconButton size="small" onClick={onDismiss}>
@@ -119,7 +121,7 @@ const LocationsCard = (props) => {
             <LocationRow
               id="all"
               name={"All Data"}
-              color={"#f00"}
+              color={ALL_DATA_COLOR}
               pinned={showOverall}
               onPin={handleToggleShowAll}
             />

@@ -1,9 +1,19 @@
 import React from "react";
-import { Button, ButtonGroup, withStyles } from "@material-ui/core";
+import { Button, ButtonGroup, styled, withStyles } from "@material-ui/core";
 import { useDashboardStore } from "../../Dashboard";
 import clsx from "clsx";
 import shallow from "zustand/shallow";
 import { useLocationStore } from "../../Locations";
+import { MapIcon, TimeSeriesIcon } from "../../Icons";
+
+const iconStyles = {
+  fontSize: 20,
+  marginRight: 8,
+};
+
+const StyledMapIcon = styled(MapIcon)(iconStyles);
+
+const StyledTimeSeriesIcon = styled(TimeSeriesIcon)(iconStyles);
 
 const DarkButtonGroup = withStyles({
   root: {
@@ -46,13 +56,13 @@ const ViewButtonGroup = (props) => {
         className={clsx("dark", { active: activeView === "map" })}
         onClick={handleChangeView("map")}
       >
-        Map
+        <StyledMapIcon /> Map
       </Button>
       <Button
         className={clsx("dark", { active: activeView === "series" })}
         onClick={handleChangeView("series")}
       >
-        Time Series
+        <StyledTimeSeriesIcon /> Time Series
       </Button>
     </DarkButtonGroup>
   );

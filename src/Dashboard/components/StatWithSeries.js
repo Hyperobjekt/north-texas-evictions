@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
-import TrendLine from "./TrendLine";
+import TrendLine from "../../TimeSeries/components/TrendLine";
 
 const StatWithSeries = ({ value, series, label, ...props }) => {
   return (
@@ -12,7 +12,7 @@ const StatWithSeries = ({ value, series, label, ...props }) => {
       {...props}
     >
       <Box>
-        <Typography variant="h1">{value}</Typography>
+        <Typography variant="h1">{value || "..."}</Typography>
         <Typography
           component="p"
           variant="caption"
