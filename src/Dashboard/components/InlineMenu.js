@@ -1,13 +1,7 @@
 import React, { useMemo } from "react";
-import {
-  ListSubheader,
-  Menu,
-  MenuItem,
-  styled,
-  Typography,
-} from "@material-ui/core";
+import { Menu, MenuItem, styled, Typography } from "@material-ui/core";
 import { FOCUS_STATE } from "../../theme";
-import { useLang } from "../../Language";
+// import { useLang } from "../../Language";
 
 function uuid(a) {
   return a
@@ -24,7 +18,9 @@ const InlineMenuButton = styled("button")({
   display: "inline-block",
   verticalAlign: "top",
   fontWeight: 500,
+  fontSize: "inherit",
   cursor: "pointer",
+  whiteSpace: "nowrap",
   "&:hover": {
     textDecoration: "underline",
   },
@@ -39,7 +35,7 @@ const InlineMenu = ({ children, options, selected, onSelect, ...props }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const unavailableOptions = options.filter((o) => o.unavailable);
-  const unavailableLabel = useLang("LABEL_UNAVAILABLE");
+  // const unavailableLabel = useLang("LABEL_UNAVAILABLE");
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -75,15 +71,19 @@ const InlineMenu = ({ children, options, selected, onSelect, ...props }) => {
               selected={option.active || selected === option.id}
               onClick={(e) => handleClose(e, option)}
             >
-              {option?.label ? option.label : option}
+              <span style={{ textTransform: "capitalize" }}>
+                {option?.label ? option.label : option}
+              </span>
             </MenuItem>
           ))}
-        {unavailableOptions.length > 0 && (
+        {/* {unavailableOptions.length > 0 && (
           <ListSubheader>{unavailableLabel}</ListSubheader>
-        )}
+        )} */}
         {unavailableOptions.map((option, i) => (
           <MenuItem key={option.id} disabled>
-            {option?.label ? option.label : option}
+            <span style={{ textTransform: "capitalize" }}>
+              {option?.label ? option.label : option}
+            </span>
           </MenuItem>
         ))}
       </Menu>

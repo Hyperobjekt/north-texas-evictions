@@ -5,7 +5,8 @@ import { Box, Typography } from "@material-ui/core";
 export const getNameParts = (fullName) => {
   if (!fullName) return ["Unavailable", ""];
   const [name, parent] = fullName.split(",");
-  return [name, parent || "Texas"];
+  const parentName = name === "All Data" ? "North Texas" : parent || "Texas";
+  return [name, parentName];
 };
 
 const LocationName = ({ name: fullName, ...props }) => {

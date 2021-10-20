@@ -6,6 +6,8 @@ import create from "zustand";
 const useDashboardStore = create((set) => ({
   ready: false,
   setReady: (ready) => set({ ready }),
+  activeView: "map",
+  setActiveView: (activeView) => set({ activeView }),
   activeBubble: null,
   setActiveBubble: (activeBubble) => set({ activeBubble }),
   activeChoropleth: null,

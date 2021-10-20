@@ -13,7 +13,7 @@ const styles = (theme) => ({
     flex: 0,
     height: "100%",
     zIndex: 100,
-    overflow: "visible",
+    maxHeight: "100%",
     [theme.breakpoints.down("xs")]: {
       position: "fixed",
       right: 0,
@@ -27,6 +27,7 @@ const styles = (theme) => ({
   float: {
     position: "fixed",
     top: 64,
+    maxHeight: "calc(100% - 64px)",
     "&$right": {
       right: 0,
     },
@@ -36,12 +37,24 @@ const styles = (theme) => ({
   },
   contentWrapper: {
     minWidth: 320,
+    maxHeight: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "stretch",
+    justifyContent: "stretch",
   },
   header: {
     padding: theme.spacing(2, 3, 2, 3),
+    height: 64,
     borderBottom: `1px solid ${theme.palette.divider}`,
+    boxSizing: "border-box",
   },
-  body: { padding: theme.spacing(3, 3) },
+  body: {
+    padding: theme.spacing(3, 3),
+    overflow: "auto",
+    maxHeight: "calc(100% - 64px)",
+    boxSizing: "border-box",
+  },
 });
 
 const AnimatedPaper = animated(Paper);
@@ -94,6 +107,7 @@ const Panel = ({
       square
       elevation={2}
       className={clsx(
+        "HypPanel-root",
         classes.root,
         {
           [classes.float]: float,
@@ -111,29 +125,31 @@ const Panel = ({
       }}
       {...props}
     >
-      <Box className={clsx(classes.contentWrapper)}>
+      <Box className={clsx("HypPanel-contentWrapper", classes.contentWrapper)}>
         <Box
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          className={clsx(classes.header)}
+          className={clsx("HypPanel-header", classes.header)}
         >
           <Typography variant="h2">{title}</Typography>
           <IconButton ref={buttonRef} size="small" onClick={onClose}>
             <CloseIcon />
           </IconButton>
         </Box>
-        <Stack
-          className={clsx(classes.body)}
-          direction="vertical"
-          between="lg"
-          alignItems="stretch"
-        >
-          {children}
-        </Stack>
+        <Box className={clsx("HypPanel-body", classes.body)}>
+          <Stack
+            direction="vertical"
+            between="lg"
+            alignItems="stretch"
+            flexWrap="nowrap"
+          >
+            {children}
+          </Stack>
+        </Box>
       </Box>
     </AnimatedPaper>
   );
 };
 
-export default withStyles(styles)(Panel);
+export default withStyles(styles, { name: "HypPanel" })(Panel);

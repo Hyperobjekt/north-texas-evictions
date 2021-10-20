@@ -38,7 +38,7 @@ const getDateRangeLabel = (start, end, dateOptions) => {
   return ["in the", selectedOption.label];
 };
 
-const CurrentView = ({ ...props }) => {
+const MapTextControls = ({ ...props }) => {
   const setActivePanel = useDashboardStore((state) => state.setActivePanel);
   const [activeDateRange, setActiveDateRange] = useDashboardDateRange();
   const dateOptions = useDateOptions();
@@ -118,10 +118,10 @@ const CurrentView = ({ ...props }) => {
   );
 };
 
-const CurrentViewCard = (props) => {
+const MapControlsCard = (props) => {
   return (
     <Card noPadding title="Currently Viewing" {...props}>
-      <CurrentView />
+      <MapTextControls />
       <TogglePanelButton
         variant="outlined"
         fullWidth
@@ -135,4 +135,4 @@ const CurrentViewCard = (props) => {
   );
 };
 
-export default CurrentViewCard;
+export default MapControlsCard;

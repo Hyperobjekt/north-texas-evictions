@@ -9,14 +9,13 @@ import Dashboard, {
   useDashboardDefaults,
   useDashboardStore,
 } from "../Dashboard";
-import { Search } from "../Search";
 import { useLanguageStore } from "../Language";
-import { Map } from "../Map";
 import { Tooltip } from "../Tooltip";
 import { LocationPanel } from "../Locations";
 import { ControlsPanel } from "../Controls";
 import { Cards } from "../Cards";
 import { getCurrentRouteParams } from "./router";
+import Visual from "./components/Visual";
 
 const GEOJSON_ROOT = process.env.REACT_APP_GEOJSON_ENDPOINT;
 
@@ -44,14 +43,12 @@ const App = ({ lang = "en", langDict, config }) => {
   return (
     <Dashboard>
       <Router />
-      <Header>
-        <Search />
-      </Header>
+      <Header></Header>
       {ready ? (
         <Body bgcolor="background.default" flex={1} overflow="auto">
           <ControlsPanel float position="left" />
-          <LocationPanel float position="right" />
-          <TwoColumnLayout left={<Cards />} right={<Map />} />
+          <LocationPanel float position="left" />
+          <TwoColumnLayout left={<Cards />} right={<Visual />} />
         </Body>
       ) : (
         <Loading />
@@ -202,6 +199,8 @@ App.defaultProps = {
         unavailable: ["tracts"],
       },
       { id: "pop", type: "secondary", format: "integer" },
+      { id: "avg7", type: "secondary", format: "integer" },
+      { id: "avg30", type: "secondary", format: "integer" },
     ],
     dateRange: ["2018-01-01", "2022-05-01"],
     filters: [],
@@ -230,6 +229,8 @@ App.defaultProps = {
       METRIC_RB: "Rent Burden",
       METRIC_TFA: "Total Filing Amount",
       METRIC_POP: "Renter Households",
+      METRIC_AVG7: "7-day Average",
+      METRIC_AVG30: "30-day Average",
       REGION_COUNTIES: "Counties",
       REGION_TRACTS: "Census Tracts",
       REGION_ZIPS: "ZIP Codes",
@@ -246,9 +247,6 @@ App.defaultProps = {
       SELECT_DATE_RANGE: "Date Range",
       TITLE_DATA_OPTIONS: "Data Options",
       SUMMARY: "Summary ({{dateRange}})",
-      SUMMARY_EF: "Total Eviction Filings",
-      SUMMARY_TFA: "Total Amount Filed",
-      SUMMARY_SERIES: "Filings By Day",
       SUMMARY_UPDATED: "Data last updated on {{date}}.",
       LEGEND: "Map Legend",
       LEGEND_TITLE: "Currently Viewing",

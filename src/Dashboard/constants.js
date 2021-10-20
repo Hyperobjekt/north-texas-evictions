@@ -6,3 +6,5 @@ export const EVICTION_DATA_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
 // metrics to show in the tooltip (TODO: move to config props)
 export const TOOLTIP_METRICS = ["ef", "efr", "pop", "mfa", "tfa"];
+
+export const ALL_DATA_COLOR = "#999";
