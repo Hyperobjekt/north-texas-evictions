@@ -11,6 +11,7 @@ export function groupByWeek(data, metric = "ef") {
     const week = timeSunday.count(timeYear(date), date);
     if (!grouped[week]) {
       grouped[week] = {
+        ...d,
         date: formatDate(
           new Date(date.getFullYear(), date.getMonth(), date.getDate())
         ),
@@ -32,6 +33,7 @@ export function groupByMonth(data, metric = "ef") {
     const month = date.getMonth();
     if (!grouped[month]) {
       grouped[month] = {
+        ...d,
         date: formatDate(
           new Date(date.getFullYear(), date.getMonth(), date.getDate())
         ),

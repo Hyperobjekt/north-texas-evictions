@@ -2,6 +2,7 @@ import { median, sum } from "d3-array";
 import { useQueries } from "react-query";
 import { EVICTION_DATA_ENDPOINT } from "../../Dashboard/constants";
 import { getDailyAverage } from "../../TimeSeries/utils";
+import { getNameParts } from "../components/LocationName";
 
 /**
  * Fetches the data series for a single location
@@ -17,6 +18,7 @@ const fetchLocationSeries = (locationId, dateRange, region, feature) => {
   const params = { start, end, location: locationId, region };
   const paramString = new URLSearchParams(params).toString();
   const renterHouseholds = getFeatureProp(feature, "pop");
+  const name = getFeatureProp(feature, "name");
 
   return fetch(`${EVICTION_DATA_ENDPOINT}/filings?${paramString}`)
     .then((response) => response.json())
@@ -30,6 +32,7 @@ const fetchLocationSeries = (locationId, dateRange, region, feature) => {
         efr: renterHouseholds ? 1000 * (totalFilings / renterHouseholds) : null,
         series: series.result.map((d) => ({
           ...d,
+          name: getNameParts(name)[0],
           efr:
             renterHouseholds && d.ef ? 1000 * (d.ef / renterHouseholds) : null,
         })),
