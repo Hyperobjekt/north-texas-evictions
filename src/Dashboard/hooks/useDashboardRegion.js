@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import shallow from "zustand/shallow";
 import { useLang } from "../../Language";
 import useDashboardStore from "./useDashboardStore";
@@ -13,10 +14,10 @@ export default function useDashboardRegion() {
   const regionLabels = useLang(
     regions.map((region) => `region_${region.id}`.toUpperCase())
   );
+  const memoRegions = useMemo(
+    () => regions.map((r, i) => ({ ...r, label: regionLabels[i] })),
+    [regions, regionLabels]
+  );
   // get the active region object
-  return [
-    activeRegion,
-    setActiveRegion,
-    regions.map((r, i) => ({ ...r, label: regionLabels[i] })),
-  ];
+  return [activeRegion, setActiveRegion, memoRegions];
 }

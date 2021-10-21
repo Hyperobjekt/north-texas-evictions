@@ -1,60 +1,30 @@
 import React, { useEffect } from "react";
-import Header from "./components/Header";
-import Body from "./components/Body";
-import Loading from "./components/Loading";
-import Router from "./components/Router";
-import TwoColumnLayout from "./components/TwoColumnLayout";
 
-import Dashboard, {
-  useDashboardDefaults,
-  useDashboardStore,
-} from "../Dashboard";
+import Dashboard from "../Dashboard";
 import { useLanguageStore } from "../Language";
-import { Tooltip } from "../Tooltip";
-import { LocationPanel } from "../Locations";
-import { ControlsPanel } from "../Controls";
-import { Cards } from "../Cards";
-import { getCurrentRouteParams } from "./router";
-import Visual from "./components/Visual";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { About } from "../About";
 
 const GEOJSON_ROOT = process.env.REACT_APP_GEOJSON_ENDPOINT;
 
 const App = ({ lang = "en", langDict, config }) => {
-  // pull ready state from the store
-  const ready = useDashboardStore((state) => state.ready);
-
   //👇 update language on changes
   const setLanguage = useLanguageStore((state) => state.setLanguage);
   useEffect(() => {
     setLanguage(lang, langDict);
   }, [lang, langDict, setLanguage]);
 
-  // 👇 set the default dashboard state based on route params + config
-  useDashboardDefaults({
-    ...config,
-    ...getCurrentRouteParams(),
-    defaultViewport: {
-      zoom: config.zoom,
-      latitude: config.latitude,
-      longitude: config.longitude,
-    },
-  });
-
   return (
-    <Dashboard>
-      <Router />
-      <Header></Header>
-      {ready ? (
-        <Body bgcolor="background.default" flex={1} overflow="auto">
-          <ControlsPanel float position="left" />
-          <LocationPanel float position="left" />
-          <TwoColumnLayout left={<Cards />} right={<Visual />} />
-        </Body>
-      ) : (
-        <Loading />
-      )}
-      <Tooltip yOffset={40} />
-    </Dashboard>
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <Dashboard config={config} />
+        </Route>
+        <Route path="/about">
+          <About />
+        </Route>
+      </Switch>
+    </Router>
   );
 };
 

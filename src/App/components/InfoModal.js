@@ -67,7 +67,7 @@ const InfoModal = (props) => {
       classes={classes}
     >
       <Info style={{ fontSize: 16, marginRight: 8 }} />
-      Info
+      About
     </Modal>
   );
 };

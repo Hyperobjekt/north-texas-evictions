@@ -1,6 +1,5 @@
 import React from "react";
 import Panel from "../../Dashboard/components/Panel";
-import LocationName from "../../App/components/LocationName";
 import useLocationStore from "../hooks/useLocationStore";
 import shallow from "zustand/shallow";
 import {
@@ -26,6 +25,7 @@ import useFormatter, {
 import useLocationSeries from "../hooks/useLocationSeries";
 import useSummaryStats from "../hooks/useSummaryStats";
 import useTrendSeries from "../../TimeSeries/hooks/useTrendSeries";
+import { LocationName } from "..";
 
 const PANEL_METRICS = [
   "pop",

@@ -14,8 +14,6 @@ import {
   InlineMenu,
   getDateRangeLabel,
 } from "../../Dashboard";
-import usePrecinctFilter from "../../Data/usePrecinctFilter";
-import usePrecinctNames from "../../Data/usePrecinctNames";
 import TogglePanelButton from "../../Panel/TogglePanelButton";
 
 const MapTextControls = ({ ...props }) => {
@@ -40,11 +38,6 @@ const MapTextControls = ({ ...props }) => {
     ...activeDateRange,
     dateOptions
   );
-
-  // get active precinct filter (if any)
-  const [precinct] = usePrecinctFilter();
-  const precinctNames = usePrecinctNames();
-  const precinctLabel = <span> for {precinctNames[precinct]}</span>;
 
   const handleSetDateRange = (e, option) => {
     option?.value && setActiveDateRange(option.value);
@@ -92,7 +85,6 @@ const MapTextControls = ({ ...props }) => {
         <InlineMenu options={dateOptions} onSelect={handleSetDateRange}>
           {dateLabel}
         </InlineMenu>
-        {precinct && precinctLabel}
       </Typography>
     </Stack>
   );

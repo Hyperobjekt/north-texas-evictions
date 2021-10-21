@@ -1,5 +1,5 @@
 import React from "react";
-import { useDashboardStore } from "../../Dashboard";
+import { useDashboardStore } from "..";
 import { Map } from "../../Map";
 import clsx from "clsx";
 import { Box, withStyles } from "@material-ui/core";
@@ -9,11 +9,11 @@ import { TimeSeries } from "../../TimeSeries";
 const visualWrapperStyles = (theme) => ({
   root: {
     position: "sticky",
-    top: 24,
     width: "100%",
-    height: "100%",
     zIndex: 1,
-    maxHeight: `calc(100vh - ${theme.spacing(14)}px)`,
+    // place between header and bottom of viewport
+    top: 88,
+    height: `calc(100vh - ${theme.spacing(14)}px)`,
   },
 });
 

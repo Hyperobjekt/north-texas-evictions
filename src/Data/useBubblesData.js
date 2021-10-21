@@ -1,9 +1,7 @@
-import { useQueries } from "react-query";
+import { useQuery } from "react-query";
 import { EVICTION_DATA_ENDPOINT } from "../Dashboard/constants";
 import useDashboardContext from "../Dashboard/hooks/useDashboardContext";
 import useDashboardRegion from "../Dashboard/hooks/useDashboardRegion";
-import usePrecinctFilter from "./usePrecinctFilter";
-import { fetchGeojson } from "./useRegionGeojson";
 import {
   addDataToGeojson,
   addFeatureIds,
@@ -11,12 +9,21 @@ import {
 } from "./utils";
 
 /**
+ * Fetches bubble GeoJSON and returns and object
+ * containing the geojson and a data object containing
+ * the extent of each property along with values
+ */
+const fetchBubbleGeojson = (url) => {
+  if (!url) return Promise.reject("no url provided for choropleth geojson");
+  return fetch(url).then((response) => response.json());
+};
+
+/**
  * Fetches eviction filings data from the API
  */
-const fetchBubbleData = ({ region, start, end, precinct }) => {
+const fetchBubbleData = ({ region, start, end }) => {
   if (!region) return Promise.reject("no region provided for bubble data");
   const params = { region, start, end };
-  if (precinct) params.precinct = precinct;
   const paramString = new URLSearchParams(params).toString();
   return fetch(`${EVICTION_DATA_ENDPOINT}/summary?${paramString}`).then(
     (response) => response.json()
@@ -61,6 +68,25 @@ const addFilingRatesToGeojson = (geojson) => {
 };
 
 /**
+ * Merges GeoJSON data and data fetched from the API endpoint
+ */
+const fetchAllBubbleData = (params, geojsonUrl) => {
+  return Promise.all([
+    fetchBubbleGeojson(geojsonUrl),
+    fetchBubbleData(params),
+  ]).then(([geojson, evictionData]) => {
+    if (!geojson || !evictionData) return null;
+    const mergedGeojson = addFilingRatesToGeojson(
+      addDataToGeojson(addFeatureIds(geojson), evictionData.result)
+    );
+    return {
+      extents: extractExtentsFromGeojson(mergedGeojson),
+      geojson: mergedGeojson,
+    };
+  });
+};
+
+/**
  * Returns a [query object](https://react-query.tanstack.com/guides/queries#query-basics)
  * containing bubble data and fetch status
  * @returns { data: { geojson: object, extents: object }, status: string }
@@ -70,43 +96,12 @@ export default function useBubblesData() {
     activeDateRange: [start, end],
   } = useDashboardContext();
   const [activeRegion, , regions] = useDashboardRegion();
-  const [precinct] = usePrecinctFilter();
 
   const region = regions.find((r) => r.id === activeRegion);
   const bubbleLayer = region?.layers?.find((l) => l.id === "bubble");
   const geojsonUrl = bubbleLayer?.source;
-
-  // fetch the geojson and eviction data
-  const [geojsonQuery, evictionQuery] = useQueries([
-    {
-      queryKey: [activeRegion, "bubble"],
-      queryFn: () => fetchGeojson(geojsonUrl),
-    },
-    {
-      queryKey: [],
-      queryFn: () =>
-        fetchBubbleData({ region: activeRegion, start, end, precinct }),
-    },
-  ]);
-  // if still fetching, return the query in progress
-  if (!geojsonQuery.isSuccess) return geojsonQuery;
-  if (!evictionQuery.isSuccess) return evictionQuery;
-
-  // add filing rates, root level integer feature ids, and remaining eviction metrics to geojson
-  const mergedGeojson = addFilingRatesToGeojson(
-    addDataToGeojson(
-      addFeatureIds(geojsonQuery.data),
-      evictionQuery.data.result
-    )
+  // update the data on changes
+  return useQuery(["bubbles", activeRegion, start, end], () =>
+    fetchAllBubbleData({ region: activeRegion, start, end }, geojsonUrl)
   );
-  return {
-    status: "success",
-    isSuccess: true,
-    data: {
-      extents: extractExtentsFromGeojson(mergedGeojson),
-      geojson: mergedGeojson,
-    },
-    // provide query objects, just in case they are needed
-    _queries: [geojsonQuery, evictionQuery],
-  };
 }

@@ -18,7 +18,6 @@ export default function useDashboardDefaults({
   latitude,
   longitude,
   defaultViewport,
-  precinct,
 }) {
   // pull app state setters from store
   const [
@@ -29,7 +28,6 @@ export default function useDashboardDefaults({
     setActiveRegion,
     setDateRange,
     setActiveDateRange,
-    setFilters,
     setReady,
     setDefaultViewport,
   ] = useDashboardStore(
@@ -41,7 +39,6 @@ export default function useDashboardDefaults({
       state.setActiveRegion,
       state.setDateRange,
       state.setActiveDateRange,
-      state.setFilters,
       state.setReady,
       state.setDefaultViewport,
     ],
@@ -62,7 +59,6 @@ export default function useDashboardDefaults({
       zoom,
       latitude,
       longitude,
-      precinct,
     });
     setViewport({
       zoom,
@@ -77,7 +73,6 @@ export default function useDashboardDefaults({
     setActiveDateRange(activeDateRange);
     setMetrics(metrics);
     setRegions(regions);
-    precinct && setFilters([["precinct", precinct]]);
     fetch(`${EVICTION_DATA_ENDPOINT}/meta`)
       .then((response) => response.json())
       .then(([meta]) => {
