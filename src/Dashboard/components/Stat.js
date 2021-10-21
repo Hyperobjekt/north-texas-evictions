@@ -9,10 +9,11 @@ import Diff from "./Diff";
 const Stat = ({
   label,
   value,
-  diff,
+  diff = false,
   valueColor = "textPrimary",
   labelColor = "textSecondary",
   hint,
+  children,
   ...props
 }) => {
   const inner = (
@@ -36,6 +37,7 @@ const Stat = ({
           />
         )}
       </Typography>
+      {children}
       {Number.isFinite(diff) && <Diff value={diff} />}
       <Typography component="span" variant="h2" color={valueColor}>
         {value}

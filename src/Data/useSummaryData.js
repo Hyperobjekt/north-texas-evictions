@@ -33,6 +33,7 @@ const fetchSummary = ({ start, end }) => {
             mfa: median(series.result, (d) => d.mfa),
             series: series.result.map((d) => ({
               ...d,
+              name: "All Data",
               efr:
                 RENTER_HOUSEHOLDS && d.ef
                   ? 1000 * (d.ef / RENTER_HOUSEHOLDS)

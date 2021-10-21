@@ -21,6 +21,7 @@
     "@visx/responsive": "^2.1.2",
     "@visx/scale": "^2.1.0",
     "@visx/shape": "^2.1.0",
+    "@visx/tooltip": "^2.2.0",
     "@visx/xychart": "^2.2.1",
     "clsx": "^1.1.1",
     "d3-array": "^3.0.1",

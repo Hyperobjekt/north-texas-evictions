@@ -1,12 +1,26 @@
 import { useEffect } from "react";
 import { groupByMonth, groupByWeek, movingAverage } from "..";
-import { useDashboardStore } from "../../Dashboard";
+import { parseDate, useDashboardStore } from "../../Dashboard";
 import { ALL_DATA_COLOR } from "../../Dashboard/constants";
 import useSummaryData from "../../Data/useSummaryData";
 import { useLocationStore } from "../../Locations";
 import useLocationColors from "../../Locations/hooks/useLocationColors";
 import useLocationSeries from "../../Locations/hooks/useLocationSeries";
 import useTimeSeriesStore from "./useTimeSeriesStore";
+
+const getLineData = ({ series, group, dateRange, metric }) => {
+  const data =
+    group === "weekly"
+      ? groupByWeek(series, metric)
+      : group === "monthly"
+      ? groupByMonth(series, metric)
+      : group === "avg7"
+      ? movingAverage(series, metric, dateRange, 7)
+      : group === "avg30"
+      ? movingAverage(series, metric, dateRange, 30)
+      : series;
+  return data.sort((a, b) => parseDate(a.date) - parseDate(b.date));
+};
 
 /**
  * Returns an array of line data for the time series based on the current
@@ -39,15 +53,12 @@ export default function useTimeSeriesLines() {
     color: ALL_DATA_COLOR,
     data:
       showOverall && overallDataReady
-        ? group === "weekly"
-          ? groupByWeek(summary.series, activeBubble)
-          : group === "monthly"
-          ? groupByMonth(summary.series, activeBubble)
-          : group === "avg7"
-          ? movingAverage(summary.series, activeBubble, dateRange, 7)
-          : group === "avg30"
-          ? movingAverage(summary.series, activeBubble, dateRange, 30)
-          : summary.series
+        ? getLineData({
+            series: summary.series,
+            group,
+            metric: activeBubble,
+            dateRange,
+          })
         : [],
     visible: true,
   };
@@ -58,24 +69,21 @@ export default function useTimeSeriesLines() {
       pinnedLocations.findIndex(
         (l) => l.properties.id === locations[i].properties.id
       ) > -1;
+
     return {
       id: locations[i].properties.id,
       color: locationColors[i],
       data:
         isPinned && isSuccess
-          ? group === "weekly"
-            ? groupByWeek(data.series, activeBubble)
-            : group === "monthly"
-            ? groupByMonth(data.series, activeBubble)
-            : group === "avg7"
-            ? movingAverage(data.series, activeBubble, dateRange, 7)
-            : group === "avg30"
-            ? movingAverage(data.series, activeBubble, dateRange, 30)
-            : data.series
+          ? getLineData({
+              series: data.series,
+              group,
+              metric: activeBubble,
+              dateRange,
+            })
           : [],
       visible: isSuccess,
     };
   });
-
   return [overallLine, ...locationLines];
 }
