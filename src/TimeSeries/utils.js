@@ -4,7 +4,7 @@ import { formatDate, parseDate } from "../Dashboard";
 /**
  * Accepts data by day and aggregates it by week
  */
-export function groupByWeek(data) {
+export function groupByWeek(data, metric = "ef") {
   const grouped = {};
   data.forEach((d) => {
     const date = new Date(d.date);
@@ -14,10 +14,10 @@ export function groupByWeek(data) {
         date: formatDate(
           new Date(date.getFullYear(), date.getMonth(), date.getDate())
         ),
-        ef: 0,
+        [metric]: 0,
       };
     }
-    grouped[week].ef += d.ef;
+    if (d[metric]) grouped[week][metric] += d[metric];
   });
   return Object.values(grouped).sort((a, b) => (a.date > b.date ? -1 : 1));
 }
@@ -25,7 +25,7 @@ export function groupByWeek(data) {
 /**
  * Accepts data by day and aggregates it by month
  */
-export function groupByMonth(data) {
+export function groupByMonth(data, metric = "ef") {
   const grouped = {};
   data.forEach((d) => {
     const date = new Date(d.date);
@@ -35,10 +35,10 @@ export function groupByMonth(data) {
         date: formatDate(
           new Date(date.getFullYear(), date.getMonth(), date.getDate())
         ),
-        ef: 0,
+        [metric]: 0,
       };
     }
-    grouped[month].ef += d.ef;
+    if (d[metric]) grouped[month][metric] += d[metric];
   });
   return Object.values(grouped).sort((a, b) => (a.date > b.date ? -1 : 1));
 }
@@ -51,13 +51,13 @@ export function groupByMonth(data) {
  * @param {*} N
  * @returns
  */
-export function movingAverage(series, dateRange, N = 7) {
+export function movingAverage(series, metric = "ef", dateRange, N = 7) {
   const allDays = timeDays(new Date(dateRange[0]), new Date(dateRange[1]));
   const values = allDays.map((day) => {
     const match = series.find((d) => {
       return d.date === formatDate(day);
     });
-    return match ? match.ef : 0;
+    return match ? match[metric] : 0;
   });
   let i = 0;
   let sum = 0;
@@ -77,7 +77,7 @@ export function movingAverage(series, dateRange, N = 7) {
   return series.map((d, i) => {
     return {
       ...d,
-      ef: avgDict[d.date],
+      [metric]: avgDict[d.date],
     };
   });
 }
@@ -89,14 +89,13 @@ export function movingAverage(series, dateRange, N = 7) {
  * @param {*} n
  * @returns
  */
-export const getDailyAverage = (data, n = 7, offset = 0) => {
+export const getDailyAverage = (metric, data, n = 7, offset = 0) => {
   if (!data || data.length < n + offset) return null;
-
   const start = offset;
   const end = offset + n;
   const avg =
     data.slice(start, end).reduce((acc, curr) => {
-      return acc + curr.ef;
+      return acc + curr[metric];
     }, 0) / n;
   return avg;
 };

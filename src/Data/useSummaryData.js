@@ -3,19 +3,18 @@ import { useQuery } from "react-query";
 import { EVICTION_DATA_ENDPOINT } from "../Dashboard/constants";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import { getDailyAverage } from "../TimeSeries/utils";
-import usePrecinctFilter from "./usePrecinctFilter";
+
+// TODO: sum together the county pop values to get this number
+let RENTER_HOUSEHOLDS = 6464437;
 
 /**
  * Fetches eviction filings data from the API
  */
-const fetchSummary = ({ start, end, precinct }) => {
+const fetchSummary = ({ start, end }) => {
   if (!start || !end) {
     return Promise.reject("start and end dates are required");
   }
   const params = { start, end };
-  if (precinct) {
-    params["precinct"] = precinct;
-  }
   const paramString = new URLSearchParams(params).toString();
   return fetch(`${EVICTION_DATA_ENDPOINT}/summary?${paramString}`)
     .then((response) => response.json())
@@ -23,15 +22,26 @@ const fetchSummary = ({ start, end, precinct }) => {
       return fetch(`${EVICTION_DATA_ENDPOINT}/filings?${paramString}`)
         .then((response) => response.json())
         .then((series) => {
+          const totalFilings = summary.result.reduce(
+            (sum, entry) => sum + entry.ef,
+            0
+          );
           const result = {
-            ef: summary.result.reduce((sum, entry) => sum + entry.ef, 0),
+            ef: totalFilings,
+            efr: 1000 * (totalFilings / RENTER_HOUSEHOLDS),
             tfa: summary.result.reduce((sum, entry) => sum + entry.tfa, 0),
             mfa: median(series.result, (d) => d.mfa),
-            series: series.result,
-            avg7: getDailyAverage(series.result, 7),
-            avg30: getDailyAverage(series.result, 30),
-            past7: getDailyAverage(series.result, 7, 7),
-            past30: getDailyAverage(series.result, 30, 30),
+            series: series.result.map((d) => ({
+              ...d,
+              efr:
+                RENTER_HOUSEHOLDS && d.ef
+                  ? 1000 * (d.ef / RENTER_HOUSEHOLDS)
+                  : null,
+            })),
+            avg7: getDailyAverage("ef", series.result, 7),
+            avg30: getDailyAverage("ef", series.result, 30),
+            past7: getDailyAverage("ef", series.result, 7, 7),
+            past30: getDailyAverage("ef", series.result, 30, 30),
           };
           // add diff values if available
           result["diff7"] =
@@ -54,12 +64,10 @@ const fetchSummary = ({ start, end, precinct }) => {
  */
 export default function useSummaryData() {
   const activeDateRange = useDashboardStore((state) => state.activeDateRange);
-  const [precinct] = usePrecinctFilter();
-  return useQuery(["summary", ...activeDateRange, precinct], () =>
+  return useQuery(["summary", ...activeDateRange], () =>
     fetchSummary({
       start: activeDateRange[0],
       end: activeDateRange[1],
-      precinct,
     })
   );
 }

@@ -1,3 +1,4 @@
+import { median, sum } from "d3-array";
 import { useQueries } from "react-query";
 import { EVICTION_DATA_ENDPOINT } from "../../Dashboard/constants";
 import { getDailyAverage } from "../../TimeSeries/utils";
@@ -7,7 +8,7 @@ import { getDailyAverage } from "../../TimeSeries/utils";
  * @param {string} locationId The location id to fetch data for
  * @param {array} dateRange [startDate, endDate] in ISO8601 format
  */
-const fetchLocationSeries = (locationId, dateRange, region) => {
+const fetchLocationSeries = (locationId, dateRange, region, feature) => {
   const [start, end] = dateRange;
   // ensure required dates are set and in proper format
   if (!start || !end) {
@@ -15,39 +16,42 @@ const fetchLocationSeries = (locationId, dateRange, region) => {
   }
   const params = { start, end, location: locationId, region };
   const paramString = new URLSearchParams(params).toString();
-  return fetch(`${EVICTION_DATA_ENDPOINT}/summary?${paramString}`)
+  const renterHouseholds = getFeatureProp(feature, "pop");
+
+  return fetch(`${EVICTION_DATA_ENDPOINT}/filings?${paramString}`)
     .then((response) => response.json())
-    .then((summary) => {
-      return fetch(`${EVICTION_DATA_ENDPOINT}/filings?${paramString}`)
-        .then((response) => response.json())
-        .then((series) => {
-          const match = summary.result.find((r) => r.id === locationId);
-          const result = {
-            id: series.location,
-            ef: match?.ef,
-            tfa: match?.tfa,
-            mfa: match?.mfa,
-            series: series.result,
-            avg7: getDailyAverage(series.result, 7),
-            avg30: getDailyAverage(series.result, 30),
-            past7: getDailyAverage(series.result, 7, 7),
-            past30: getDailyAverage(series.result, 30, 30),
-          };
-          // add diff values if available
-          result["diff7"] =
-            Number.isFinite(result.avg7) &&
-            Number.isFinite(result.past7) &&
-            Math.round(result.avg7 - result.past7);
-          result["diff30"] =
-            Number.isFinite(result.avg30) &&
-            Number.isFinite(result.past30) &&
-            Math.round(result.avg30 - result.past30);
-          return result;
-        });
+    .then((series) => {
+      const totalFilings = sum(series.result, (d) => d.ef);
+      const result = {
+        id: series.location,
+        ef: totalFilings,
+        tfa: sum(series.result, (d) => d.tfa),
+        mfa: median(series.result, (d) => d.mfa),
+        efr: renterHouseholds ? 1000 * (totalFilings / renterHouseholds) : null,
+        series: series.result.map((d) => ({
+          ...d,
+          efr:
+            renterHouseholds && d.ef ? 1000 * (d.ef / renterHouseholds) : null,
+        })),
+        avg7: getDailyAverage("ef", series.result, 7),
+        avg30: getDailyAverage("ef", series.result, 30),
+        past7: getDailyAverage("ef", series.result, 7, 7),
+        past30: getDailyAverage("ef", series.result, 30, 30),
+      };
+      // add diff values if available
+      result["diff7"] =
+        Number.isFinite(result.avg7) &&
+        Number.isFinite(result.past7) &&
+        Math.round(result.avg7 - result.past7);
+      result["diff30"] =
+        Number.isFinite(result.avg30) &&
+        Number.isFinite(result.past30) &&
+        Math.round(result.avg30 - result.past30);
+      return result;
     });
 };
 
-const getLocationIdFromFeature = (feature) => feature.properties.id;
+const getFeatureProp = (feature, prop = "id") => feature?.properties?.[prop];
 
 const getRegionFromFeature = (feature) => {
   const source = feature?.source || feature?.layer?.source;
@@ -64,11 +68,11 @@ const getRegionFromFeature = (feature) => {
 export default function useLocationSeries(features = [], dateRange) {
   return useQueries(
     features.map((feature) => {
-      const id = getLocationIdFromFeature(feature);
+      const id = getFeatureProp(feature, "id");
       const region = getRegionFromFeature(feature);
       return {
         queryKey: [id, ...dateRange],
-        queryFn: () => fetchLocationSeries(id, dateRange, region),
+        queryFn: () => fetchLocationSeries(id, dateRange, region, feature),
       };
     })
   );

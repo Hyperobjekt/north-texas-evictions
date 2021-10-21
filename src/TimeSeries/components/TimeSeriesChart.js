@@ -34,7 +34,7 @@ const TimeSeriesChart = ({ lines, xAccessor, yAccessor }) => {
             key={id}
             dataKey={id}
             stroke={color}
-            data={data}
+            data={data.filter((d) => Number.isFinite(yAccessor(d)))}
             curve={curveMonotoneX}
             xAccessor={xAccessor}
             yAccessor={yAccessor}

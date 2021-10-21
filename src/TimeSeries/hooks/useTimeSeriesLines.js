@@ -17,6 +17,7 @@ import useTimeSeriesStore from "./useTimeSeriesStore";
 export default function useTimeSeriesLines() {
   const { data: summary, status } = useSummaryData();
   const overallDataReady = status === "success";
+  const activeBubble = useDashboardStore((state) => state.activeBubble);
   const dateRange = useDashboardStore((state) => state.activeDateRange);
   const showOverall = useTimeSeriesStore((state) => state.showOverall);
   const setShowOverall = useTimeSeriesStore((state) => state.setShowOverall);
@@ -39,13 +40,13 @@ export default function useTimeSeriesLines() {
     data:
       showOverall && overallDataReady
         ? group === "weekly"
-          ? groupByWeek(summary.series)
+          ? groupByWeek(summary.series, activeBubble)
           : group === "monthly"
-          ? groupByMonth(summary.series)
+          ? groupByMonth(summary.series, activeBubble)
           : group === "avg7"
-          ? movingAverage(summary.series, dateRange, 7)
+          ? movingAverage(summary.series, activeBubble, dateRange, 7)
           : group === "avg30"
-          ? movingAverage(summary.series, dateRange, 30)
+          ? movingAverage(summary.series, activeBubble, dateRange, 30)
           : summary.series
         : [],
     visible: true,
@@ -63,13 +64,13 @@ export default function useTimeSeriesLines() {
       data:
         isPinned && isSuccess
           ? group === "weekly"
-            ? groupByWeek(data.series)
+            ? groupByWeek(data.series, activeBubble)
             : group === "monthly"
-            ? groupByMonth(data.series)
+            ? groupByMonth(data.series, activeBubble)
             : group === "avg7"
-            ? movingAverage(data.series, dateRange, 7)
+            ? movingAverage(data.series, activeBubble, dateRange, 7)
             : group === "avg30"
-            ? movingAverage(data.series, dateRange, 30)
+            ? movingAverage(data.series, activeBubble, dateRange, 30)
             : data.series
           : [],
       visible: isSuccess,
