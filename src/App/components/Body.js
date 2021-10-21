@@ -8,7 +8,6 @@ const StyledBox = withStyles({
     // display: "flex",
     width: "100%",
     flex: 1,
-    overflow: "auto",
   },
 })(Box);
 

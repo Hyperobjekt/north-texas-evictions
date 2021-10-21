@@ -7,7 +7,6 @@ import {
   BubbleSelect,
   RegionSelect,
   ChoroplethSelect,
-  CourtSelect,
   DateRangeSelect,
 } from "../";
 
@@ -31,7 +30,6 @@ const ControlsPanel = (props) => {
       <BubbleSelect />
       <ChoroplethSelect />
       <DateRangeSelect />
-      <CourtSelect />
     </Panel>
   );
 };

@@ -1,6 +1,4 @@
-// default route template
-export const ROUTE_TEMPLATE =
-  "#/:activeRegion/:activeBubble/:activeChoropleth/:start/:end/:zoom/:latitude/:longitude";
+import { ROUTE_TEMPLATE } from "./constants";
 
 /**
  * Parses route values from the provided route string.

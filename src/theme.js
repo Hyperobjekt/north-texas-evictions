@@ -34,6 +34,7 @@ export default createTheme({
     header: { text: HEADER_TEXT_COLOR, background: HEADER_BACKGROUND_COLOR },
     background: {
       default: "#f0f3f4",
+      dark: "#292929",
     },
   },
   typography: {

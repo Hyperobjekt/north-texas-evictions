@@ -1,8 +1,8 @@
 import { useMapViewport } from "@hyperobjekt/mapbox/lib/hooks";
-import useDashboardContext from "../../Dashboard/hooks/useDashboardContext";
-import useDashboardStore from "../../Dashboard/hooks/useDashboardStore";
-import useRouter from "../../Router/useRouter";
-import { populateRoute, ROUTE_TEMPLATE, validateRoute } from "../router";
+import { useDashboardContext, useDashboardStore } from "../Dashboard";
+import { ROUTE_TEMPLATE } from "./constants";
+import useHashRouter from "./useHashRouter";
+import { populateRoute, validateRoute } from "./utils";
 
 const round = (value, decimals = 3) => {
   return Number(Math.round(value + "e" + decimals) + "e-" + decimals);
@@ -13,7 +13,7 @@ const round = (value, decimals = 3) => {
  * cause re-renders of any child components on change, so for performance
  * it's best to keep this in a component that doesn't render anything.
  */
-const Router = () => {
+const HashRouter = () => {
   // pull current dashboard values from the store
   const context = useDashboardContext();
   const isReady = useDashboardStore((state) => state.ready);
@@ -28,13 +28,12 @@ const Router = () => {
         zoom: round(zoom),
         latitude: round(latitude),
         longitude: round(longitude),
-        precinct: context?.filters.find((f) => f[0] === "precinct")?.[1],
       }
     : null;
   // start routing
-  useRouter(ROUTE_TEMPLATE, values, populateRoute, validateRoute);
+  useHashRouter(ROUTE_TEMPLATE, values, populateRoute, validateRoute);
   // do not render anything!
   return null;
 };
 
-export default Router;
+export default HashRouter;

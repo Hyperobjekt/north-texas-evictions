@@ -10,8 +10,8 @@ import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import shallow from "zustand/shallow";
 import { animated, useSpring } from "react-spring";
 import { scaleLinear } from "@visx/scale";
-import LocationName from "../App/components/LocationName";
 import Stat from "../Dashboard/components/Stat";
+import { LocationName } from "../Locations";
 
 // tooltip dimensions (height is an estimate for offsets)
 const TOOLTIP_WIDTH = 240;

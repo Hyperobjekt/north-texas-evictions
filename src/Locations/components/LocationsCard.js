@@ -2,56 +2,13 @@ import React from "react";
 import useSelectedLocations from "../hooks/useSelectedLocations";
 import useLocationStore from "../hooks/useLocationStore";
 import Card from "../../Dashboard/components/Card";
-import {
-  Box,
-  IconButton,
-  List,
-  ListItem,
-  ListItemSecondaryAction,
-  Typography,
-} from "@material-ui/core";
-import LocationName from "../../App/components/LocationName";
-import { Close } from "@material-ui/icons";
+import { Box, List, Typography } from "@material-ui/core";
 import shallow from "zustand/shallow";
 import useLocationColors from "../hooks/useLocationColors";
 import { useDashboardStore } from "../../Dashboard";
 import useTimeSeriesStore from "../../TimeSeries/hooks/useTimeSeriesStore";
-import { Stack } from "@hyperobjekt/material-ui-website";
-import { HiddenIcon, VisibleIcon } from "../../Icons";
 import { ALL_DATA_COLOR } from "../../Dashboard/constants";
-
-const LocationRow = ({
-  id,
-  name,
-  pinned,
-  color,
-  onDismiss,
-  onPin,
-  onClick,
-  ...props
-}) => {
-  return (
-    <ListItem button={Boolean(onClick)} onClick={onClick} {...props}>
-      <LocationName name={name} alignItems="flex-start" textAlign="left" />
-      <ListItemSecondaryAction>
-        <Stack around="none" between="sm">
-          <IconButton
-            size="small"
-            style={{ color: pinned ? color : "#ddd" }}
-            onClick={onPin}
-          >
-            {pinned ? <VisibleIcon /> : <HiddenIcon />}
-          </IconButton>
-          {onDismiss && (
-            <IconButton size="small" onClick={onDismiss}>
-              <Close />
-            </IconButton>
-          )}
-        </Stack>
-      </ListItemSecondaryAction>
-    </ListItem>
-  );
-};
+import LocationRow from "./LocationRow";
 
 const LocationsCard = (props) => {
   const [
