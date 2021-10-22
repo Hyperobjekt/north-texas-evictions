@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import Dashboard from "../Dashboard";
+import Dashboard, { formatDate } from "../Dashboard";
 import { useLanguageStore } from "../Language";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { About } from "../About";
@@ -30,10 +30,10 @@ const App = ({ lang = "en", langDict, config }) => {
 
 App.defaultProps = {
   config: {
-    activeBubble: "ef",
+    activeBubble: "efr",
     activeChoropleth: "mhi",
-    activeRegion: "tracts",
-    activeDateRange: ["2020-07-01", "2021-07-31"],
+    activeRegion: "counties",
+    activeDateRange: ["2021-01-01", formatDate(new Date())],
     regions: [
       {
         id: "counties",
