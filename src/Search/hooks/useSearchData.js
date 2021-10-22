@@ -24,6 +24,7 @@ const fetchGeojson = (region, url) => {
             region,
             // parent: parent && parent.length ? parent.join(",").trim() : parent,
             point: f.geometry.coordinates,
+            feature: f,
           };
         })
         .filter((l) => l.name !== "Unknown");

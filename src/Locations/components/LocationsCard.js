@@ -68,38 +68,43 @@ const LocationsCard = (props) => {
     setShowOverall(!showOverall);
   };
 
-  const hasLocations = activeView === "series" ? true : locations.length > 0;
+  const hasLocations = locations.length > 0;
 
   return (
     <Card noPadding title="Selected Locations">
-      {hasLocations && (
-        <List>
-          {activeView === "series" && (
-            <LocationRow
-              id="all"
-              name={"All Data"}
-              color={ALL_DATA_COLOR}
-              pinned={showOverall}
-              onPin={handleToggleShowAll}
-            />
-          )}
-          {locations.map((location, i) => (
-            <LocationRow
-              key={location.properties.id}
-              id={location.properties.id}
-              name={location.properties.name}
-              color={locationColors[i]}
-              pinned={isLocationPinned(location)}
-              onClick={handleSelect(location)}
-              onDismiss={handleRemove(location)}
-              onPin={handlePin(location)}
-            />
-          ))}
-        </List>
-      )}
+      <List
+        style={{
+          display: activeView === "map" && locations.length === 0 && "none",
+        }}
+      >
+        {activeView === "series" && (
+          <LocationRow
+            id="all"
+            name={"All Data"}
+            color={ALL_DATA_COLOR}
+            pinned={showOverall}
+            onPin={handleToggleShowAll}
+          />
+        )}
+        {locations.map((location, i) => (
+          <LocationRow
+            key={location.properties.id}
+            id={location.properties.id}
+            name={location.properties.name}
+            color={locationColors[i]}
+            pinned={isLocationPinned(location)}
+            onClick={handleSelect(location)}
+            onDismiss={handleRemove(location)}
+            onPin={handlePin(location)}
+          />
+        ))}
+      </List>
+
       {!hasLocations && (
         <Box p={2} pt={1}>
-          <Typography>Select a location using the map or search.</Typography>
+          <Typography component="em" color="textSecondary">
+            Select locations using the map or search.
+          </Typography>
         </Box>
       )}
     </Card>

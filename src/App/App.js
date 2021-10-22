@@ -99,6 +99,23 @@ App.defaultProps = {
           },
         ],
       },
+      // TODO: Add JP Courts
+      // {
+      //   id: "courts",
+      //   layers: [
+      //     {
+      //       id: "bubble",
+      //       type: "geojson",
+      //       source: GEOJSON_ROOT + "bubble/NTEP_bubble_jpcourt.geojson",
+      //       options: { scaleFactor: 1.5 },
+      //     },
+      //     {
+      //       id: "choropleth",
+      //       type: "geojson",
+      //       source: GEOJSON_ROOT + "demo/NTEP_demographics_jpcourt.geojson",
+      //     },
+      //   ],
+      // },
       {
         id: "tracts",
         layers: [

@@ -9,8 +9,7 @@ import SearchIcon from "../Icons/SearchIcon";
 import useSearchData from "./hooks/useSearchData";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import clsx from "clsx";
-import { useFlyToLatLon } from "@hyperobjekt/mapbox";
-import useDashboardRegion from "../Dashboard/hooks/useDashboardRegion";
+import useActivateSearchResult from "./hooks/useActivateSearchResult";
 
 const SearchInput = withStyles((theme) => ({
   root: {
@@ -61,21 +60,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// maps region to zoom levels when flying to a location
-const ZOOM_LEVELS = {
-  tracts: 15,
-  cities: 12,
-  zips: 12,
-  counties: 9,
-  districts: 14,
-};
-
 const Search = (props) => {
   const { status, data } = useSearchData();
-  const flyToLatLon = useFlyToLatLon();
-  const [activeRegion, setActiveRegion] = useDashboardRegion();
+
   const classes = useStyles();
   const options = data || [];
+  const activateSearchResult = useActivateSearchResult();
 
   /**
    * Updates the selected region and flies to the selected location.
@@ -86,14 +76,7 @@ const Search = (props) => {
    */
   const handleChange = (event, value, reason) => {
     if (reason !== "select-option") return;
-    if (value.point && value.region) {
-      value.region !== activeRegion && setActiveRegion(value.region);
-      flyToLatLon(
-        value.point[1],
-        value.point[0],
-        ZOOM_LEVELS[value.region] || 10
-      );
-    }
+    activateSearchResult(value);
   };
 
   return (

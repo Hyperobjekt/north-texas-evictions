@@ -8,7 +8,7 @@ import { useLang } from "../../Language";
  */
 export default function useSummaryStats(data) {
   data = data || {};
-  const metricIds = ["avg7", "avg30", "tfa", "mfa"];
+  const metricIds = ["avg7", "avg30", "efr", "tfa", "mfa"];
   const langKeys = metricIds.map((id) => `METRIC_${id}`.toUpperCase());
   const labels = useLang(langKeys);
   const formatters = useFormatters(metricIds);

@@ -4,7 +4,7 @@ import TimeSeriesChart from "./components/TimeSeriesChart";
 import TimeSeriesTitle from "./components/TimeSeriesTitle";
 import { useDashboardStore } from "../Dashboard";
 import useTimeSeriesLines from "./hooks/useTimeSeriesLines";
-import useFormatter from "../Dashboard/hooks/useFormatter";
+import useFormatter, { getFormatter } from "../Dashboard/hooks/useFormatter";
 
 const xAccessor = (d) => d && new Date(`${d["date"]}T00:00:00`);
 
@@ -13,6 +13,10 @@ const TimeSeries = (props) => {
   const activeBubble = useDashboardStore((state) => state.activeBubble);
   const yAccessor = (d) => d && d[activeBubble];
   const yFormatter = useFormatter(activeBubble);
+  // HACK / TODO: currently overriding filing rate formatter with decimal formatter
+  //  because numbers are so small in the time series.  Determine if this is still needed
+  //  after the "# of renter households" are in place
+  const decimalFormatter = getFormatter("decimal");
 
   // get the lines data
   const lines = useTimeSeriesLines();
@@ -38,7 +42,7 @@ const TimeSeries = (props) => {
         <TimeSeriesChart
           xAccessor={xAccessor}
           yAccessor={yAccessor}
-          yFormatter={yFormatter}
+          yFormatter={activeBubble === "efr" ? decimalFormatter : yFormatter}
           lines={lines}
         />
       </Box>
