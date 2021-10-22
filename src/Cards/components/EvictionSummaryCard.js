@@ -61,7 +61,7 @@ const EvictionSummaryCard = (props) => {
   // list of secondary stats
   const stats = useSummaryStats(summary);
   // use the 7 day moving average if more than 14 days
-  const series = useTrendSeries(summary?.series, dateRange);
+  const series = useTrendSeries(summary?.series, dateRange, "ef");
   return (
     <SummaryCard {...{ title, label, value, stats, series }} {...props}>
       <Typography variant="caption" color="textSecondary" component="em">

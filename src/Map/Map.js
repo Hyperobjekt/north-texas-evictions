@@ -10,6 +10,7 @@ import clsx from "clsx";
 import { FOCUS_STATE } from "../theme";
 import { AspectRatio } from "@material-ui/icons";
 import useFlyOnLoad from "./hooks/useFlyOnLoad";
+import MapTitle from "./components/MapTitle";
 
 const styles = (theme) => ({
   root: {
@@ -98,6 +99,7 @@ const Map = ({ classes, className, children, ...props }) => {
       }}
       {...props}
     >
+      <MapTitle />
       <Stack
         direction="vertical"
         style={{ position: "absolute", bottom: 24, right: 16 }}

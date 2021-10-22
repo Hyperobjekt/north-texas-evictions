@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { Menu, MenuItem, styled, Typography } from "@material-ui/core";
 import { FOCUS_STATE } from "../../theme";
+import { ArrowDropDown } from "@material-ui/icons";
 // import { useLang } from "../../Language";
 
 function uuid(a) {
@@ -21,6 +22,7 @@ const InlineMenuButton = styled("button")({
   fontSize: "inherit",
   cursor: "pointer",
   whiteSpace: "nowrap",
+  textShadow: "0px 1px 1px rgba(255,255,255,1)",
   "&:hover": {
     textDecoration: "underline",
   },
@@ -54,7 +56,8 @@ const InlineMenu = ({ children, options, selected, onSelect, ...props }) => {
         onClick={handleClick}
         {...props}
       >
-        {children}
+        {children}{" "}
+        <ArrowDropDown style={{ margin: "-0.75em -0.25em -0.3em -0.15em" }} />
       </Typography>
       <Menu
         id={id}
@@ -72,7 +75,7 @@ const InlineMenu = ({ children, options, selected, onSelect, ...props }) => {
               onClick={(e) => handleClose(e, option)}
             >
               <span style={{ textTransform: "capitalize" }}>
-                {option?.label ? option.label : option}
+                {option?.label ? option.label : option}{" "}
               </span>
             </MenuItem>
           ))}

@@ -23,6 +23,7 @@ export const MapLegend = ({ classes, ...props }) => {
       alignItems="flex-start"
       justifyContent="space-between"
       between="none"
+      wrap={false}
     >
       <Box>
         <Typography variant="body2" gutterBottom align="center">

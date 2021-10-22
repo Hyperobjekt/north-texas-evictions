@@ -143,6 +143,7 @@ export default createTheme({
         },
       },
       contained: {
+        position: "relative",
         backgroundColor: "#ECECD5",
         boxShadow: "none",
         "&.Mui-focusVisible, &:focus": {
@@ -157,6 +158,7 @@ export default createTheme({
           color: HEADER_TEXT_COLOR,
           "&:focus": {
             ...DARK_FOCUS_STATE,
+            zIndex: 2,
           },
         },
       },

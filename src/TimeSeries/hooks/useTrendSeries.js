@@ -12,7 +12,7 @@ import { parseDate } from "../../Dashboard";
  * @param {*} series
  * @param {*} dateRange
  */
-export default function useTrendSeries(series, dateRange) {
+export default function useTrendSeries(series, dateRange, metric = "ef") {
   if (!series || series.length === 0) {
     return [];
   }
@@ -20,6 +20,6 @@ export default function useTrendSeries(series, dateRange) {
   return daysBetween < 14
     ? series
     : daysBetween < 120
-    ? movingAverage(series, dateRange, 7)
-    : movingAverage(series, dateRange, 30);
+    ? movingAverage(series, metric, dateRange, 7)
+    : movingAverage(series, metric, dateRange, 30);
 }

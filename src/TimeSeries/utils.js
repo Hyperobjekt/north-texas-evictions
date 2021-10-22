@@ -96,9 +96,12 @@ export const getDailyAverage = (metric, data, n = 7, offset = 0) => {
   const start = offset;
   const end = offset + n;
   const avg =
-    data.slice(start, end).reduce((acc, curr) => {
-      return acc + curr[metric];
-    }, 0) / n;
+    [...data]
+      .sort((a, b) => parseDate(b.date) - parseDate(a.date))
+      .slice(start, end)
+      .reduce((acc, curr) => {
+        return acc + curr[metric];
+      }, 0) / n;
   return avg;
 };
 
