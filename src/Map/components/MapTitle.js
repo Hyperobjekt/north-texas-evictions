@@ -8,26 +8,27 @@ import {
   useDateOptions,
   InlineMenu,
   getDateRangeLabel,
+  useDashboardRegion,
+  useDashboardChoropleth,
 } from "../../Dashboard";
-import useTimeSeriesStore from "../hooks/useTimeSeriesStore";
-import shallow from "zustand/shallow";
-import useTimeSeriesGroupOptions from "../hooks/useTimeSeriesGroupOptions";
 import { Stack } from "@hyperobjekt/material-ui-website";
 
-const TimeSeriesTitle = ({ ...props }) => {
+const MapTitle = ({ ...props }) => {
   const setActivePanel = useDashboardStore((state) => state.setActivePanel);
   const [activeDateRange, setActiveDateRange] = useDashboardDateRange();
   const dateOptions = useDateOptions();
+  const [activeRegion, setActiveRegion, regions] = useDashboardRegion();
   const [activeBubble, setActiveBubble, bubbleMetrics] = useDashboardBubble();
-  const groupOptions = useTimeSeriesGroupOptions();
-  const [group, setGroup] = useTimeSeriesStore(
-    (state) => [state.group, state.setGroup],
-    shallow
-  );
-  const groupLabel = groupOptions.find((option) => option.id === group).label;
+  const [activeChoropleth, setActiveChoropleth, choroplethMetrics] =
+    useDashboardChoropleth();
 
   // prepare language
-  const bubbleName = useLang(`METRIC_${activeBubble}`);
+  const langKeys = [
+    `METRIC_${activeBubble}`,
+    `METRIC_${activeChoropleth}`,
+    `REGION_${activeRegion}`,
+  ];
+  const [bubbleName, choroplethName, regionName] = useLang(langKeys);
 
   // date labels
   const [datePrefix, dateLabel] = getDateRangeLabel(
@@ -42,10 +43,6 @@ const TimeSeriesTitle = ({ ...props }) => {
     }
   };
 
-  const handleSetGroup = (e, option) => {
-    option?.value && setGroup(option.value);
-  };
-
   return (
     <Stack
       flexWrap="wrap"
@@ -55,9 +52,9 @@ const TimeSeriesTitle = ({ ...props }) => {
       around="md"
       style={{
         background:
-          "linear-gradient(rgba(255,255,255,1), rgba(255,255,255,0.5))",
+          "linear-gradient(rgba(255,255,255,1), rgba(255,255,255,0.7))",
         backdropFilter: `blur(2px)`,
-        marginBottom: -48,
+        textShadow: "0px 1px 1px rgba(255,255,255,1)",
       }}
       {...props}
     >
@@ -69,18 +66,36 @@ const TimeSeriesTitle = ({ ...props }) => {
           option?.id && setActiveBubble(option.id);
         }}
       >
-        {bubbleName}{" "}
+        {bubbleName}
       </InlineMenu>
-      <Typography component="span">{datePrefix}</Typography>
+      <Typography component="span"> and </Typography>
+      <InlineMenu
+        options={choroplethMetrics}
+        color="secondary"
+        selected={activeChoropleth}
+        onSelect={(e, option) => {
+          option?.id && setActiveChoropleth(option.id);
+        }}
+      >
+        {choroplethName}
+      </InlineMenu>
+      <Typography component="span"> {datePrefix} </Typography>
       <InlineMenu options={dateOptions} onSelect={handleSetDateRange}>
-        {dateLabel}{" "}
+        {dateLabel}
       </InlineMenu>
-      <Typography component="span">by</Typography>
-      <InlineMenu options={groupOptions} onSelect={handleSetGroup}>
-        {groupLabel}{" "}
+      <Typography component="span"> for </Typography>
+      <InlineMenu
+        color="textPrimary"
+        selected={activeRegion}
+        options={regions}
+        onSelect={(e, option) => {
+          option?.id && setActiveRegion(option.id);
+        }}
+      >
+        {regionName}
       </InlineMenu>
     </Stack>
   );
 };
 
-export default TimeSeriesTitle;
+export default MapTitle;

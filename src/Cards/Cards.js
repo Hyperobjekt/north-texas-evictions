@@ -1,6 +1,5 @@
 import React from "react";
 import { Stack } from "@hyperobjekt/material-ui-website";
-import MapTextControlsCard from "../Map/components/MapControlsCard";
 import MapLegendCard from "../Map/components/MapLegendCard";
 import EvictionSummaryCard from "./components/EvictionSummaryCard";
 import LocationsCard from "../Locations/components/LocationsCard";
@@ -12,7 +11,6 @@ const Cards = (props) => {
   const cards =
     activeView === "map"
       ? [
-          <MapTextControlsCard key="map-text-controls" />,
           <MapLegendCard key="map-legend" />,
           <LocationsCard key="locations" />,
           <EvictionSummaryCard key="eviction-summary" />,

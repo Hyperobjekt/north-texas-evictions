@@ -32,13 +32,7 @@ const TimeSeries = (props) => {
       overflow="hidden"
       {...props}
     >
-      <TimeSeriesTitle
-        p={3}
-        pb={0}
-        boxSizing="border-box"
-        maxHeight={64}
-        flex={0}
-      />
+      <TimeSeriesTitle />
       <Box boxSizing="border-box" pl={3} flex={1} height={`calc(100% - 64px)`}>
         {/* <p>test</p> */}
         <TimeSeriesChart

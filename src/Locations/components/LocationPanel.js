@@ -82,7 +82,7 @@ const LocationPanel = ({ ...props }) => {
   // list of secondary stats
   const stats = useSummaryStats(summary?.data);
   // use the 7 day moving average if more than 14 days
-  const series = useTrendSeries(summary?.data?.series, dateRange);
+  const series = useTrendSeries(summary?.data?.series, dateRange, "ef");
 
   // 👇 Demographic Metric Summary
   // get formatters and labels for demographic metrics
