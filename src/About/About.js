@@ -22,13 +22,30 @@ const styles = (theme) => ({
   title:{
     fontSize: theme.typography.pxToRem(60)
   },
+  subtitle:{
+    fontSize: theme.typography.pxToRem(44)
+  },
   titleBody: {
     paddingTop: 20,
   },
+  divider: {
+    width: 50,
+    height: 10,
+    marginTop: 20,
+  },
+  subsection: {
+    "& .MuiBox-root": {
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
+    "& .HypBlock-visible": {
+      "&:first-child": {
+        paddingTop: 20
+      },
+    },
+  },
   headerLinkContainer: {
     zIndex: 1,
-    position: "sticky",
-    top: 64,
     paddingLeft: theme.typography.pxToRem(24),
     paddingBottom: 15,
     background: theme.palette.background.dark,
@@ -79,20 +96,46 @@ const styles = (theme) => ({
       },
     },
   },
+  sectionHead: {
+    fontSize: theme.typography.pxToRem(44)
+  }
 })
 
 /** Renders a section block with title and content */
-const Section = ({ title, children, ...props }) => {
+const Section = ({ title, children, titleStyle, ...props }) => {
   return (
     <Block large {...props}>
       <Grid container>
         <Grid item xs={12} sm={5} md={4}>
-          <Typography variant="h1">{title}</Typography>
+          <Typography className={titleStyle} variant="h1">{title}</Typography>
         </Grid>
         <Grid item xs={12} sm={7} md={8}>
           {children}
         </Grid>
       </Grid>
+    </Block>
+  );
+};
+
+const SectionWithSubsections = ({ title, children, titleStyle, classes, ...props }) => {
+  return (
+    <Block large {...props}>
+      <Grid container>
+        <Grid item xs={12} sm={5} md={4}>
+          <Typography className={titleStyle} variant="h1">{title}</Typography>
+        </Grid>
+      </Grid>
+      <Box className={classes.divider}>
+        <svg viewbox="0 0 50 10" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0" y1="5" x2="50" y2="5" stroke="black" />
+        </svg>
+      </Box>
+      <Box className={classes.subsection}>
+        {children.length ? 
+          children.map((child) => child)
+          : children
+        }
+      </Box>
     </Block>
   );
 };
@@ -120,7 +163,11 @@ const About = ({props, classes}) => {
             <Grid item sm={12} sm={6}>
               <Box className={classes.titleContainer}>
                 <Typography className={classes.title} variant="h1">About</Typography>
-                <Typography className={classes.titleDivider} variant="h1">____</Typography>
+                <Box className={classes.divider}>
+                  <svg viewbox="0 0 50 10" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="0" y1="5" x2="50" y2="5" stroke="white" />
+                  </svg>
+                </Box>
                 <Typography className={classes.titleBody} variant="body1">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu
                   nunc eget nunc efficitur efficitur. Nullam euismod, nisl eget
@@ -134,7 +181,37 @@ const About = ({props, classes}) => {
             </Grid>
           </Grid>
         </Block>
-        <Section title="About Evictions" bgcolor="background.default">
+        {/* 1 */}
+        <SectionWithSubsections classes={classes} titleStyle={classes.subtitle} title="About Evictions" bgcolor="background.paper">
+          <Section title="How does eviction impact kids and their families" bgcolor="background.paper">
+            <Box clone maxWidth="36em">
+              <Typography>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu
+                nunc eget nunc efficitur efficitur. Nullam euismod, nisl eget
+                consectetur consectetur, nisi nisi aliquet nunc, euismod efficitur
+                nunc nisi euismod nunc. Lorem ipsum dolor sit amet, consectetur
+                adipiscing elit. Donec eu nunc eget nunc efficitur efficitur.
+                Nullam euismod, nisl eget consectetur consectetur, nisi nisi
+                aliquet nunc, euismod efficitur nunc nisi euismod nunc.
+              </Typography>
+            </Box>
+          </Section>
+          <Section title="What is the eviction process?" bgcolor="background.paper">
+            <Box clone padding="0px" maxWidth="36em">
+              <Typography>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu
+                nunc eget nunc efficitur efficitur. Nullam euismod, nisl eget
+                consectetur consectetur, nisi nisi aliquet nunc, euismod efficitur
+                nunc nisi euismod nunc. Lorem ipsum dolor sit amet, consectetur
+                adipiscing elit. Donec eu nunc eget nunc efficitur efficitur.
+                Nullam euismod, nisl eget consectetur consectetur, nisi nisi
+                aliquet nunc, euismod efficitur nunc nisi euismod nunc.
+              </Typography>
+            </Box>
+          </Section>
+        </SectionWithSubsections>
+        {/* 2 */}
+        <Section titleStyle={classes.subtitle} title="About the Data" bgcolor="background.alt">
           <Box clone maxWidth="36em">
             <Typography>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu
@@ -147,20 +224,8 @@ const About = ({props, classes}) => {
             </Typography>
           </Box>
         </Section>
-        <Section title="About the Data" bgcolor="background.paper">
-          <Box clone maxWidth="36em">
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu
-              nunc eget nunc efficitur efficitur. Nullam euismod, nisl eget
-              consectetur consectetur, nisi nisi aliquet nunc, euismod efficitur
-              nunc nisi euismod nunc. Lorem ipsum dolor sit amet, consectetur
-              adipiscing elit. Donec eu nunc eget nunc efficitur efficitur.
-              Nullam euismod, nisl eget consectetur consectetur, nisi nisi
-              aliquet nunc, euismod efficitur nunc nisi euismod nunc.
-            </Typography>
-          </Box>
-        </Section>
-        <Section title="More..." bgcolor="background.default">
+        {/* 3 */}
+        <Section titleStyle={classes.subtitle} title="More..." bgcolor="background.paper">
           <Box clone maxWidth="36em">
             <Typography>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu

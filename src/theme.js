@@ -35,6 +35,7 @@ export default createTheme({
     background: {
       default: "#f0f3f4",
       dark: "#292929",
+      alt: "#FBFBF3"
     },
   },
   typography: {
