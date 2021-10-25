@@ -269,7 +269,7 @@ const About = ({props, classes}) => {
         </Block>
         {/* 1 */}
         <SectionWithSubsections titleStyle={classes.subtitle} title="About Evictions" bgcolor="background.paper">
-          <Section title="How does eviction impact kids and their families" bgcolor="background.paper">
+          <Section title="How does eviction impact kids and their families?" bgcolor="background.paper">
             <Box clone maxWidth="36em">
               <Typography>
                 Eviction has a devastating impact on families: involuntary displacement leads to 
