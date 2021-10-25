@@ -10,6 +10,9 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 const styles = (theme) => ({
   root:{
   },
+  bold: {
+    fontWeight: 500,
+  },
   titleContainer: {
     padding: "0px 50px",
     [theme.breakpoints.down("xs")]: {
@@ -59,13 +62,30 @@ const styles = (theme) => ({
     paddingLeft: theme.typography.pxToRem(16),
     paddingBottom: 15,
     background: theme.palette.background.dark,
+    //hack to center text with arrow
+    "& p": {
+      marginBottom: 2,
+    },
   },
   footerContainer: {
+    minHeight: 200,
     display: "flex",
     background: theme.palette.background.dark,
     alignItems: "center",
+    [theme.breakpoints.down('sm')]:{
+      justifyContent: "center",
+    }
+  },
+  footerLinkContainer: {
+    maxWidth: "max-content",
+    "& p": {
+      marginBottom: '1.5vw',
+    },
   },
   link: {
+    color: theme.palette.primary.main,
+  },
+  backLink: {
     position: "relative",
     display: "flex",
     alignItems: "center",
@@ -81,11 +101,6 @@ const styles = (theme) => ({
       paddingLeft: 20,
       fontFamily: `"degular", "Roboto", "Helvetica", "Arial", sans-serif`,
     },
-    "&:hover":{
-      "& svg":{
-        left: theme.typography.pxToRem(-5),
-      }
-    },
     "&.header": {
       "& svg":{
         height: theme.typography.pxToRem(20),
@@ -94,8 +109,14 @@ const styles = (theme) => ({
       "& p":{
         fontSize: theme.typography.pxToRem(20),
       },
+      "&:hover":{
+        "& svg":{
+          left: theme.typography.pxToRem(-4),
+        }
+      },
     },
     "&.footer": {
+      justifyContent: "center",
       "& svg":{
         height: '10vw',
         width: '10vw',
@@ -112,6 +133,11 @@ const styles = (theme) => ({
           fontSize: '7vw',
         },
       },
+      "&:hover":{
+        "& svg":{
+          left: '-1vw',
+        }
+      },
     },
   },
   headerImg: {
@@ -125,7 +151,8 @@ const styles = (theme) => ({
     },
   },
   list: {
-    paddingLeft: 13,
+    paddingLeft: 20,
+    marginTop: 0,
     "& li": {
       paddingTop: 20,
     },
@@ -210,9 +237,9 @@ const About = ({props, classes}) => {
       <Header sticky stickyOffset={0}>
       </Header>
       <Box className={classes.headerLinkContainer}>
-        <Link className={clsx(classes.link, "header")} to="/">
+        <Link className={clsx(classes.backLink, "header")} to="/">
           <ArrowBackIcon/>
-          <Typography>Back to dashboard</Typography>
+          <Typography >Back to dashboard</Typography>
         </Link>
       </Box>
       <Body bgcolor="background.default" flex={1}>
@@ -233,8 +260,8 @@ const About = ({props, classes}) => {
                 </Box>
                 <Typography className={classes.titleBody} variant="body1">
                   The North Texas Eviction Project will release additional features
-                  monthly. In the meantime, the <Link>Dallas County Eviction Filling Dashboard</Link>
-                  is still live and might help with data questions that aren't yet answered here.
+                  monthly. In the meantime, the <Link className={classes.link} to="https://childpovertyactionlab.org/eviction-dashboard">Dallas County Eviction Filling Dashboard</Link> is
+                  still live and might help with data questions that aren't yet answered here.
                 </Typography>
               </Box>
             </Grid>
@@ -260,7 +287,7 @@ const About = ({props, classes}) => {
                 <Typography>
                   An eviction is the legal process by which a landlord removes a tenant and their 
                   possessions from the landlord’s property. Eviction generally follows these steps 
-                  (adapted from the Texas State Law Library here):
+                  (adapted from the Texas State Law Library <Link className={classes.link}>here</Link>):
                 </Typography>
                 <ul className={classes.list}>
                   <li>
@@ -331,7 +358,7 @@ const About = ({props, classes}) => {
           </Box>
         </Section>
         {/* 3 */}
-        <Section titleStyle={classes.subtitle} title="More..." bgcolor="background.paper">
+        <Section titleStyle={classes.subtitle} title="Using the Data" bgcolor="background.paper">
           <Box clone maxWidth="36em">
             <Box>
               <Typography>
@@ -340,7 +367,7 @@ const About = ({props, classes}) => {
                 to keep families securely housed.
                 <br/>
                 <br/>
-                NTEP data has been used to:
+                <span className={classes.bold}>NTEP data has been used to:</span>
               </Typography>
               <ul className={classes.list}>
                 <li>
@@ -371,13 +398,11 @@ const About = ({props, classes}) => {
         <Grid className={classes.footerImg} item sm={5} md={3}>
           <img alt="About" src="./assets/aboutFoot.png"/>
         </Grid>
-        <Grid item xs={12} sm={7} md={9}>
-          <Box className={classes.footerLinkContainer}>
-            <Link className={clsx(classes.link, "footer")} to="/">
-              <ArrowBackIcon/>
-              <Typography>Back to dashboard</Typography>
-            </Link>
-          </Box>
+        <Grid className={classes.footerLinkContainer} item xs={12} sm={7} md={9}>
+          <Link className={clsx(classes.backLink, "footer")} to="/">
+            <ArrowBackIcon/>
+            <Typography>Back to dashboard</Typography>
+          </Link>
         </Grid>
       </Grid>
     </Page>
