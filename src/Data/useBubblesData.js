@@ -38,13 +38,13 @@ const fetchBubbleData = ({ region, start, end }) => {
 const getFilingRate = (feature) => {
   if (!feature.properties) return feature;
   const { properties } = feature;
-  const { pop, ef, id } = properties;
+  const { rhh, ef, id } = properties;
   // TODO: temporarily filtering out filing rate for specific tract, remove this when it has a more accurate rental households value
   if (id === "48113014002") {
     console.warn("filtering out eviction filing rate for census tract 140.02");
     return null;
   }
-  return ef && pop ? (ef / pop) * 1000 : null;
+  return ef && rhh ? (ef / rhh) * 1000 : null;
 };
 
 /**

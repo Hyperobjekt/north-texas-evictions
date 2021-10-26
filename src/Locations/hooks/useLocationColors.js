@@ -3,16 +3,16 @@ import { useLocationStore } from "..";
 
 // location colors
 const COLORS = [
-  "#4e79a7",
-  "#f28e2c",
-  "#e15759",
-  "#76b7b2",
-  "#59a14f",
-  "#edc949",
-  "#af7aa1",
-  "#ff9da7",
-  "#9c755f",
-  "#bab0ab",
+  "#AD77A1",
+  "#92C789",
+  "#7DB1DD",
+  "#F5C04D",
+  "#548BC4",
+  "#E6612A",
+  "#51B167",
+  "#873070",
+  "#A54947",
+  "#1F66AE",
 ];
 
 /**

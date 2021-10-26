@@ -99,23 +99,22 @@ App.defaultProps = {
           },
         ],
       },
-      // TODO: Add JP Courts
-      // {
-      //   id: "courts",
-      //   layers: [
-      //     {
-      //       id: "bubble",
-      //       type: "geojson",
-      //       source: GEOJSON_ROOT + "bubble/NTEP_bubble_jpcourt.geojson",
-      //       options: { scaleFactor: 1.5 },
-      //     },
-      //     {
-      //       id: "choropleth",
-      //       type: "geojson",
-      //       source: GEOJSON_ROOT + "demo/NTEP_demographics_jpcourt.geojson",
-      //     },
-      //   ],
-      // },
+      {
+        id: "courts",
+        layers: [
+          {
+            id: "bubble",
+            type: "geojson",
+            source: GEOJSON_ROOT + "bubble/NTEP_bubble_jpcourt.geojson",
+            options: { scaleFactor: 1.25 },
+          },
+          {
+            id: "choropleth",
+            type: "geojson",
+            source: GEOJSON_ROOT + "demo/NTEP_demographics_jpcourt.geojson",
+          },
+        ],
+      },
       {
         id: "tracts",
         layers: [
@@ -142,7 +141,7 @@ App.defaultProps = {
         id: "mgr",
         type: "choropleth",
         format: "currency",
-        unavailable: ["tracts", "districts"],
+        // unavailable: ["tracts", "districts"],
         scale: "quantize",
         scaleOptions: { amount: 5 },
       },
@@ -183,9 +182,10 @@ App.defaultProps = {
         id: "rb",
         type: "choropleth",
         format: "percent",
-        unavailable: ["tracts"],
+        // unavailable: ["tracts"],
       },
       { id: "pop", type: "secondary", format: "integer" },
+      { id: "rhh", type: "secondary", format: "integer" },
       { id: "avg7", type: "secondary", format: "perday" },
       { id: "avg30", type: "secondary", format: "perday" },
     ],
@@ -215,7 +215,8 @@ App.defaultProps = {
       METRIC_PRH: "% Renter Homes",
       METRIC_RB: "Rent Burden",
       METRIC_TFA: "Total Filing Amount",
-      METRIC_POP: "Renter Households",
+      METRIC_POP: "Population",
+      METRIC_RHH: "Occupied Renter Households",
       METRIC_AVG7: "7-day Filing Average",
       METRIC_AVG30: "30-day Filing Average",
       REGION_COUNTIES: "Counties",
@@ -223,6 +224,7 @@ App.defaultProps = {
       REGION_ZIPS: "ZIP Codes",
       REGION_CITIES: "Cities",
       REGION_DISTRICTS: "Council Districts",
+      REGION_COURTS: "Justice of the Peace Precincts",
       LEGEND_SUMMARY: "between {{start}} and {{end}}",
       BUTTON_CHANGE_OPTIONS: "Change Data Options",
       SELECT_CHOROPLETH: "Demographic Metric",

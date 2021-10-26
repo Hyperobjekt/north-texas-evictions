@@ -10,6 +10,7 @@ const ZOOM_LEVELS = {
   zips: 12,
   counties: 9,
   districts: 14,
+  courts: 14,
 };
 
 export default function useActivateSearchResult() {

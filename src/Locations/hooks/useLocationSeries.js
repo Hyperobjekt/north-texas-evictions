@@ -17,7 +17,7 @@ const fetchLocationSeries = (locationId, dateRange, region, feature) => {
   }
   const params = { start, end, location: locationId, region };
   const paramString = new URLSearchParams(params).toString();
-  const renterHouseholds = getFeatureProp(feature, "pop");
+  const renterHouseholds = getFeatureProp(feature, "rhh");
   const name = getFeatureProp(feature, "name");
 
   return fetch(`${EVICTION_DATA_ENDPOINT}/filings?${paramString}`)

@@ -29,6 +29,7 @@ import { LocationName } from "..";
 
 const PANEL_METRICS = [
   "pop",
+  "rhh",
   "pvr",
   "cpr",
   "prh",

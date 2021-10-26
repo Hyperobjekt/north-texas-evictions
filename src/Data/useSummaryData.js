@@ -4,8 +4,8 @@ import { EVICTION_DATA_ENDPOINT } from "../Dashboard/constants";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import { getDailyAverage } from "../TimeSeries/utils";
 
-// TODO: sum together the county pop values to get this number
-let RENTER_HOUSEHOLDS = 6464437;
+// TODO: sum together the county rhh values to get this number
+let RENTER_HOUSEHOLDS = 119335 + 464121 + 101387 + 279622;
 
 /**
  * Fetches eviction filings data from the API
