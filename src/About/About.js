@@ -9,6 +9,9 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const styles = (theme) => ({
   root:{
+    "& .MuiTypography-body1": {
+      fontSize: theme.typography.pxToRem(16),
+    }
   },
   bold: {
     fontWeight: 500,
@@ -54,6 +57,9 @@ const styles = (theme) => ({
       },
     },
   },
+  headerContainer: {
+    paddingTop: 0,
+  },
   headerLinkContainer: {
     zIndex: 1,
     [theme.breakpoints.up("sm")]: {
@@ -68,18 +74,28 @@ const styles = (theme) => ({
     },
   },
   footerContainer: {
-    minHeight: 200,
+    [theme.breakpoints.up("sm")]: {
+      height: 400,
+    },
+    height: 200,
     display: "flex",
     background: theme.palette.background.dark,
     alignItems: "center",
-    [theme.breakpoints.down('sm')]:{
-      justifyContent: "center",
-    }
+  },
+  footerImgContainer: {
+    height: "100%"
+  },
+  footerImg: {
+    height: "100%",
+    objectFit: "cover",
+    objectPosition: "100%",
+    width: "100%",
   },
   footerLinkContainer: {
-    maxWidth: "max-content",
+    paddingLeft: '5vw',
+    justifyContent: "center",
     "& p": {
-      marginBottom: '1.5vw',
+      marginBottom: '1vw',
     },
   },
   link: {
@@ -91,13 +107,14 @@ const styles = (theme) => ({
     alignItems: "center",
     color: theme.palette.primary.main,
     textDecoration: 'none',
-    width: "max-content",
+    width: "100%",
     "& svg":{
       transition: "left .1s",
       position: "absolute",
       left: 0
     },
     "& p":{
+      lineHeight: 1,
       paddingLeft: 20,
       fontFamily: `"degular", "Roboto", "Helvetica", "Arial", sans-serif`,
     },
@@ -116,21 +133,21 @@ const styles = (theme) => ({
       },
     },
     "&.footer": {
-      justifyContent: "center",
+      //justifyContent: "center",
       "& svg":{
-        height: '10vw',
-        width: '10vw',
-        [theme.breakpoints.up("md")]: {
-          height: '7vw',
-          width: '7vw',
+        height: theme.typography.pxToRem(30),
+        width: theme.typography.pxToRem(30),
+        [theme.breakpoints.up("sm")]: {
+          height: theme.typography.pxToRem(67),
+          width: theme.typography.pxToRem(67),
         },
       },
       "& p":{
-        paddingLeft: '10vw',
-        fontSize: '10vw',
-        [theme.breakpoints.up("md")]: {
-          paddingLeft: '7vw',
-          fontSize: '7vw',
+        paddingLeft: theme.typography.pxToRem(30),
+        fontSize: theme.typography.pxToRem(30),
+        [theme.breakpoints.up("sm")]: {
+          paddingLeft: theme.typography.pxToRem(67),
+          fontSize: theme.typography.pxToRem(67),
         },
       },
       "&:hover":{
@@ -138,16 +155,6 @@ const styles = (theme) => ({
           left: '-1vw',
         }
       },
-    },
-  },
-  headerImg: {
-    [theme.breakpoints.down("xs")]: {
-      display: "none",
-    },
-  },
-  footerImg: {
-    [theme.breakpoints.down("sm")]: {
-      display: "none",
     },
   },
   list: {
@@ -243,9 +250,9 @@ const About = ({props, classes}) => {
         </Link>
       </Box>
       <Body bgcolor="background.default" flex={1}>
-        <Block bgcolor="background.dark" color="common.white" large>
+        <Block className={classes.headerContainer} bgcolor="background.dark" color="common.white" large>
           <Grid container>
-            <Grid className={classes.headerImg} item sm={6}>
+            <Grid item xs={12} sm={6}>
               <Box clone width="100%" textAlign="center">
                 <img alt="About" src="./assets/aboutHead.png"/>
               </Box>
@@ -395,10 +402,10 @@ const About = ({props, classes}) => {
       </Body>
       {/* FOOTER */}
       <Grid container className={classes.footerContainer}>
-        <Grid className={classes.footerImg} item sm={5} md={3}>
-          <img alt="About" src="./assets/aboutFoot.png"/>
+        <Grid className={classes.footerImgContainer} item xs={4} md={3}>
+          <img className={classes.footerImg} alt="About" src="./assets/aboutFoot.png"/>
         </Grid>
-        <Grid className={classes.footerLinkContainer} item xs={12} sm={7} md={9}>
+        <Grid className={classes.footerLinkContainer} item xs={8} md={9}>
           <Link className={clsx(classes.backLink, "footer")} to="/">
             <ArrowBackIcon/>
             <Typography>Back to dashboard</Typography>
