@@ -267,7 +267,7 @@ const About = ({props, classes}) => {
                 </Box>
                 <Typography className={classes.titleBody} variant="body1">
                   The North Texas Eviction Project will release additional features
-                  monthly. In the meantime, the <Link className={classes.link} to="https://childpovertyactionlab.org/eviction-dashboard">Dallas County Eviction Filling Dashboard</Link> is
+                  monthly. In the meantime, the <a className={classes.link} href="https://childpovertyactionlab.org/eviction-dashboard">Dallas County Eviction Filling Dashboard</a> is
                   still live and might help with data questions that aren't yet answered here.
                 </Typography>
               </Box>
@@ -294,7 +294,7 @@ const About = ({props, classes}) => {
                 <Typography>
                   An eviction is the legal process by which a landlord removes a tenant and their 
                   possessions from the landlord’s property. Eviction generally follows these steps 
-                  (adapted from the Texas State Law Library <Link className={classes.link} to="https://guides.sll.texas.gov/landlord-tenant-law/eviction-process">here</Link>):
+                  (adapted from the Texas State Law Library <a className={classes.link} href="https://guides.sll.texas.gov/landlord-tenant-law/eviction-process">here</a>):
                 </Typography>
                 <ul className={classes.list}>
                   <li>
