@@ -294,7 +294,7 @@ const About = ({props, classes}) => {
                 <Typography>
                   An eviction is the legal process by which a landlord removes a tenant and their 
                   possessions from the landlord’s property. Eviction generally follows these steps 
-                  (adapted from the Texas State Law Library <Link className={classes.link}>here</Link>):
+                  (adapted from the Texas State Law Library <Link className={classes.link} to="https://guides.sll.texas.gov/landlord-tenant-law/eviction-process">here</Link>):
                 </Typography>
                 <ul className={classes.list}>
                   <li>
