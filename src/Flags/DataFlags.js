@@ -12,15 +12,16 @@ import { animated, useSpring, useTransition } from "react-spring";
 import useMeasure from "react-use-measure";
 
 const styles = (theme) => ({
-  root: {},
+  root: { marginBottom: "1rem" },
   empty: {
-    marginBottom: "-1rem",
+    marginBottom: "0rem",
   },
   container: {
     display: "flex",
     flexDirection: "column",
+
     "&:empty": {
-      marginBottom: "-1rem",
+      marginBottom: "0rem",
     },
     "& > * + *": {
       marginTop: theme.spacing(1),

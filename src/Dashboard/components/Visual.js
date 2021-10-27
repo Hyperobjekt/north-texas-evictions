@@ -4,6 +4,7 @@ import { Map } from "../../Map";
 import clsx from "clsx";
 import { Box, withStyles } from "@material-ui/core";
 import { TimeSeries } from "../../TimeSeries";
+import { animated, useSpring } from "react-spring";
 
 // styles for visual wrapper
 const visualWrapperStyles = (theme) => ({
@@ -71,13 +72,27 @@ const viewWrapperStyles = (theme) => ({
  * TODO: could improve by adding a spring transition between views
  *    if time permits.
  */
+const AnimatedBox = animated(Box);
 const ViewWrapperBox = withStyles(viewWrapperStyles)(
-  ({ classes, className, active, ...props }) => (
-    <Box
-      className={clsx(classes.root, active && classes.active, className)}
-      {...props}
-    />
-  )
+  ({ classes, className, active, ...props }) => {
+    const style = useSpring({
+      opacity: active ? 1 : 0,
+      // x: active ? "0%" : "-10%",
+      // delay: active ? 100 : 0,
+    });
+    return (
+      <AnimatedBox
+        className={clsx(classes.root, active && classes.active, className)}
+        style={{
+          ...style,
+          visibility: style["opacity"].to((val) =>
+            Math.abs(val) === 0 ? "hidden" : "visible"
+          ),
+        }}
+        {...props}
+      />
+    );
+  }
 );
 
 /**
