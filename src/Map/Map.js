@@ -62,6 +62,15 @@ const styles = (theme) => ({
       },
     },
   },
+  controlStack: {
+    position: "absolute",
+    bottom: 24,
+    right: 16,
+    [theme.breakpoints.down("sm")]: {
+      bottom: "auto",
+      top: 104,
+    },
+  },
 });
 
 const Map = ({ classes, className, children, ...props }) => {
@@ -100,10 +109,7 @@ const Map = ({ classes, className, children, ...props }) => {
       {...props}
     >
       <MapTitle />
-      <Stack
-        direction="vertical"
-        style={{ position: "absolute", bottom: 24, right: 16 }}
-      >
+      <Stack direction="vertical" className={classes.controlStack}>
         <FitBoundsControl disableRipple className={classes.fitBoundsControl}>
           <AspectRatio style={{ fontSize: 20 }} />
         </FitBoundsControl>

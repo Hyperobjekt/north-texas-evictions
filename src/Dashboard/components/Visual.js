@@ -14,6 +14,12 @@ const visualWrapperStyles = (theme) => ({
     // place between header and bottom of viewport
     top: 88,
     height: `calc(100vh - ${theme.spacing(14)}px)`,
+    // header takes up more height on mobile
+    [theme.breakpoints.down("sm")]: {
+      position: "fixed",
+      top: 112,
+      height: `calc(100vh - ${theme.spacing(22)}px)`,
+    },
   },
 });
 
@@ -45,6 +51,14 @@ const viewWrapperStyles = (theme) => ({
       borderRadius: 8,
       pointerEvents: "none",
     },
+    "&.sm-square": {
+      [theme.breakpoints.down("sm")]: {
+        borderRadius: 0,
+        "&:after": {
+          borderRadius: 0,
+        },
+      },
+    },
   },
   active: {
     zIndex: 100,
@@ -74,7 +88,7 @@ const Visual = (props) => {
   const activeView = useDashboardStore((state) => state.activeView);
   return (
     <VisualWrapperBox {...props}>
-      <ViewWrapperBox active={activeView === "map"}>
+      <ViewWrapperBox className="sm-square" active={activeView === "map"}>
         <Map />
       </ViewWrapperBox>
       <ViewWrapperBox active={activeView === "series"}>

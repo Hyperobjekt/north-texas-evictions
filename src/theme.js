@@ -216,10 +216,16 @@ export default createTheme({
         },
       },
       positionStart: {
-        marginLeft: "0.75rem",
+        marginLeft: "0.95rem",
         marginRight: 0,
         position: "relative",
         top: "0.0625rem",
+        "@media (min-width:600px)": {
+          marginLeft: "1.45rem",
+        },
+        "@media (min-width:960px)": {
+          marginLeft: ".75rem",
+        },
       },
     },
     MuiSelect: {

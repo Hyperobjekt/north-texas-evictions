@@ -15,10 +15,14 @@ const StyledMapIcon = styled(MapIcon)(iconStyles);
 
 const StyledTimeSeriesIcon = styled(TimeSeriesIcon)(iconStyles);
 
-const DarkButtonGroup = withStyles({
+const DarkButtonGroup = withStyles((theme) => ({
   root: {
     backgroundColor: "#292929",
     color: "#fff",
+    [theme.breakpoints.down("xs")]: {
+      position: "absolute",
+      left: 16,
+    },
   },
   groupedContained: {
     height: 42,
@@ -33,7 +37,7 @@ const DarkButtonGroup = withStyles({
       borderRight: "1px solid #292929",
     },
   },
-})(ButtonGroup);
+}))(ButtonGroup);
 
 const ViewButtonGroup = (props) => {
   const [activeView, setActiveView] = useDashboardStore(
