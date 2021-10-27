@@ -52,7 +52,7 @@ const MapTitle = ({ ...props }) => {
       around="md"
       style={{
         background:
-          "linear-gradient(rgba(255,255,255,1), rgba(255,255,255,0.7))",
+          "linear-gradient(rgba(255,255,255,1), rgba(255,255,255,0.5))",
         backdropFilter: `blur(2px)`,
         textShadow: "0px 1px 1px rgba(255,255,255,1)",
       }}

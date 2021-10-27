@@ -28,6 +28,7 @@ const LeftBox = withStyles((theme) => ({
       marginTop: `calc(100vh - 172px)`,
       position: "relative",
       zIndex: 10,
+      minHeight: `calc(100vh - 16px)`,
     },
   },
 }))(Box);
