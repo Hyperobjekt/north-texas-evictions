@@ -71,7 +71,7 @@ const LocationsCard = (props) => {
   const hasLocations = locations.length > 0;
 
   return (
-    <Card noPadding title="Selected Locations">
+    <Card noPadding title="Location Legend">
       <List
         style={{
           display: activeView === "map" && locations.length === 0 && "none",

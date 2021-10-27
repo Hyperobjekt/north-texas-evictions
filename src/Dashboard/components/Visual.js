@@ -14,6 +14,12 @@ const visualWrapperStyles = (theme) => ({
     // place between header and bottom of viewport
     top: 88,
     height: `calc(100vh - ${theme.spacing(14)}px)`,
+    // header takes up more height on mobile
+    [theme.breakpoints.down("sm")]: {
+      position: "fixed",
+      top: 112,
+      height: `calc(100vh - ${theme.spacing(22)}px)`,
+    },
   },
 });
 

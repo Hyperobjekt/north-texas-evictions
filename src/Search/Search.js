@@ -16,6 +16,9 @@ const SearchInput = withStyles((theme) => ({
     marginLeft: "auto",
     height: 42,
     paddingRight: theme.spacing(2),
+    [theme.breakpoints.down("sm")]: {
+      borderRadius: 0,
+    },
   },
 }))(Input);
 
@@ -25,6 +28,14 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 280,
     marginLeft: "auto",
     marginRight: 0,
+    [theme.breakpoints.down("sm")]: {
+      position: "absolute",
+      top: 64,
+      left: 0,
+      right: 0,
+      maxWidth: "none",
+      marginLeft: `0!important`,
+    },
     '& .MuiAutocomplete-inputRoot[class*="MuiInput-root"] .MuiAutocomplete-input':
       {
         padding: `0.2rem 0.5rem 0`,
@@ -49,6 +60,9 @@ const useStyles = makeStyles((theme) => ({
   },
   input: {
     height: 42,
+    [theme.breakpoints.down("sm")]: {
+      height: 48,
+    },
   },
   groupLabel: {
     textTransform: "capitalize",
