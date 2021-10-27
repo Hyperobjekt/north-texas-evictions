@@ -32,6 +32,11 @@ export default createTheme({
       focus: "rgba(236, 236, 213, 0.333)",
     },
     header: { text: HEADER_TEXT_COLOR, background: HEADER_BACKGROUND_COLOR },
+    background: {
+      default: "#f0f3f4",
+      dark: "#292929",
+      alt: "#FBFBF3"
+    },
   },
   typography: {
     fontFamily: fontFamily,
@@ -125,6 +130,7 @@ export default createTheme({
     },
     MuiIconButton: {
       root: {
+        color: "#92928B",
         "&:focus": {
           ...FOCUS_STATE,
         },
@@ -138,6 +144,7 @@ export default createTheme({
         },
       },
       contained: {
+        position: "relative",
         backgroundColor: "#ECECD5",
         boxShadow: "none",
         "&.Mui-focusVisible, &:focus": {
@@ -152,6 +159,7 @@ export default createTheme({
           color: HEADER_TEXT_COLOR,
           "&:focus": {
             ...DARK_FOCUS_STATE,
+            zIndex: 2,
           },
         },
       },
@@ -186,6 +194,9 @@ export default createTheme({
           background: "#4a4646",
           border: 0,
           transition: `background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms`,
+          "& .MuiSvgIcon-root": {
+            color: "#92928B",
+          },
           "& $input": {
             color: HEADER_TEXT_COLOR,
           },
@@ -206,10 +217,16 @@ export default createTheme({
         },
       },
       positionStart: {
-        marginLeft: "0.75rem",
+        marginLeft: "0.95rem",
         marginRight: 0,
         position: "relative",
         top: "0.0625rem",
+        "@media (min-width:600px)": {
+          marginLeft: "1.45rem",
+        },
+        "@media (min-width:960px)": {
+          marginLeft: ".75rem",
+        },
       },
     },
     MuiSelect: {
@@ -223,11 +240,11 @@ export default createTheme({
         color: "#92928B",
       },
     },
-    MuiSvgIcon: {
-      root: {
-        color: "#92928B",
-      },
-    },
+    // MuiSvgIcon: {
+    //   root: {
+    //     color: "#92928B",
+    //   },
+    // },
     MuiInputLabel: {
       formControl: {
         top: -4,

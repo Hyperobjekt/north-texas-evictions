@@ -1,0 +1,30 @@
+import React from "react";
+import { Box, Typography } from "@material-ui/core";
+import TrendLine from "../../TimeSeries/components/TrendLine";
+
+const StatWithSeries = ({ value, series, label, ...props }) => {
+  return (
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      alignItems="flex-end"
+      flex={1}
+      {...props}
+    >
+      <Box>
+        <Typography variant="h1">{value || "..."}</Typography>
+        <Typography
+          component="p"
+          variant="caption"
+          color="textSecondary"
+          style={{ lineHeight: 1.2, marginTop: 8 }}
+        >
+          {label}
+        </Typography>
+      </Box>
+      {series && <TrendLine data={series} height={48} width={144} />}
+    </Box>
+  );
+};
+
+export default StatWithSeries;

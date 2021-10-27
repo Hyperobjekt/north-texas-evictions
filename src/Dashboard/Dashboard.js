@@ -1,31 +1,62 @@
 import React from "react";
-import { Box } from "@material-ui/core";
-import { withStyles } from "@material-ui/styles";
+import { Page, Header, Body, Loading, TwoColumnLayout } from "../App";
+import { useDashboardDefaults, useDashboardStore } from ".";
+import { Tooltip } from "../Tooltip";
+import { LocationPanel } from "../Locations";
+import { ControlsPanel } from "../Controls";
+import { Cards } from "../Cards";
+import { HashRouter, getCurrentRouteParams } from "../HashRouter";
+import Visual from "./components/Visual";
+import { DataProvider } from "../Data";
+import ViewButtonGroup from "../Controls/components/ViewButtonGroup";
+import { Search } from "../Search";
+import { Link } from "react-router-dom";
+import { Button } from "@material-ui/core";
 
-import { QueryClient, QueryClientProvider } from "react-query";
+const Dashboard = ({ config, ...props }) => {
+  // pull ready state from the store
+  const ready = useDashboardStore((state) => state.ready);
 
-const Wrapper = withStyles({
-  root: {
-    position: "relative",
-    display: "flex",
-    flex: 1,
-    alignItems: "stretch",
-    justifyContent: "stretch",
-    flexDirection: "column",
-    width: "100%",
-    height: "100%",
-    overflow: "hidden",
-  },
-})(Box);
+  // 👇 set the default dashboard state based on route params + config
+  useDashboardDefaults({
+    ...config,
+    ...getCurrentRouteParams(),
+    defaultViewport: {
+      zoom: config.zoom,
+      latitude: config.latitude,
+      longitude: config.longitude,
+    },
+  });
 
-// Create a client
-const queryClient = new QueryClient();
-
-const Dashboard = ({ children, ...props }) => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Wrapper {...props}>{children}</Wrapper>
-    </QueryClientProvider>
+    <DataProvider>
+      <Page>
+        <HashRouter />
+        <Header sticky stickyOffset={0}>
+          <ViewButtonGroup />
+          <Search />
+          <Button
+            variant="contained"
+            className="dark"
+            component={Link}
+            to="/about"
+            style={{ height: 42 }}
+          >
+            About
+          </Button>
+        </Header>
+        {ready ? (
+          <Body bgcolor="background.default" flex={1}>
+            <ControlsPanel float position="left" />
+            <LocationPanel float position="left" />
+            <TwoColumnLayout left={<Cards />} right={<Visual />} />
+          </Body>
+        ) : (
+          <Loading />
+        )}
+        <Tooltip yOffset={40} />
+      </Page>
+    </DataProvider>
   );
 };
 

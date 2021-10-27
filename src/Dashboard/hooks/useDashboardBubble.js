@@ -1,5 +1,5 @@
 import shallow from "zustand/shallow";
-import useMetricOptions from "../../Legend/hooks/useMetricOptions";
+import useMetricOptions from "./useMetricOptions";
 import useDashboardStore from "./useDashboardStore";
 
 export default function useDashboardBubble() {

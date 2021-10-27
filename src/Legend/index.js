@@ -1,1 +1,2 @@
-export { default as Legend } from "./Legend";
+export { default as BubbleLegend } from "./components/BubbleLegend";
+export { default as ChoroplethLegend } from "./components/ChoroplethLegend";

@@ -2,7 +2,7 @@
   publish = "build"
   command = "yarn build"
 [build.environment]
-  NODE_VERSION = "15"
+  NODE_VERSION = "14"
   YARN_VERSION = "1.22.10"
   YARN_FLAGS = "--no-ignore-optional"
   REACT_APP_API_ENDPOINT = "https://wkubgjbrr2.execute-api.us-east-1.amazonaws.com/"

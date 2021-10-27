@@ -19,7 +19,7 @@ export default function useLang(keys, context) {
     const lang = dict[language];
     const values = mapKeys.map((key) => {
       key = key.toUpperCase();
-      if (!lang[key]) return key;
+      if (!lang[key]) return process.env === "development" ? key : "";
       if (!context) return lang[key];
       return render(lang[key], context);
     });

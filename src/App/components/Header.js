@@ -1,11 +1,8 @@
 import React from "react";
-import { Header as HypHeader } from "@hyperobjekt/material-ui-website";
-import { Box, List, ListItem } from "@material-ui/core";
-import Menu from "./Menu";
-import MenuIcon from "../../Icons/MenuIcon";
+import { Header as HypHeader, Stack } from "@hyperobjekt/material-ui-website";
+import { Box } from "@material-ui/core";
 import Branding from "./Branding";
 import useMediaQueries from "../hooks/useMediaQueries";
-import InfoModal from "./InfoModal";
 
 const Header = ({ children, ...props }) => {
   const { isMobile } = useMediaQueries();
@@ -20,24 +17,15 @@ const Header = ({ children, ...props }) => {
         flex={1}
       >
         {!isMobile && <Branding />}
-        {children}
-        <InfoModal />
-        {process.env.NODE_ENV !== "production" && (
-          <Menu
-            buttonLabel={
-              <>
-                <MenuIcon style={{ marginRight: 4 }} /> {!isMobile && "Menu"}
-              </>
-            }
-            style={{ marginLeft: 16 }}
-          >
-            <List>
-              <ListItem button href="#">
-                Option
-              </ListItem>
-            </List>
-          </Menu>
-        )}
+        <Stack
+          around="none"
+          between="sm"
+          ml="auto"
+          flex={1}
+          justifyContent="flex-end"
+        >
+          {children}
+        </Stack>
       </Box>
     </HypHeader>
   );

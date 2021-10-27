@@ -6,6 +6,8 @@ import create from "zustand";
 const useDashboardStore = create((set) => ({
   ready: false,
   setReady: (ready) => set({ ready }),
+  activeView: "map",
+  setActiveView: (activeView) => set({ activeView }),
   activeBubble: null,
   setActiveBubble: (activeBubble) => set({ activeBubble }),
   activeChoropleth: null,
@@ -20,8 +22,6 @@ const useDashboardStore = create((set) => ({
   setActiveRegion: (activeRegion) => set({ activeRegion }),
   regions: [],
   setRegions: (regions) => set({ regions }),
-  filters: [],
-  setFilters: (filters) => set({ filters }),
   activePanel: null,
   setActivePanel: (activePanel) => set({ activePanel }),
   hoverCoords: [0, 0],

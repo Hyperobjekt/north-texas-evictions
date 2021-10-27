@@ -43,6 +43,11 @@ const shortCurrencyFormatter = (value) => {
   return largeFormatter(value);
 };
 
+const perDayFormatter = (value) => {
+  const intFormat = format(",d");
+  return `${intFormat(value)} / day`;
+};
+
 /**
  * Returns a formatter function for the given format string.
  * @param {*} format
@@ -55,10 +60,14 @@ export const getFormatter = (type, options = { short: false }) => {
       return options.short ? format(".0%") : format(".1%");
     case "number":
       return format(".2s");
+    case "decimal":
+      return format(".2f");
     case "currency":
-      return options.short ? shortCurrencyFormatter : format("$,.2f");
+      return options.short ? shortCurrencyFormatter : format("$,.0f");
     case "integer":
       return options.short ? shortIntFormatter : format(",d");
+    case "perday":
+      return perDayFormatter;
     default:
       return format(".2s");
   }

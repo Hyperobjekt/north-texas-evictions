@@ -5,10 +5,9 @@ import useDashboardStore from "../../Dashboard/hooks/useDashboardStore";
 const StyledBox = withStyles({
   root: {
     position: "relative",
-    display: "flex",
+    // display: "flex",
     width: "100%",
     flex: 1,
-    overflow: "hidden",
   },
 })(Box);
 

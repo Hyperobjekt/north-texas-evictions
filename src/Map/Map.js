@@ -10,14 +10,13 @@ import clsx from "clsx";
 import { FOCUS_STATE } from "../theme";
 import { AspectRatio } from "@material-ui/icons";
 import useFlyOnLoad from "./hooks/useFlyOnLoad";
+import MapTitle from "./components/MapTitle";
 
 const styles = (theme) => ({
   root: {
-    position: "relative",
-    width: "100%",
-    height: "100%",
+    position: "absolute",
+    inset: 0,
     zIndex: 1,
-
     "& .HypMapbox-map:before": {
       content: "''",
       inset: 0,
@@ -63,6 +62,15 @@ const styles = (theme) => ({
       },
     },
   },
+  controlStack: {
+    position: "absolute",
+    bottom: 24,
+    right: 16,
+    [theme.breakpoints.down("sm")]: {
+      bottom: "auto",
+      top: 104,
+    },
+  },
 });
 
 const Map = ({ classes, className, children, ...props }) => {
@@ -92,17 +100,16 @@ const Map = ({ classes, className, children, ...props }) => {
       interactiveLayerIds={interactiveLayers}
       className={clsx(classes.root, className)}
       onLoad={(map) => {
-        // HACK: drop the tabindex attribute on the map wrapper (not needed, canvas has one)
+        // HACK: drop the tabindex attribute on the map wrapper (tabindex not needed, canvas has one)
+        // TODO: move this to core component
         map?.target
           ?.getContainer()
           ?.parentNode?.parentNode?.removeAttribute("tabindex");
       }}
       {...props}
     >
-      <Stack
-        direction="vertical"
-        style={{ position: "absolute", bottom: 24, right: 16 }}
-      >
+      <MapTitle />
+      <Stack direction="vertical" className={classes.controlStack}>
         <FitBoundsControl disableRipple className={classes.fitBoundsControl}>
           <AspectRatio style={{ fontSize: 20 }} />
         </FitBoundsControl>

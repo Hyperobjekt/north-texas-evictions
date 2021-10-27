@@ -2,7 +2,6 @@ import { useQuery } from "react-query";
 import { EVICTION_DATA_ENDPOINT } from "../Dashboard/constants";
 import useDashboardContext from "../Dashboard/hooks/useDashboardContext";
 import useDashboardRegion from "../Dashboard/hooks/useDashboardRegion";
-import usePrecinctFilter from "./usePrecinctFilter";
 import {
   addDataToGeojson,
   addFeatureIds,
@@ -22,10 +21,9 @@ const fetchBubbleGeojson = (url) => {
 /**
  * Fetches eviction filings data from the API
  */
-const fetchBubbleData = ({ region, start, end, precinct }) => {
+const fetchBubbleData = ({ region, start, end }) => {
   if (!region) return Promise.reject("no region provided for bubble data");
   const params = { region, start, end };
-  if (precinct) params.precinct = precinct;
   const paramString = new URLSearchParams(params).toString();
   return fetch(`${EVICTION_DATA_ENDPOINT}/summary?${paramString}`).then(
     (response) => response.json()
@@ -40,13 +38,13 @@ const fetchBubbleData = ({ region, start, end, precinct }) => {
 const getFilingRate = (feature) => {
   if (!feature.properties) return feature;
   const { properties } = feature;
-  const { pop, ef, id } = properties;
+  const { rhh, ef, id } = properties;
   // TODO: temporarily filtering out filing rate for specific tract, remove this when it has a more accurate rental households value
   if (id === "48113014002") {
     console.warn("filtering out eviction filing rate for census tract 140.02");
     return null;
   }
-  return ef && pop ? (ef / pop) * 1000 : null;
+  return ef && rhh ? (ef / rhh) * 1000 : null;
 };
 
 /**
@@ -98,16 +96,12 @@ export default function useBubblesData() {
     activeDateRange: [start, end],
   } = useDashboardContext();
   const [activeRegion, , regions] = useDashboardRegion();
-  const [precinct] = usePrecinctFilter();
 
   const region = regions.find((r) => r.id === activeRegion);
   const bubbleLayer = region?.layers?.find((l) => l.id === "bubble");
   const geojsonUrl = bubbleLayer?.source;
   // update the data on changes
-  return useQuery(["bubbles", activeRegion, start, end, precinct], () =>
-    fetchAllBubbleData(
-      { region: activeRegion, start, end, precinct },
-      geojsonUrl
-    )
+  return useQuery(["bubbles", activeRegion, start, end], () =>
+    fetchAllBubbleData({ region: activeRegion, start, end }, geojsonUrl)
   );
 }
