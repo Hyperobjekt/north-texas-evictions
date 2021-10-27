@@ -38,7 +38,10 @@ const useStyles = makeStyles((theme) => ({
     },
     '& .MuiAutocomplete-inputRoot[class*="MuiInput-root"] .MuiAutocomplete-input':
       {
-        padding: `0.2rem 0.5rem 0`,
+        padding: `0.2rem .5rem 0`,
+        [theme.breakpoints.down("sm")]: {
+          padding: `0.2rem .8rem 0`,
+        },
       },
     "&.MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon .MuiAutocomplete-inputRoot":
       {
@@ -122,7 +125,7 @@ const Search = (props) => {
               className: clsx("dark", InputProps.className, classes.input, {
                 [classes.hideClear]: !inputProps.value,
               }),
-              placeholder: "search",
+              placeholder: "search for a place",
               startAdornment: (
                 <InputAdornment
                   className={classes.inputAdornmentStart}
