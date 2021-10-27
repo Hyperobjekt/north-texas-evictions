@@ -190,7 +190,6 @@ App.defaultProps = {
       { id: "avg30", type: "secondary", format: "perday" },
     ],
     dateRange: ["2018-01-01", "2022-05-01"],
-    filters: [],
     zoom: 8,
     latitude: 32.74,
     longitude: -96.96,

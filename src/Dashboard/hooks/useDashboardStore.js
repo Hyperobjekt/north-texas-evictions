@@ -22,8 +22,6 @@ const useDashboardStore = create((set) => ({
   setActiveRegion: (activeRegion) => set({ activeRegion }),
   regions: [],
   setRegions: (regions) => set({ regions }),
-  filters: [],
-  setFilters: (filters) => set({ filters }),
   activePanel: null,
   setActivePanel: (activePanel) => set({ activePanel }),
   hoverCoords: [0, 0],

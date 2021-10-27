@@ -6,18 +6,11 @@ import useDashboardStore from "./useDashboardStore";
  */
 export default function useDashboardContext() {
   return useDashboardStore(
-    ({
+    ({ activeRegion, activeBubble, activeChoropleth, activeDateRange }) => ({
       activeRegion,
       activeBubble,
       activeChoropleth,
       activeDateRange,
-      filters,
-    }) => ({
-      activeRegion,
-      activeBubble,
-      activeChoropleth,
-      activeDateRange,
-      filters,
     }),
     shallow
   );
