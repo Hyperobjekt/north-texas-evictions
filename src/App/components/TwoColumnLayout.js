@@ -25,7 +25,7 @@ const LeftBox = withStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       backgroundImage: `linear-gradient(transparent, ${theme.palette.background.default} 80px)`,
       padding: theme.spacing(2),
-      marginTop: `calc(100vh - 172px)`,
+      marginTop: `calc(100vh - 200px)`,
       position: "relative",
       zIndex: 10,
       minHeight: `calc(100vh - 16px)`,

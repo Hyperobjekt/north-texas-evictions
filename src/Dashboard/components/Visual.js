@@ -19,7 +19,7 @@ const visualWrapperStyles = (theme) => ({
     [theme.breakpoints.down("sm")]: {
       position: "fixed",
       top: 112,
-      height: `calc(100vh - ${theme.spacing(22)}px)`,
+      height: `calc(100vh - 200px)`,
     },
   },
 });

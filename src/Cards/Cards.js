@@ -28,6 +28,22 @@ const MapCards = ({ active, ...props }) => {
     x: active ? 0 : -324,
     delay: active ? 100 : 0,
   });
+
+  // TODO: evaluate if needed, if so implement in a way that works on iOS safari
+  // scroll the map legend into view when activated
+  // useLayoutEffect(() => {
+  //   setTimeout(() => {
+  //     var element = document.getElementById("mapLegendScroll");
+  //     element &&
+  //       active &&
+  //       element.scrollIntoView({
+  //         behavior: "smooth",
+  //         block: "end",
+  //         inline: "nearest",
+  //       });
+  //   }, 600);
+  // }, [active]);
+
   return (
     <StyledStack
       display="flex"
@@ -45,6 +61,7 @@ const MapCards = ({ active, ...props }) => {
       {...props}
     >
       <MapLegendCard />
+      {/* <a id="mapLegendScroll" style={{ marginBottom: 0 }} /> */}
       <LocationsCard />
       <EvictionSummaryCard />
     </StyledStack>
@@ -57,6 +74,22 @@ const TimeSeriesCards = ({ active, ...props }) => {
     x: active ? 0 : -324,
     delay: active ? 100 : 0,
   });
+
+  // TODO: evaluate if needed, if so implement in a way that works on iOS safari
+  // scroll the map legend into view when activated
+  // useLayoutEffect(() => {
+  //   setTimeout(() => {
+  //     var element = document.getElementById("seriesLegendScroll");
+  //     element &&
+  //       active &&
+  //       element.scrollIntoView({
+  //         behavior: "smooth",
+  //         block: "end",
+  //         inline: "nearest",
+  //       });
+  //   }, 600);
+  // }, [active]);
+
   return (
     <StyledStack
       display="flex"
@@ -73,6 +106,7 @@ const TimeSeriesCards = ({ active, ...props }) => {
       }}
       {...props}
     >
+      {/* <a id="seriesLegendScroll" style={{ marginBottom: 0 }} /> */}
       <LocationsCard />
       <EvictionSummaryCard />
     </StyledStack>
