@@ -1,5 +1,6 @@
 import { useQueries } from "react-query";
 import { EVICTION_DATA_ENDPOINT } from "../../Dashboard/constants";
+import { fillSeries } from "../../Data/utils";
 import { getDailyAverage } from "../../TimeSeries/utils";
 import { getNameParts } from "../components/LocationName";
 
@@ -24,6 +25,7 @@ const fetchLocationSeries = (locationId, dateRange, region, feature) => {
       return fetch(`${EVICTION_DATA_ENDPOINT}/filings?${paramString}`)
         .then((response) => response.json())
         .then((series) => {
+          const filledSeries = fillSeries(series.result, start, end);
           // summary does not return specific location,
           // so pull individual location from results
           const locationSummary = summary.result.find(
@@ -39,7 +41,7 @@ const fetchLocationSeries = (locationId, dateRange, region, feature) => {
               ? 1000 * (totalFilings / renterHouseholds)
               : null,
             // add filings per 1000 renters to time series
-            series: series.result.map((d) => ({
+            series: filledSeries.map((d) => ({
               ...d,
               name: getNameParts(name)[0],
               efr:
@@ -47,10 +49,10 @@ const fetchLocationSeries = (locationId, dateRange, region, feature) => {
                   ? 1000 * (d.ef / renterHouseholds)
                   : null,
             })),
-            avg7: getDailyAverage("ef", series.result, 7),
-            avg30: getDailyAverage("ef", series.result, 30),
-            past7: getDailyAverage("ef", series.result, 7, 7),
-            past30: getDailyAverage("ef", series.result, 30, 30),
+            avg7: getDailyAverage("ef", filledSeries, 7),
+            avg30: getDailyAverage("ef", filledSeries, 30),
+            past7: getDailyAverage("ef", filledSeries, 7, 7),
+            past30: getDailyAverage("ef", filledSeries, 30, 30),
           };
           // add diff values if available
           result["diff7"] =

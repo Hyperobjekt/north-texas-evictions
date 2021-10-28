@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import { EVICTION_DATA_ENDPOINT } from "../Dashboard/constants";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import { getDailyAverage } from "../TimeSeries/utils";
+import { fillSeries } from "./utils";
 
 // TODO: sum together the county rhh values to get this number
 let RENTER_HOUSEHOLDS = 119335 + 464121 + 101387 + 279622;
@@ -26,10 +27,11 @@ const fetchSummary = ({ start, end }) => {
       return fetch(`${EVICTION_DATA_ENDPOINT}/filings?${filingsParams}`)
         .then((response) => response.json())
         .then((series) => {
+          const filledSeries = fillSeries(series.result, start, end);
           // pull dallas county from results
           // it is the only location with filing amounts so it is the only
           // place used for total filing amounts + median filing amount
-          const dallasCountySummary = summary.find(
+          const dallasCountySummary = summary.result.find(
             (entry) => entry.id === "48113"
           );
           // sum all counties for total eviction filings
@@ -43,7 +45,7 @@ const fetchSummary = ({ start, end }) => {
             tfa: dallasCountySummary?.tfa,
             mfa: dallasCountySummary?.mfa,
             // add filings per 1000 renters metric to time series
-            series: series.result.map((d) => ({
+            series: filledSeries.map((d) => ({
               ...d,
               name: "All Data",
               efr:
@@ -51,10 +53,10 @@ const fetchSummary = ({ start, end }) => {
                   ? 1000 * (d.ef / RENTER_HOUSEHOLDS)
                   : null,
             })),
-            avg7: getDailyAverage("ef", series.result, 7),
-            avg30: getDailyAverage("ef", series.result, 30),
-            past7: getDailyAverage("ef", series.result, 7, 7),
-            past30: getDailyAverage("ef", series.result, 30, 30),
+            avg7: getDailyAverage("ef", filledSeries, 7),
+            avg30: getDailyAverage("ef", filledSeries, 30),
+            past7: getDailyAverage("ef", filledSeries, 7, 7),
+            past30: getDailyAverage("ef", filledSeries, 30, 30),
           };
           // add diff values if available
           result["diff7"] =

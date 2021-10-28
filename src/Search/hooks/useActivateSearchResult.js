@@ -22,7 +22,6 @@ export default function useActivateSearchResult() {
 
   return useCallback(
     (result) => {
-      console.log({ search: result });
       if (!result || !result.point || !result.region || !result.feature) return;
       result.region !== activeRegion && setActiveRegion(result.region);
       // add source so that `useLocationSeries` can fetch data

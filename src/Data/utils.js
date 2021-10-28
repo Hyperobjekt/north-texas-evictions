@@ -1,4 +1,28 @@
 import { quantile } from "d3-array";
+import { timeDay } from "d3-time";
+import { parseDate } from "../Dashboard";
+
+/**
+ * Fills entries in the series with 0 for dates with no value
+ * @param {*} series
+ * @param {*} start
+ * @param {*} end
+ */
+export const fillSeries = (series, start, end) => {
+  // array of all days between start and end, starting with the most recent
+  const allDays = timeDay.range(parseDate(start), parseDate(end)).reverse();
+  const result = [];
+  allDays.forEach((day) => {
+    const date = day.toISOString().slice(0, 10);
+    const entry = series.find((entry) => entry.date === date);
+    if (entry) {
+      result.push(entry);
+    } else {
+      result.push({ date, ef: 0, mfa: 0, tfa: 0 });
+    }
+  });
+  return result;
+};
 
 /**
  * adds integer ids to each feature (for mapbox state)
