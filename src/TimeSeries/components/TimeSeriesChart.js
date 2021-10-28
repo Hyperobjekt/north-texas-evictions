@@ -11,13 +11,16 @@ import { withParentSize } from "@visx/responsive";
 import { curveMonotoneX } from "d3-shape";
 import { parseDate, Stat } from "../../Dashboard";
 import { Box, Typography } from "@material-ui/core";
-import { timeFormat } from "d3-time-format";
 import { Stack } from "@hyperobjekt/material-ui-website";
 
-const tickFormat = timeFormat("%b %d");
-const dateFormatter = timeFormat("%B %d, %Y");
-
-const TimeSeriesChart = ({ lines, xAccessor, yAccessor, yFormatter }) => {
+const TimeSeriesChart = ({
+  lines,
+  xAccessor,
+  yAccessor,
+  yFormatter,
+  xTickFormatter,
+  xTooltipFormatter,
+}) => {
   const customTheme = buildChartTheme({
     colors: lines.map((line) => line.color).reverse(),
   });
@@ -32,7 +35,7 @@ const TimeSeriesChart = ({ lines, xAccessor, yAccessor, yFormatter }) => {
       <>
         <Box clone p={1} pb={0.5}>
           <Typography variant="h2">
-            {dateFormatter(parseDate(nearest.date))}
+            {xTooltipFormatter(parseDate(nearest.date))}
           </Typography>
         </Box>
         <Stack between="sm" direction="vertical" around="sm">
@@ -69,7 +72,7 @@ const TimeSeriesChart = ({ lines, xAccessor, yAccessor, yFormatter }) => {
         <AnimatedAxis
           orientation="bottom"
           numTicks={5}
-          tickFormat={tickFormat}
+          tickFormat={xTickFormatter}
           strokeWidth={4}
           hideAxisLine
         />

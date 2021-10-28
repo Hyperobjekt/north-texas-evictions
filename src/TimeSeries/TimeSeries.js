@@ -5,6 +5,8 @@ import TimeSeriesTitle from "./components/TimeSeriesTitle";
 import { useDashboardStore } from "../Dashboard";
 import useTimeSeriesLines from "./hooks/useTimeSeriesLines";
 import useFormatter, { getFormatter } from "../Dashboard/hooks/useFormatter";
+import useTimeSeriesStore from "./hooks/useTimeSeriesStore";
+import { getXTickFormatter, getXTooltipFormatter } from "./utils";
 
 const xAccessor = (d) => d && new Date(`${d["date"]}T00:00:00`);
 
@@ -18,8 +20,12 @@ const TimeSeries = (props) => {
   //  after the "# of renter households" are in place
   const decimalFormatter = getFormatter("decimal");
 
+  const group = useTimeSeriesStore((state) => state.group);
+
   // get the lines data
   const lines = useTimeSeriesLines();
+
+  console.log({ lines });
 
   return (
     <Box
@@ -43,6 +49,8 @@ const TimeSeries = (props) => {
           xAccessor={xAccessor}
           yAccessor={yAccessor}
           yFormatter={activeBubble === "efr" ? decimalFormatter : yFormatter}
+          xTickFormatter={getXTickFormatter(group)}
+          xTooltipFormatter={getXTooltipFormatter(group)}
           lines={lines}
         />
       </Box>

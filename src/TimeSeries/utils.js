@@ -1,5 +1,74 @@
-import { timeDay, timeDays, timeSunday, timeYear } from "d3-time";
+import { timeDay, timeDays, timeSunday } from "d3-time";
+import { timeFormat } from "d3-time-format";
 import { formatDate, parseDate } from "../Dashboard";
+
+// returns the year for a given date
+const yearFormat = timeFormat("%Y");
+
+// Short format day formatter for ticks (e.g. "Mar 1")
+const dayTickFormat = timeFormat("%b %d");
+
+// Long format day formatter for tooltips (e.g. "March 1, 2017")
+const dayTooltipFormat = timeFormat("%B %d, %Y");
+
+// Short format week for ticks (e.g. "Mar 1 - 7")
+const weekTickFormat = (date) => {
+  const sunday1 = timeSunday.floor(date);
+  const sunday2 = timeSunday.offset(sunday1, 1);
+  return dayTickFormat(sunday1) + " - " + dayTickFormat(sunday2);
+};
+
+// Long format week formatter
+const weekTooltipFormat = (date) => {
+  const sunday1 = timeSunday.floor(date);
+  const sunday2 = timeSunday.offset(sunday1, 1);
+  const year1 = yearFormat(sunday1);
+  const year2 = yearFormat(sunday2);
+  const isDifferentYear = year1 !== year2;
+  return isDifferentYear
+    ? `${dayTickFormat(sunday1)}, ${year1} - ${dayTickFormat(
+        sunday2
+      )}, ${year2}`
+    : `${dayTickFormat(sunday1)} - ${dayTickFormat(sunday2)}, ${year1}`;
+};
+
+// month tick formatter
+const monthTickFormat = timeFormat("%B");
+
+// month tooltip formatter
+const monthTooltipFormat = timeFormat("%B %Y");
+
+/**
+ * Returns a x tick formatter function for the provided group type
+ * @param {*} group
+ * @returns
+ */
+export const getXTickFormatter = (group) => {
+  switch (group) {
+    case "weekly":
+      return weekTickFormat;
+    case "monthly":
+      return monthTickFormat;
+    default:
+      return dayTickFormat;
+  }
+};
+
+/**
+ * Returns a x value tooltip formatter function for the provided group type
+ * @param {*} group
+ * @returns
+ */
+export const getXTooltipFormatter = (group) => {
+  switch (group) {
+    case "weekly":
+      return weekTooltipFormat;
+    case "monthly":
+      return monthTooltipFormat;
+    default:
+      return dayTooltipFormat;
+  }
+};
 
 /**
  * Accepts data by day and aggregates it by week
@@ -7,14 +76,12 @@ import { formatDate, parseDate } from "../Dashboard";
 export function groupByWeek(data, metric = "ef") {
   const grouped = {};
   data.forEach((d) => {
-    const date = new Date(d.date);
-    const week = timeSunday.count(timeYear(date), date);
+    const date = timeSunday.floor(parseDate(d.date));
+    const week = formatDate(date);
     if (!grouped[week]) {
       grouped[week] = {
         ...d,
-        date: formatDate(
-          new Date(date.getFullYear(), date.getMonth(), date.getDate())
-        ),
+        date: week,
         [metric]: 0,
       };
     }
@@ -34,9 +101,7 @@ export function groupByMonth(data, metric = "ef") {
     if (!grouped[month]) {
       grouped[month] = {
         ...d,
-        date: formatDate(
-          new Date(date.getFullYear(), date.getMonth(), date.getDate())
-        ),
+        date: formatDate(new Date(date.getFullYear(), date.getMonth(), 1)),
         [metric]: 0,
       };
     }
