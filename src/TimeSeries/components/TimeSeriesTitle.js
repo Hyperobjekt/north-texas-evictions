@@ -62,7 +62,7 @@ const TimeSeriesTitle = ({ ...props }) => {
       {...props}
     >
       <InlineMenu
-        options={bubbleMetrics}
+        options={bubbleMetrics.filter((metric) => metric.id !== "mfa")}
         color="primary"
         selected={activeBubble}
         onSelect={(e, option) => {

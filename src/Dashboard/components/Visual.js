@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDashboardStore } from "..";
 import { Map } from "../../Map";
 import clsx from "clsx";
 import { Box, withStyles } from "@material-ui/core";
 import { TimeSeries } from "../../TimeSeries";
 import { animated, useSpring } from "react-spring";
+import shallow from "zustand/shallow";
 
 // styles for visual wrapper
 const visualWrapperStyles = (theme) => ({
@@ -101,6 +102,16 @@ const ViewWrapperBox = withStyles(viewWrapperStyles)(
  */
 const Visual = (props) => {
   const activeView = useDashboardStore((state) => state.activeView);
+  const [activeBubble, setActiveBubble] = useDashboardStore(
+    (state) => [state.activeBubble, state.setActiveBubble],
+    shallow
+  );
+
+  // switch the eviction metric for the time series if it is set to "median filing amount"
+  useEffect(() => {
+    activeView === "series" && activeBubble === "mfa" && setActiveBubble("efr");
+  }, [activeView, activeBubble, setActiveBubble]);
+
   return (
     <VisualWrapperBox {...props}>
       <ViewWrapperBox className="sm-square" active={activeView === "map"}>
