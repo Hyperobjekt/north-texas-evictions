@@ -1,4 +1,3 @@
-import { median } from "d3-array";
 import { useQuery } from "react-query";
 import { EVICTION_DATA_ENDPOINT } from "../Dashboard/constants";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
@@ -15,13 +14,25 @@ const fetchSummary = ({ start, end }) => {
     return Promise.reject("start and end dates are required");
   }
   const params = { start, end };
-  const paramString = new URLSearchParams(params).toString();
-  return fetch(`${EVICTION_DATA_ENDPOINT}/summary?${paramString}`)
+  // use counties for summary so we can get the median filing amount for Dallas County
+  const summaryParams = new URLSearchParams({
+    ...params,
+    region: "counties",
+  }).toString();
+  const filingsParams = new URLSearchParams(params).toString();
+  return fetch(`${EVICTION_DATA_ENDPOINT}/summary?${summaryParams}`)
     .then((response) => response.json())
     .then((summary) => {
-      return fetch(`${EVICTION_DATA_ENDPOINT}/filings?${paramString}`)
+      return fetch(`${EVICTION_DATA_ENDPOINT}/filings?${filingsParams}`)
         .then((response) => response.json())
         .then((series) => {
+          // pull dallas county from results
+          // it is the only location with filing amounts so it is the only
+          // place used for total filing amounts + median filing amount
+          const dallasCountySummary = summary.find(
+            (entry) => entry.id === "48113"
+          );
+          // sum all counties for total eviction filings
           const totalFilings = summary.result.reduce(
             (sum, entry) => sum + entry.ef,
             0
@@ -29,8 +40,9 @@ const fetchSummary = ({ start, end }) => {
           const result = {
             ef: totalFilings,
             efr: 1000 * (totalFilings / RENTER_HOUSEHOLDS),
-            tfa: summary.result.reduce((sum, entry) => sum + entry.tfa, 0),
-            mfa: median(series.result, (d) => d.mfa),
+            tfa: dallasCountySummary?.tfa,
+            mfa: dallasCountySummary?.mfa,
+            // add filings per 1000 renters metric to time series
             series: series.result.map((d) => ({
               ...d,
               name: "All Data",

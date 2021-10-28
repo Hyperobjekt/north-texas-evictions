@@ -1,4 +1,3 @@
-import { median, sum } from "d3-array";
 import { useQueries } from "react-query";
 import { EVICTION_DATA_ENDPOINT } from "../../Dashboard/constants";
 import { getDailyAverage } from "../../TimeSeries/utils";
@@ -19,38 +18,51 @@ const fetchLocationSeries = (locationId, dateRange, region, feature) => {
   const paramString = new URLSearchParams(params).toString();
   const renterHouseholds = getFeatureProp(feature, "rhh");
   const name = getFeatureProp(feature, "name");
-
-  return fetch(`${EVICTION_DATA_ENDPOINT}/filings?${paramString}`)
+  return fetch(`${EVICTION_DATA_ENDPOINT}/summary?${paramString}`)
     .then((response) => response.json())
-    .then((series) => {
-      const totalFilings = sum(series.result, (d) => d.ef);
-      const result = {
-        id: series.location,
-        ef: totalFilings,
-        tfa: sum(series.result, (d) => d.tfa),
-        mfa: median(series.result, (d) => d.mfa),
-        efr: renterHouseholds ? 1000 * (totalFilings / renterHouseholds) : null,
-        series: series.result.map((d) => ({
-          ...d,
-          name: getNameParts(name)[0],
-          efr:
-            renterHouseholds && d.ef ? 1000 * (d.ef / renterHouseholds) : null,
-        })),
-        avg7: getDailyAverage("ef", series.result, 7),
-        avg30: getDailyAverage("ef", series.result, 30),
-        past7: getDailyAverage("ef", series.result, 7, 7),
-        past30: getDailyAverage("ef", series.result, 30, 30),
-      };
-      // add diff values if available
-      result["diff7"] =
-        Number.isFinite(result.avg7) &&
-        Number.isFinite(result.past7) &&
-        Math.round(result.avg7 - result.past7);
-      result["diff30"] =
-        Number.isFinite(result.avg30) &&
-        Number.isFinite(result.past30) &&
-        Math.round(result.avg30 - result.past30);
-      return result;
+    .then((summary) => {
+      return fetch(`${EVICTION_DATA_ENDPOINT}/filings?${paramString}`)
+        .then((response) => response.json())
+        .then((series) => {
+          // summary does not return specific location,
+          // so pull individual location from results
+          const locationSummary = summary.result.find(
+            (entry) => entry.id === locationId
+          );
+          const totalFilings = locationSummary?.ef;
+          const result = {
+            id: series.location,
+            ef: totalFilings,
+            tfa: locationSummary?.tfa,
+            mfa: locationSummary?.mfa,
+            efr: renterHouseholds
+              ? 1000 * (totalFilings / renterHouseholds)
+              : null,
+            // add filings per 1000 renters to time series
+            series: series.result.map((d) => ({
+              ...d,
+              name: getNameParts(name)[0],
+              efr:
+                renterHouseholds && d.ef
+                  ? 1000 * (d.ef / renterHouseholds)
+                  : null,
+            })),
+            avg7: getDailyAverage("ef", series.result, 7),
+            avg30: getDailyAverage("ef", series.result, 30),
+            past7: getDailyAverage("ef", series.result, 7, 7),
+            past30: getDailyAverage("ef", series.result, 30, 30),
+          };
+          // add diff values if available
+          result["diff7"] =
+            Number.isFinite(result.avg7) &&
+            Number.isFinite(result.past7) &&
+            Math.round(result.avg7 - result.past7);
+          result["diff30"] =
+            Number.isFinite(result.avg30) &&
+            Number.isFinite(result.past30) &&
+            Math.round(result.avg30 - result.past30);
+          return result;
+        });
     });
 };
 
