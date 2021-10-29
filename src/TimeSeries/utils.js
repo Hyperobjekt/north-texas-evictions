@@ -1,4 +1,4 @@
-import { timeDay, timeDays, timeSunday } from "d3-time";
+import { timeDay, timeSunday } from "d3-time";
 import { timeFormat } from "d3-time-format";
 import { formatDate, parseDate } from "../Dashboard";
 
@@ -119,13 +119,11 @@ export function groupByMonth(data, metric = "ef") {
  * @returns
  */
 export function movingAverage(series, metric = "ef", dateRange, N = 7) {
-  const allDays = timeDays(new Date(dateRange[0]), new Date(dateRange[1]));
-  const values = allDays.map((day) => {
-    const match = series.find((d) => {
-      return d.date === formatDate(day);
-    });
-    return match ? match[metric] : 0;
-  });
+  // create an array of all days in the date range
+  const allDays = series.map((d) => parseDate(d.date));
+  // map a value for each day in the date range
+  const values = series.map((entry) => entry[metric]);
+  console.log({ allDays, values });
   let i = 0;
   let sum = 0;
   const means = new Float64Array(values.length).fill(NaN);
@@ -137,16 +135,21 @@ export function movingAverage(series, metric = "ef", dateRange, N = 7) {
     means[i] = sum / N;
     sum -= values[i - N + 1];
   }
+
+  // create a dictionary of date to value
   const avgDict = allDays.reduce((dict, day, i) => {
     dict[formatDate(day)] = means[i];
     return dict;
   }, {});
-  return series.map((d, i) => {
+
+  // add the moving average to the original series
+  const result = series.map((d, i) => {
     return {
       ...d,
       [metric]: avgDict[d.date],
     };
   });
+  return result;
 }
 
 /**
