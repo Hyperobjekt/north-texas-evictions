@@ -135,9 +135,12 @@ export function movingAverage(series, metric = "ef", dateRange, N = 7) {
     sum -= values[i - N + 1];
   }
 
+  // round eviction filings to nearest whole number
+  const rounder = metric === "ef" ? Math.round : (v) => v;
+
   // create a dictionary of date to value
   const avgDict = allDays.reduce((dict, day, i) => {
-    dict[formatDate(day)] = means[i];
+    dict[formatDate(day)] = rounder(means[i]);
     return dict;
   }, {});
 
