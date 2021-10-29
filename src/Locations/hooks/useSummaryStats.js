@@ -1,14 +1,15 @@
 import { useFormatters } from "../../Dashboard/hooks/useFormatter";
 import { useLang } from "../../Language";
 
+const STAT_METRICS = ["avg7", "avg30", "efr", "tfa", "mfa"];
+
 /**
  * Gets an array of eviction summary stats from the location data
  * @param {*} location
  * @returns
  */
-export default function useSummaryStats(data) {
+export default function useSummaryStats(data, metricIds = STAT_METRICS) {
   data = data || {};
-  const metricIds = ["avg7", "avg30", "efr", "tfa", "mfa"];
   const langKeys = metricIds.map((id) => `METRIC_${id}`.toUpperCase());
   const labels = useLang(langKeys);
   const formatters = useFormatters(metricIds);

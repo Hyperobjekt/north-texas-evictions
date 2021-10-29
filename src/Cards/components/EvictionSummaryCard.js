@@ -14,6 +14,9 @@ import { useLang } from "../../Language";
 import useTrendSeries from "../../TimeSeries/hooks/useTrendSeries";
 import useSummaryStats from "../../Locations/hooks/useSummaryStats";
 
+// metrics to show on the summary card
+const SUMMARY_METRICS = ["avg7", "avg30", "efr", "tfa"];
+
 /**
  * A presentational component for displaying a data summary card
  */
@@ -55,7 +58,7 @@ const EvictionSummaryCard = (props) => {
   const intFormatter = useFormatter("ef");
   const value = isReady ? intFormatter(summary.ef) : "...";
   // list of secondary stats
-  const stats = useSummaryStats(summary);
+  const stats = useSummaryStats(summary, SUMMARY_METRICS);
   // use the 7 day moving average if more than 14 days
   const series = useTrendSeries(summary?.series, dateRange, "ef");
   return (
