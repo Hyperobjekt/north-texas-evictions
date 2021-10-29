@@ -51,7 +51,6 @@ export default function useActivateSearchResult() {
           const feature = matchedFeatures[0];
           // add source so that `useLocationSeries` can fetch data
           feature.source = result.region + "-choropleth";
-          console.log(feature);
           // TODO: fetch demographic geojson feature and merge in props
           addLocation(feature);
           setActive(feature);

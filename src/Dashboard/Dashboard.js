@@ -47,8 +47,8 @@ const Dashboard = ({ config, ...props }) => {
         </Header>
         {ready ? (
           <Body bgcolor="background.default" flex={1}>
-            <ControlsPanel float position="left" />
             <LocationPanel float position="left" />
+            <ControlsPanel float position="left" />
             <TwoColumnLayout left={<Cards />} right={<Visual />} />
           </Body>
         ) : (

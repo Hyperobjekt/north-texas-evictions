@@ -8,8 +8,7 @@ import {
   parseDate,
   useDashboardStore,
   useFormatter,
-  useDateOptions,
-  getDateRangeLabel,
+  formatDateString,
 } from "../../Dashboard";
 import { useLang } from "../../Language";
 import useTrendSeries from "../../TimeSeries/hooks/useTrendSeries";
@@ -46,14 +45,11 @@ const EvictionSummaryCard = (props) => {
   const isReady = status === "success";
   // pull current date range
   const dateRange = useDashboardStore((state) => state.activeDateRange);
-  const dateOptions = useDateOptions();
   // get summary card language
   const langKeys = [`METRIC_EF`, `SUMMARY_UPDATED`, `SUMMARY`];
   const [label, lastUpdated, title] = useLang(langKeys, {
     date: timeFormat("%b %e, %Y")(parseDate(dateRange[1])),
-    dateRange: getDateRangeLabel(...dateRange, dateOptions)
-      .join(" ")
-      .trim(),
+    dateRange: formatDateString(...dateRange, { short: true }).join(" - "),
   });
   // get primary metric
   const intFormatter = useFormatter("ef");
