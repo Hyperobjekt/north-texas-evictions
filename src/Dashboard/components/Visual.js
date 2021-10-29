@@ -21,6 +21,9 @@ const visualWrapperStyles = (theme) => ({
       position: "fixed",
       top: 112,
       height: `calc(100vh - 200px)`,
+      width: "100%",
+      // fix the time series from extending the viewport on hover for mobile
+      maxWidth: "100vw",
     },
   },
 });
