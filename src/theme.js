@@ -35,7 +35,7 @@ export default createTheme({
     background: {
       default: "#f0f3f4",
       dark: "#292929",
-      alt: "#FBFBF3"
+      alt: "#FBFBF3",
     },
   },
   typography: {
@@ -120,6 +120,8 @@ export default createTheme({
       root: {
         background: "#292929",
         color: "#fff",
+        maxWidth: "100vw",
+        left: 0,
       },
     },
     MuiAppBar: {

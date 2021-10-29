@@ -28,6 +28,8 @@ const useDashboardStore = create((set) => ({
   setHoverCoords: (hoverCoords) => set({ hoverCoords }),
   defaultViewport: null,
   setDefaultViewport: (defaultViewport) => set({ defaultViewport }),
+  mapInstance: null,
+  setMapInstance: (mapInstance) => set({ mapInstance }),
 }));
 
 export default useDashboardStore;

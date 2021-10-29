@@ -41,8 +41,13 @@ const TimeSeries = (props) => {
       {...props}
     >
       <TimeSeriesTitle />
-      <Box boxSizing="border-box" pl={3} flex={1} height={`calc(100% - 64px)`}>
-        {/* <p>test</p> */}
+      <Box
+        boxSizing="border-box"
+        pl={3}
+        flex={1}
+        height={`calc(100% - 64px)`}
+        style={{ touchAction: "none" }}
+      >
         <TimeSeriesChart
           xAccessor={xAccessor}
           yAccessor={yAccessor}

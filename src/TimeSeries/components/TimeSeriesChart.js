@@ -66,8 +66,6 @@ const TimeSeriesChart = ({
         xScale={{ type: "time" }}
         yScale={{ type: "linear" }}
         theme={customTheme}
-        // onPointerMove={handlePointerMove}
-        // onPointerOut={handlePointerOut}
       >
         <AnimatedAxis
           orientation="bottom"

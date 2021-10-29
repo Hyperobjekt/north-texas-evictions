@@ -11,6 +11,7 @@ import { FOCUS_STATE } from "../theme";
 import { AspectRatio } from "@material-ui/icons";
 import useFlyOnLoad from "./hooks/useFlyOnLoad";
 import MapTitle from "./components/MapTitle";
+import { useDashboardStore } from "../Dashboard";
 
 const styles = (theme) => ({
   root: {
@@ -74,6 +75,8 @@ const styles = (theme) => ({
 });
 
 const Map = ({ classes, className, children, ...props }) => {
+  // setter to add map instance to global store
+  const setMapInstance = useDashboardStore((state) => state.setMapInstance);
   // sources for the map based on current dashboard state
   const sources = useMapSources();
   // layers for the map based on the current dashboard state
@@ -105,6 +108,8 @@ const Map = ({ classes, className, children, ...props }) => {
         map?.target
           ?.getContainer()
           ?.parentNode?.parentNode?.removeAttribute("tabindex");
+        // set the map instance in the global store
+        setMapInstance(map?.target);
       }}
       {...props}
     >
