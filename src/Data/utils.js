@@ -48,6 +48,18 @@ export const addFeatureIds = (geojson) => {
 };
 
 /**
+ * Filters outliers from the geojson features.
+ * - currently only used to filter out low values of renter occupied households
+ */
+export const getFilteredFeaturesForExtent = (features, metric) => {
+  if (metric !== "efr") return features;
+  // for eviction filing rate, do not include places with low renter households for extents
+  return features.filter((feature) => {
+    return feature.properties["rhh"] > 50;
+  });
+};
+
+/**
  * Pulls min/max for all feature properties from the GeoJSON collection.
  * Can specify an optional min / max quantile in options to reduce outliers.
  */
@@ -63,10 +75,12 @@ export const extractExtentsFromGeojson = (geojson, options = {}) => {
   );
   const extents = {};
   for (let i = 0; i < keys.length; i++) {
-    extents[keys[i]] = [
-      quantile(features, minQuantile, (f) => f.properties[keys[i]]), // min value
-      quantile(features, maxQuantile, (f) => f.properties[keys[i]]), // max value
-      features.map((f) => f.properties[keys[i]]).filter(Boolean), // all values
+    const key = keys[i];
+    const extentFeatures = getFilteredFeaturesForExtent(features, key);
+    extents[key] = [
+      quantile(extentFeatures, minQuantile, (f) => f.properties[key]), // min value
+      quantile(extentFeatures, maxQuantile, (f) => f.properties[key]), // max value
+      features.map((f) => f.properties[key]).filter(Boolean), // all values
     ];
   }
   return extents;

@@ -25,7 +25,6 @@ const BubbleLegend = (props) => {
   const formatter = useFormatter(activeBubble, {
     short: true,
   });
-
   return (
     <Box {...props}>
       <BubbleScale

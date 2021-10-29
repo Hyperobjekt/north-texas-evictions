@@ -123,7 +123,6 @@ export function movingAverage(series, metric = "ef", dateRange, N = 7) {
   const allDays = series.map((d) => parseDate(d.date));
   // map a value for each day in the date range
   const values = series.map((entry) => entry[metric]);
-  console.log({ allDays, values });
   let i = 0;
   let sum = 0;
   const means = new Float64Array(values.length).fill(NaN);
