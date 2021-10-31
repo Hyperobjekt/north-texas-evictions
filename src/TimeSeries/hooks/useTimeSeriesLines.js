@@ -64,26 +64,28 @@ export default function useTimeSeriesLines() {
   };
 
   // lines for pinned locations
-  const locationLines = locationSeries.map(({ data, isSuccess }, i) => {
-    const isPinned =
-      pinnedLocations.findIndex(
-        (l) => l.properties.id === locations[i].properties.id
-      ) > -1;
+  const locationLines = locationSeries
+    .map(({ data, isSuccess }, i) => {
+      const isPinned =
+        pinnedLocations.findIndex((l) => {
+          return l?.properties?.id === locations[i]?.properties?.id;
+        }) > -1;
 
-    return {
-      id: locations[i].properties.id,
-      color: locationColors[i],
-      data:
-        isPinned && isSuccess
-          ? getLineData({
-              series: data.series,
-              group,
-              metric: activeBubble,
-              dateRange,
-            })
-          : [],
-      visible: isSuccess,
-    };
-  });
+      return {
+        id: locations[i].properties.id,
+        color: locationColors[i],
+        data:
+          isPinned && isSuccess
+            ? getLineData({
+                series: data.series,
+                group,
+                metric: activeBubble,
+                dateRange,
+              })
+            : [],
+        visible: isSuccess,
+      };
+    })
+    .filter(Boolean);
   return [overallLine, ...locationLines];
 }

@@ -24,7 +24,7 @@ const TimeSeriesTitle = ({ ...props }) => {
     (state) => [state.group, state.setGroup],
     shallow
   );
-  const groupLabel = groupOptions.find((option) => option.id === group).label;
+  const groupLabel = groupOptions.find((option) => option.id === group)?.label;
 
   // prepare language
   const bubbleName = useLang(`METRIC_${activeBubble}`);

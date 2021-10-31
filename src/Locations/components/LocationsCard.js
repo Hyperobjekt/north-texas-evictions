@@ -9,6 +9,7 @@ import { useDashboardStore } from "../../Dashboard";
 import useTimeSeriesStore from "../../TimeSeries/hooks/useTimeSeriesStore";
 import { ALL_DATA_COLOR } from "../../Dashboard/constants";
 import LocationRow from "./LocationRow";
+import useLocationLoader from "../hooks/useLocationLoader";
 
 const LocationsCard = (props) => {
   const [
@@ -39,6 +40,8 @@ const LocationsCard = (props) => {
 
   // adds locations to store when selected
   useSelectedLocations();
+
+  useLocationLoader();
 
   const isLocationPinned = (location) =>
     pinned.findIndex((l) => l.id === location.id) > -1;

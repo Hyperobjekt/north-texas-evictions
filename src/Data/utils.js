@@ -37,7 +37,7 @@ export const addFeatureIds = (geojson) => {
         : i + 1;
       return {
         ...feature,
-        id: newFeatureId,
+        id: Number(newFeatureId),
         properties: {
           ...feature.properties,
           id: newFeatureId,

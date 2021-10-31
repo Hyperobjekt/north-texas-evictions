@@ -1,6 +1,6 @@
 import { useFlyToLatLon } from "@hyperobjekt/mapbox";
 import { useCallback, useRef } from "react";
-import { useDashboardRegion, useDashboardStore } from "../../Dashboard";
+import { useDashboardRegion } from "../../Dashboard";
 import { useLocationStore } from "../../Locations";
 
 // maps region to zoom levels when flying to a location
@@ -13,12 +13,16 @@ const ZOOM_LEVELS = {
   courts: 14,
 };
 
+/**
+ * Returns a function that activates a search result.
+ * - Adds the location to the location legend
+ * - Adds pinned status to the location
+ * - Centers the viewport on the location
+ * @returns
+ */
 export default function useActivateSearchResult() {
   const activated = useRef(false);
-  const mapInstance = useDashboardStore((state) => state.mapInstance);
-  const addLocation = useLocationStore((state) => state.addLocation);
-  const setActive = useLocationStore((state) => state.setActive);
-  const addPinned = useLocationStore((state) => state.addPinned);
+  const addToLoadQueue = useLocationStore((state) => state.addToLoadQueue);
   const flyToLatLon = useFlyToLatLon();
   const [activeRegion, setActiveRegion] = useDashboardRegion();
 
@@ -33,40 +37,8 @@ export default function useActivateSearchResult() {
         result.point[0],
         ZOOM_LEVELS[result.region] || 10
       );
-      // listen for source updates and query the feature when available
-      mapInstance?.on("sourcedata", () => {
-        if (
-          activated.current ||
-          !mapInstance.getSource(`${result.region}-choropleth`) ||
-          !mapInstance.isSourceLoaded(`${result.region}-choropleth`)
-        )
-          return;
-        const matchedFeatures = mapInstance.querySourceFeatures(
-          `${result.region}-choropleth`,
-          {
-            filter: ["==", "id", result.feature.properties.id],
-          }
-        );
-        if (matchedFeatures.length) {
-          const feature = matchedFeatures[0];
-          // add source so that `useLocationSeries` can fetch data
-          feature.source = result.region + "-choropleth";
-          // TODO: fetch demographic geojson feature and merge in props
-          addLocation(feature);
-          setActive(feature);
-          addPinned(feature);
-          activated.current = true;
-        }
-      });
+      addToLoadQueue([result.feature.properties.id]);
     },
-    [
-      addLocation,
-      setActive,
-      addPinned,
-      flyToLatLon,
-      activeRegion,
-      setActiveRegion,
-      mapInstance,
-    ]
+    [flyToLatLon, activeRegion, setActiveRegion, addToLoadQueue]
   );
 }
