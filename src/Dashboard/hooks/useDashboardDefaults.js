@@ -1,6 +1,8 @@
 import { useMapStore } from "@hyperobjekt/mapbox";
 import { useEffect } from "react";
 import shallow from "zustand/shallow";
+import { useLocationStore } from "../../Locations";
+import useTimeSeriesStore from "../../TimeSeries/hooks/useTimeSeriesStore";
 import { EVICTION_DATA_ENDPOINT } from "../constants";
 import useDashboardStore from "./useDashboardStore";
 
@@ -8,6 +10,7 @@ import useDashboardStore from "./useDashboardStore";
  * Populates the dashboard store with initial values.
  */
 export default function useDashboardDefaults({
+  activeView,
   activeBubble,
   activeChoropleth,
   activeRegion,
@@ -18,9 +21,13 @@ export default function useDashboardDefaults({
   latitude,
   longitude,
   defaultViewport,
+  group,
+  locations,
+  pinned,
 }) {
-  // pull app state setters from store
+  // dashboard state setters
   const [
+    setActiveView,
     setMetrics,
     setRegions,
     setActiveBubble,
@@ -32,6 +39,7 @@ export default function useDashboardDefaults({
     setDefaultViewport,
   ] = useDashboardStore(
     (state) => [
+      state.setActiveView,
       state.setMetrics,
       state.setRegions,
       state.setActiveBubble,
@@ -44,12 +52,18 @@ export default function useDashboardDefaults({
     ],
     shallow
   );
-
+  // map state setters
   const setViewport = useMapStore((state) => state.setViewport);
+  // time series state setters
+  const setGroup = useTimeSeriesStore((state) => state.setGroup);
+  // location setters
+  const addToLoadQueue = useLocationStore((state) => state.addToLoadQueue);
+  // const setPinnedLocations =
 
   // set ready to true when all defaults are set
   useEffect(() => {
     console.debug("setting defaults:", {
+      activeView,
       activeBubble,
       activeChoropleth,
       activeRegion,
@@ -59,7 +73,10 @@ export default function useDashboardDefaults({
       zoom,
       latitude,
       longitude,
+      group,
+      locations,
     });
+    setActiveView(activeView || "map");
     setViewport({
       zoom,
       latitude,
@@ -73,6 +90,8 @@ export default function useDashboardDefaults({
     setActiveDateRange(activeDateRange);
     setMetrics(metrics);
     setRegions(regions);
+    group && setGroup(group);
+    locations && addToLoadQueue(locations);
     fetch(`${EVICTION_DATA_ENDPOINT}/meta`)
       .then((response) => response.json())
       .then(([meta]) => {

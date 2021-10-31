@@ -32,10 +32,14 @@ export const parseRoute = (template = ROUTE_TEMPLATE, routeString) => {
             : values[i])
     );
   result.activeDateRange = [result.start, result.end];
-  const searchParams = new URLSearchParams(
-    window.location.hash.split("?")?.[1]
-  );
-  result.precinct = searchParams.get("precinct");
+  // query parameters
+  const queryString = routeString.split("?")?.[1];
+  const searchParams = new URLSearchParams(queryString);
+  if (searchParams.has("locations"))
+    result.locations = searchParams.get("locations").split(",");
+  // if (searchParams.has("pinned"))
+  //   result.pinned = searchParams.get("pinned").split(",");
+  if (searchParams.has("group")) result.group = searchParams.get("group");
   return result;
 };
 
@@ -48,7 +52,7 @@ export const populateRoute = (template = ROUTE_TEMPLATE, values) => {
     .match(regex)
     .slice(1)
     .map((k) => k.slice(1));
-  const { precinct, ...hashValues } = values;
+  const { locations, pinned, group, ...hashValues } = values;
   const valueKeys = Object.keys(hashValues);
   // only update route if all values are present
   if (templateKeys.sort().join(",") !== valueKeys.sort().join(",")) {
@@ -62,7 +66,15 @@ export const populateRoute = (template = ROUTE_TEMPLATE, values) => {
     },
     template
   );
-  return precinct ? `${hashRoute}?precinct=${precinct}` : hashRoute;
+  // populate search parameters
+  const params = {};
+  if (locations) params.locations = locations.join(",");
+  if (pinned) params.pinned = pinned.join(",");
+  if (group) params.group = group;
+  const searchParams =
+    Object.keys(params).length && new URLSearchParams(params);
+
+  return searchParams ? `${hashRoute}?${searchParams.toString()}` : hashRoute;
 };
 
 /** Returns true if the route should update */
@@ -74,6 +86,9 @@ export const validateRoute = ({ route, values }) => {
 };
 
 export const getCurrentRouteParams = () => {
-  const params = parseRoute(ROUTE_TEMPLATE, window.location.hash);
+  const params = parseRoute(
+    ROUTE_TEMPLATE,
+    "#" + window.location.href.split("#")?.[1]
+  );
   return params;
 };

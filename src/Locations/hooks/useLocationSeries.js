@@ -3,6 +3,7 @@ import { EVICTION_DATA_ENDPOINT } from "../../Dashboard/constants";
 import { fillSeries } from "../../Data/utils";
 import { getDailyAverage } from "../../TimeSeries/utils";
 import { getNameParts } from "../components/LocationName";
+import { getRegionFromId } from "../utils";
 
 /**
  * Fetches the data series for a single location
@@ -68,11 +69,14 @@ const fetchLocationSeries = (locationId, dateRange, region, feature) => {
     });
 };
 
+/**
+ * Returns a property from a feature if it exists
+ */
 const getFeatureProp = (feature, prop = "id") => feature?.properties?.[prop];
 
 const getRegionFromFeature = (feature) => {
   const source = feature?.source || feature?.layer?.source;
-  if (!source) throw new Error("No source found for feature");
+  if (!source) return getRegionFromId(getFeatureProp(feature, "id"));
   return source.split("-")[0];
 };
 
