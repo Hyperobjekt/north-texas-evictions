@@ -10,7 +10,7 @@ import { Tooltip } from "@visx/xychart";
 import { withParentSize } from "@visx/responsive";
 import { curveMonotoneX } from "d3-shape";
 import { parseDate, Stat } from "../../Dashboard";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Paper, Typography } from "@material-ui/core";
 import { Stack } from "@hyperobjekt/material-ui-website";
 
 const TimeSeriesChart = ({
@@ -32,13 +32,13 @@ const TimeSeriesChart = ({
     );
     const nearest = tooltipData?.nearestDatum?.datum;
     return (
-      <>
-        <Box clone p={1} pb={0.5}>
+      <Paper elevation={2}>
+        <Box clone p={2} pb={0}>
           <Typography variant="h2">
             {xTooltipFormatter(parseDate(nearest.date))}
           </Typography>
         </Box>
-        <Stack between="sm" direction="vertical" around="sm">
+        <Stack between="sm" direction="vertical" around="md">
           {entries.map(({ key, datum }) => (
             <Stat
               key={key}
@@ -57,7 +57,7 @@ const TimeSeriesChart = ({
             </Stat>
           ))}
         </Stack>
-      </>
+      </Paper>
     );
   };
   return (
@@ -109,6 +109,8 @@ const TimeSeriesChart = ({
           renderGlyph={({ datum }) => {
             return <circle r={4} fill={datum.color} />;
           }}
+          unstyled
+          verticalCrosshairStyle={{ stroke: "#ccc" }}
         />
       </XYChart>
     </>

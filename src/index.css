@@ -20,5 +20,10 @@ body {
 }
 
 .visx-tooltip {
+  position: absolute;
   z-index: 1000;
+}
+.visx-tooltip.visx-tooltip-glyph {
+  width: 1px;
+  height: 1px;
 }
