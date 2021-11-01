@@ -11,7 +11,7 @@ import { DataProvider } from "../Data";
 import ViewButtonGroup from "../Controls/components/ViewButtonGroup";
 import { Search } from "../Search";
 import { Link } from "react-router-dom";
-import { Button } from "@material-ui/core";
+import { Box, Button, Typography } from "@material-ui/core";
 import { Analytics } from "../Analytics/Analytics";
 
 const Dashboard = ({ config, ...props }) => {
@@ -54,7 +54,17 @@ const Dashboard = ({ config, ...props }) => {
             <TwoColumnLayout left={<Cards />} right={<Visual />} />
           </Body>
         ) : (
-          <Loading />
+          <Box
+            display="flex"
+            flex={1}
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            bgcolor="background.default"
+          >
+            <Loading />
+            <Typography style={{ marginTop: "1rem" }}>Loading...</Typography>
+          </Box>
         )}
         <Tooltip yOffset={40} />
       </Page>
