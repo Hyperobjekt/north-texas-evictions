@@ -31,6 +31,14 @@ export const SummaryCard = ({
 }) => {
   return (
     <Card title={title} {...props}>
+      <Typography
+        variant="caption"
+        component="h2"
+        color="textSecondary"
+        style={{ marginTop: "-0.5rem", marginBottom: "1rem" }}
+      >
+        For All Counties
+      </Typography>
       <StatsSummary value={value} label={label} series={series} stats={stats}>
         {children}
       </StatsSummary>
