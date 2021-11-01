@@ -2,11 +2,8 @@ import React from "react";
 import { Header as HypHeader, Stack } from "@hyperobjekt/material-ui-website";
 import { Box } from "@material-ui/core";
 import Branding from "./Branding";
-import useMediaQueries from "../hooks/useMediaQueries";
 
 const Header = ({ children, ...props }) => {
-  const { isMobile } = useMediaQueries();
-
   return (
     <HypHeader stickyOffset={0} elevation={1} {...props}>
       <Box
@@ -16,7 +13,7 @@ const Header = ({ children, ...props }) => {
         justifyContent="space-between"
         flex={1}
       >
-        {!isMobile && <Branding />}
+        <Branding />
         <Stack
           around="none"
           between="sm"

@@ -58,7 +58,7 @@ App.defaultProps = {
             id: "bubble",
             type: "geojson",
             source: GEOJSON_ROOT + "bubble/NTEP_bubble_place.geojson",
-            options: { scaleFactor: 3 },
+            options: { scaleFactor: 2 },
           },
           {
             id: "choropleth",

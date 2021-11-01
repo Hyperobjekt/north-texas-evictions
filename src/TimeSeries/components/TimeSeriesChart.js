@@ -24,7 +24,7 @@ const TimeSeriesChart = ({
   const customTheme = buildChartTheme({
     colors: lines.map((line) => line.color).reverse(),
   });
-  const renderTooltip = ({ tooltipData, colorScale }) => {
+  const renderTooltip = ({ tooltipData }) => {
     const entries = Object.values(tooltipData?.datumByKey ?? {}).sort(
       (a, b) => {
         return yAccessor(b.datum) - yAccessor(a.datum);

@@ -12,6 +12,7 @@ import { animated, useSpring } from "react-spring";
 import { scaleLinear } from "@visx/scale";
 import Stat from "../Dashboard/components/Stat";
 import { LocationName } from "../Locations";
+import useMediaQueries from "../App/hooks/useMediaQueries";
 
 // tooltip dimensions (height is an estimate for offsets)
 const TOOLTIP_WIDTH = 240;
@@ -59,6 +60,7 @@ const getVerticalOffset = (y) => {
 };
 
 const Tooltip = ({ classes, yOffset = 0, xOffset = 0, ...props }) => {
+  const { isMobile } = useMediaQueries();
   // retrieve required data for rendering the tooltip
   const data = useTooltipData();
   const hoverCoords = useDashboardStore((state) => state.hoverCoords);
@@ -99,6 +101,8 @@ const Tooltip = ({ classes, yOffset = 0, xOffset = 0, ...props }) => {
 
   const rowData = metricIds.map((m, i) => rowFormatters[i](dataRef.current[m]));
 
+  // hide tooltip on mobile
+  if (isMobile) return null;
   return (
     <AnimatedPaper
       style={style}
