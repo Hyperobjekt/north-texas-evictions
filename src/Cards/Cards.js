@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import MapLegendCard from "../Map/components/MapLegendCard";
 import EvictionSummaryCard from "./components/EvictionSummaryCard";
 import LocationsCard from "../Locations/components/LocationsCard";
@@ -29,20 +29,12 @@ const MapCards = ({ active, ...props }) => {
     delay: active ? 100 : 0,
   });
 
-  // TODO: evaluate if needed, if so implement in a way that works on iOS safari
   // scroll the map legend into view when activated
-  // useLayoutEffect(() => {
-  //   setTimeout(() => {
-  //     var element = document.getElementById("mapLegendScroll");
-  //     element &&
-  //       active &&
-  //       element.scrollIntoView({
-  //         behavior: "smooth",
-  //         block: "end",
-  //         inline: "nearest",
-  //       });
-  //   }, 600);
-  // }, [active]);
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      active && window.scroll(0, 64);
+    }, 1000);
+  }, [active]);
 
   return (
     <StyledStack
@@ -75,20 +67,12 @@ const TimeSeriesCards = ({ active, ...props }) => {
     delay: active ? 100 : 0,
   });
 
-  // TODO: evaluate if needed, if so implement in a way that works on iOS safari
   // scroll the map legend into view when activated
-  // useLayoutEffect(() => {
-  //   setTimeout(() => {
-  //     var element = document.getElementById("seriesLegendScroll");
-  //     element &&
-  //       active &&
-  //       element.scrollIntoView({
-  //         behavior: "smooth",
-  //         block: "end",
-  //         inline: "nearest",
-  //       });
-  //   }, 600);
-  // }, [active]);
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      active && window.scroll(0, 24);
+    }, 1000);
+  }, [active]);
 
   return (
     <StyledStack
