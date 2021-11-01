@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Box, Divider, Paper, Typography, withStyles } from "@material-ui/core";
+import { Divider, Paper, withStyles } from "@material-ui/core";
 import { useTooltipData } from ".";
 import clsx from "clsx";
 import { TOOLTIP_METRICS } from "../Dashboard/constants";
@@ -10,38 +10,9 @@ import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
 import shallow from "zustand/shallow";
 import { animated, useSpring } from "react-spring";
 import { scaleLinear } from "@visx/scale";
-
-/**
- * Helper component for rendering tooltip stats
- */
-const Stat = ({
-  label,
-  value,
-  valueColor = "textPrimary",
-  labelColor = "textSecondary",
-  ...props
-}) => {
-  return (
-    <Box
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      {...props}
-    >
-      <Typography
-        style={{ maxWidth: "12em" }}
-        component="span"
-        variant="caption"
-        color={labelColor}
-      >
-        {label}
-      </Typography>
-      <Typography component="span" variant="h2" color={valueColor}>
-        {value}
-      </Typography>
-    </Box>
-  );
-};
+import Stat from "../Dashboard/components/Stat";
+import { LocationName } from "../Locations";
+import useMediaQueries from "../App/hooks/useMediaQueries";
 
 // tooltip dimensions (height is an estimate for offsets)
 const TOOLTIP_WIDTH = 240;
@@ -61,13 +32,6 @@ const styles = (theme) => ({
     paddingRight: theme.spacing(2),
   },
 });
-
-/** Returns the title and subtitle values based on the data */
-const getTooltipTitle = (data) => {
-  if (!data || !data.name) return ["Unavailable", ""];
-  const [name, parent] = data.name.split(",");
-  return [name, parent || "Texas"];
-};
 
 /** Returns the color to use for the value (bubble + choropleth metrics are highlighted) */
 const getValueColor = (metric, activeBubble, activeChoropleth) => {
@@ -96,6 +60,7 @@ const getVerticalOffset = (y) => {
 };
 
 const Tooltip = ({ classes, yOffset = 0, xOffset = 0, ...props }) => {
+  const { isMobile } = useMediaQueries();
   // retrieve required data for rendering the tooltip
   const data = useTooltipData();
   const hoverCoords = useDashboardStore((state) => state.hoverCoords);
@@ -134,10 +99,10 @@ const Tooltip = ({ classes, yOffset = 0, xOffset = 0, ...props }) => {
   // don't render anything if no tooltip data has been set yet
   if (!dataRef.current) return null;
 
-  // pull the title and data for the tooltip
-  const [name, parent] = getTooltipTitle(dataRef.current);
   const rowData = metricIds.map((m, i) => rowFormatters[i](dataRef.current[m]));
 
+  // hide tooltip on mobile
+  if (isMobile) return null;
   return (
     <AnimatedPaper
       style={style}
@@ -145,14 +110,7 @@ const Tooltip = ({ classes, yOffset = 0, xOffset = 0, ...props }) => {
       className={clsx(classes.root)}
       {...props}
     >
-      <Box p={2} pb={1.5}>
-        <Typography variant="h2">{name}</Typography>
-        {parent && (
-          <Typography component="span" variant="caption" color="textSecondary">
-            {parent}
-          </Typography>
-        )}
-      </Box>
+      <LocationName name={dataRef.current?.name} p={2} pb={1.5} />
       <Divider />
       {/* first, stack the bubble / choropleth metrics */}
       <Stack direction="vertical" between="sm" around="md" alignItems="stretch">

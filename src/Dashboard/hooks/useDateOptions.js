@@ -1,4 +1,5 @@
 import shallow from "zustand/shallow";
+import { formatDateString } from "..";
 import { formatDate, parseDate } from "../utils";
 import useDashboardStore from "./useDashboardStore";
 
@@ -59,7 +60,9 @@ export default function useDateOptions() {
     },
     {
       id: "alltime",
-      label: "All Time",
+      label: `All Time (${formatDateString(...dateRange, { short: true }).join(
+        " - "
+      )})`,
       value: [
         formatDate(parseDate(dateRange[0])),
         formatDate(parseDate(dateRange[1])),

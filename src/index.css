@@ -1,16 +1,30 @@
-html, body {
+html,
+body {
   width: 100%;
   height: 100%;
-  padding:0;
+  padding: 0;
   margin: 0;
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 #root {
-  position: absolute;
-  inset: 0;
+  position: relative;
   width: 100%;
-  height: 100%;
+  height: auto;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
+}
 
+.visx-tooltip {
+  position: absolute;
+  z-index: 1000;
+}
+.visx-tooltip.visx-tooltip-glyph {
+  width: 1px;
+  height: 1px;
 }

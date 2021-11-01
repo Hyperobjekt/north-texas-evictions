@@ -1,9 +1,9 @@
 import { useFlyToBounds } from "@hyperobjekt/mapbox";
 import bbox from "@turf/bbox";
 import { useRef, useEffect } from "react";
-import { parseRoute } from "../../App/router";
 import { useDashboardStore } from "../../Dashboard";
 import useChoroplethData from "../../Data/useChoroplethData";
+import { parseRoute } from "../../HashRouter";
 
 export default function useFlyOnLoad() {
   // zoom to region bounds if no viewport set in the URL
@@ -27,10 +27,14 @@ export default function useFlyOnLoad() {
       (zoom === defaultViewport.zoom &&
         latitude === defaultViewport.latitude &&
         longitude === defaultViewport.longitude);
-    shouldFlyToBounds &&
-      flyToBounds([
-        [bounds[0], bounds[1]],
-        [bounds[2], bounds[3]],
-      ]);
+    try {
+      shouldFlyToBounds &&
+        flyToBounds([
+          [bounds[0], bounds[1]],
+          [bounds[2], bounds[3]],
+        ]);
+    } catch (e) {
+      console.error(e);
+    }
   }, [data, status, defaultViewport, flyToBounds]);
 }

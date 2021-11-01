@@ -9,7 +9,7 @@ import useFormatter from "../../Dashboard/hooks/useFormatter";
 
 const styles = (theme) => ({
   root: {
-    width: 180,
+    width: 96,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -25,7 +25,6 @@ const BubbleLegend = (props) => {
   const formatter = useFormatter(activeBubble, {
     short: true,
   });
-
   return (
     <Box {...props}>
       <BubbleScale

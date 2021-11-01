@@ -8,6 +8,7 @@ import useDashboardStore from "../../Dashboard/hooks/useDashboardStore";
 import shallow from "zustand/shallow";
 import useDataExtents from "../../Data/useDataExtents";
 import { getScales } from "@hyperobjekt/legend/lib/Scales/utils";
+import { usePinnedLayers } from "../../Locations";
 
 const getLinearRamp = (from, to, steps = 1) => {
   // adjust from extent if values are equal
@@ -207,6 +208,7 @@ export default function useMapLayers() {
     );
   const extents = useDataExtents();
   const regions = useDashboardStore((state) => state.regions);
+  const pinnedLayers = usePinnedLayers();
   return useMemo(() => {
     const metricConfig = metrics.find((m) => m.id === activeChoropleth);
     const scaleType = metricConfig?.scale || "continuous";
@@ -227,6 +229,14 @@ export default function useMapLayers() {
       ?.map((layer) => getLayerStyle(layer.id, context, layer.options))
       .filter(Boolean)
       .flat();
-    return layers;
-  }, [activeBubble, activeChoropleth, activeRegion, extents, metrics, regions]);
+    return [...layers, ...pinnedLayers];
+  }, [
+    activeBubble,
+    activeChoropleth,
+    activeRegion,
+    extents,
+    metrics,
+    regions,
+    pinnedLayers,
+  ]);
 }

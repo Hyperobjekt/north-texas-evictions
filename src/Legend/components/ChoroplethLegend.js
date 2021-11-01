@@ -37,9 +37,9 @@ const ChoroplethLegend = (props) => {
   const scaleOptions = choroplethConfig?.scaleOptions || {};
   const scaleColors = choroplethConfig?.colors || DEFAULT_CHOROPLETH_COLORS;
   const extents = useDataExtents();
-  const width = 188;
+  const width = 144;
   const activeValue = tooltipData && tooltipData[activeChoropleth];
-  const margin = { left: 24, right: 16, top: 0, bottom: 2 };
+  const margin = { left: 16, right: 16, top: 0, bottom: 2 };
   const formatter = useFormatter(activeChoropleth, {
     short: true,
   });
@@ -72,6 +72,11 @@ const ChoroplethLegend = (props) => {
             label={
               Number.isFinite(activeValue) ? formatter(activeValue) : undefined
             }
+            style={{
+              marginTop: 12,
+              marginLeft: margin.left,
+              marginRight: margin.right,
+            }}
           />
           <Scale.Colors height={16} />
           <Scale.Ticks

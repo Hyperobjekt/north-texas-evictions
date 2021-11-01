@@ -1,4 +1,28 @@
 import { quantile } from "d3-array";
+import { timeDay } from "d3-time";
+import { parseDate } from "../Dashboard";
+
+/**
+ * Fills entries in the series with 0 for dates with no value
+ * @param {*} series
+ * @param {*} start
+ * @param {*} end
+ */
+export const fillSeries = (series, start, end) => {
+  // array of all days between start and end, starting with the most recent
+  const allDays = timeDay.range(parseDate(start), parseDate(end)).reverse();
+  const result = [];
+  allDays.forEach((day) => {
+    const date = day.toISOString().slice(0, 10);
+    const entry = series.find((entry) => entry.date === date);
+    if (entry) {
+      result.push(entry);
+    } else {
+      result.push({ date, ef: 0, mfa: 0, tfa: 0 });
+    }
+  });
+  return result;
+};
 
 /**
  * adds integer ids to each feature (for mapbox state)
@@ -13,7 +37,7 @@ export const addFeatureIds = (geojson) => {
         : i + 1;
       return {
         ...feature,
-        id: newFeatureId,
+        id: Number(newFeatureId),
         properties: {
           ...feature.properties,
           id: newFeatureId,
@@ -21,6 +45,18 @@ export const addFeatureIds = (geojson) => {
       };
     }),
   };
+};
+
+/**
+ * Filters outliers from the geojson features.
+ * - currently only used to filter out low values of renter occupied households
+ */
+export const getFilteredFeaturesForExtent = (features, metric) => {
+  if (metric !== "efr") return features;
+  // for eviction filing rate, do not include places with low renter households for extents
+  return features.filter((feature) => {
+    return feature.properties["rhh"] > 50;
+  });
 };
 
 /**
@@ -39,10 +75,12 @@ export const extractExtentsFromGeojson = (geojson, options = {}) => {
   );
   const extents = {};
   for (let i = 0; i < keys.length; i++) {
-    extents[keys[i]] = [
-      quantile(features, minQuantile, (f) => f.properties[keys[i]]), // min value
-      quantile(features, maxQuantile, (f) => f.properties[keys[i]]), // max value
-      features.map((f) => f.properties[keys[i]]).filter(Boolean), // all values
+    const key = keys[i];
+    const extentFeatures = getFilteredFeaturesForExtent(features, key);
+    extents[key] = [
+      quantile(extentFeatures, minQuantile, (f) => f.properties[key]), // min value
+      quantile(extentFeatures, maxQuantile, (f) => f.properties[key]), // max value
+      features.map((f) => f.properties[key]).filter(Boolean), // all values
     ];
   }
   return extents;

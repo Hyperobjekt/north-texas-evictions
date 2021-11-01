@@ -9,14 +9,16 @@ import SearchIcon from "../Icons/SearchIcon";
 import useSearchData from "./hooks/useSearchData";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import clsx from "clsx";
-import { useFlyToLatLon } from "@hyperobjekt/mapbox";
-import useDashboardRegion from "../Dashboard/hooks/useDashboardRegion";
+import useActivateSearchResult from "./hooks/useActivateSearchResult";
 
 const SearchInput = withStyles((theme) => ({
   root: {
     marginLeft: "auto",
     height: 42,
     paddingRight: theme.spacing(2),
+    [theme.breakpoints.down("sm")]: {
+      borderRadius: 0,
+    },
   },
 }))(Input);
 
@@ -26,9 +28,20 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 280,
     marginLeft: "auto",
     marginRight: 0,
+    [theme.breakpoints.down("sm")]: {
+      position: "absolute",
+      top: 64,
+      left: 0,
+      right: 0,
+      maxWidth: "none",
+      marginLeft: `0!important`,
+    },
     '& .MuiAutocomplete-inputRoot[class*="MuiInput-root"] .MuiAutocomplete-input':
       {
-        padding: `0.2rem 0.5rem 0`,
+        padding: `0.2rem .5rem 0`,
+        [theme.breakpoints.down("sm")]: {
+          padding: `0.2rem .8rem 0`,
+        },
       },
     "&.MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon .MuiAutocomplete-inputRoot":
       {
@@ -50,6 +63,9 @@ const useStyles = makeStyles((theme) => ({
   },
   input: {
     height: 42,
+    [theme.breakpoints.down("sm")]: {
+      height: 48,
+    },
   },
   groupLabel: {
     textTransform: "capitalize",
@@ -61,21 +77,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// maps region to zoom levels when flying to a location
-const ZOOM_LEVELS = {
-  tracts: 15,
-  cities: 12,
-  zips: 12,
-  counties: 9,
-  districts: 14,
-};
-
 const Search = (props) => {
   const { status, data } = useSearchData();
-  const flyToLatLon = useFlyToLatLon();
-  const [activeRegion, setActiveRegion] = useDashboardRegion();
+
   const classes = useStyles();
   const options = data || [];
+  const activateSearchResult = useActivateSearchResult();
 
   /**
    * Updates the selected region and flies to the selected location.
@@ -86,14 +93,7 @@ const Search = (props) => {
    */
   const handleChange = (event, value, reason) => {
     if (reason !== "select-option") return;
-    if (value.point && value.region) {
-      value.region !== activeRegion && setActiveRegion(value.region);
-      flyToLatLon(
-        value.point[1],
-        value.point[0],
-        ZOOM_LEVELS[value.region] || 10
-      );
-    }
+    activateSearchResult(value);
   };
 
   return (
@@ -125,7 +125,7 @@ const Search = (props) => {
               className: clsx("dark", InputProps.className, classes.input, {
                 [classes.hideClear]: !inputProps.value,
               }),
-              placeholder: "search",
+              placeholder: "search for a place",
               startAdornment: (
                 <InputAdornment
                   className={classes.inputAdornmentStart}
