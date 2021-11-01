@@ -1,6 +1,7 @@
 import { useMapStore } from "@hyperobjekt/mapbox";
 import { useEffect } from "react";
 import shallow from "zustand/shallow";
+import { parseDate } from "..";
 import { useLocationStore } from "../../Locations";
 import useTimeSeriesStore from "../../TimeSeries/hooks/useTimeSeriesStore";
 import { EVICTION_DATA_ENDPOINT } from "../constants";
@@ -87,7 +88,6 @@ export default function useDashboardDefaults({
     setActiveBubble(activeBubble);
     setActiveChoropleth(activeChoropleth);
     setActiveRegion(activeRegion);
-    setActiveDateRange(activeDateRange);
     setMetrics(metrics);
     setRegions(regions);
     group && setGroup(group);
@@ -97,6 +97,12 @@ export default function useDashboardDefaults({
       .then(([meta]) => {
         const dateRange = [meta.first_filing, meta.last_filing];
         setDateRange(dateRange);
+        // make sure the end date is not past the last filing date
+        activeDateRange[1] =
+          parseDate(activeDateRange[1]) > parseDate(dateRange[1])
+            ? dateRange[1]
+            : activeDateRange[1];
+        setActiveDateRange(activeDateRange);
         setTimeout(() => setReady(true), 0);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
