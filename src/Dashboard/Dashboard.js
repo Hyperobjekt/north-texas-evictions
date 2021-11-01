@@ -12,6 +12,7 @@ import ViewButtonGroup from "../Controls/components/ViewButtonGroup";
 import { Search } from "../Search";
 import { Link } from "react-router-dom";
 import { Button } from "@material-ui/core";
+import { Analytics } from "../Analytics/Analytics";
 
 const Dashboard = ({ config, ...props }) => {
   // pull ready state from the store
@@ -31,6 +32,7 @@ const Dashboard = ({ config, ...props }) => {
   return (
     <DataProvider>
       <Page>
+        <Analytics />
         <HashRouter />
         <Header sticky stickyOffset={0}>
           <ViewButtonGroup />
