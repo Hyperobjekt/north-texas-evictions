@@ -129,6 +129,7 @@ export const LocationsStack = ({ ...props }) => {
       ))}
       <Button
         variant="contained"
+        color={expandLocations ? "secondary" : "default"}
         square={true}
         onClick={handleToggleLocations}
         style={{
@@ -143,7 +144,7 @@ export const LocationsStack = ({ ...props }) => {
           transition: "all 0.4s ease",
           zIndex: 100,
           pointerEvents: "all",
-          borderRadius: "2px 0 0 2px",
+          borderRadius: !expandLocations && "2px 0 0 2px",
         }}
       >
         {!expandLocations && <ArrowLeft style={{ marginLeft: -8 }} />}
@@ -156,6 +157,7 @@ export const LocationsStack = ({ ...props }) => {
       </Button>
       <Button
         variant="contained"
+        color={!expandLocations ? "secondary" : "default"}
         onClick={handleToggleExpand}
         style={{
           position: "fixed",
@@ -177,7 +179,7 @@ export const LocationsStack = ({ ...props }) => {
         )}
         {!expandLocations && (
           <>
-            Compare <ArrowRight style={{ marginRight: -8 }} />
+            Compare <ArrowRight style={{ marginRight: -8, marginLeft: 4 }} />
           </>
         )}
       </Button>

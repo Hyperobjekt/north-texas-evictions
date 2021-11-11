@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "@material-ui/core";
+import { Button, ButtonGroup, Typography } from "@material-ui/core";
 import { timeFormat } from "d3-time-format";
 import useSummaryData from "../../Data/useSummaryData";
 import {
@@ -31,14 +31,18 @@ export const SummaryCard = ({
 }) => {
   return (
     <Card title={title} {...props}>
-      <Typography
-        variant="caption"
-        component="h2"
-        color="textSecondary"
-        style={{ marginTop: "-0.5rem", marginBottom: "1rem" }}
+      <ButtonGroup
+        variant="contained"
+        size="small"
+        style={{ marginTop: -4, marginBottom: 8, width: "100%", flex: 1 }}
       >
-        For All Counties
-      </Typography>
+        <Button fullWidth color="secondary" style={{ flex: 0.66 }}>
+          All Data
+        </Button>
+        <Button variant="outlined" style={{ flex: 1 }}>
+          Selected Locations
+        </Button>
+      </ButtonGroup>
       <StatsSummary value={value} label={label} series={series} stats={stats}>
         {children}
       </StatsSummary>
