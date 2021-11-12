@@ -8,14 +8,24 @@ const yearFormat = timeFormat("%Y");
 // Short format day formatter for ticks (e.g. "Mar 1")
 const dayTickFormat = timeFormat("%b %d");
 
+// short format day formatter for ticks with year (e.g. "Mar 1, '17")
+const dayTickYearFormat = timeFormat("%b %d, '%y");
+
 // Long format day formatter for tooltips (e.g. "March 1, 2017")
 const dayTooltipFormat = timeFormat("%B %d, %Y");
 
+const dayTickFormatter = (includeYear) =>
+  includeYear ? dayTickYearFormat : dayTickFormat;
+
 // Short format week for ticks (e.g. "Mar 1 - 7")
-const weekTickFormat = (date) => {
+const weekTickFormat = (includeYear) => (date) => {
+  // if multi-year, use shorter tick format with year for single day
+  if (includeYear) return dayTickYearFormat(date);
+  // if within the same year, use longer tick format
+  const formatter = dayTickFormat;
   const sunday1 = timeSunday.floor(date);
   const sunday2 = timeSunday.offset(sunday1, 1);
-  return dayTickFormat(sunday1) + " - " + dayTickFormat(sunday2);
+  return formatter(sunday1) + " - " + formatter(sunday2);
 };
 
 // Long format week formatter
@@ -32,9 +42,6 @@ const weekTooltipFormat = (date) => {
     : `${dayTickFormat(sunday1)} - ${dayTickFormat(sunday2)}, ${year1}`;
 };
 
-// month tick formatter
-const monthTickFormat = timeFormat("%B");
-
 // month tooltip formatter
 const monthTooltipFormat = timeFormat("%B %Y");
 
@@ -43,14 +50,14 @@ const monthTooltipFormat = timeFormat("%B %Y");
  * @param {*} group
  * @returns
  */
-export const getXTickFormatter = (group) => {
+export const getXTickFormatter = ({ group, includeYear }) => {
   switch (group) {
     case "weekly":
-      return weekTickFormat;
+      return weekTickFormat(includeYear);
     case "monthly":
-      return monthTickFormat;
+      return includeYear ? timeFormat("%b '%y") : timeFormat("%b");
     default:
-      return dayTickFormat;
+      return dayTickFormatter(includeYear);
   }
 };
 
@@ -98,14 +105,16 @@ export function groupByMonth(data, metric = "ef") {
   data.forEach((d) => {
     const date = new Date(d.date);
     const month = date.getMonth();
-    if (!grouped[month]) {
-      grouped[month] = {
+    const year = date.getFullYear();
+    const key = `${year}-${month}`;
+    if (!grouped[key]) {
+      grouped[key] = {
         ...d,
         date: formatDate(new Date(date.getFullYear(), date.getMonth(), 1)),
         [metric]: 0,
       };
     }
-    if (d[metric]) grouped[month][metric] += d[metric];
+    if (d[metric]) grouped[key][metric] += d[metric];
   });
   return Object.values(grouped).sort((a, b) => (a.date > b.date ? -1 : 1));
 }
