@@ -6,6 +6,8 @@ import { ThemeProvider } from "@material-ui/core";
 import theme from "./theme";
 import App from "./App/App";
 
+console.debug(`${process.env.REACT_APP_VERSION}`);
+
 ReactDOM.render(
   <ThemeProvider theme={theme}>
     <App />

@@ -6,7 +6,8 @@ import { useDashboardStore } from "../Dashboard";
 import useTimeSeriesLines from "./hooks/useTimeSeriesLines";
 import useFormatter, { getFormatter } from "../Dashboard/hooks/useFormatter";
 import useTimeSeriesStore from "./hooks/useTimeSeriesStore";
-import { getXTickFormatter, getXTooltipFormatter } from "./utils";
+import { getXTooltipFormatter } from "./utils";
+import useXTickFormatter from "./hooks/useXTickFormatter";
 
 const xAccessor = (d) => d && new Date(`${d["date"]}T00:00:00`);
 
@@ -24,6 +25,8 @@ const TimeSeries = (props) => {
 
   // get the lines data
   const lines = useTimeSeriesLines();
+
+  const xTickFormatter = useXTickFormatter();
 
   return (
     <Box
@@ -52,7 +55,7 @@ const TimeSeries = (props) => {
           xAccessor={xAccessor}
           yAccessor={yAccessor}
           yFormatter={activeBubble === "efr" ? decimalFormatter : yFormatter}
-          xTickFormatter={getXTickFormatter(group)}
+          xTickFormatter={xTickFormatter}
           xTooltipFormatter={getXTooltipFormatter(group)}
           lines={lines}
         />
