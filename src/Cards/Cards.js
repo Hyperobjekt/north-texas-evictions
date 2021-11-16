@@ -8,6 +8,7 @@ import { animated, useSpring } from "react-spring";
 import { Box } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import useMediaQueries from "../App/hooks/useMediaQueries";
+import RankingsCard from "./components/RankingsCard";
 
 const AnimatedStack = animated(Box);
 
@@ -64,6 +65,7 @@ const MapCards = ({ active, ...props }) => {
       <MapLegendCard />
       <LocationsCard />
       <EvictionSummaryCard />
+      <RankingsCard />
     </StyledStack>
   );
 };
