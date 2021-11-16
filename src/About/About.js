@@ -58,10 +58,7 @@ const styles = (theme) => ({
     },
   },
   headerContainer: {
-    paddingTop: 35,
-  },
-  headerImg: {
-    padding: 20,
+    paddingTop: 0,
   },
   footerContainer: {
     [theme.breakpoints.up("sm")]: {
@@ -85,7 +82,7 @@ const styles = (theme) => ({
     paddingLeft: "5vw",
     justifyContent: "center",
     "& p": {
-      marginBottom: "13px",
+      marginBottom: "1vw",
     },
   },
   link: {
@@ -114,7 +111,6 @@ const styles = (theme) => ({
       },
       "& p": {
         fontSize: theme.typography.pxToRem(20),
-        marginBottom: 2,
       },
       "&:hover": {
         "& svg": {
@@ -135,19 +131,14 @@ const styles = (theme) => ({
       "& p": {
         paddingLeft: theme.typography.pxToRem(30),
         fontSize: theme.typography.pxToRem(30),
-        marginBottom: 5,
         [theme.breakpoints.up("sm")]: {
           paddingLeft: theme.typography.pxToRem(67),
           fontSize: theme.typography.pxToRem(67),
-          marginBottom: 11,
         },
       },
       "&:hover": {
         "& svg": {
-          left: theme.typography.pxToRem(-5),
-          [theme.breakpoints.up("sm")]: {
-            left: theme.typography.pxToRem(-12),
-          },
+          left: "-1vw",
         },
       },
     },
@@ -264,7 +255,7 @@ const About = ({ props, classes }) => {
           <Grid container>
             <Grid item xs={12} sm={6}>
               <Box clone width="100%" textAlign="center">
-                <img className={classes.headerImg} alt="About" src="./assets/aboutHead.png" />
+                <img alt="About" src="./assets/aboutHead.png" />
               </Box>
             </Grid>
             <Grid item xs={12} sm={6}>
