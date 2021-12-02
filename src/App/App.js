@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import Dashboard, { formatDate } from "../Dashboard";
 import { useLanguageStore } from "../Language";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { About } from "../About";
 
 const GEOJSON_ROOT = process.env.REACT_APP_GEOJSON_ENDPOINT;
@@ -23,6 +23,7 @@ const App = ({ lang = "en", langDict, config }) => {
         <Route path="/about">
           <About />
         </Route>
+        <Redirect to='/' />
       </Switch>
     </Router>
   );
