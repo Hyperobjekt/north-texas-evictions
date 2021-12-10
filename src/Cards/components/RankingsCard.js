@@ -1,5 +1,5 @@
 import React from "react";
-import { List, ListItem, Typography } from "@material-ui/core";
+import { Box, List, ListItem, Typography } from "@material-ui/core";
 import {
   Card,
   useDashboardStore,
@@ -39,6 +39,7 @@ const RankingsCard = (props) => {
   // get summary card language
   const metricLabel = useLang(`METRIC_${activeBubble}`);
   const valueFormatter = useFormatter(activeBubble);
+  const regionLabel = useLang(`REGION_${activeRegion}`);
   // pull the top locations for the current metric
   const topLocations = bubbleSource?.data?.features
     ?.sort(
@@ -76,37 +77,32 @@ const RankingsCard = (props) => {
   };
   return (
     <Card title={`Eviction Hotspots`} {...props}>
-      <Typography
-        variant="caption"
-        component="h2"
-        color="textSecondary"
-        style={{ marginTop: "-0.5rem", marginBottom: "1rem" }}
-      >
-        By {metricLabel} from <br /> {dateRangeLabel}
-      </Typography>
-      <List
-        disablePadding
-        style={{
-          marginLeft: -16,
-          marginRight: -16,
-          width: `calc(100% + 32px)`,
-        }}
-      >
-        {topLocations?.map((location) => (
-          <ListItem
-            button
-            key={location.properties.name}
-            onMouseEnter={handleHover(location)}
-            onMouseLeave={handleHover(null)}
-            onClick={handleSelect(location)}
-          >
-            <LocationName name={location.properties.name} />
-            <Typography variant="h2" style={{ marginLeft: "auto" }}>
-              {valueFormatter(location.properties?.[activeBubble])}
-            </Typography>
-          </ListItem>
-        ))}
-      </List>
+      <Box mt={-1} mb={2}>
+        <Typography variant="caption" component="h2" color="textSecondary">
+          Top <strong>{regionLabel}</strong> by <strong>{metricLabel}</strong>{" "}
+          from <br /> <strong>{dateRangeLabel}</strong>
+        </Typography>
+      </Box>
+      <Box ml={-2} mr={-2} width="calc(100% + 2rem)">
+        <List disablePadding>
+          {topLocations?.map((location) => (
+            <ListItem
+              button
+              key={location.properties.name}
+              onMouseEnter={handleHover(location)}
+              onMouseLeave={handleHover(null)}
+              onClick={handleSelect(location)}
+            >
+              <LocationName name={location.properties.name} />
+              <Box ml="auto">
+                <Typography variant="h2">
+                  {valueFormatter(location.properties?.[activeBubble])}
+                </Typography>
+              </Box>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
     </Card>
   );
 };

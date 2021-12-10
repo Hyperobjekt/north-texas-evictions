@@ -286,6 +286,13 @@ export default createTheme({
         color: alpha(darken(SECONDARY, 0.6), 0.9),
       },
     },
+    MuiTypography: {
+      caption: {
+        "& strong": {
+          fontWeight: 500
+        }
+      }
+    }
   },
   props: {
     MuiInput: {
