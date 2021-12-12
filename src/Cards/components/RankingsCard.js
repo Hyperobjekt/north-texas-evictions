@@ -60,7 +60,7 @@ const RankingsCard = (props) => {
       source: `${activeRegion}-choropleth`,
       layer: { source: `${activeRegion}-choropleth` },
     });
-    setHoverCoords([400, event.pageY]);
+    setHoverCoords([640, event.pageY]);
   };
   // activate a location when clicking
   const handleSelect = (location) => (event) => {
