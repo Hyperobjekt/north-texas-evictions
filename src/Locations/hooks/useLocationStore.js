@@ -70,6 +70,8 @@ const useLocationStore = create((set) => ({
       ),
     }));
   },
+  scrollPosition: 0,
+  setScrollPosition: (scrollPosition) => set({ scrollPosition }),
 }));
 
 export default useLocationStore;

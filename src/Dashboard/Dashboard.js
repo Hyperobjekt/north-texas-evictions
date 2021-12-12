@@ -12,7 +12,7 @@ import { Search } from "../Search";
 import { Link } from "react-router-dom";
 import { Box, Button, Typography } from "@material-ui/core";
 import { Analytics } from "../Analytics/Analytics";
-import { LocationsStack } from "../Locations/components/LocationPanel";
+import { LocationsStack } from "../Locations";
 
 const Dashboard = ({ config, ...props }) => {
   // pull ready state from the store

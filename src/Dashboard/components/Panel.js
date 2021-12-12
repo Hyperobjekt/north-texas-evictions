@@ -78,12 +78,13 @@ const Panel = ({
   offset = 0,
   title,
   style: styleOverrides,
+  bodyRef,
   children,
   onOpen,
   onClose,
+  onScroll,
   ...props
 }) => {
-  console.log({ offset });
   const { isMobile } = useMediaQueries();
 
   // 👇 setup transforms required (based on float and position)
@@ -102,7 +103,6 @@ const Panel = ({
   springOptions[transformProp] = open ? 0 + offset : transformAmount - offset;
   springOptions.width = transformWidth;
   const style = useSpring(springOptions);
-  console.log({ springOptions });
 
   // 👇  manage focus state
   const buttonRef = React.useRef();
@@ -151,11 +151,17 @@ const Panel = ({
           className={clsx("HypPanel-header", classes.header)}
         >
           <Typography variant="h2">{title}</Typography>
-          <IconButton ref={buttonRef} size="small" onClick={onClose}>
-            <CloseIcon />
-          </IconButton>
+          {onClose && (
+            <IconButton ref={buttonRef} size="small" onClick={onClose}>
+              <CloseIcon />
+            </IconButton>
+          )}
         </Box>
-        <Box className={clsx("HypPanel-body", classes.body)}>
+        <Box
+          ref={bodyRef}
+          onScroll={onScroll}
+          className={clsx("HypPanel-body", classes.body)}
+        >
           <Stack
             direction="vertical"
             between="lg"

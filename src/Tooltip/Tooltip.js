@@ -55,11 +55,12 @@ const offsetScale = scaleLinear()
  * @returns
  */
 const getVerticalOffset = (y) => {
-  if (y + TOOLTIP_HEIGHT >= window.innerHeight) return -1 * TOOLTIP_HEIGHT;
-  return 0;
+  if (y + TOOLTIP_HEIGHT >= window.innerHeight)
+    return -1 * (y + TOOLTIP_HEIGHT - window.innerHeight);
+  return -TOOLTIP_HEIGHT / 2;
 };
 
-const Tooltip = ({ classes, yOffset = 0, xOffset = 0, ...props }) => {
+const Tooltip = ({ classes, yOffset = 0, xOffset = -200, ...props }) => {
   const { isMobile } = useMediaQueries();
   // retrieve required data for rendering the tooltip
   const data = useTooltipData();
