@@ -20,7 +20,7 @@ const TOOLTIP_HEIGHT = 320;
 
 const styles = (theme) => ({
   root: {
-    position: "absolute",
+    position: "fixed",
     top: 0,
     left: 0,
     zIndex: 101,
@@ -44,23 +44,11 @@ const getValueColor = (metric, activeBubble, activeChoropleth) => {
 const AnimatedPaper = animated(Paper);
 
 // create a scale for offsetting the tooltip so it doesn't go off the screen
-const offsetScale = scaleLinear()
-  .domain([0, window.innerWidth])
-  .range([0, -1 * TOOLTIP_WIDTH]);
+const offsetScaleY = scaleLinear()
+  .domain([64, window.innerHeight])
+  .range([0, -1 * TOOLTIP_HEIGHT]);
 
-/**
- * Returns a vertical offset for the tooltip if it is going to go off screen
- * TODO: tooltip height is set to 320. ideally, this should be dynamic
- * @param {*} y
- * @returns
- */
-const getVerticalOffset = (y) => {
-  if (y + TOOLTIP_HEIGHT >= window.innerHeight)
-    return -1 * (y + TOOLTIP_HEIGHT - window.innerHeight);
-  return -TOOLTIP_HEIGHT / 2;
-};
-
-const Tooltip = ({ classes, yOffset = 0, xOffset = -200, ...props }) => {
+const Tooltip = ({ classes, yOffset = 0, xOffset = -64, ...props }) => {
   const { isMobile } = useMediaQueries();
   // retrieve required data for rendering the tooltip
   const data = useTooltipData();
@@ -69,11 +57,12 @@ const Tooltip = ({ classes, yOffset = 0, xOffset = -200, ...props }) => {
     (state) => [state.activeBubble, state.activeChoropleth],
     shallow
   );
+  const adjustedY = hoverCoords[1] - window.scrollY;
 
   // animate position and opacity
   const style = useSpring({
-    x: (hoverCoords[0] || 0) + offsetScale(hoverCoords[0]) + xOffset,
-    y: (hoverCoords[1] || 0) + getVerticalOffset(hoverCoords[1]) + yOffset,
+    x: (hoverCoords[0] || 0) + -1 * TOOLTIP_WIDTH + xOffset,
+    y: (adjustedY || 0) + offsetScaleY(adjustedY) + yOffset,
     opacity: data ? 1 : 0,
   });
 
