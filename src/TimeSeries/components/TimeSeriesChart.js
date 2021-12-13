@@ -20,6 +20,7 @@ const TimeSeriesChart = ({
   yFormatter,
   xTickFormatter,
   xTooltipFormatter,
+  children,
 }) => {
   const customTheme = buildChartTheme({
     colors: lines.map((line) => line.color).reverse(),
@@ -102,6 +103,7 @@ const TimeSeriesChart = ({
             />
           );
         })}
+        {children}
         <Tooltip
           showVerticalCrosshair
           showSeriesGlyphs

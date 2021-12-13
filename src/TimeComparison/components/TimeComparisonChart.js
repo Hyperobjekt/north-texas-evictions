@@ -1,8 +1,6 @@
 import React from "react";
-import PropTypes from "prop-types";
 import TimeSeriesChart from "../../TimeSeries/components/TimeSeriesChart";
 import { Box } from "@material-ui/core";
-import useComparisonLines from "../hooks/useComparisonLines";
 
 const xAccessor = (d) => d.date;
 const yAccessor = (d) => d.value;
@@ -18,7 +16,9 @@ const TimeComparisonChart = ({ lines = [], ...props }) => {
         yFormatter={yFormatter}
         xTooltipFormatter={xTooltipFormatter}
         lines={lines}
-      />
+      >
+        <line x1="0" y1="0" x2="100%" y2="0" stroke="black" strokeWidth="1" />
+      </TimeSeriesChart>
     </Box>
   );
 };

@@ -1,8 +1,33 @@
+import { useLocationStore } from "../../Locations";
+import useLocationSeries from "../../Locations/hooks/useLocationSeries";
+
+const splitDataByYear = (data) => {
+  const years = ["2019", "2020", "2021"];
+  const dataByYear = {};
+  years.forEach((year) => {
+    dataByYear[year] = data.filter((d) => d.date.includes(year));
+  });
+  return dataByYear;
+};
+
 /**
  * A hook that returns the lines used for time comparison charts
  */
-
 export default function useComparisonLines(view) {
+  const locations = useLocationStore((state) => state.locations);
+  // TODO: do not hardcode end date
+  const locationSeries = useLocationSeries(locations, [
+    "2019-01-01",
+    "2021-12-31",
+  ]);
+  const series = locationSeries.map((location) => {
+    if (!location?.data?.series) return [];
+    const data = location.data.series;
+    const dataByYear = splitDataByYear(data);
+    return dataByYear;
+  });
+
+  console.log({ series, locationSeries });
   return [
     {
       id: "overall",
