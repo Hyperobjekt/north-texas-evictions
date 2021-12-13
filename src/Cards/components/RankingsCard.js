@@ -60,7 +60,7 @@ const RankingsCard = (props) => {
       source: `${activeRegion}-choropleth`,
       layer: { source: `${activeRegion}-choropleth` },
     });
-    setHoverCoords([400, event.pageY]);
+    setHoverCoords([640, event.pageY]);
   };
   // activate a location when clicking
   const handleSelect = (location) => (event) => {
@@ -79,8 +79,9 @@ const RankingsCard = (props) => {
     <Card title={`Eviction Hotspots`} {...props}>
       <Box mt={-1} mb={2}>
         <Typography variant="caption" component="h2" color="textSecondary">
-          Top <strong>{regionLabel}</strong> by <strong>{metricLabel}</strong>{" "}
-          from <br /> <strong>{dateRangeLabel}</strong>
+          Top <strong>{regionLabel}</strong> by <strong>{metricLabel}</strong>
+          <br />
+          from <strong>{dateRangeLabel}</strong>
         </Typography>
       </Box>
       <Box ml={-2} mr={-2} width="calc(100% + 2rem)">
