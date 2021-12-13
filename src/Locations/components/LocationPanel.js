@@ -26,6 +26,7 @@ import useLocationSeries from "../hooks/useLocationSeries";
 import useSummaryStats from "../hooks/useSummaryStats";
 import useTrendSeries from "../../TimeSeries/hooks/useTrendSeries";
 import { LocationName } from "..";
+import { TimeComparison } from "../../TimeComparison";
 
 const PANEL_METRICS = [
   "pop",
@@ -130,6 +131,8 @@ const LocationPanel = ({ ...props }) => {
           stats={stats}
         />
       )}
+      <Divider />
+      <TimeComparison />
       <Divider />
       <Typography variant="overline" color="textSecondary">
         Demographics Summary
