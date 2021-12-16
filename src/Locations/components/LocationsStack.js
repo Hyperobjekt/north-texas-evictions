@@ -162,13 +162,13 @@ const LocationsStack = ({ ...props }) => {
     shallow
   );
 
-  // locations currently in the stack
+  // locations currently in the stack (make copy to avoid mutation)
   const locationsStack = active
     ? [
         active,
         ...locations.filter((l) => l.properties.id !== active.properties.id),
       ]
-    : locations;
+    : [ ...locations ];
 
   // current date range
   const activeDateRange = useDashboardStore((state) => state.activeDateRange);
