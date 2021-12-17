@@ -14,16 +14,16 @@ import ExpandIcon from "../../Icons/ExpandIcon";
 const Wrapper = withStyles((theme) => ({
   root: {
     position: "fixed",
-    top: theme.spacing(8),
+    top: 0,
     bottom: 0,
     left: -368,
+    zIndex: 9999,
     width: "100%",
     pointerEvents: "none",
-    maxHeight: `calc(100vh - ${theme.spacing(8)}px)`,
-    zIndex: 100,
     overflow: "auto",
     backgroundColor: "transparent",
     transition: "all 0.2s ease",
+
     "&.expanded": {
       pointerEvents: "all",
       backgroundColor: "rgba(255,255,255,0.8)",
@@ -31,6 +31,11 @@ const Wrapper = withStyles((theme) => ({
     "&.collapsed": {
       left: 0,
     },
+    [theme.breakpoints.up("sm")]: {
+      maxHeight: `calc(100vh - ${theme.spacing(8)}px)`,
+      zIndex: 100,
+      top: theme.spacing(8),
+    }
   },
 }))(Box);
 
