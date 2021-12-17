@@ -28,3 +28,10 @@ body {
   width: 1px;
   height: 1px;
 }
+
+/** rotate x axis tick labels on small devices */
+@media(max-width: 600px) {
+  .visx-axis:first-child .visx-axis-tick text {
+    transform: translate(0, 10px) rotate(-45deg);
+  }
+}
