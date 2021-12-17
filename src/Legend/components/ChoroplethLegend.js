@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Typography, withStyles } from "@material-ui/core";
 import { useTooltipData } from "../../Tooltip";
 import useDataExtents from "../../Data/useDataExtents";
-import { Scale } from "@hyperobjekt/legend";
+import { Scale, useScaleContext } from "@hyperobjekt/legend";
 import { DEFAULT_CHOROPLETH_COLORS } from "../../Dashboard/constants";
 import useFormatter from "../../Dashboard/hooks/useFormatter";
 import { useLang } from "../../Language";
@@ -28,6 +28,11 @@ const styles = (theme) => ({
     },
   },
 });
+
+const Ticks = (props) => {
+  const { extent } = useScaleContext();
+  return <Scale.Ticks tickValues={extent} {...props} />;
+};
 
 const ChoroplethLegend = (props) => {
   const tooltipData = useTooltipData();
@@ -72,6 +77,7 @@ const ChoroplethLegend = (props) => {
             label={
               Number.isFinite(activeValue) ? formatter(activeValue) : undefined
             }
+            pointerColor="currentColor"
             style={{
               marginTop: 12,
               marginLeft: margin.left,
@@ -79,14 +85,7 @@ const ChoroplethLegend = (props) => {
             }}
           />
           <Scale.Colors height={16} />
-          <Scale.Ticks
-            tickValues={[
-              extents[activeChoropleth][0],
-              extents[activeChoropleth][1],
-            ]}
-            height={32}
-            tickFormat={formatter}
-          />
+          <Ticks height={32} tickFormat={formatter} />
         </Scale>
       )}
     </Box>

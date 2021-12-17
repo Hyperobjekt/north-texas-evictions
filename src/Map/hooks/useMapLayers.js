@@ -75,6 +75,7 @@ const getChoroplethLayerStyle = (
   options
 ) => {
   const extent = extents && extents[activeChoropleth];
+  console.log(scales)
   const hasSteps = scales.chunks;
   const steps = hasSteps
     ? getStepsFromChunks(scales.chunks)
