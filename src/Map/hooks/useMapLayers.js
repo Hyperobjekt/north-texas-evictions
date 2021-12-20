@@ -9,6 +9,7 @@ import shallow from "zustand/shallow";
 import useDataExtents from "../../Data/useDataExtents";
 import { getScales } from "@hyperobjekt/legend/lib/Scales/utils";
 import { usePinnedLayers } from "../../Locations";
+import { getAdjustedScaleOptions } from "../../Data/utils";
 
 /**
  * Returns an array of from / to values with the given number of steps between.
@@ -238,7 +239,7 @@ export default function useMapLayers() {
     const metricConfig = metrics.find((m) => m.id === activeChoropleth);
     const scaleType = metricConfig?.scale || "continuous";
     const scaleData = extents?.[activeChoropleth]?.[2] || [];
-    const scaleOptions = metricConfig?.scaleOptions || {};
+    const scaleOptions = getAdjustedScaleOptions(scaleData, metricConfig?.scaleOptions || {})
     const scaleColors = metricConfig?.colors || DEFAULT_CHOROPLETH_COLORS;
     const region = regions.find((r) => r.id === activeRegion);
     const context = {

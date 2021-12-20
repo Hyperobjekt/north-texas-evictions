@@ -7,6 +7,7 @@ import { DEFAULT_CHOROPLETH_COLORS } from "../../Dashboard/constants";
 import useFormatter from "../../Dashboard/hooks/useFormatter";
 import { useLang } from "../../Language";
 import useDashboardChoropleth from "../../Dashboard/hooks/useDashboardChoropleth";
+import { getAdjustedScaleOptions } from "../../Data/utils";
 
 const styles = (theme) => ({
   root: {
@@ -38,10 +39,10 @@ const ChoroplethLegend = (props) => {
   const tooltipData = useTooltipData();
   const [activeChoropleth, , choropleths] = useDashboardChoropleth();
   const choroplethConfig = choropleths.find((c) => c.id === activeChoropleth);
-  const scaleType = choroplethConfig?.scale || "continuous";
-  const scaleOptions = choroplethConfig?.scaleOptions || {};
-  const scaleColors = choroplethConfig?.colors || DEFAULT_CHOROPLETH_COLORS;
   const extents = useDataExtents();
+  const scaleType = choroplethConfig?.scale || "continuous";
+  const scaleColors = choroplethConfig?.colors || DEFAULT_CHOROPLETH_COLORS;
+  const scaleOptions = getAdjustedScaleOptions(extents?.[activeChoropleth]?.[2], choroplethConfig?.scaleOptions || {});
   const width = 144;
   const activeValue = tooltipData && tooltipData[activeChoropleth];
   const margin = { left: 16, right: 16, top: 0, bottom: 2 };
