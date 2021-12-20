@@ -1,18 +1,17 @@
 import React from "react";
 import clsx from "clsx";
-import {
-  alpha,
-  Box,
-  IconButton,
-  Typography,
-  withStyles,
-} from "@material-ui/core";
+import { Box, IconButton, Typography, withStyles } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import { animated, useSpring, useTransition } from "react-spring";
 import useMeasure from "react-use-measure";
 
 const styles = (theme) => ({
-  root: { marginBottom: "1rem" },
+  root: {
+    marginBottom: "1rem",
+    position: "sticky",
+    top: 80,
+    zIndex: 9999,
+  },
   empty: {
     marginBottom: "0rem",
   },
@@ -29,7 +28,7 @@ const styles = (theme) => ({
   },
   flag: {
     padding: theme.spacing(1, 1, 1, 2),
-    backgroundColor: alpha(theme.palette.primary.main, 0.1),
+    backgroundColor: "#EFE6E0",
     color: theme.palette.primary.dark,
     borderRadius: theme.shape.borderRadius,
     "& .MuiIconButton-root": {
