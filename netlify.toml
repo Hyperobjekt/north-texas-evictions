@@ -5,10 +5,10 @@
   NODE_VERSION = "14"
   YARN_VERSION = "1.22.10"
   YARN_FLAGS = "--no-ignore-optional"
-  REACT_APP_API_ENDPOINT = "https://wkubgjbrr2.execute-api.us-east-1.amazonaws.com/"
+  REACT_APP_API_ENDPOINT = "https://sq4aq22yzb.execute-api.us-east-1.amazonaws.com/"
   REACT_APP_GEOJSON_ENDPOINT = "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/"
   REACT_APP_MAPBOX_TOKEN = "pk.eyJ1IjoidW50ZCIsImEiOiJja2gyYzVxanQwMzhoMnFxcjlxZnUwMHkzIn0.xKV8oPfM6BUJ9EcpGqAwVQ"
   REACT_APP_MAPBOX_STYLE = "mapbox://styles/untd/cktapb92z086e17qvsxdkzvyf"
 [context.production.environment]
-  REACT_APP_API_ENDPOINT = "https://faxkuv0im9.execute-api.us-east-1.amazonaws.com/"
+  REACT_APP_API_ENDPOINT = "https://ihjhaky4k5.execute-api.us-east-1.amazonaws.com/"
   REACT_APP_GEOJSON_ENDPOINT = "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/production/"

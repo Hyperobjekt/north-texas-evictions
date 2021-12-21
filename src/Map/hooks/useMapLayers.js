@@ -9,7 +9,12 @@ import shallow from "zustand/shallow";
 import useDataExtents from "../../Data/useDataExtents";
 import { getScales } from "@hyperobjekt/legend/lib/Scales/utils";
 import { usePinnedLayers } from "../../Locations";
+import { getAdjustedScaleOptions } from "../../Data/utils";
 
+/**
+ * Returns an array of from / to values with the given number of steps between.
+ * (e.g. for mapping values to bubble radius)
+ */
 const getLinearRamp = (from, to, steps = 1) => {
   // adjust from extent if values are equal
   if (from && from[0] === from[1]) from = [0, from[1]];
@@ -24,6 +29,11 @@ const getLinearRamp = (from, to, steps = 1) => {
   return values;
 };
 
+/**
+ * Returns an array of position / color pairs to use for continuous
+ * color gradients.
+ * (e.g. for mapping values to colors)
+ */
 const getLinearColorRamp = (from, to, steps = 1) => {
   if (!from || !from[0] || !from[1]) from = [0, 1];
   const fromInterpolator = getPositionScale("linear", [0, 1], from);
@@ -36,6 +46,12 @@ const getLinearColorRamp = (from, to, steps = 1) => {
   return values;
 };
 
+/**
+ * Takes the color "chunks" for the given color scale and returns
+ * a color / value pair for each to use for fill styles.
+ * @param {*} chunks
+ * @returns
+ */
 const getStepsFromChunks = (chunks) => {
   const steps = [];
   chunks.forEach((chunk, i) => {
@@ -183,6 +199,10 @@ const getBubbleLayerStyle = (
   ];
 };
 
+/**
+ * Helper function that calls the appropriate layer style generator
+ * based on the layerId.
+ */
 const getLayerStyle = (layerId, context, options) => {
   switch (layerId) {
     case "bubble":
@@ -194,6 +214,11 @@ const getLayerStyle = (layerId, context, options) => {
   }
 };
 
+/**
+ * Returns an array of mapboxgl layer styles for choropleths, bubbles,
+ * and pinned location outlines.
+ * @returns
+ */
 export default function useMapLayers() {
   // TODO: pull required props from store
   const [activeBubble, activeChoropleth, activeRegion, metrics] =
@@ -213,7 +238,10 @@ export default function useMapLayers() {
     const metricConfig = metrics.find((m) => m.id === activeChoropleth);
     const scaleType = metricConfig?.scale || "continuous";
     const scaleData = extents?.[activeChoropleth]?.[2] || [];
-    const scaleOptions = metricConfig?.scaleOptions || {};
+    const scaleOptions = getAdjustedScaleOptions(
+      scaleData,
+      metricConfig?.scaleOptions || {}
+    );
     const scaleColors = metricConfig?.colors || DEFAULT_CHOROPLETH_COLORS;
     const region = regions.find((r) => r.id === activeRegion);
     const context = {

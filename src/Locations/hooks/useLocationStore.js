@@ -4,6 +4,10 @@ import create from "zustand";
  * This store contains app state.  For hovered + selected locations use the map store
  */
 const useLocationStore = create((set) => ({
+  showLocations: false,
+  setShowLocations: (showLocations) => set({ showLocations }),
+  expandLocations: false,
+  setExpandLocations: (expandLocations) => set({ expandLocations }),
   // active location (displayed in the location details panel)
   active: null,
   setActive: (location) => set({ active: location }),
@@ -66,6 +70,8 @@ const useLocationStore = create((set) => ({
       ),
     }));
   },
+  scrollPosition: 0,
+  setScrollPosition: (scrollPosition) => set({ scrollPosition }),
 }));
 
 export default useLocationStore;

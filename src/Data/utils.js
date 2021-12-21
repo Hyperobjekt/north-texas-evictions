@@ -106,3 +106,19 @@ export const addDataToGeojson = (geojson, data, matchProp = "id") => {
     }),
   };
 };
+
+/**
+ * Adds a scale min / max to the scale options if minQuantile / maxQuantile are provided
+ * @param {Array<Number>} data
+ * @param {object} { minQuantile, maxQuantile, ...ScaleOptions }
+ * @returns {ScaleOptions} { ScaleOptions }
+ */
+export const getAdjustedScaleOptions = (
+  data,
+  { minQuantile, maxQuantile, ...options }
+) => {
+  if (!minQuantile && !maxQuantile) return options;
+  if (data && minQuantile) options.min = quantile(data, minQuantile);
+  if (data && maxQuantile) options.max = quantile(data, maxQuantile);
+  return options;
+};
