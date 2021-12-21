@@ -121,7 +121,7 @@ const LocationsCard = (props) => {
   );
 
   return (
-    <Card noPadding title="Location Legend" {...props}>
+    <Card noPadding title="Selected Locations" {...props}>
       {/* list of locations */}
       <List
         style={{
@@ -154,7 +154,8 @@ const LocationsCard = (props) => {
       {!hasLocations && (
         <Box p={2} pt={1}>
           <Typography component="em" color="textSecondary">
-            Select locations using the map or search.
+            Click a location on the map or use the location search to add them
+            here.
           </Typography>
         </Box>
       )}

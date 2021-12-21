@@ -14,13 +14,6 @@ const styles = (theme) => ({
     height: "100%",
     zIndex: 100,
     maxHeight: "100%",
-    [theme.breakpoints.down("xs")]: {
-      position: "fixed",
-      right: 0,
-      top: 0,
-      width: "100%",
-      zIndex: 1101,
-    },
   },
   left: {},
   right: {},
