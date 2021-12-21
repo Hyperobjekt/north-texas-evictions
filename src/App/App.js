@@ -157,13 +157,7 @@ App.defaultProps = {
         type: "choropleth",
         format: "currency",
         scale: "quantize",
-        scaleOptions: {
-          amount: 5,
-          accessor: (d) => d,
-          minQuantile: 0.01,
-          maxQuantile: 0.99,
-          nice: false,
-        },
+        scaleOptions: { amount: 5, minQuantile: 0.01, maxQuantile: 0.99 },
       },
       {
         id: "pca",

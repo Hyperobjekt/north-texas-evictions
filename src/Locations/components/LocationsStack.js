@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useLayoutEffect } from "react";
 import useLocationStore from "../hooks/useLocationStore";
 import shallow from "zustand/shallow";
 import { Box, ButtonBase, IconButton, Tooltip } from "@material-ui/core";
@@ -35,7 +35,7 @@ const Wrapper = withStyles((theme) => ({
       maxHeight: `calc(100vh - ${theme.spacing(8)}px)`,
       zIndex: 100,
       top: theme.spacing(8),
-    }
+    },
   },
 }))(Box);
 
@@ -120,15 +120,37 @@ const ToggleExpandButton = () => {
       ],
       shallow
     );
-  // toggle the expanded locations view
-  const handleToggleExpand = () => setExpandLocations(!expandLocations);
 
-  const tooltipText = expandLocations ? "Stack Locations" : "Compare Locations";
+  // track if the hint has been dismissed
+  const [hintDismissed, setHintDismissed] = React.useState(false);
 
+  // track if the hint should show
+  const [showHint, setShowHint] = React.useState(false);
+
+  // button is hidden when not showing locations, or when less than 2 locations
   const isHidden = !showLocations || locations.length < 2;
 
+  // show tooltip when it hasn't been dismissed, locations are not expanded and the button is visible
+  const showTooltipHint = !hintDismissed && !expandLocations && !isHidden;
+
+  const tooltipText = "Click to toggle location comparison";
+
+  // show tooltip after 1 second delay
+  useLayoutEffect(() => {
+    if (showTooltipHint) {
+      setTimeout(() => setShowHint(true), 1000);
+    }
+  }, [showTooltipHint, setShowHint]);
+
+  // toggle the expanded locations view
+  const handleToggleExpand = () => {
+    showTooltipHint && setHintDismissed(true);
+    showTooltipHint && setShowHint(false);
+    setExpandLocations(!expandLocations);
+  };
+
   return (
-    <Tooltip title={tooltipText} arrow>
+    <Tooltip arrow open={showHint && showTooltipHint} title={tooltipText}>
       <IconButton
         size="small"
         onClick={handleToggleExpand}
@@ -173,7 +195,7 @@ const LocationsStack = ({ ...props }) => {
         active,
         ...locations.filter((l) => l.properties.id !== active.properties.id),
       ]
-    : [ ...locations ];
+    : [...locations];
 
   // current date range
   const activeDateRange = useDashboardStore((state) => state.activeDateRange);

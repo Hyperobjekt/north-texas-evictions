@@ -10,7 +10,7 @@ const styles = (theme) => ({
     marginBottom: "1rem",
     position: "sticky",
     top: 80,
-    zIndex: 9999,
+    zIndex: 99,
   },
   empty: {
     marginBottom: "0rem",

@@ -49,8 +49,8 @@ const getLinearColorRamp = (from, to, steps = 1) => {
 /**
  * Takes the color "chunks" for the given color scale and returns
  * a color / value pair for each to use for fill styles.
- * @param {*} chunks 
- * @returns 
+ * @param {*} chunks
+ * @returns
  */
 const getStepsFromChunks = (chunks) => {
   const steps = [];
@@ -76,7 +76,6 @@ const getChoroplethLayerStyle = (
   options
 ) => {
   const extent = extents && extents[activeChoropleth];
-  console.log(scales)
   const hasSteps = scales.chunks;
   const steps = hasSteps
     ? getStepsFromChunks(scales.chunks)
@@ -218,7 +217,7 @@ const getLayerStyle = (layerId, context, options) => {
 /**
  * Returns an array of mapboxgl layer styles for choropleths, bubbles,
  * and pinned location outlines.
- * @returns 
+ * @returns
  */
 export default function useMapLayers() {
   // TODO: pull required props from store
@@ -239,7 +238,10 @@ export default function useMapLayers() {
     const metricConfig = metrics.find((m) => m.id === activeChoropleth);
     const scaleType = metricConfig?.scale || "continuous";
     const scaleData = extents?.[activeChoropleth]?.[2] || [];
-    const scaleOptions = getAdjustedScaleOptions(scaleData, metricConfig?.scaleOptions || {})
+    const scaleOptions = getAdjustedScaleOptions(
+      scaleData,
+      metricConfig?.scaleOptions || {}
+    );
     const scaleColors = metricConfig?.colors || DEFAULT_CHOROPLETH_COLORS;
     const region = regions.find((r) => r.id === activeRegion);
     const context = {
