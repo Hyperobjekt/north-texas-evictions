@@ -64,7 +64,7 @@ const LocationPanel = ({
     if (bodyRef.current) {
       bodyRef.current.scrollTop = scrollPosition;
     }
-  }, [scrollPosition]);
+  }, [scrollPosition]); 
 
   // 👇 Demographic Metric Summary
   // get formatters and labels for demographic metrics

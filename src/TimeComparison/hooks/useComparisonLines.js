@@ -15,9 +15,17 @@ const splitDataByYear = (data) => {
  * A hook that returns the lines used for time comparison charts
  */
 export default function useComparisonLines(view) {
-  const locations = useLocationStore((state) => state.locations);
+  const [
+    active, 
+    locations,
+  ] = useLocationStore((state) => 
+    [
+      state.active,
+      state.locations
+    ],
+  );
   // TODO: do not hardcode end date
-  const locationSeries = useLocationSeries(locations, [
+  const locationSeries = useLocationSeries([active], [
     "2019-01-02",
     "2021-12-31",
   ]);
@@ -27,21 +35,21 @@ export default function useComparisonLines(view) {
     const dataByYear = splitDataByYear(data);
     return dataByYear;
   });
+  //console.log(locationSeries)
   const byMonth =
     series?.[0]?.["2019"] && groupByMonth(series?.[0]?.["2019"], "ef");
-
-  console.log({ series, locationSeries, byMonth });
+  const dataForPlot = byMonth?.map(month => {
+    return {date: new Date(month.date), value: month.ef}
+  });
+  const dataForPlotSeries = series[0]?.data?.series?.map(day => {
+    return {date: new Date(day.date), value: day.ef}
+  });
+  console.log(series.map(s => s.data.series))
   return [
     {
       id: "overall",
       color: "#f00",
-      data: [
-        { date: new Date("2018-01-01"), value: 0.5 },
-        { date: new Date("2018-01-02"), value: 0.6 },
-        { date: new Date("2018-01-03"), value: 0.7 },
-        { date: new Date("2018-01-04"), value: 0.8 },
-        { date: new Date("2018-01-05"), value: 0.9 },
-      ],
+      data: dataForPlotSeries ? dataForPlotSeries : [],
       visible: true,
     },
   ];

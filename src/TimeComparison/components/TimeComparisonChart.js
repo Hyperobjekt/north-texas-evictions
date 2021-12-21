@@ -2,12 +2,12 @@ import React from "react";
 import TimeSeriesChart from "../../TimeSeries/components/TimeSeriesChart";
 import { Box } from "@material-ui/core";
 
-const xAccessor = (d) => d.date;
+const xAccessor = (d) => d?.date;
 // TODO: swap out with common year
 // const xAccessor = (d) => d && new Date(`${d["date"]}T00:00:00`);
-const yAccessor = (d) => d.value;
+const yAccessor = (d) => d?.value;
 const xTooltipFormatter = (d) => "tooltip x value";
-const yFormatter = (d) => d.toFixed(2);
+const yFormatter = (d) => d?.toFixed(2);
 
 const TimeComparisonChart = ({ lines = [], ...props }) => {
   return (
