@@ -2,11 +2,12 @@ import React from "react";
 import { Box, Typography, withStyles } from "@material-ui/core";
 import { useTooltipData } from "../../Tooltip";
 import useDataExtents from "../../Data/useDataExtents";
-import { Scale } from "@hyperobjekt/legend";
+import { Scale, useScaleContext } from "@hyperobjekt/legend";
 import { DEFAULT_CHOROPLETH_COLORS } from "../../Dashboard/constants";
 import useFormatter from "../../Dashboard/hooks/useFormatter";
 import { useLang } from "../../Language";
 import useDashboardChoropleth from "../../Dashboard/hooks/useDashboardChoropleth";
+import { getAdjustedScaleOptions } from "../../Data/utils";
 
 const styles = (theme) => ({
   root: {
@@ -29,14 +30,19 @@ const styles = (theme) => ({
   },
 });
 
+const Ticks = (props) => {
+  const { extent } = useScaleContext();
+  return <Scale.Ticks tickValues={extent} {...props} />;
+};
+
 const ChoroplethLegend = (props) => {
   const tooltipData = useTooltipData();
   const [activeChoropleth, , choropleths] = useDashboardChoropleth();
   const choroplethConfig = choropleths.find((c) => c.id === activeChoropleth);
-  const scaleType = choroplethConfig?.scale || "continuous";
-  const scaleOptions = choroplethConfig?.scaleOptions || {};
-  const scaleColors = choroplethConfig?.colors || DEFAULT_CHOROPLETH_COLORS;
   const extents = useDataExtents();
+  const scaleType = choroplethConfig?.scale || "continuous";
+  const scaleColors = choroplethConfig?.colors || DEFAULT_CHOROPLETH_COLORS;
+  const scaleOptions = getAdjustedScaleOptions(extents?.[activeChoropleth]?.[2], choroplethConfig?.scaleOptions || {});
   const width = 144;
   const activeValue = tooltipData && tooltipData[activeChoropleth];
   const margin = { left: 16, right: 16, top: 0, bottom: 2 };
@@ -72,6 +78,7 @@ const ChoroplethLegend = (props) => {
             label={
               Number.isFinite(activeValue) ? formatter(activeValue) : undefined
             }
+            pointerColor="currentColor"
             style={{
               marginTop: 12,
               marginLeft: margin.left,
@@ -79,14 +86,7 @@ const ChoroplethLegend = (props) => {
             }}
           />
           <Scale.Colors height={16} />
-          <Scale.Ticks
-            tickValues={[
-              extents[activeChoropleth][0],
-              extents[activeChoropleth][1],
-            ]}
-            height={32}
-            tickFormat={formatter}
-          />
+          <Ticks height={32} tickFormat={formatter} />
         </Scale>
       )}
     </Box>

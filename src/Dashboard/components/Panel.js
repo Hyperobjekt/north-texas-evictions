@@ -14,13 +14,6 @@ const styles = (theme) => ({
     height: "100%",
     zIndex: 100,
     maxHeight: "100%",
-    [theme.breakpoints.down("xs")]: {
-      position: "fixed",
-      right: 0,
-      top: 0,
-      width: "100%",
-      zIndex: 1101,
-    },
   },
   left: {},
   right: {},
@@ -34,6 +27,14 @@ const styles = (theme) => ({
     "&$left": {
       left: 0,
     },
+  },
+  absolute: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    height: "100%",
+    "&$right": {},
+    "&$left": {},
   },
   contentWrapper: {
     minWidth: 320,
@@ -65,26 +66,34 @@ const Panel = ({
   className,
   width = 320,
   float,
+  absolute,
   position = "left",
+  offset = 0,
   title,
+  style: styleOverrides,
+  bodyRef,
   children,
   onOpen,
   onClose,
+  onScroll,
   ...props
 }) => {
   const { isMobile } = useMediaQueries();
 
   // 👇 setup transforms required (based on float and position)
   const springOptions = {};
-  const transformProp = float
-    ? "x"
-    : position === "right"
-    ? "marginRight"
-    : "marginLeft";
+  const transformProp =
+    float || absolute
+      ? "x"
+      : position === "right"
+      ? "marginRight"
+      : "marginLeft";
   const transformWidth = isMobile ? window.innerWidth : width;
   const transformAmount =
-    !float || position !== "right" ? -1 * transformWidth : transformWidth;
-  springOptions[transformProp] = open ? 0 : transformAmount;
+    !float || !absolute || position !== "right"
+      ? -1 * transformWidth
+      : transformWidth;
+  springOptions[transformProp] = open ? 0 + offset : transformAmount - offset;
   springOptions.width = transformWidth;
   const style = useSpring(springOptions);
 
@@ -111,6 +120,7 @@ const Panel = ({
         classes.root,
         {
           [classes.float]: float,
+          [classes.absolute]: absolute,
           [classes.right]: position === "right",
           [classes.left]: position === "left",
         },
@@ -119,9 +129,10 @@ const Panel = ({
       style={{
         ...style,
         // hide visibility when animation is complete and panel is closed
-        visibility: style[transformProp].to((val) =>
-          Math.abs(val) === transformWidth ? "hidden" : "visible"
-        ),
+        // visibility: style[transformProp].to((val) =>
+        //   Math.abs(val) === transformWidth ? "hidden" : "visible"
+        // ),
+        ...styleOverrides,
       }}
       {...props}
     >
@@ -133,11 +144,17 @@ const Panel = ({
           className={clsx("HypPanel-header", classes.header)}
         >
           <Typography variant="h2">{title}</Typography>
-          <IconButton ref={buttonRef} size="small" onClick={onClose}>
-            <CloseIcon />
-          </IconButton>
+          {onClose && (
+            <IconButton ref={buttonRef} size="small" onClick={onClose}>
+              <CloseIcon />
+            </IconButton>
+          )}
         </Box>
-        <Box className={clsx("HypPanel-body", classes.body)}>
+        <Box
+          ref={bodyRef}
+          onScroll={onScroll}
+          className={clsx("HypPanel-body", classes.body)}
+        >
           <Stack
             direction="vertical"
             between="lg"
