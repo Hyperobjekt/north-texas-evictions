@@ -1,6 +1,5 @@
 import { Box, withStyles } from "@material-ui/core";
-import React, { useCallback } from "react";
-import useDashboardStore from "../../Dashboard/hooks/useDashboardStore";
+import React from "react";
 
 const StyledBox = withStyles({
   root: {
@@ -18,20 +17,7 @@ const StyledBox = withStyles({
  * @returns
  */
 const Body = ({ children, ...props }) => {
-  // track mouse coords for tooltip
-  const setHoverCoords = useDashboardStore((state) => state.setHoverCoords);
-  const handleMouseMove = useCallback(
-    (e) => {
-      setHoverCoords([e.clientX, e.clientY]);
-    },
-    [setHoverCoords]
-  );
-
-  return (
-    <StyledBox onMouseMove={handleMouseMove} {...props}>
-      {children}
-    </StyledBox>
-  );
+  return <StyledBox {...props}>{children}</StyledBox>;
 };
 
 export default Body;

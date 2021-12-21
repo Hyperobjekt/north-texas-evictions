@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import Dashboard, { formatDate } from "../Dashboard";
 import { useLanguageStore } from "../Language";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { About } from "../About";
 
 const GEOJSON_ROOT = process.env.REACT_APP_GEOJSON_ENDPOINT;
@@ -23,6 +23,7 @@ const App = ({ lang = "en", langDict, config }) => {
         <Route path="/about">
           <About />
         </Route>
+        <Redirect to='/' />
       </Switch>
     </Router>
   );
@@ -143,45 +144,77 @@ App.defaultProps = {
         format: "currency",
         // unavailable: ["tracts", "districts"],
         scale: "quantize",
-        scaleOptions: { amount: 5 },
+        scaleOptions: { amount: 5, minQuantile: 0.01, maxQuantile: 0.99 },
       },
       {
         id: "mhi",
         type: "choropleth",
         format: "currency",
         scale: "quantize",
-        scaleOptions: { amount: 5 },
+        scaleOptions: { amount: 5, minQuantile: 0.01, maxQuantile: 0.99 },
       },
       {
         id: "mpv",
         type: "choropleth",
         format: "currency",
         scale: "quantize",
-        scaleOptions: { amount: 5 },
+        scaleOptions: { amount: 5, minQuantile: 0.01, maxQuantile: 0.99 },
       },
-      { id: "pca", type: "choropleth", format: "percent" },
-      { id: "pcb", type: "choropleth", format: "percent" },
-      { id: "pch", type: "choropleth", format: "percent" },
-      { id: "pcw", type: "choropleth", format: "percent" },
-      { id: "prh", type: "choropleth", format: "percent" },
+      {
+        id: "pca",
+        type: "choropleth",
+        format: "percent",
+        scale: "quantize",
+        scaleOptions: { amount: 5, minQuantile: 0.01, maxQuantile: 0.99 },
+      },
+      {
+        id: "pcb",
+        type: "choropleth",
+        format: "percent",
+        scale: "quantize",
+        scaleOptions: { amount: 5, minQuantile: 0.01, maxQuantile: 0.99 },
+      },
+      {
+        id: "pch",
+        type: "choropleth",
+        format: "percent",
+        scale: "quantize",
+        scaleOptions: { amount: 5, minQuantile: 0.01, maxQuantile: 0.99 },
+      },
+      {
+        id: "pcw",
+        type: "choropleth",
+        format: "percent",
+        scale: "quantize",
+        scaleOptions: { amount: 5, minQuantile: 0.01, maxQuantile: 0.99 },
+      },
+      {
+        id: "prh",
+        type: "choropleth",
+        format: "percent",
+        scale: "quantize",
+        scaleOptions: { amount: 5, minQuantile: 0.01, maxQuantile: 0.99 },
+      },
       {
         id: "pvr",
         type: "choropleth",
         format: "percent",
         scale: "quantize",
-        scaleOptions: { amount: 5 },
+        scaleOptions: { amount: 5, minQuantile: 0.01, maxQuantile: 0.99 },
       },
       {
         id: "cpr",
         type: "choropleth",
         format: "percent",
         scale: "quantize",
-        scaleOptions: { amount: 5 },
+        scaleOptions: { amount: 5, minQuantile: 0.01, maxQuantile: 0.99 },
       },
       {
         id: "rb",
         type: "choropleth",
         format: "percent",
+        scale: "quantize",
+        scaleOptions: { amount: 5 },
         // unavailable: ["tracts"],
       },
       { id: "pop", type: "secondary", format: "integer" },

@@ -6,6 +6,7 @@ import { Box, withStyles } from "@material-ui/core";
 import { TimeSeries } from "../../TimeSeries";
 import { animated, useSpring } from "react-spring";
 import shallow from "zustand/shallow";
+import { useCallback } from "react";
 
 // styles for visual wrapper
 const visualWrapperStyles = (theme) => ({
@@ -115,8 +116,17 @@ const Visual = (props) => {
     activeView === "series" && activeBubble === "mfa" && setActiveBubble("efr");
   }, [activeView, activeBubble, setActiveBubble]);
 
+  // track mouse coords for tooltip
+  const setHoverCoords = useDashboardStore((state) => state.setHoverCoords);
+  const handleMouseMove = useCallback(
+    (e) => {
+      setHoverCoords([e.pageX, e.pageY]);
+    },
+    [setHoverCoords]
+  );
+
   return (
-    <VisualWrapperBox {...props}>
+    <VisualWrapperBox onMouseMove={handleMouseMove} {...props}>
       <ViewWrapperBox className="sm-square" active={activeView === "map"}>
         <Map />
       </ViewWrapperBox>
