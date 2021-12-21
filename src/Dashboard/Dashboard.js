@@ -2,7 +2,6 @@ import React from "react";
 import { Page, Header, Body, Loading, TwoColumnLayout } from "../App";
 import { useDashboardDefaults, useDashboardStore } from ".";
 import { Tooltip } from "../Tooltip";
-import { LocationPanel } from "../Locations";
 import { ControlsPanel } from "../Controls";
 import { Cards } from "../Cards";
 import { HashRouter, getCurrentRouteParams } from "../HashRouter";
@@ -13,6 +12,7 @@ import { Search } from "../Search";
 import { Link } from "react-router-dom";
 import { Box, Button, Typography } from "@material-ui/core";
 import { Analytics } from "../Analytics/Analytics";
+import { LocationsStack } from "../Locations";
 
 const Dashboard = ({ config, ...props }) => {
   // pull ready state from the store
@@ -49,7 +49,7 @@ const Dashboard = ({ config, ...props }) => {
         </Header>
         {ready ? (
           <Body bgcolor="background.default" flex={1}>
-            <LocationPanel float position="left" />
+            <LocationsStack />
             <ControlsPanel float position="left" />
             <TwoColumnLayout left={<Cards />} right={<Visual />} />
           </Body>

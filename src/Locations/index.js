@@ -1,5 +1,6 @@
 // components
 export { default as LocationPanel } from "./components/LocationPanel";
+export { default as LocationsStack } from "./components/LocationsStack";
 export { default as LocationsCard } from "./components/LocationsCard";
 export { default as LocationRow } from "./components/LocationRow";
 export { default as LocationName } from "./components/LocationName";

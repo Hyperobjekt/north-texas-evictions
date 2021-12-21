@@ -172,6 +172,9 @@ export default createTheme({
           borderColor: "#cbcbcb",
           backgroundColor: "rgba(236,236,213,0.2)",
         },
+        "&:disabled, &.Mui-disabled": {
+          borderColor: "#eaeaea",
+        },
       },
     },
     MuiInputBase: {
@@ -284,6 +287,13 @@ export default createTheme({
       },
       arrow: {
         color: alpha(darken(SECONDARY, 0.6), 0.9),
+      },
+    },
+    MuiTypography: {
+      caption: {
+        "& strong": {
+          fontWeight: 500,
+        },
       },
     },
   },
