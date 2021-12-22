@@ -7,7 +7,6 @@ import useComparisonLines from "./hooks/useComparisonLines";
 export const TimeComparison = () => {
   const [view, setView] = React.useState("count");
   const lines = useComparisonLines(view);
-
   const handleToggleView = (view) => (e) => {
     setView(view);
   };

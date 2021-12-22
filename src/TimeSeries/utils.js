@@ -102,20 +102,23 @@ export function groupByWeek(data, metric = "ef") {
  */
 export function groupByMonth(data, metric = "ef") {
   const grouped = {};
+  //console.log(data)
   data.forEach((d) => {
-    const date = new Date(d.date);
+    //dates are converted to local time, add timezone offset to get UTC
+    const date = new Date(d.date+"T00:00:00");
     const month = date.getMonth();
     const year = date.getFullYear();
-    const key = `${year}-${month}`;
+    const key = `${year}-${month + 1}`;
     if (!grouped[key]) {
       grouped[key] = {
         ...d,
-        date: formatDate(new Date(date.getFullYear(), date.getMonth(), 1)),
+        date: formatDate(new Date(date.getFullYear(), date.getMonth(), 1, 12)),
         [metric]: 0,
       };
     }
     if (d[metric]) grouped[key][metric] += d[metric];
   });
+  console.log(grouped)
   return Object.values(grouped).sort((a, b) => (a.date > b.date ? -1 : 1));
 }
 

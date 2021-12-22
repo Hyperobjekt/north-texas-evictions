@@ -35,22 +35,17 @@ export default function useComparisonLines(view) {
     const dataByYear = splitDataByYear(data);
     return dataByYear;
   });
-  //console.log(locationSeries)
-  const byMonth =
-    series?.[0]?.["2019"] && groupByMonth(series?.[0]?.["2019"], "ef");
-  const dataForPlot = byMonth?.map(month => {
-    return {date: new Date(month.date), value: month.ef}
-  });
-  const dataForPlotSeries = series[0]?.data?.series?.map(day => {
-    return {date: new Date(day.date), value: day.ef}
-  });
-  console.log(series.map(s => s.data.series))
-  return [
-    {
-      id: "overall",
-      color: "#f00",
-      data: dataForPlotSeries ? dataForPlotSeries : [],
+  const byMonths = Object.keys(series[0]).map((year) => groupByMonth(series?.[0]?.[year], "ef"))
+  const colors = ['#f00', '#0f0', '#00f'];
+  const arrayForPlot = byMonths?.map((year, index) => {
+    return {
+      id: Object.keys(series[0])[index],
+      color: colors[index],
+      data: year.map(month => {
+        return {date: new Date(month.date.substr(5,9)), value: month.ef}
+      }),
       visible: true,
-    },
-  ];
+    }
+  });
+  return arrayForPlot;
 }
