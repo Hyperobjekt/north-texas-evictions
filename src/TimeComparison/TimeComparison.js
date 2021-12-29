@@ -4,9 +4,10 @@ import TimeComparisonChart from "./components/TimeComparisonChart";
 import TimeComparisonToggle from "./components/TimeComparisonToggle";
 import useComparisonLines from "./hooks/useComparisonLines";
 
-export const TimeComparison = () => {
+export const TimeComparison = (feature) => {
   const [view, setView] = React.useState("count");
-  const lines = useComparisonLines(view);
+  const colors = ['#f00', '#0f0', '#00f'];
+  const lines = useComparisonLines([2019, 2020, 2021], colors);
   const handleToggleView = (view) => (e) => {
     setView(view);
   };

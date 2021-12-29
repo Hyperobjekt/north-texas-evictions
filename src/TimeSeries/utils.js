@@ -118,7 +118,6 @@ export function groupByMonth(data, metric = "ef") {
     }
     if (d[metric]) grouped[key][metric] += d[metric];
   });
-  console.log(grouped)
   return Object.values(grouped).sort((a, b) => (a.date > b.date ? -1 : 1));
 }
 

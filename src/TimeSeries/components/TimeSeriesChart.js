@@ -21,6 +21,7 @@ const TimeSeriesChart = ({
   xTickFormatter,
   xTooltipFormatter,
   children,
+  type,
 }) => {
   const customTheme = buildChartTheme({
     colors: lines.map((line) => line.color).reverse(),
@@ -32,6 +33,7 @@ const TimeSeriesChart = ({
       }
     );
     const nearest = tooltipData?.nearestDatum?.datum;
+    console.log(tooltipData)
     return (
       <Paper elevation={2}>
         <Box clone p={2} pb={0}>
