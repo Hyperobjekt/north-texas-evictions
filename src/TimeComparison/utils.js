@@ -43,22 +43,17 @@ const weekTooltipFormat = (date) => {
 };
 
 // month tooltip formatter
-const monthTooltipFormat = timeFormat("%B %Y");
+const monthTooltipFormat = (includeYear) => {
+  return includeYear ? timeFormat("%B %Y") : timeFormat("%B");
+}
 
 /**
  * Returns a x tick formatter function for the provided group type
  * @param {*} group
  * @returns
  */
-export const getXTickFormatter = ({ group, includeYear }) => {
-  switch (group) {
-    case "weekly":
-      return weekTickFormat(includeYear);
-    case "monthly":
-      return includeYear ? timeFormat("%b '%y") : timeFormat("%b");
-    default:
-      return dayTickFormatter(includeYear);
-  }
+export const getXTickFormatter = () => {
+  return timeFormat("%b")
 };
 
 /**
@@ -66,12 +61,12 @@ export const getXTickFormatter = ({ group, includeYear }) => {
  * @param {*} group
  * @returns
  */
-export const getXTooltipFormatter = (group) => {
+export const getXTooltipFormatter = (group, includeYear) => {
   switch (group) {
     case "weekly":
       return weekTooltipFormat;
     case "monthly":
-      return monthTooltipFormat;
+      return monthTooltipFormat(includeYear);
     default:
       return dayTooltipFormat;
   }

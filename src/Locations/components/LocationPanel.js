@@ -99,7 +99,11 @@ const LocationPanel = ({
         />
       )}
       <Divider />
-      <TimeComparison />
+      <TimeComparison 
+        years={['2019', '2020', '2021']}
+        colors = {['#f00', '#0f0', '#00f']}
+        compareToYear = {'2019'}
+      />
       <Divider />
       <Typography variant="overline" color="textSecondary">
         Demographics Summary

@@ -102,9 +102,8 @@ export function groupByWeek(data, metric = "ef") {
  */
 export function groupByMonth(data, metric = "ef") {
   const grouped = {};
-  //console.log(data)
   data.forEach((d) => {
-    //dates are converted to local time, add timezone offset to get UTC
+    //dates are converted to local time of the user (EST would turn 01-01 UTC to 12-31 EST), add timezone offset to get UTC
     const date = new Date(d.date+"T00:00:00");
     const month = date.getMonth();
     const year = date.getFullYear();
