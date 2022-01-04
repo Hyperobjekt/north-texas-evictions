@@ -1,6 +1,4 @@
-import { Button, ButtonGroup, Box, Typography, withStyles} from "@material-ui/core";
-import { LegendOrdinal, LegendItem, LegendLabel } from "@visx/legend";
-import { scaleOrdinal } from "@visx/scale";
+import { Typography, withStyles} from "@material-ui/core";
 import React from "react";
 import TimeComparisonChart from "./components/TimeComparisonChart";
 import TimeComparisonToggle from "./components/TimeComparisonToggle";
@@ -27,13 +25,14 @@ const TimeComparison = ({
   colors,
   years,
   compareToYear,
+  featureId,
   classes, 
   ...props
 }) => {
 
   const [view, setView] = React.useState("count");
   
-  const lines = useComparisonLines(years, colors, view === 'count' ? '' : compareToYear);
+  const lines = useComparisonLines(featureId, years, colors, view === 'count' ? '' : compareToYear);
   const yAccessor = (d) => d?.ef;
   const xAccessor = (d) => d && new Date(`${d["date"]}T00:00:00`)
   const xTooltipFormatter = getXTooltipFormatter('monthly')
@@ -44,11 +43,6 @@ const TimeComparison = ({
   const handleToggleView = (view) => (e) => {
     setView(view);
   };
-
-  const threshold = scaleOrdinal({
-    domain: years,
-    range: colors,
-  });
 
   return (
     <>
@@ -62,6 +56,7 @@ const TimeComparison = ({
         {['Filling Counts', 'Relative to 2019 (Pre-COVID)']}
       </TimeComparisonToggle>
       <TimeComparisonChart
+        compareToYear={view === 'relative' ? compareToYear : ''}
         xAccessor={xAccessor}
         yAccessor={yAccessor}
         yFormatter={yFormatter}

@@ -16,6 +16,7 @@ import { Stack } from "@hyperobjekt/material-ui-website";
 
 const TimeSeriesChart = ({
   lines,
+  tooltipRenderer,
   xAccessor,
   yAccessor,
   yFormatter,
@@ -27,7 +28,8 @@ const TimeSeriesChart = ({
   const customTheme = buildChartTheme({
     colors: lines.map((line) => line.color).reverse(),
   });
-  const renderTooltip = ({ tooltipData }) => {
+
+  const renderTooltip = tooltipRenderer ? tooltipRenderer : ({ tooltipData }) => {
     const entries = Object.values(tooltipData?.datumByKey ?? {}).sort(
       (a, b) => {
         return yAccessor(b.datum) - yAccessor(a.datum);
@@ -42,7 +44,7 @@ const TimeSeriesChart = ({
           </Typography>
         </Box>
         <Stack between="sm" direction="vertical" around="md">
-          {entries.map(({ key, datum }) => (
+          {entries.map(({ key, datum }) => (   
             <Stat
               key={key}
               label={datum.name}
