@@ -1,6 +1,6 @@
 import React from "react";
 import TimeSeriesChart from "../../TimeSeries/components/TimeSeriesChart";
-import { Box, Typography, Paper } from "@material-ui/core";
+import { Box, Typography, Paper, withStyles } from "@material-ui/core";
 import { Stack } from "@hyperobjekt/material-ui-website";
 import { parseDate, Stat } from "../../Dashboard";
 
@@ -8,6 +8,11 @@ import { parseDate, Stat } from "../../Dashboard";
 // const xAccessor = (d) => d && new Date(`${d["date"]}T00:00:00`);
 //const xTooltipFormatter = (d) => "tooltip x value";
 
+export const styles = (theme) => ({
+  box: {
+    marginTop: '0px !important',
+  },
+});
 
 const TimeComparisonChart = ({ 
   lines = [], 
@@ -18,6 +23,7 @@ const TimeComparisonChart = ({
   xTooltipFormatter,
   xTickFormatter,
   yTickFormatter,
+  classes,
   ...props 
 }) => {
   const tooltipRenderer = ({ tooltipData }) => {
@@ -59,7 +65,12 @@ const TimeComparisonChart = ({
   };
 
   return (
-    <Box width="100%" height={400} {...props}>
+    <Box 
+      className={classes.box}
+      width="100%"
+      height={400}
+      {...props}
+    >
       <TimeSeriesChart
         tooltipRenderer={tooltipRenderer}
         xAccessor={xAccessor}
@@ -70,7 +81,6 @@ const TimeComparisonChart = ({
         xTooltipFormatter={xTooltipFormatter}
         lines={lines}
       >
-        <line x1="0" y1="0" x2="100%" y2="0" stroke="black" strokeWidth="1" />
       </TimeSeriesChart>
     </Box>
   );
@@ -78,4 +88,4 @@ const TimeComparisonChart = ({
 
 TimeComparisonChart.propTypes = {};
 
-export default TimeComparisonChart;
+export default withStyles(styles)(TimeComparisonChart);

@@ -9,16 +9,7 @@ import PropTypes from "prop-types";
 import { getXTooltipFormatter, getXTickFormatter } from "./utils";
 
 export const styles = (theme) => ({
-  legend: {
-    marginTop: '0px !important',
-    display: 'flex',
-    justifyContent: 'space-evenly',
-  },
-  label: {
-    display: 'flex',
-    alignItems: 'center',
-    marginLeft: theme.spacing(1),
-  }
+  
 });
 
 const TimeComparison = ({
@@ -31,6 +22,7 @@ const TimeComparison = ({
 }) => {
 
   const [view, setView] = React.useState("count");
+  const [disableRelative, setDisableRelative] = React.useState(true);
   
   const lines = useComparisonLines(featureId, years, colors, view === 'count' ? '' : compareToYear);
   const yAccessor = (d) => d?.ef;
@@ -44,6 +36,13 @@ const TimeComparison = ({
     setView(view);
   };
 
+  React.useEffect(() => {
+    const compareToYearTotal = lines?.find(line => line.id === compareToYear).data.reduce((prev, curr) => {
+      return prev + curr.ef;
+    }, 0);
+    compareToYearTotal === 0 ? setDisableRelative(true) : setDisableRelative(false);
+  }, [lines, compareToYear, setDisableRelative, disableRelative]);
+
   return (
     <>
       <Typography variant="overline" color="textSecondary">
@@ -52,6 +51,7 @@ const TimeComparison = ({
       <TimeComparisonToggle 
         view={view}
         clickHandler={handleToggleView}
+        disableRelative={disableRelative}
       > 
         {['Filling Counts', 'Relative to 2019 (Pre-COVID)']}
       </TimeComparisonToggle>

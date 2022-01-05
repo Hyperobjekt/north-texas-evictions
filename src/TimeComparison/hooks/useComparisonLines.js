@@ -23,7 +23,7 @@ const buildDateRange = (years) => {
  * @param {string} compareTo - the year to compare to
  */
 
-export default function useComparisonLines(featureId, years, colors, compareToYear) {
+export default function useComparisonLines(featureId, years, colors, compareToYear, view) {
   const [locations] = useLocationStore((state) => [state.locations, state.active]);
   const dateRange = buildDateRange(years)
   const locationSeries = useLocationSeries(locations, dateRange);
@@ -42,7 +42,7 @@ export default function useComparisonLines(featureId, years, colors, compareToYe
     year.reverse();
     return {
       id: `${years[yrIndex]}`,
-      color: colors[yrIndex],
+      color: compareToYear ===  `${years[yrIndex]}` ? '#000' : colors[yrIndex],
       data: year.map((month, mIndex) => {
         return {
           date: `2000-${month.date.substr(5,9)}`, 

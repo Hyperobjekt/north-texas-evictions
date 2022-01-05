@@ -37,10 +37,10 @@ const TimeComparisonLegend = ({
     )
   }
 
-  const Line = ({width, label}) => {
+  const Line = ({width}) => {
     return(
       <svg height={20} width={width}>
-        <line stroke-dasharray="2,2" x1="0" y1="10" x2={width} y2="10" style={{stroke: label.value, strokeWidth: 2}}/>
+        <line stroke-dasharray="2,2" x1="0" y1="10" x2={width} y2="10" style={{stroke: '#000', strokeWidth: 2}}/>
       </svg>
     )
   }
@@ -52,7 +52,7 @@ const TimeComparisonLegend = ({
         return (
           <LegendItem key={label.index} label={label.text}>
             <LegendLabel>
-              {view === 'relative' && label.text === compareToYear ? <Line width={12} label={label}/> : <Bullet bulletSize={8} label={label} />}
+              {view === 'relative' && label.text === compareToYear ? <Line width={12} /> : <Bullet bulletSize={8} label={label} />}
               <Typography className={classes.label}>
                 {label.text}
               </Typography>

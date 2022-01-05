@@ -16,6 +16,7 @@ const styles = (theme) => ({
 });
 
 const TimeComparisonToggle = ({
+    disableRelative,
     clickHandler,
     view,
     children,
@@ -36,6 +37,7 @@ const TimeComparisonToggle = ({
       </Button>
       <Button
         className={clsx(classes.button, view === "relative" ? 'active' : 'inactive')}
+        disabled={disableRelative}
         onClick={clickHandler("relative")}
       >
         <Typography variant={'caption'}>
