@@ -1,15 +1,20 @@
 import React from "react";
 import { Button, ButtonGroup, Typography, withStyles } from "@material-ui/core";
+import clsx from "clsx";
 import PropTypes from "prop-types";
 import { CallMissedSharp } from "@material-ui/icons";
 
 const styles = (theme) => ({
-  buttonInactive: {
-    color: theme.palette.text.secondary,
+  button: {
+    padding: '5px 11px',
+    '&.active': {
+      backgroundColor: '#649BA6',
+      color: 'white'
+    },
+    '&.inactive': {
+      color: theme.palette.text.secondary,
+    }
   },
-  buttonActive: {
-    color: theme.palette.primary.main,
-  }
 });
 
 const TimeComparisonToggle = ({
@@ -24,18 +29,18 @@ const TimeComparisonToggle = ({
       className={classes.buttonGroup}
     >
       <Button
-        className={view === "count" ? classes.buttonActive : classes.buttonInactive}
+        className={clsx(classes.button, view === "count" ? 'active' : 'inactive')}
         onClick={clickHandler("count")}
       >
-        <Typography variant="p">
+        <Typography variant={'caption'}>
           {children[0]}
         </Typography>
       </Button>
       <Button
-        className={view === "relative" ? classes.buttonActive : classes.buttonInactive}
+        className={clsx(classes.button, view === "relative" ? 'active' : 'inactive')}
         onClick={clickHandler("relative")}
       >
-        <Typography variant="p">
+        <Typography variant={'caption'}>
           {children[1]}
         </Typography>
       </Button>

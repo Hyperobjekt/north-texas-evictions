@@ -65,9 +65,11 @@ const TimeComparison = ({
         xTooltipFormatter={xTooltipFormatter}
         lines={lines}
       />
-      <TimeComparisonLegend 
+      <TimeComparisonLegend
         years={years}
         colors={colors}
+        compareToYear={compareToYear}
+        view={view}
       />
     </>
   );

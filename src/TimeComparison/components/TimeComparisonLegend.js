@@ -5,53 +5,63 @@ import { scaleOrdinal } from "@visx/scale";
 import PropTypes from "prop-types";
 
 export const styles = (theme) => ({
-    legend: {
-      marginTop: '0px !important',
-      display: 'flex',
-      justifyContent: 'space-evenly',
-    },
-    label: {
-      display: 'flex',
-      alignItems: 'center',
-      marginLeft: theme.spacing(1),
-    }
-  });
+  legend: {
+    marginTop: '0px !important',
+    display: 'flex',
+    justifyContent: 'space-evenly',
+  },
+  label: {
+    display: 'flex',
+    alignItems: 'center',
+    marginLeft: theme.spacing(1),
+  }
+});
 
 const TimeComparisonLegend = ({
-    years,
-    colors,
-    classes,
-    ...props
+  years,
+  colors,
+  classes,
+  compareToYear,
+  view,
+  ...props
 }) => {
+  const threshold = scaleOrdinal({
+    domain: years,
+    range: colors,
+  });
 
-    const threshold = scaleOrdinal({
-        domain: years,
-        range: colors,
-    });
+  const Bullet = ({bulletSize, label}) => {
+    return (
+      <svg width={bulletSize} height={bulletSize} style={{ margin: '5px 0' }}>
+        <circle fill={label.value} r={bulletSize / 2} cx={bulletSize / 2} cy={bulletSize / 2} />
+      </svg>
+    )
+  }
+
+  const Line = ({bulletSize}) => {
+    return(
+      <svg height={bulletSize} width={bulletSize}>
+        <line stroke-dasharray="2,2" x1="0" y1="5" x2="20" y2="5" style={{stroke: 'black', strokeWidth: 3}}/>
+      </svg>
+    )
+  }
 
   return (
-    <Box
-        className={classes.legend}
-    >
-        <LegendOrdinal 
-            scale={threshold}
-        >
-            {(labels) => labels.map((label) => {
-            const size = 15;
-            return (
-                <LegendItem key={label.index} label={label}>
-                <LegendLabel>
-                    <svg width={size} height={size} style={{ margin: '5px 0' }}>
-                    <circle fill={label.value} r={size / 2} cx={size / 2} cy={size / 2} />
-                    </svg>
-                    <Typography className={classes.label}>
-                    {label.text}
-                    </Typography>
-                </LegendLabel>
-                </LegendItem>
-            )
-            })}
-        </LegendOrdinal>
+    <Box className={classes.legend}>
+      <LegendOrdinal scale={threshold}>
+        {(labels) => labels.map((label) => {
+        return (
+          <LegendItem key={label.index} label={label.text}>
+            <LegendLabel>
+              {view === 'relative' && label.text === compareToYear ? <Line bulletSize={8} /> : <Bullet bulletSize={8} label={label} />}
+              <Typography className={classes.label}>
+                {label.text}
+              </Typography>
+            </LegendLabel>
+          </LegendItem>
+        )
+        })}
+      </LegendOrdinal>
     </Box>
   )
 };

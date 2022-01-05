@@ -101,7 +101,7 @@ const LocationPanel = ({
       <Divider />
       <TimeComparison 
         years={['2019', '2020', '2021']}
-        colors = {['#f00', '#0f0', '#00f']}
+        colors = {['#CCCCCC', '#9DC58F', '#A57A9F']}
         compareToYear = {'2019'}
         featureId = {feature.properties.id}
       />

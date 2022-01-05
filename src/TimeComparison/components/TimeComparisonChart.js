@@ -20,14 +20,12 @@ const TimeComparisonChart = ({
   yTickFormatter,
   ...props 
 }) => {
-
   const tooltipRenderer = ({ tooltipData }) => {
     const entries = Object.values(tooltipData?.datumByKey ?? {}).sort(
       (a, b) => {
-        return yAccessor(b.datum) - yAccessor(a.datum);
+        return a.key - b.key;
       }
     );
-    console.log(compareToYear, entries)
     const nearest = tooltipData?.nearestDatum?.datum;
     return (
       <Paper elevation={2}>
