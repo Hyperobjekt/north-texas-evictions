@@ -9,24 +9,9 @@ const yearFormat = timeFormat("%Y");
 const dayTickFormat = timeFormat("%b %d");
 
 // short format day formatter for ticks with year (e.g. "Mar 1, '17")
-const dayTickYearFormat = timeFormat("%b %d, '%y");
 
 // Long format day formatter for tooltips (e.g. "March 1, 2017")
 const dayTooltipFormat = timeFormat("%B %d, %Y");
-
-const dayTickFormatter = (includeYear) =>
-  includeYear ? dayTickYearFormat : dayTickFormat;
-
-// Short format week for ticks (e.g. "Mar 1 - 7")
-const weekTickFormat = (includeYear) => (date) => {
-  // if multi-year, use shorter tick format with year for single day
-  if (includeYear) return dayTickYearFormat(date);
-  // if within the same year, use longer tick format
-  const formatter = dayTickFormat;
-  const sunday1 = timeSunday.floor(date);
-  const sunday2 = timeSunday.offset(sunday1, 1);
-  return formatter(sunday1) + " - " + formatter(sunday2);
-};
 
 // Long format week formatter
 const weekTooltipFormat = (date) => {

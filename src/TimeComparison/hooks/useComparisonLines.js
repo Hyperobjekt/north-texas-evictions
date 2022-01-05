@@ -1,4 +1,3 @@
-import { getCurrentRouteParams } from "../../HashRouter";
 import { useLocationStore } from "../../Locations";
 import useLocationSeries from "../../Locations/hooks/useLocationSeries";
 import { groupByMonth } from "../../TimeSeries";
@@ -22,8 +21,8 @@ const buildDateRange = (years) => {
  * @param {string[]} years - the years to compare
  * @param {string[]} colors - the color of line for each year
  * @param {string} compareTo - the year to compare to
-
  */
+
 export default function useComparisonLines(featureId, years, colors, compareToYear) {
   const [locations] = useLocationStore((state) => [state.locations, state.active]);
   const dateRange = buildDateRange(years)

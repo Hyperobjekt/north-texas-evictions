@@ -2,7 +2,6 @@ import React from "react";
 import { Typography, withStyles, Box } from "@material-ui/core";
 import { LegendOrdinal, LegendItem, LegendLabel } from "@visx/legend";
 import { scaleOrdinal } from "@visx/scale";
-import PropTypes from "prop-types";
 
 export const styles = (theme) => ({
   legend: {
