@@ -27,6 +27,7 @@ const TimeComparisonChart = ({
   classes,
   ...props 
 }) => {
+  //need slightly modified tooltip for comparison chart vs time series
   const tooltipRenderer = ({ tooltipData }) => {
     const entries = Object.values(tooltipData?.datumByKey ?? {}).sort(
       (a, b) => {

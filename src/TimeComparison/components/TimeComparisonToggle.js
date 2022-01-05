@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 const styles = (theme) => ({
   button: {
-    padding: '5px 11px',
+    padding: '5px 7px',
     '&.active': {
       backgroundColor: '#649BA6',
       color: 'white'
