@@ -3,6 +3,7 @@ import TimeSeriesChart from "../../TimeSeries/components/TimeSeriesChart";
 import { Box, Typography, Paper, withStyles } from "@material-ui/core";
 import { Stack } from "@hyperobjekt/material-ui-website";
 import { parseDate, Stat } from "../../Dashboard";
+import PropTypes from "prop-types";
 
 // TODO: swap out with common year
 // const xAccessor = (d) => d && new Date(`${d["date"]}T00:00:00`);
@@ -86,6 +87,26 @@ const TimeComparisonChart = ({
   );
 };
 
-TimeComparisonChart.propTypes = {};
+TimeComparisonChart.propTypes = {
+  lines: PropTypes.arrayOf(PropTypes.shape({
+    color: PropTypes.string,
+    dashArray: PropTypes.string,
+    id: PropTypes.string,
+    visible: PropTypes.bool,
+    data: PropTypes.arrayOf(PropTypes.shape({
+      date: PropTypes.string,
+      ef: PropTypes.number,
+      name: PropTypes.string,
+    })),
+  })),
+  compareToYear: PropTypes.string,
+  xAccessor: PropTypes.func,
+  yAccessor: PropTypes.func,
+  yFormatter: PropTypes.func,
+  xTooltipFormatter: PropTypes.func,
+  xTickFormatter: PropTypes.func,
+  yTickFormatter: PropTypes.func,
+  classes: PropTypes.object,
+};
 
 export default withStyles(styles)(TimeComparisonChart);

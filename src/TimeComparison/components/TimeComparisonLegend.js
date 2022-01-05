@@ -2,6 +2,7 @@ import React from "react";
 import { Typography, withStyles, Box } from "@material-ui/core";
 import { LegendOrdinal, LegendItem, LegendLabel } from "@visx/legend";
 import { scaleOrdinal } from "@visx/scale";
+import PropTypes from "prop-types";
 
 export const styles = (theme) => ({
   legend: {
@@ -19,9 +20,9 @@ export const styles = (theme) => ({
 const TimeComparisonLegend = ({
   years,
   colors,
-  classes,
   compareToYear,
   view,
+  classes,
   ...props
 }) => {
   const threshold = scaleOrdinal({
@@ -65,6 +66,12 @@ const TimeComparisonLegend = ({
   )
 };
 
-TimeComparisonLegend.propTypes = {};
+TimeComparisonLegend.propTypes = {
+  years: PropTypes.arrayOf(PropTypes.string).isRequired,
+  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  compareToYear: PropTypes.string.isRequired,
+  view: PropTypes.string.isRequired,
+  classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(TimeComparisonLegend);

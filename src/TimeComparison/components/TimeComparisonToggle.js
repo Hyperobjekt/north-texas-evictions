@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, ButtonGroup, Typography, withStyles } from "@material-ui/core";
 import clsx from "clsx";
+import PropTypes from "prop-types";
 
 const styles = (theme) => ({
   button: {
@@ -48,6 +49,12 @@ const TimeComparisonToggle = ({
   )
 };
 
-TimeComparisonToggle.propTypes = {};
+TimeComparisonToggle.propTypes = {
+  disableRelative: PropTypes.bool,
+  clickHandler: PropTypes.func,
+  view: PropTypes.string,
+  children: PropTypes.array,
+  classes: PropTypes.object
+};
 
 export default withStyles(styles)(TimeComparisonToggle);

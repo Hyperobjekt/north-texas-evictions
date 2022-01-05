@@ -77,8 +77,11 @@ const TimeComparison = ({
 };
 
 TimeComparison.propTypes = {
+  colors: PropTypes.object.isRequired,
+  years: PropTypes.array.isRequired,
+  compareToYear: PropTypes.string.isRequired,
+  featureId: PropTypes.string.isRequired,
   classes: PropTypes.any,
-  className: PropTypes.string,
 };
 
 export default withStyles(styles)(TimeComparison);
