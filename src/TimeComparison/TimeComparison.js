@@ -36,6 +36,7 @@ const TimeComparison = ({
     setView(view);
   };
 
+  //if the compareToYear had no evictions disable relative toggle
   React.useEffect(() => {
     const compareToYearTotal = lines?.find(line => line.id === compareToYear).data.reduce((prev, curr) => {
       return prev + curr.ef;
