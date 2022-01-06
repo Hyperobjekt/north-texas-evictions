@@ -25,7 +25,6 @@ const TimeComparison = ({
   const [view, setView] = React.useState("count");
   
   const {lines, canCompare} = useComparisonLines(featureId, years, colors, compareToYear, view);
-  console.log(canCompare)
   const yAccessor = (d) => d?.ef;
   const xAccessor = (d) => d && new Date(`${d["date"]}T00:00:00`)
   const xTooltipFormatter = getXTooltipFormatter('monthly')
