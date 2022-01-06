@@ -48,7 +48,6 @@ const TimeComparisonLegend = ({
     )
   }
 
-  console.log(view)
   return (
     <Box className={classes.legend}>
       <LegendOrdinal scale={threshold}>

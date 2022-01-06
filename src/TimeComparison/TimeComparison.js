@@ -23,9 +23,9 @@ const TimeComparison = ({
 }) => {
 
   const [view, setView] = React.useState("count");
-  const [disableRelative, setDisableRelative] = React.useState(true);
   
-  const lines = useComparisonLines(featureId, years, colors, view === 'count' ? '' : compareToYear);
+  const {lines, canCompare} = useComparisonLines(featureId, years, colors, compareToYear, view);
+  console.log(canCompare)
   const yAccessor = (d) => d?.ef;
   const xAccessor = (d) => d && new Date(`${d["date"]}T00:00:00`)
   const xTooltipFormatter = getXTooltipFormatter('monthly')
@@ -37,14 +37,6 @@ const TimeComparison = ({
     setView(view);
   };
 
-  //if the compareToYear had no evictions disable relative toggle
-  React.useEffect(() => {
-    const compareToYearTotal = lines?.find(line => line.id === compareToYear).data.reduce((prev, curr) => {
-      return prev + curr.ef;
-    }, 0);
-    compareToYearTotal === 0 ? setDisableRelative(true) : setDisableRelative(false);
-  }, [lines, compareToYear, setDisableRelative, disableRelative]);
-
   return (
     <>
       <Typography variant="overline" color="textSecondary">
@@ -53,12 +45,13 @@ const TimeComparison = ({
       <TimeComparisonToggle 
         view={view}
         clickHandler={handleToggleView}
-        disableRelative={disableRelative}
+        disableRelative={!canCompare}
       > 
         {['Filling Counts', 'Relative to 2019 (Pre-COVID)']}
       </TimeComparisonToggle>
       <TimeComparisonChart
-        compareToYear={view === 'relative' ? compareToYear : ''}
+        compareToYear={compareToYear}
+        view={view}
         xAccessor={xAccessor}
         yAccessor={yAccessor}
         yFormatter={yFormatter}

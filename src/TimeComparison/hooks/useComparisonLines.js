@@ -36,23 +36,25 @@ export default function useComparisonLines(featureId, years, colors, compareToYe
   const activeLocation = series?.find((line) => line?.id === `${featureId}`);
   //if comparing to a specific year, log data for that year
   const compareToYearData = activeLocation?.data?.find((year, index) => compareToYear === years[index])
-
-  const activeLocationPlot = activeLocation?.data.map((year, yrIndex) => {
+  const canCompare = !!compareToYearData?.reduce((prev, curr) => {
+    return prev + curr.ef;
+  }, 0);
+  const lines = activeLocation?.data.map((year, yrIndex) => {
     //groupbymonth is returning backwards array (december first)
     year.reverse();
     return {
       id: `${years[yrIndex]}`,
-      color: compareToYear ===  `${years[yrIndex]}` ? '#000' : colors[yrIndex],
+      color: compareToYear === years[yrIndex] && view === 'relative' ? '#000' : colors[yrIndex],
       data: year.map((month, mIndex) => {
         return {
           date: `2000-${month.date.substr(5,9)}`, 
-          ef: compareToYearData ? (compareToYear ? ((month.ef / compareToYearData[mIndex].ef) - 1) * 100 : month.ef) : month.ef, 
+          ef: compareToYearData ? (view === 'relative' ? ((month.ef / compareToYearData[mIndex].ef) - 1) * 100 : month.ef) : month.ef, 
           name: years[yrIndex]
         }
       }),
       visible: true,
-      dashArray: compareToYear === years[yrIndex] ? "5,5" : "",
+      dashArray: compareToYear === years[yrIndex] && view === 'relative' ? "5,5" : "",
     }
   });
-  return activeLocationPlot;
+  return {lines, canCompare};
 }

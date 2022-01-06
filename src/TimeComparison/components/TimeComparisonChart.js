@@ -17,6 +17,7 @@ export const styles = (theme) => ({
 
 const TimeComparisonChart = ({ 
   lines = [], 
+  view,
   compareToYear,
   xAccessor, 
   yAccessor, 
@@ -44,7 +45,7 @@ const TimeComparisonChart = ({
         </Box>
         <Stack between="sm" direction="vertical" around="md">
           {entries.map(({ key, datum }) => (
-            compareToYear !== datum.name && (
+            compareToYear !== datum.name && view === 'relative' && (
             <Stat
               key={key}
               label={datum.name}
