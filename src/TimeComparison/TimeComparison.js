@@ -15,6 +15,7 @@ export const styles = (theme) => ({
 const TimeComparison = ({
   colors,
   years,
+  legendLabels = years,
   compareToYear,
   featureId,
   classes, 
@@ -68,6 +69,7 @@ const TimeComparison = ({
       />
       <TimeComparisonLegend
         years={years}
+        legendLabels={legendLabels}
         colors={colors}
         compareToYear={compareToYear}
         view={view}

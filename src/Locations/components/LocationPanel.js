@@ -102,6 +102,7 @@ const LocationPanel = ({
       <TimeComparison 
         years={['2019', '2020', '2021']}
         colors = {['#CCCCCC', '#9DC58F', '#A57A9F']}
+        legendLabels = {['2019 (Pre-COVID)', '2020', '2021']}
         compareToYear = {'2019'}
         featureId = {feature.properties.id}
       />

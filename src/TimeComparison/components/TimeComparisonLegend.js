@@ -14,11 +14,13 @@ export const styles = (theme) => ({
     display: 'flex',
     alignItems: 'center',
     marginLeft: theme.spacing(1),
+    fontWeight: 500,
   }
 });
 
 const TimeComparisonLegend = ({
   years,
+  legendLabels,
   colors,
   compareToYear,
   view,
@@ -46,16 +48,17 @@ const TimeComparisonLegend = ({
     )
   }
 
+  console.log(view)
   return (
     <Box className={classes.legend}>
       <LegendOrdinal scale={threshold}>
-        {(labels) => labels.map((label) => {
+        {(labels) => labels.map((label, index) => {
         return (
           <LegendItem key={label.index} label={label.text}>
             <LegendLabel>
               {view === 'relative' && label.text === compareToYear ? <Line width={12} /> : <Bullet bulletSize={8} label={label} />}
               <Typography className={classes.label}>
-                {label.text}
+                {legendLabels[index]}
               </Typography>
             </LegendLabel>
           </LegendItem>
