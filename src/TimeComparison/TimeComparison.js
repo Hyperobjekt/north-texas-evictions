@@ -44,7 +44,7 @@ const TimeComparison = ({
       <TimeComparisonToggle 
         selected={view}
         clickHandler={handleToggleView}
-        disabledId={{id: 'relative', disabled: !canCompare}}
+        disabledIds={[{id: 'relative', disabled: !canCompare}]}
       > 
         {[{label: 'Filling Counts', id: 'counts'}, {label: 'Relative to 2019 (Pre-COVID)', id: 'relative'}]}
       </TimeComparisonToggle>

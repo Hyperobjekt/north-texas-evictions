@@ -17,7 +17,7 @@ const styles = (theme) => ({
 });
 
 const TimeComparisonToggle = ({
-    disabledId,
+    disabledIds,
     clickHandler,
     selected,
     children,
@@ -31,9 +31,10 @@ const TimeComparisonToggle = ({
       {children.map((child, i) => {
         return (
           <Button
+            key={i}
             className={clsx(classes.button, selected === child.id ? 'active' : 'inactive')}
             onClick={clickHandler(child.id)}
-            disabled={disabledId.id === child.id && disabledId.disabled}
+            disabled={disabledIds?.find(disabled => disabled.id === child.id)?.id === child.id && disabledIds?.find(disabled => disabled.id === child.id)?.disabled}
           >
             <Typography variant={'caption'}>
               {child.label}

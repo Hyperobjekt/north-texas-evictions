@@ -45,7 +45,7 @@ const TimeComparisonChart = ({
         </Box>
         <Stack between="sm" direction="vertical" around="md">
           {entries.map(({ key, datum }) => (
-            ((view === 'count') || (compareToYear !== datum.name && view === 'relative')) && (
+            ((view === 'counts') || (compareToYear !== datum.name && view === 'relative')) && (
             <Stat
               key={key}
               label={datum.name}
