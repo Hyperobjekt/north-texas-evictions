@@ -22,15 +22,15 @@ const TimeComparison = ({
   ...props
 }) => {
 
-  const [view, setView] = React.useState("count");
+  const [view, setView] = React.useState("counts");
   
   const {lines, canCompare} = useComparisonLines(featureId, years, colors, compareToYear, view);
   const yAccessor = (d) => d?.ef;
   const xAccessor = (d) => d && new Date(`${d["date"]}T00:00:00`)
   const xTooltipFormatter = getXTooltipFormatter('monthly')
   const xTickFormatter = getXTickFormatter('monthly');
-  const yTickFormatter = view === 'count' ? (d) => d : (d) => `${d}%`;
-  const yFormatter = (d) => view === 'count' ? d.toFixed(0) : `${d.toFixed(0)}%`;
+  const yTickFormatter = view === 'counts' ? (d) => d : (d) => `${d}%`;
+  const yFormatter = (d) => view === 'counts' ? d.toFixed(0) : `${d.toFixed(0)}%`;
 
   const handleToggleView = (view) => (e) => {
     setView(view);
@@ -42,11 +42,11 @@ const TimeComparison = ({
         Pre-COVID vs. COVID-19 Era
       </Typography>
       <TimeComparisonToggle 
-        view={view}
+        selected={view}
         clickHandler={handleToggleView}
-        disableRelative={!canCompare}
+        disabledId={{id: 'relative', disabled: !canCompare}}
       > 
-        {['Filling Counts', 'Relative to 2019 (Pre-COVID)']}
+        {[{label: 'Filling Counts', id: 'counts'}, {label: 'Relative to 2019 (Pre-COVID)', id: 'relative'}]}
       </TimeComparisonToggle>
       <TimeComparisonChart
         compareToYear={compareToYear}

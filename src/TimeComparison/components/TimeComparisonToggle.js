@@ -17,9 +17,9 @@ const styles = (theme) => ({
 });
 
 const TimeComparisonToggle = ({
-    disableRelative,
+    disabledId,
     clickHandler,
-    view,
+    selected,
     children,
     classes,
     ...props
@@ -28,23 +28,19 @@ const TimeComparisonToggle = ({
     <ButtonGroup
       className={classes.buttonGroup}
     >
-      <Button
-        className={clsx(classes.button, view === "count" ? 'active' : 'inactive')}
-        onClick={clickHandler("count")}
-      >
-        <Typography variant={'caption'}>
-          {children[0]}
-        </Typography>
-      </Button>
-      <Button
-        className={clsx(classes.button, view === "relative" ? 'active' : 'inactive')}
-        disabled={disableRelative}
-        onClick={clickHandler("relative")}
-      >
-        <Typography variant={'caption'}>
-          {children[1]}
-        </Typography>
-      </Button>
+      {children.map((child, i) => {
+        return (
+          <Button
+            className={clsx(classes.button, selected === child.id ? 'active' : 'inactive')}
+            onClick={clickHandler(child.id)}
+            disabled={disabledId.id === child.id && disabledId.disabled}
+          >
+            <Typography variant={'caption'}>
+              {child.label}
+            </Typography>
+          </Button>
+        )
+      })}
     </ButtonGroup>
   )
 };
