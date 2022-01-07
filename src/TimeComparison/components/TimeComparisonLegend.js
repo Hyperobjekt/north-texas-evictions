@@ -19,18 +19,16 @@ export const styles = (theme) => ({
 });
 
 const TimeComparisonLegend = ({
-  years,
-  legendLabels,
-  colors,
+  lines,
   compareToYear,
   view,
   classes,
   ...props
 }) => {
   const threshold = scaleOrdinal({
-    domain: years,
-    range: colors,
-  });
+    domain: lines?.map(line => {return line.id}),
+    range: lines?.map(line => {return line.color}),
+  })
 
   const Bullet = ({bulletSize, label}) => {
     return (
@@ -48,20 +46,22 @@ const TimeComparisonLegend = ({
     )
   }
 
+  console.log(lines)
+
   return (
     <Box className={classes.legend}>
       <LegendOrdinal scale={threshold}>
         {(labels) => labels.map((label, index) => {
-        return (
-          <LegendItem key={label.index} label={label.text}>
-            <LegendLabel>
-              {view === 'relative' && label.text === compareToYear ? <Line width={12} /> : <Bullet bulletSize={8} label={label} />}
-              <Typography className={classes.label}>
-                {legendLabels[index]}
-              </Typography>
-            </LegendLabel>
-          </LegendItem>
-        )
+          return (
+            <LegendItem key={label.index} label={label.text}>
+              <LegendLabel>
+                {view === 'relative' && label.text === compareToYear ? <Line width={12} /> : <Bullet bulletSize={8} label={label} />}
+                <Typography className={classes.label}>
+                  {lines[index].legendLabel}
+                </Typography>
+              </LegendLabel>
+            </LegendItem>
+          )
         })}
       </LegendOrdinal>
     </Box>

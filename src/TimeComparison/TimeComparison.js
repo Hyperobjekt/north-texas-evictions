@@ -6,7 +6,7 @@ import TimeComparisonLegend from "./components/TimeComparisonLegend";
 import useComparisonLines from "./hooks/useComparisonLines";
 import PropTypes from "prop-types";
 
-import { getXTooltipFormatter, getXTickFormatter } from "./utils";
+import { getXTooltipFormatter, getXTickFormatter } from "../TimeSeries/utils";
 
 export const styles = (theme) => ({
   
@@ -17,14 +17,14 @@ const TimeComparison = ({
   years,
   legendLabels = years,
   compareToYear,
-  featureId,
-  classes, 
+  feature,
+  classes,
   ...props
 }) => {
 
   const [view, setView] = React.useState("counts");
   
-  const {lines, canCompare} = useComparisonLines(featureId, years, colors, compareToYear, view);
+  const {lines, canCompare} = useComparisonLines(feature.properties.id, years, colors, compareToYear, view, legendLabels);
   const yAccessor = (d) => d?.ef;
   const xAccessor = (d) => d && new Date(`${d["date"]}T00:00:00`)
   const xTooltipFormatter = getXTooltipFormatter('monthly')
@@ -44,13 +44,15 @@ const TimeComparison = ({
       <TimeComparisonToggle 
         selected={view}
         clickHandler={handleToggleView}
-        disabledIds={[{id: 'relative', disabled: !canCompare}]}
+        disabledButtons={[{id: 'relative', disabled: !canCompare, tip: `Pre-COVID data is not available for ${feature.properties.name}`}]}
       > 
         {[{label: 'Filling Counts', id: 'counts'}, {label: 'Relative to 2019 (Pre-COVID)', id: 'relative'}]}
       </TimeComparisonToggle>
       <TimeComparisonChart
         compareToYear={compareToYear}
         view={view}
+        height={300}
+        margin={{ right: 0, top: 16, left: 45, bottom: 32 }}
         xAccessor={xAccessor}
         yAccessor={yAccessor}
         yFormatter={yFormatter}
@@ -60,9 +62,7 @@ const TimeComparison = ({
         lines={lines}
       />
       <TimeComparisonLegend
-        years={years}
-        legendLabels={legendLabels}
-        colors={colors}
+        lines={lines}
         compareToYear={compareToYear}
         view={view}
       />

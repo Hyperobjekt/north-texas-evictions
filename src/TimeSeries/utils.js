@@ -43,7 +43,9 @@ const weekTooltipFormat = (date) => {
 };
 
 // month tooltip formatter
-const monthTooltipFormat = timeFormat("%B %Y");
+const monthTooltipFormat = (includeYear) => {
+  return includeYear ? timeFormat("%B %Y") : timeFormat("%B");
+}
 
 /**
  * Returns a x tick formatter function for the provided group type
@@ -66,12 +68,12 @@ export const getXTickFormatter = ({ group, includeYear }) => {
  * @param {*} group
  * @returns
  */
-export const getXTooltipFormatter = (group) => {
+export const getXTooltipFormatter = (group, includeYear) => {
   switch (group) {
     case "weekly":
       return weekTooltipFormat;
     case "monthly":
-      return monthTooltipFormat;
+      return monthTooltipFormat(includeYear);
     default:
       return dayTooltipFormat;
   }
@@ -100,10 +102,10 @@ export function groupByWeek(data, metric = "ef") {
 /**
  * Accepts data by day and aggregates it by month
  */
-export function groupByMonth(data, metric = "ef") {
+ export function groupByMonth(data, metric = "ef") {
   const grouped = {};
   data.forEach((d) => {
-    //dates are converted to local time of the user (EST would turn 01-01 UTC to 12-31 EST), add timezone offset to get UTC
+    //dates are converted to local time, add timezone offset to get UTC
     const date = new Date(d.date+"T00:00:00");
     const month = date.getMonth();
     const year = date.getFullYear();

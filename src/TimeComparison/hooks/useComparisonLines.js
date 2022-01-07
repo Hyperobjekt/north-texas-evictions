@@ -15,6 +15,12 @@ const buildDateRange = (years) => {
   return [`${years[0]}-01-01`, `${years[years.length - 1]}-12-31`];
 }
 
+const averageForYear = (data) => {
+  return data.reduce((prev, curr) => {
+    return prev + curr.ef;
+  }, 0)
+}
+
 /**
  * A hook that returns the lines used for time comparison charts
  * @param {string} featureId - the id of the geography detailed in the panel
@@ -23,7 +29,7 @@ const buildDateRange = (years) => {
  * @param {string} compareTo - the year to compare to
  */
 
-export default function useComparisonLines(featureId, years, colors, compareToYear, view) {
+export default function useComparisonLines(featureId, years, colors, compareToYear, view, legendLabels) {
   const [locations] = useLocationStore((state) => [state.locations, state.active]);
   const dateRange = buildDateRange(years)
   const locationSeries = useLocationSeries(locations, dateRange);
@@ -36,24 +42,29 @@ export default function useComparisonLines(featureId, years, colors, compareToYe
   const activeLocation = series?.find((line) => line?.id === `${featureId}`);
   //if comparing to a specific year, log data for that year
   const compareToYearData = activeLocation?.data?.find((year, index) => compareToYear === years[index])
-  const canCompare = !!compareToYearData?.reduce((prev, curr) => {
+  //while data loads (compareToYearData is undefined), assume canCompare will be true
+  const canCompare = compareToYearData ? !!compareToYearData.reduce((prev, curr) => {
     return prev + curr.ef;
-  }, 0);
-  const lines = activeLocation?.data.map((year, yrIndex) => {
+  }, 0) : true;
+  let lines = [];
+  activeLocation?.data.forEach((year, yrIndex) => {
     //groupbymonth is returning backwards array (december first)
     year.reverse();
-    return {
-      id: `${years[yrIndex]}`,
-      color: compareToYear === years[yrIndex] && view === 'relative' ? '#000' : colors[yrIndex],
-      data: year.map((month, mIndex) => {
-        return {
-          date: `2000-${month.date.substr(5,9)}`, 
-          ef: compareToYearData ? (view === 'relative' ? ((month.ef / compareToYearData[mIndex].ef) - 1) * 100 : month.ef) : month.ef, 
-          name: years[yrIndex]
-        }
-      }),
-      visible: true,
-      dashArray: compareToYear === years[yrIndex] && view === 'relative' ? "5,5" : "",
+    if (averageForYear(year) > 0) {
+      lines.push({
+        id: `${years[yrIndex]}`,
+        color: compareToYear === years[yrIndex] && view === 'relative' ? '#000' : colors[yrIndex],
+        data: year.map((month, mIndex) => {
+          return {
+            date: `2000-${month.date.substr(5,9)}`, 
+            ef: compareToYearData ? (view === 'relative' ? ((month.ef / compareToYearData[mIndex].ef) - 1) * 100 : month.ef) : month.ef, 
+            name: years[yrIndex]
+          }
+        }),
+        visible: true,
+        dashArray: compareToYear === years[yrIndex] && view === 'relative' ? "5,5" : "",
+        legendLabel: legendLabels[yrIndex]
+      })
     }
   });
   return {lines, canCompare};

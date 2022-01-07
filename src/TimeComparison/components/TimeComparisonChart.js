@@ -26,6 +26,8 @@ const TimeComparisonChart = ({
   xTickFormatter,
   yTickFormatter,
   classes,
+  height,
+  margin,
   ...props 
 }) => {
   //need slightly modified tooltip for comparison chart vs time series
@@ -71,10 +73,12 @@ const TimeComparisonChart = ({
     <Box 
       className={classes.box}
       width="100%"
-      height={400}
+      height={height}
       {...props}
     >
       <TimeSeriesChart
+        margin={margin}
+        height={height}
         tooltipRenderer={tooltipRenderer}
         xAccessor={xAccessor}
         yAccessor={yAccessor}

@@ -24,6 +24,7 @@ export default createTheme({
     text: {
       primary: "rgba(68, 71, 67, 1)",
       secondary: "rgba(114, 116, 109, 1)",
+      disabled: "rgba(173, 175, 167, 0.8)"
     },
     action: {
       hover: "rgba(236, 236, 213, 0.333)",

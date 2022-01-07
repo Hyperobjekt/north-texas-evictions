@@ -23,6 +23,7 @@ const TimeSeriesChart = ({
   xTickFormatter,
   yTickFormatter,
   xTooltipFormatter,
+  ...props
 }) => {
   const customTheme = buildChartTheme({
     colors: lines.map((line) => line.color).reverse(),
@@ -70,6 +71,7 @@ const TimeSeriesChart = ({
         xScale={{ type: "time" }}
         yScale={{ type: "" }}
         theme={customTheme}
+        {...props}
       >
         <AnimatedAxis
           orientation="bottom"
