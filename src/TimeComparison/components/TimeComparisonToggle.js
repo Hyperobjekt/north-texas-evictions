@@ -1,8 +1,8 @@
 import React from "react";
-import { IconButton, Box, Button, ButtonGroup, Typography, withStyles } from "@material-ui/core";
-import CloseIcon from '@material-ui/icons/Close';
+import { Button, ButtonGroup, Typography, withStyles } from "@material-ui/core";
 import clsx from "clsx";
 import PropTypes from "prop-types";
+import {DataFlags} from "../../Flags";
 
 const styles = (theme) => ({
   button: {
@@ -33,7 +33,7 @@ const styles = (theme) => ({
 });
 
 const TimeComparisonToggle = ({
-    disabledButtons,
+    disableableButtons,
     clickHandler,
     selected,
     children,
@@ -41,18 +41,10 @@ const TimeComparisonToggle = ({
     ...props
   }) => {
 
-  const [tipsToShow, setShowDisabledTip] = React.useState(
-    disabledButtons.map(disabled => {
-      return {id: disabled.id, show: true}
-    })
-  );
-
-  const closeTip = (id) => (e) => {
-    const newDisabledTips = tipsToShow.map(tip => {
-      return tip.id === id ? {...tip, show: false} : tip;
-    })
-    setShowDisabledTip(newDisabledTips);
-  }
+  let tips = [];
+  disableableButtons.forEach(buttonDetail => {
+    if (buttonDetail.disabled) {tips.push(buttonDetail.tip)}
+  })
 
   return (
     <>
@@ -65,7 +57,7 @@ const TimeComparisonToggle = ({
               key={i}
               className={clsx(classes.button, selected === child.id ? 'active' : 'inactive')}
               onClick={clickHandler(child.id)}
-              disabled={disabledButtons?.find(disabled => disabled.id === child.id)?.id === child.id && disabledButtons?.find(disabled => disabled.id === child.id)?.disabled}
+              disabled={disableableButtons?.find(disabled => disabled.id === child.id)?.id === child.id && disableableButtons?.find(disabled => disabled.id === child.id)?.disabled}
             >
               <Typography variant={'caption'}>
                 {child.label}
@@ -74,23 +66,7 @@ const TimeComparisonToggle = ({
           )
         })}
       </ButtonGroup>
-        {disabledButtons?.map(buttonDetails => {
-          const showTip = tipsToShow.find(showTip => showTip.id === buttonDetails.id)
-          return (
-            <>
-              {buttonDetails.disabled && showTip.show && (
-                <Box className={classes.disabledButtonTip}>
-                  <Typography>
-                    {buttonDetails.tip}
-                  </Typography>
-                  <IconButton className={classes.closeTipButton} onClick={closeTip(buttonDetails.id)} aria-label="close tip" component="span">
-                    <CloseIcon />
-                  </IconButton>
-                </Box>
-              )}
-            </>
-          )
-        })}
+      <DataFlags flags={tips}/>
     </>
   )
 };
