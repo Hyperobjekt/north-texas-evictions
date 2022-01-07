@@ -19,17 +19,6 @@ const styles = (theme) => ({
       color: theme.palette.text.disabled,
     }
   },
-  disabledButtonTip: {
-    display: 'flex',
-    color: '#875c45',
-    backgroundColor: '#e5d6cd',
-    borderRadius: '2px',
-    alignItems: 'center',
-    padding: '5px 0px 5px 10px',
-  },
-  closeTipButton: {
-    color: '#875c45',
-  }
 });
 
 const TimeComparisonToggle = ({
