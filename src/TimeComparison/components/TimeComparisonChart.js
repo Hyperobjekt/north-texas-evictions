@@ -69,6 +69,10 @@ const TimeComparisonChart = ({
     );
   };
 
+  const glyphRenderer = ({ datum }) => {
+    return datum.name === compareToYear && view === 'relative' ? <></> : <circle r={4} fill={datum.color} />;
+  }
+
   return (
     <Box 
       className={classes.box}
@@ -80,6 +84,7 @@ const TimeComparisonChart = ({
         margin={margin}
         height={height}
         tooltipRenderer={tooltipRenderer}
+        glyphRenderer={glyphRenderer}
         xAccessor={xAccessor}
         yAccessor={yAccessor}
         yFormatter={yFormatter}
