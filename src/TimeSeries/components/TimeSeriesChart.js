@@ -17,6 +17,7 @@ import { Stack } from "@hyperobjekt/material-ui-website";
 const TimeSeriesChart = ({
   lines,
   tooltipRenderer,
+  glyphRenderer,
   xAccessor,
   yAccessor,
   yFormatter,
@@ -114,7 +115,8 @@ const TimeSeriesChart = ({
           showVerticalCrosshair
           showSeriesGlyphs
           renderTooltip={renderTooltip}
-          renderGlyph={({ datum }) => {
+          renderGlyph={glyphRenderer ? glyphRenderer : ({ datum }) => {
+            console.log(datum)
             return <circle r={4} fill={datum.color} />;
           }}
           unstyled
