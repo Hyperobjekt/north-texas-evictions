@@ -95,6 +95,7 @@ const TimeComparisonChart = ({
 
 TimeComparisonChart.propTypes = {
   lines: PropTypes.arrayOf(PropTypes.shape({
+    legendLabel: PropTypes.string,
     color: PropTypes.string,
     dashArray: PropTypes.string,
     id: PropTypes.string,

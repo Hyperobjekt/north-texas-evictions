@@ -67,8 +67,18 @@ const TimeComparisonLegend = ({
 };
 
 TimeComparisonLegend.propTypes = {
-  years: PropTypes.arrayOf(PropTypes.string).isRequired,
-  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
+  lines: PropTypes.arrayOf(PropTypes.shape({
+    legendLabel: PropTypes.string,
+    color: PropTypes.string,
+    dashArray: PropTypes.string,
+    id: PropTypes.string,
+    visible: PropTypes.bool,
+    data: PropTypes.arrayOf(PropTypes.shape({
+      date: PropTypes.string,
+      ef: PropTypes.number,
+      name: PropTypes.string,
+    })),
+  })),
   compareToYear: PropTypes.string.isRequired,
   view: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,

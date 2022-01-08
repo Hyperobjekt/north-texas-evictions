@@ -28,7 +28,7 @@ const TimeComparison = ({
   const yAccessor = (d) => d?.ef;
   const xAccessor = (d) => d && new Date(`${d["date"]}T00:00:00`)
   const xTooltipFormatter = getXTooltipFormatter('monthly')
-  const xTickFormatter = getXTickFormatter('monthly');
+  const xTickFormatter = getXTickFormatter({group: 'monthly', includeYear: false});
   const yTickFormatter = view === 'counts' ? (d) => d : (d) => `${d}%`;
   const yFormatter = (d) => view === 'counts' ? d.toFixed(0) : `${d.toFixed(0)}%`;
 

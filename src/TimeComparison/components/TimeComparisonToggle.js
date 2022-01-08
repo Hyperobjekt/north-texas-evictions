@@ -65,10 +65,17 @@ const TimeComparisonToggle = ({
 };
 
 TimeComparisonToggle.propTypes = {
-  disableRelative: PropTypes.bool,
+  disableableButtons: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    disabled: PropTypes.bool,
+    tip: PropTypes.string,
+  })),
   clickHandler: PropTypes.func,
   view: PropTypes.string,
-  children: PropTypes.array,
+  children: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.string,
+      id: PropTypes.string,
+  })),
   classes: PropTypes.object
 };
 
