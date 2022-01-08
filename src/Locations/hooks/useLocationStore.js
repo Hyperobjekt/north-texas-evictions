@@ -4,14 +4,16 @@ import create from "zustand";
  * This store contains app state.  For hovered + selected locations use the map store
  */
 const useLocationStore = create((set) => ({
+  // determines if the slide out locations panel is active
   showLocations: false,
   setShowLocations: (showLocations) => set({ showLocations }),
+  // determines if the slide out locations panel is expanded
   expandLocations: false,
   setExpandLocations: (expandLocations) => set({ expandLocations }),
   // active location (displayed in the location details panel)
   active: null,
   setActive: (location) => set({ active: location }),
-  // list of all locations
+  // list of all locations (geojson features)
   locations: [],
   addLocation: (location) => {
     set((state) => ({
@@ -70,8 +72,12 @@ const useLocationStore = create((set) => ({
       ),
     }));
   },
+  // scroll position of the locations panel, used for syncing
   scrollPosition: 0,
   setScrollPosition: (scrollPosition) => set({ scrollPosition }),
+  // determines if time comparison show counts or relative to 2019
+  comparisonType: "counts",
+  setComparisonType: (comparisonType) => set({ comparisonType }),
 }));
 
 export default useLocationStore;

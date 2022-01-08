@@ -11,16 +11,16 @@ import PropTypes from "prop-types";
 
 export const styles = (theme) => ({
   box: {
-    marginTop: '0px !important',
+    marginTop: "0px !important",
   },
 });
 
-const TimeComparisonChart = ({ 
-  lines = [], 
+const TimeComparisonChart = ({
+  lines = [],
   view,
   compareToYear,
-  xAccessor, 
-  yAccessor, 
+  xAccessor,
+  yAccessor,
   yFormatter,
   xTooltipFormatter,
   xTickFormatter,
@@ -28,7 +28,7 @@ const TimeComparisonChart = ({
   classes,
   height,
   margin,
-  ...props 
+  ...props
 }) => {
   //need slightly modified tooltip for comparison chart vs time series
   const tooltipRenderer = ({ tooltipData }) => {
@@ -40,42 +40,40 @@ const TimeComparisonChart = ({
     const nearest = tooltipData?.nearestDatum?.datum;
     return (
       <Paper elevation={2}>
-        <Box clone p={2} pb={0} bt={'none'}>
+        <Box clone p={2} pb={0} bt={"none"}>
           <Typography variant="h2">
             {xTooltipFormatter(parseDate(nearest.date))}
           </Typography>
         </Box>
         <Stack between="sm" direction="vertical" around="md">
-          {entries.map(({ key, datum }) => (
-            ((view === 'counts') || (compareToYear !== datum.name && view === 'relative')) && (
-            <Stat
-              key={key}
-              label={datum.name}
-              value={yFormatter(yAccessor(datum))}
-              labelColor={datum.color}
-              minWidth={200}
-            >
-              <svg
-                width="8"
-                height="8"
-                style={{ marginLeft: "auto", marginRight: 8 }}
-              >
-                <circle r="4" cx="4" cy="4" fill={datum.color} />
-              </svg>
-            </Stat>
-          )))}
+          {entries.map(
+            ({ key, datum }) =>
+              (view === "counts" ||
+                (compareToYear !== datum.name && view === "relative")) && (
+                <Stat
+                  key={key}
+                  label={datum.name}
+                  value={yFormatter(yAccessor(datum))}
+                  labelColor={datum.color}
+                  minWidth={200}
+                >
+                  <svg
+                    width="8"
+                    height="8"
+                    style={{ marginLeft: "auto", marginRight: 8 }}
+                  >
+                    <circle r="4" cx="4" cy="4" fill={datum.color} />
+                  </svg>
+                </Stat>
+              )
+          )}
         </Stack>
       </Paper>
     );
   };
 
   return (
-    <Box 
-      className={classes.box}
-      width="100%"
-      height={height}
-      {...props}
-    >
+    <Box className={classes.box} width="100%" height={height} {...props}>
       <TimeSeriesChart
         margin={margin}
         height={height}
@@ -87,24 +85,27 @@ const TimeComparisonChart = ({
         yTickFormatter={yTickFormatter}
         xTooltipFormatter={xTooltipFormatter}
         lines={lines}
-      >
-      </TimeSeriesChart>
+      />
     </Box>
   );
 };
 
 TimeComparisonChart.propTypes = {
-  lines: PropTypes.arrayOf(PropTypes.shape({
-    color: PropTypes.string,
-    dashArray: PropTypes.string,
-    id: PropTypes.string,
-    visible: PropTypes.bool,
-    data: PropTypes.arrayOf(PropTypes.shape({
-      date: PropTypes.string,
-      ef: PropTypes.number,
-      name: PropTypes.string,
-    })),
-  })),
+  lines: PropTypes.arrayOf(
+    PropTypes.shape({
+      color: PropTypes.string,
+      dashArray: PropTypes.string,
+      id: PropTypes.string,
+      visible: PropTypes.bool,
+      data: PropTypes.arrayOf(
+        PropTypes.shape({
+          date: PropTypes.string,
+          ef: PropTypes.number,
+          name: PropTypes.string,
+        })
+      ),
+    })
+  ),
   compareToYear: PropTypes.string,
   xAccessor: PropTypes.func,
   yAccessor: PropTypes.func,
