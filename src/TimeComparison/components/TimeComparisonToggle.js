@@ -19,6 +19,10 @@ const styles = (theme) => ({
       color: theme.palette.text.disabled,
     }
   },
+  tipContainer: {
+    position: 'relative',
+    top: 0,
+  }
 });
 
 const TimeComparisonToggle = ({
@@ -55,7 +59,7 @@ const TimeComparisonToggle = ({
           )
         })}
       </ButtonGroup>
-      <DataFlags flags={tips}/>
+      <DataFlags classes={{root: classes.tipContainer}} flags={tips}/>
     </>
   )
 };
