@@ -26,19 +26,6 @@ const styles = (theme) => ({
       marginTop: theme.spacing(1),
     },
   },
-  flag: {
-    padding: theme.spacing(1, 1, 1, 2),
-    backgroundColor: "#EFE6E0",
-    color: theme.palette.primary.dark,
-    borderRadius: theme.shape.borderRadius,
-    "& .MuiIconButton-root": {
-      marginRight: theme.spacing(1),
-      marginLeft: theme.spacing(3),
-    },
-    "& .MuiSvgIcon-root": {
-      color: theme.palette.primary.dark,
-    },
-  },
 });
 
 const AnimatedBox = animated(Box);
