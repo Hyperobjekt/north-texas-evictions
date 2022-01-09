@@ -1,9 +1,9 @@
 import React from "react";
 import clsx from "clsx";
-import { Box, IconButton, Typography, withStyles } from "@material-ui/core";
-import { Close } from "@material-ui/icons";
+import { Box, withStyles } from "@material-ui/core";
 import { animated, useSpring, useTransition } from "react-spring";
 import useMeasure from "react-use-measure";
+import DataFlag from "./DataFlag";
 
 const styles = (theme) => ({
   root: {
@@ -26,22 +26,10 @@ const styles = (theme) => ({
       marginTop: theme.spacing(1),
     },
   },
-  flag: {
-    padding: theme.spacing(1, 1, 1, 2),
-    backgroundColor: "#EFE6E0",
-    color: theme.palette.primary.dark,
-    borderRadius: theme.shape.borderRadius,
-    "& .MuiIconButton-root": {
-      marginRight: theme.spacing(1),
-      marginLeft: theme.spacing(3),
-    },
-    "& .MuiSvgIcon-root": {
-      color: theme.palette.primary.dark,
-    },
-  },
 });
 
 const AnimatedBox = animated(Box);
+const AnimatedDataFlag = animated(DataFlag);
 
 const DataFlags = ({ classes, className, flags, ...props }) => {
   // state storage for dismissed messages
@@ -85,19 +73,13 @@ const DataFlags = ({ classes, className, flags, ...props }) => {
     >
       <Box ref={ref} className={classes.container}>
         {transitions((flagStyle, flag) => (
-          <AnimatedBox
-            key="flag"
-            className={classes.flag}
-            display="flex"
-            alignItems="center"
-            justifyContent="flex-end"
+          <AnimatedDataFlag
+            key={flag}
+            onDismiss={() => handleDismiss(flag)}
             style={flagStyle}
           >
-            <Typography variant="caption">{flag}</Typography>
-            <IconButton size="small" onClick={() => handleDismiss(flag)}>
-              <Close />
-            </IconButton>
-          </AnimatedBox>
+            {flag}
+          </AnimatedDataFlag>
         ))}
       </Box>
     </AnimatedBox>
