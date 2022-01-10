@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Divider, ButtonGroup, Button } from "@material-ui/core";
+import { Divider } from "@material-ui/core";
 import { Stack } from "@hyperobjekt/material-ui-website";
 import StatWithSeries from "./StatWithSeries";
 import Stat from "./Stat";
