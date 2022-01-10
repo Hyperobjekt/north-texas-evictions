@@ -5,8 +5,9 @@ import {
   AnimatedLineSeries,
   buildChartTheme,
   XYChart,
+  Tooltip
 } from "@visx/xychart";
-import { Tooltip } from "@visx/xychart";
+
 import { withParentSize } from "@visx/responsive";
 import { curveMonotoneX } from "d3-shape";
 import { parseDate, Stat } from "../../Dashboard";
@@ -15,16 +16,21 @@ import { Stack } from "@hyperobjekt/material-ui-website";
 
 const TimeSeriesChart = ({
   lines,
+  tooltipRenderer,
+  glyphRenderer,
   xAccessor,
   yAccessor,
   yFormatter,
   xTickFormatter,
+  yTickFormatter,
   xTooltipFormatter,
+  ...props
 }) => {
   const customTheme = buildChartTheme({
     colors: lines.map((line) => line.color).reverse(),
   });
-  const renderTooltip = ({ tooltipData }) => {
+
+  const renderTooltip = tooltipRenderer ? tooltipRenderer : ({ tooltipData }) => {
     const entries = Object.values(tooltipData?.datumByKey ?? {}).sort(
       (a, b) => {
         return yAccessor(b.datum) - yAccessor(a.datum);
@@ -33,13 +39,13 @@ const TimeSeriesChart = ({
     const nearest = tooltipData?.nearestDatum?.datum;
     return (
       <Paper elevation={2}>
-        <Box clone p={2} pb={0}>
+        <Box clone p={2} pb={0} bt={'none'}>
           <Typography variant="h2">
             {xTooltipFormatter(parseDate(nearest.date))}
           </Typography>
         </Box>
         <Stack between="sm" direction="vertical" around="md">
-          {entries.map(({ key, datum }) => (
+          {entries.map(({ key, datum }) => (   
             <Stat
               key={key}
               label={datum.name}
@@ -64,8 +70,9 @@ const TimeSeriesChart = ({
     <>
       <XYChart
         xScale={{ type: "time" }}
-        yScale={{ type: "linear" }}
+        yScale={{ type: "" }}
         theme={customTheme}
+        {...props}
       >
         <AnimatedAxis
           orientation="bottom"
@@ -78,12 +85,13 @@ const TimeSeriesChart = ({
           orientation="left"
           left={48}
           numTicks={5}
+          tickFormat={yTickFormatter}
           labelOffset={16}
           hideAxisLine
           hideTicks
         />
         <AnimatedGrid columns={false} numTicks={5} stroke="rgba(0,0,0,0.08)" />
-        {lines.map(({ id, color, data, visible }) => {
+        {lines.map(({ id, color, data, visible, dashArray }) => {
           if (!visible) return null;
           return (
             <AnimatedLineSeries
@@ -99,6 +107,7 @@ const TimeSeriesChart = ({
               xAccessor={xAccessor}
               yAccessor={yAccessor}
               stroke={color}
+              strokeDasharray={dashArray}
             />
           );
         })}
@@ -106,7 +115,8 @@ const TimeSeriesChart = ({
           showVerticalCrosshair
           showSeriesGlyphs
           renderTooltip={renderTooltip}
-          renderGlyph={({ datum }) => {
+          renderGlyph={glyphRenderer ? glyphRenderer : ({ datum }) => {
+            console.log(datum)
             return <circle r={4} fill={datum.color} />;
           }}
           unstyled

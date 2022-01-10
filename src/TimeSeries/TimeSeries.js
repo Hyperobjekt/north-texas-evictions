@@ -56,7 +56,7 @@ const TimeSeries = (props) => {
           yAccessor={yAccessor}
           yFormatter={activeBubble === "efr" ? decimalFormatter : yFormatter}
           xTickFormatter={xTickFormatter}
-          xTooltipFormatter={getXTooltipFormatter(group)}
+          xTooltipFormatter={getXTooltipFormatter(group, true)}
           lines={lines}
         />
       </Box>
