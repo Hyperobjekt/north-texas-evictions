@@ -88,7 +88,7 @@ const getRegionFromFeature = (feature) => {
  */
 export default function useLocationSeries(features = [], dateRange) {
   return useQueries(
-    features.map((feature) => {
+    features?.map((feature) => {
       const id = getFeatureProp(feature, "id");
       const region = getRegionFromFeature(feature);
       return {

@@ -1,7 +1,9 @@
 import React from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, ButtonGroup, Button } from "@material-ui/core";
 import { timeFormat } from "d3-time-format";
 import useSummaryData from "../../Data/useSummaryData";
+import { useLocationStore } from "../../Locations";
+import useSelectedLocationData from "../../Data/useSelectedLocationData";
 import {
   Card,
   StatsSummary,
@@ -27,8 +29,12 @@ export const SummaryCard = ({
   series,
   stats,
   children,
+  view,
+  handleToggleView,
+  selectedLocations,
   ...props
 }) => {
+  console.log(view, series);
   return (
     <Card title={title} {...props}>
       <Box mt={-1} mb={2}>
@@ -36,6 +42,22 @@ export const SummaryCard = ({
           For All Counties
         </Typography>
       </Box>
+      <ButtonGroup color="secondary">
+        <Button
+          variant={view === "all" && "contained"}
+          onClick={handleToggleView("all")}
+        >
+          All
+        </Button>
+        <Button
+          variant={view === "selected" && "contained"}
+          component={!selectedLocations ? "div" : undefined} // use div when disabled so button emits events
+          disabled={selectedLocations.length === 0}
+          onClick={selectedLocations && handleToggleView("selected")}
+        >
+          Selected Locations
+        </Button>
+      </ButtonGroup>
       <StatsSummary value={value} label={label} series={series} stats={stats}>
         {children}
       </StatsSummary>
@@ -48,6 +70,13 @@ export const SummaryCard = ({
  * trend line, and summary of stats.
  */
 const EvictionSummaryCard = (props) => {
+  //set state for displayed data
+  const [view, setView] = React.useState("all");
+
+  const handleToggleView = (view) => (e) => {
+    setView(view);
+  };
+
   // pull required data
   const { data: summary, status } = useSummaryData();
   const isReady = status === "success";
@@ -63,11 +92,42 @@ const EvictionSummaryCard = (props) => {
   const intFormatter = useFormatter("ef");
   const value = isReady ? intFormatter(summary.ef) : "...";
   // list of secondary stats
-  const stats = useSummaryStats(summary, SUMMARY_METRICS);
-  // use the 7 day moving average if more than 14 days
-  const series = useTrendSeries(summary?.series, dateRange, "ef");
+
+  const allStatsSeries = {
+    stats: useSummaryStats(summary, SUMMARY_METRICS),
+    series: useTrendSeries(summary?.series, dateRange, "ef"),
+  };
+  // const stats = useSummaryStats(summary, SUMMARY_METRICS);
+  // // use the 7 day moving average if more than 14 days
+  // const series = useTrendSeries(summary?.series, dateRange, "ef");
+
+  const selectedLocations = useLocationStore((state) => state.locations);
+
+  //get series and stats for selected locations
+  const { selectedSeries, selectedStatsRaw } = useSelectedLocationData(
+    selectedLocations,
+    dateRange
+  );
+  //format selected stats for component
+  const selectedStats = useSummaryStats(selectedStatsRaw, SUMMARY_METRICS);
+  const selectedStatsSeries = {
+    stats: selectedStats,
+    series: selectedSeries?.data?.series,
+  };
+
   return (
-    <SummaryCard {...{ title, label, value, stats, series }} {...props}>
+    <SummaryCard
+      {...{
+        title,
+        label,
+        value,
+        view,
+        handleToggleView,
+        selectedLocations,
+        ...(view === "all" ? allStatsSeries : selectedStatsSeries),
+      }}
+      {...props}
+    >
       <Typography variant="caption" color="textSecondary" component="em">
         {lastUpdated}
       </Typography>
