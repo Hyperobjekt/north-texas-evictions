@@ -56,13 +56,8 @@ export const SummaryCard = ({
 
   return (
     <Card title={title} {...props}>
-      <Box mt={-1} mb={2}>
-        <Typography gutterBottom variant="caption" color="textSecondary">
-          For All Counties
-        </Typography>
-      </Box>
       <Box mb={2}>
-        <ButtonGroup color="secondary">
+        <ButtonGroup color="secondary" fullWidth>
           <Button
             variant={view === "all" && "contained"}
             onClick={handleToggleView("all")}
