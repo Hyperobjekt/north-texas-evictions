@@ -34,7 +34,6 @@ export const SummaryCard = ({
   selectedLocations,
   ...props
 }) => {
-  console.log(view, series);
   return (
     <Card title={title} {...props}>
       <Box mt={-1} mb={2}>
@@ -42,22 +41,24 @@ export const SummaryCard = ({
           For All Counties
         </Typography>
       </Box>
-      <ButtonGroup color="secondary">
-        <Button
-          variant={view === "all" && "contained"}
-          onClick={handleToggleView("all")}
-        >
-          All
-        </Button>
-        <Button
-          variant={view === "selected" && "contained"}
-          component={!selectedLocations ? "div" : undefined} // use div when disabled so button emits events
-          disabled={selectedLocations.length === 0}
-          onClick={selectedLocations && handleToggleView("selected")}
-        >
-          Selected Locations
-        </Button>
-      </ButtonGroup>
+      <Box mb={2}>
+        <ButtonGroup color="secondary">
+          <Button
+            variant={view === "all" && "contained"}
+            onClick={handleToggleView("all")}
+          >
+            All Data
+          </Button>
+          <Button
+            variant={view === "selected" && "contained"}
+            component={!selectedLocations ? "div" : undefined} // use div when disabled so button emits events
+            disabled={selectedLocations.length === 0}
+            onClick={selectedLocations && handleToggleView("selected")}
+          >
+            Selected Locations
+          </Button>
+        </ButtonGroup>
+      </Box>
       <StatsSummary value={value} label={label} series={series} stats={stats}>
         {children}
       </StatsSummary>
@@ -88,44 +89,51 @@ const EvictionSummaryCard = (props) => {
     date: timeFormat("%b %e, %Y")(parseDate(dateRange[1])),
     dateRange: formatDateString(...dateRange, { short: true }).join(" - "),
   });
-  // get primary metric
-  const intFormatter = useFormatter("ef");
-  const value = isReady ? intFormatter(summary.ef) : "...";
-  // list of secondary stats
 
+  const intFormatter = useFormatter("ef");
   const allStatsSeries = {
+    // get primary metric
+    value: isReady ? intFormatter(summary.ef) : "...",
+    // list of secondary stats
     stats: useSummaryStats(summary, SUMMARY_METRICS),
+    //use the 7 day moving average if more than 14 days
     series: useTrendSeries(summary?.series, dateRange, "ef"),
   };
-  // const stats = useSummaryStats(summary, SUMMARY_METRICS);
-  // // use the 7 day moving average if more than 14 days
-  // const series = useTrendSeries(summary?.series, dateRange, "ef");
 
+  //get selected locations to set view state and to get data
   const selectedLocations = useLocationStore((state) => state.locations);
-
-  //get series and stats for selected locations
-  const { selectedSeries, selectedStatsRaw } = useSelectedLocationData(
-    selectedLocations,
-    dateRange
-  );
-  //format selected stats for component
-  const selectedStats = useSummaryStats(selectedStatsRaw, SUMMARY_METRICS);
+  //organize into object
   const selectedStatsSeries = {
-    stats: selectedStats,
-    series: selectedSeries?.data?.series,
+    value: intFormatter(
+      useSelectedLocationData(selectedLocations, dateRange)?.selectedStatsRaw
+        ?.data?.ef
+    ),
+    stats: useSummaryStats(
+      useSelectedLocationData(selectedLocations, dateRange)?.selectedStatsRaw
+        ?.data,
+      SUMMARY_METRICS
+    ),
+    series: useSelectedLocationData(selectedLocations, dateRange).selectedSeries
+      ?.data?.series,
   };
+
+  //if locations are unselected leaving none, switch view to all data
+  React.useEffect(() => {
+    if (view === "selected" && selectedLocations.length === 0) {
+      setView("all");
+    }
+  }, [selectedLocations, view]);
 
   return (
     <SummaryCard
       {...{
         title,
         label,
-        value,
         view,
         handleToggleView,
         selectedLocations,
-        ...(view === "all" ? allStatsSeries : selectedStatsSeries),
       }}
+      {...(view === "all" ? allStatsSeries : selectedStatsSeries)}
       {...props}
     >
       <Typography variant="caption" color="textSecondary" component="em">

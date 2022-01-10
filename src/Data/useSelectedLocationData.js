@@ -1,17 +1,22 @@
 import useLocationSeries from "../Locations/hooks/useLocationSeries";
-import { useFormatters } from "../Dashboard/hooks/useFormatter";
-import { useLang } from "../Language";
 
 export default function useSelectedLocationData(selectedLocations, dateRange) {
   const statsReducer = (prev, curr) => {
     let result = { data: {} };
     const locationKeys = Object.keys(prev.data);
     locationKeys.forEach((locationKey) => {
-      if (locationKey !== "id" && locationKey !== "series") {
+      if (
+        locationKey !== "id" &&
+        locationKey !== "series" &&
+        locationKey !== "efr"
+      ) {
         result.data[locationKey] =
           prev.data[locationKey] + curr.data[locationKey];
       }
     });
+    result.data["efr"] = result.data.rhh
+      ? 1000 * (result.data.ef / result.data.rhh)
+      : null;
     return result;
   };
 
