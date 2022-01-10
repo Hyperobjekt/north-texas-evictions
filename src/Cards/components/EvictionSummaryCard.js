@@ -1,7 +1,15 @@
 import React from "react";
-import { Box, Typography } from "@material-ui/core";
+import {
+  Box,
+  Typography,
+  ButtonGroup,
+  Button,
+  Tooltip,
+} from "@material-ui/core";
 import { timeFormat } from "d3-time-format";
 import useSummaryData from "../../Data/useSummaryData";
+import { useLocationStore } from "../../Locations";
+import useSelectedLocationData from "../../Data/useSelectedLocationData";
 import {
   Card,
   StatsSummary,
@@ -27,14 +35,48 @@ export const SummaryCard = ({
   series,
   stats,
   children,
+  view,
+  handleToggleView,
+  selectedLocations,
   ...props
 }) => {
+  const selectedDataButtonLabel =
+    selectedLocations.length > 0 ? (
+      "Selected Locations"
+    ) : (
+      <Tooltip
+        title={
+          selectedLocations.length > 0
+            ? undefined
+            : `You have not selected any locations`
+        }
+        arrow
+      >
+        <span>Selected Locations</span>
+      </Tooltip>
+    );
+
   return (
     <Card title={title} {...props}>
-      <Box mt={-1} mb={2}>
-        <Typography gutterBottom variant="caption" color="textSecondary">
-          For All Counties
-        </Typography>
+      <Box mb={2}>
+        <ButtonGroup color="secondary" fullWidth>
+          <Button
+            variant={view === "all" && "contained"}
+            onClick={handleToggleView("all")}
+          >
+            All Data
+          </Button>
+          <Button
+            variant={view === "selected" && "contained"}
+            component={selectedLocations.length === 0 ? "div" : undefined} // use div when disabled so button emits events
+            disabled={selectedLocations.length === 0}
+            onClick={
+              selectedLocations.length > 0 && handleToggleView("selected")
+            }
+          >
+            {selectedDataButtonLabel}
+          </Button>
+        </ButtonGroup>
       </Box>
       <StatsSummary value={value} label={label} series={series} stats={stats}>
         {children}
@@ -48,6 +90,13 @@ export const SummaryCard = ({
  * trend line, and summary of stats.
  */
 const EvictionSummaryCard = (props) => {
+  //set state for displayed data
+  const [view, setView] = React.useState("all");
+
+  const handleToggleView = (view) => (e) => {
+    setView(view);
+  };
+
   // pull required data
   const { data: summary, status } = useSummaryData();
   const isReady = status === "success";
@@ -59,15 +108,53 @@ const EvictionSummaryCard = (props) => {
     date: timeFormat("%b %e, %Y")(parseDate(dateRange[1])),
     dateRange: formatDateString(...dateRange, { short: true }).join(" - "),
   });
-  // get primary metric
+
   const intFormatter = useFormatter("ef");
-  const value = isReady ? intFormatter(summary.ef) : "...";
-  // list of secondary stats
-  const stats = useSummaryStats(summary, SUMMARY_METRICS);
-  // use the 7 day moving average if more than 14 days
-  const series = useTrendSeries(summary?.series, dateRange, "ef");
+  const allStatsSeries = {
+    // get primary metric
+    value: isReady ? intFormatter(summary.ef) : "...",
+    // list of secondary stats
+    stats: useSummaryStats(summary, SUMMARY_METRICS),
+    //use the 7 day moving average if more than 14 days
+    series: useTrendSeries(summary?.series, dateRange, "ef"),
+  };
+
+  //get selected locations to set view state and to get data
+  const selectedLocations = useLocationStore((state) => state.locations);
+  //organize into object
+  const selectedStatsSeries = {
+    value: intFormatter(
+      useSelectedLocationData(selectedLocations, dateRange)?.selectedStatsRaw
+        ?.data?.ef
+    ),
+    stats: useSummaryStats(
+      useSelectedLocationData(selectedLocations, dateRange)?.selectedStatsRaw
+        ?.data,
+      SUMMARY_METRICS
+    ),
+    series: useSelectedLocationData(selectedLocations, dateRange).selectedSeries
+      ?.data?.series,
+  };
+
+  //if locations are unselected leaving none, switch view to all data
+  React.useEffect(() => {
+    if (view === "selected" && selectedLocations.length === 0) {
+      setView("all");
+    }
+  }, [selectedLocations, view]);
+
   return (
-    <SummaryCard {...{ title, label, value, stats, series }} {...props}>
+    <SummaryCard
+      {...{
+        title,
+        label,
+        view,
+        handleToggleView,
+        selectedLocations,
+      }}
+      {...(view === "all" ? allStatsSeries : selectedStatsSeries)}
+      {...props}
+    >
       <Typography variant="caption" color="textSecondary" component="em">
         {lastUpdated}
       </Typography>

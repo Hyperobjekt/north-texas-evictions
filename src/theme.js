@@ -189,6 +189,11 @@ export default createTheme({
         // turn on pointer events for disabled buttons
         "&.Mui-disabled": {
           pointerEvents: "auto",
+          "&:focus, &:hover": {
+            outline: "none",
+            boxShadow: "none",
+            borderColor: "rgba(0, 0, 0, 0.26)",
+          },
         },
       },
     },
