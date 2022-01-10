@@ -35,6 +35,7 @@ const fetchLocationSeries = (locationId, dateRange, region, feature) => {
           const totalFilings = locationSummary?.ef;
           const result = {
             id: series.location,
+            rhh: renterHouseholds,
             ef: totalFilings,
             tfa: locationSummary?.tfa,
             mfa: locationSummary?.mfa,
