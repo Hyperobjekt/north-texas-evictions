@@ -1,5 +1,11 @@
 import React from "react";
-import { Box, Typography, ButtonGroup, Button } from "@material-ui/core";
+import {
+  Box,
+  Typography,
+  ButtonGroup,
+  Button,
+  Tooltip,
+} from "@material-ui/core";
 import { timeFormat } from "d3-time-format";
 import useSummaryData from "../../Data/useSummaryData";
 import { useLocationStore } from "../../Locations";
@@ -34,6 +40,20 @@ export const SummaryCard = ({
   selectedLocations,
   ...props
 }) => {
+  const selectedDataButtonLabel =
+    selectedLocations.length > 0 ? (
+      "Selected Locations"
+    ) : (
+      <Tooltip
+        title={
+          selectedLocations.length > 0 ? undefined : `No locations selected`
+        }
+        arrow
+      >
+        <span>Selected Locations</span>
+      </Tooltip>
+    );
+
   return (
     <Card title={title} {...props}>
       <Box mt={-1} mb={2}>
@@ -51,11 +71,13 @@ export const SummaryCard = ({
           </Button>
           <Button
             variant={view === "selected" && "contained"}
-            component={!selectedLocations ? "div" : undefined} // use div when disabled so button emits events
+            component={selectedLocations.length === 0 ? "div" : undefined} // use div when disabled so button emits events
             disabled={selectedLocations.length === 0}
-            onClick={selectedLocations && handleToggleView("selected")}
+            onClick={
+              selectedLocations.length > 0 && handleToggleView("selected")
+            }
           >
-            Selected Locations
+            {selectedDataButtonLabel}
           </Button>
         </ButtonGroup>
       </Box>
