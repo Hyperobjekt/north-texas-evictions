@@ -46,7 +46,9 @@ export const SummaryCard = ({
     ) : (
       <Tooltip
         title={
-          selectedLocations.length > 0 ? undefined : `No locations selected`
+          selectedLocations.length > 0
+            ? undefined
+            : `You have not selected any locations`
         }
         arrow
       >
