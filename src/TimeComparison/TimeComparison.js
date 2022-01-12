@@ -80,7 +80,7 @@ const TimeComparison = ({
           variant={view === "counts" && "contained"}
           onClick={handleToggleView("counts")}
         >
-          Filling Counts
+          Filing Counts
         </Button>
         <Button
           variant={view === "relative" && "contained"}
