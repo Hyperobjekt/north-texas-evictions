@@ -8,6 +8,7 @@ import useFormatter, { getFormatter } from "../Dashboard/hooks/useFormatter";
 import useTimeSeriesStore from "./hooks/useTimeSeriesStore";
 import { getXTooltipFormatter } from "./utils";
 import useXTickFormatter from "./hooks/useXTickFormatter";
+import TimeSeriesEventsLayer from "./components/TimeSeriesEventsLayer";
 
 const xAccessor = (d) => d && new Date(`${d["date"]}T00:00:00`);
 
@@ -60,7 +61,9 @@ const TimeSeries = (props) => {
           xTickFormatter={xTickFormatter}
           xTooltipFormatter={getXTooltipFormatter(group, true)}
           lines={lines}
-        />
+        >
+          <TimeSeriesEventsLayer />
+        </TimeSeriesChart>
       </Box>
     </Box>
   );

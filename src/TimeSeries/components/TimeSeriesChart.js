@@ -24,6 +24,7 @@ const TimeSeriesChart = ({
   xTickFormatter,
   yTickFormatter,
   xTooltipFormatter,
+  children,
   ...props
 }) => {
   const customTheme = buildChartTheme({
@@ -113,6 +114,7 @@ const TimeSeriesChart = ({
             />
           );
         })}
+        {children}
         <Tooltip
           showVerticalCrosshair
           showSeriesGlyphs
