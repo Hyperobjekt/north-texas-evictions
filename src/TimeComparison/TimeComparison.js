@@ -73,7 +73,7 @@ const TimeComparison = ({
   return (
     <>
       <Typography variant="overline" color="textSecondary">
-        Pre-COVID vs. COVID-19 Era
+        Eviction Filings By Year
       </Typography>
       <ButtonGroup color="secondary">
         <Button
