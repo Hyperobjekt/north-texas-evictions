@@ -12,6 +12,7 @@ import LocationRow from "./LocationRow";
 import useLocationLoader from "../hooks/useLocationLoader";
 import CardActions from "../../Dashboard/components/CardActions";
 import ExpandIcon from "../../Icons/ExpandIcon";
+import { getSubLocations } from "../utils";
 
 /**
  * A card showing all selected locations, along with toggles for visibility,
@@ -21,18 +22,22 @@ const LocationsCard = (props) => {
   const [
     setActive,
     locations,
+    subLocations,
     removeLocation,
     pinned,
     addPinned,
     removePinned,
+    toggleSubLocationVisibility,
   ] = useLocationStore(
     (state) => [
       state.setActive,
       state.locations,
+      state.subLocations,
       state.removeLocation,
       state.pinned,
       state.addPinned,
       state.removePinned,
+      state.toggleSubLocationVisibility,
     ],
     shallow
   );
@@ -82,10 +87,16 @@ const LocationsCard = (props) => {
 
   // toggles pinned status of a location when the pin button is clicked
   const handlePin = (location) => {
-    return () => {
-      const isPinned = isLocationPinned(location);
-      isPinned && removePinned(location);
-      !isPinned && addPinned(location);
+    return (event, subLocation) => {
+      // if there is no sublocation, turn off the parent
+      if (!subLocation) {
+        const isPinned = isLocationPinned(location);
+        isPinned && removePinned(location);
+        !isPinned && addPinned(location);
+      }
+      if (subLocation) {
+        toggleSubLocationVisibility(subLocation.id);
+      }
     };
   };
 
@@ -144,6 +155,10 @@ const LocationsCard = (props) => {
             name={location.properties.name}
             color={locationColors[i]}
             pinned={isLocationPinned(location)}
+            subLocations={
+              activeView === "series" &&
+              getSubLocations(location.properties.id, subLocations)
+            }
             onClick={handleSelect(location)}
             onDismiss={handleRemove(location)}
             onPin={handlePin(location)}

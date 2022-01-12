@@ -25,6 +25,7 @@ export default function useDashboardDefaults({
   group,
   locations,
   pinned,
+  subLocations,
 }) {
   // dashboard state setters
   const [
@@ -59,7 +60,7 @@ export default function useDashboardDefaults({
   const setGroup = useTimeSeriesStore((state) => state.setGroup);
   // location setters
   const addToLoadQueue = useLocationStore((state) => state.addToLoadQueue);
-  // const setPinnedLocations =
+  const setSubLocations = useLocationStore((state) => state.setSubLocations);
 
   // set ready to true when all defaults are set
   useEffect(() => {
@@ -76,6 +77,7 @@ export default function useDashboardDefaults({
       longitude,
       group,
       locations,
+      subLocations,
     });
     setActiveView(activeView || "map");
     setViewport({
@@ -90,6 +92,7 @@ export default function useDashboardDefaults({
     setActiveRegion(activeRegion);
     setMetrics(metrics);
     setRegions(regions);
+    subLocations && setSubLocations(subLocations);
     group && setGroup(group);
     locations && addToLoadQueue(locations);
     fetch(`${EVICTION_DATA_ENDPOINT}/meta`)
