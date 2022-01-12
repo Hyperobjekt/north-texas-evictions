@@ -5,7 +5,7 @@ import {
   AnimatedLineSeries,
   buildChartTheme,
   XYChart,
-  Tooltip
+  Tooltip,
 } from "@visx/xychart";
 
 import { withParentSize } from "@visx/responsive";
@@ -30,42 +30,44 @@ const TimeSeriesChart = ({
     colors: lines.map((line) => line.color).reverse(),
   });
 
-  const renderTooltip = tooltipRenderer ? tooltipRenderer : ({ tooltipData }) => {
-    const entries = Object.values(tooltipData?.datumByKey ?? {}).sort(
-      (a, b) => {
-        return yAccessor(b.datum) - yAccessor(a.datum);
-      }
-    );
-    const nearest = tooltipData?.nearestDatum?.datum;
-    return (
-      <Paper elevation={2}>
-        <Box clone p={2} pb={0} bt={'none'}>
-          <Typography variant="h2">
-            {xTooltipFormatter(parseDate(nearest.date))}
-          </Typography>
-        </Box>
-        <Stack between="sm" direction="vertical" around="md">
-          {entries.map(({ key, datum }) => (   
-            <Stat
-              key={key}
-              label={datum.name}
-              value={yFormatter(yAccessor(datum))}
-              labelColor={datum.color}
-              minWidth={200}
-            >
-              <svg
-                width="8"
-                height="8"
-                style={{ marginLeft: "auto", marginRight: 8 }}
-              >
-                <circle r="4" cx="4" cy="4" fill={datum.color} />
-              </svg>
-            </Stat>
-          ))}
-        </Stack>
-      </Paper>
-    );
-  };
+  const renderTooltip = tooltipRenderer
+    ? tooltipRenderer
+    : ({ tooltipData }) => {
+        const entries = Object.values(tooltipData?.datumByKey ?? {}).sort(
+          (a, b) => {
+            return yAccessor(b.datum) - yAccessor(a.datum);
+          }
+        );
+        const nearest = tooltipData?.nearestDatum?.datum;
+        return (
+          <Paper elevation={2}>
+            <Box clone p={2} pb={0} bt={"none"}>
+              <Typography variant="h2">
+                {xTooltipFormatter(parseDate(nearest.date))}
+              </Typography>
+            </Box>
+            <Stack between="sm" direction="vertical" around="md">
+              {entries.map(({ key, datum }) => (
+                <Stat
+                  key={key}
+                  label={datum.name}
+                  value={yFormatter(yAccessor(datum))}
+                  labelColor={datum.color}
+                  minWidth={200}
+                >
+                  <svg
+                    width="8"
+                    height="8"
+                    style={{ marginLeft: "auto", marginRight: 8 }}
+                  >
+                    <circle r="4" cx="4" cy="4" fill={datum.color} />
+                  </svg>
+                </Stat>
+              ))}
+            </Stack>
+          </Paper>
+        );
+      };
   return (
     <>
       <XYChart
@@ -115,10 +117,11 @@ const TimeSeriesChart = ({
           showVerticalCrosshair
           showSeriesGlyphs
           renderTooltip={renderTooltip}
-          renderGlyph={glyphRenderer ? glyphRenderer : ({ datum }) => {
-            console.log(datum)
-            return <circle r={4} fill={datum.color} />;
-          }}
+          renderGlyph={
+            glyphRenderer
+              ? glyphRenderer
+              : ({ datum }) => <circle r={4} fill={datum.color} />
+          }
           unstyled
           verticalCrosshairStyle={{ stroke: "#ccc" }}
         />

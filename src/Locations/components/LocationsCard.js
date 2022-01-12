@@ -12,17 +12,7 @@ import LocationRow from "./LocationRow";
 import useLocationLoader from "../hooks/useLocationLoader";
 import CardActions from "../../Dashboard/components/CardActions";
 import ExpandIcon from "../../Icons/ExpandIcon";
-
-/**
- * Pulls an array of sublocations for the provided location ID and subLocations config
- * @param {string} id
- * @param {Array<SubLocations>} subLocations
- * @returns {Array<SubLocation>}
- */
-const getSubLocations = (id, subLocations) => {
-  console.log("get", id, subLocations);
-  return subLocations.find((sub) => sub.id === id)?.children;
-};
+import { getSubLocations } from "../utils";
 
 /**
  * A card showing all selected locations, along with toggles for visibility,
@@ -51,7 +41,6 @@ const LocationsCard = (props) => {
     ],
     shallow
   );
-  console.log(subLocations);
   const [showLocations, setShowLocations, setExpandLocations] =
     useLocationStore(
       (state) => [
@@ -99,7 +88,6 @@ const LocationsCard = (props) => {
   // toggles pinned status of a location when the pin button is clicked
   const handlePin = (location) => {
     return (event, subLocation) => {
-      console.log(event, subLocation, subLocations);
       // if there is no sublocation, turn off the parent
       if (!subLocation) {
         const isPinned = isLocationPinned(location);

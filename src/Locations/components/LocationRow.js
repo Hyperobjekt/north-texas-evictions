@@ -1,7 +1,6 @@
 import React from "react";
 import {
   IconButton,
-  lighten,
   List,
   ListItem,
   ListItemSecondaryAction,
@@ -11,6 +10,7 @@ import LocationName from "./LocationName";
 import { Close } from "@material-ui/icons";
 import { Stack } from "@hyperobjekt/material-ui-website";
 import { HiddenIcon, VisibleIcon } from "../../Icons";
+import { getSubLocationColor } from "../utils";
 
 const LocationListItem = withStyles((theme) => ({
   root: {},
@@ -75,7 +75,7 @@ const LocationRow = ({
             <LocationRow
               key={subLocation.id}
               name={subLocation.name}
-              color={lighten(color, (1 / (subLocations.length + 1)) * (i + 1))}
+              color={getSubLocationColor(color, i, subLocations.length)}
               pinned={subLocation.pinned}
               onPin={handlePinSublocation(subLocation)}
             />

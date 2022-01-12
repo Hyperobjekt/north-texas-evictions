@@ -235,36 +235,36 @@ App.defaultProps = {
       {
         id: "481131",
         children: [
-          { id: "4811311", name: "Sub-precint 1" },
-          { id: "4811312", name: "Sub-precint 2" },
+          { id: "4811311", name: "Sub-precinct 1-1" },
+          { id: "4811312", name: "Sub-precinct 1-2" },
         ],
       },
       {
         id: "481132",
         children: [
-          { id: "4811321", name: "Sub-precint 1" },
-          { id: "4811322", name: "Sub-precint 2" },
+          { id: "4811321", name: "Sub-precinct 2-1" },
+          { id: "4811322", name: "Sub-precinct 2-2" },
         ],
       },
       {
         id: "481133",
         children: [
-          { id: "4811331", name: "Sub-precint 1" },
-          { id: "4811332", name: "Sub-precint 2" },
+          { id: "4811331", name: "Sub-precinct 3-1" },
+          { id: "4811332", name: "Sub-precinct 3-2" },
         ],
       },
       {
         id: "481134",
         children: [
-          { id: "4811341", name: "Sub-precint 1" },
-          { id: "4811342", name: "Sub-precint 2" },
+          { id: "4811341", name: "Sub-precinct 4-1" },
+          { id: "4811342", name: "Sub-precinct 4-2" },
         ],
       },
       {
         id: "481135",
         children: [
-          { id: "4811351", name: "Sub-precint 1" },
-          { id: "4811352", name: "Sub-precint 2" },
+          { id: "4811351", name: "Sub-precinct 5-1" },
+          { id: "4811352", name: "Sub-precinct 5-2" },
         ],
       },
     ],
