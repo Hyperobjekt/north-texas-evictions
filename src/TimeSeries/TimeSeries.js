@@ -41,6 +41,7 @@ const TimeSeries = (props) => {
       flexDirection="column"
       maxHeight="100%"
       overflow="hidden"
+      className="time-series__root"
       {...props}
     >
       <TimeSeriesTitle />
@@ -50,6 +51,7 @@ const TimeSeries = (props) => {
         flex={1}
         height={`calc(100% - 64px)`}
         style={{ touchAction: "none" }}
+        className="time-series__chart"
       >
         <TimeSeriesChart
           xAccessor={xAccessor}
