@@ -14,6 +14,17 @@ import CardActions from "../../Dashboard/components/CardActions";
 import ExpandIcon from "../../Icons/ExpandIcon";
 
 /**
+ * Pulls an array of sublocations for the provided location ID and subLocations config
+ * @param {string} id
+ * @param {Array<SubLocations>} subLocations
+ * @returns {Array<SubLocation>}
+ */
+const getSubLocations = (id, subLocations) => {
+  console.log("get", id, subLocations);
+  return subLocations.find((sub) => sub.id === id)?.children;
+};
+
+/**
  * A card showing all selected locations, along with toggles for visibility,
  * and an action to compare the selected locations.
  */
@@ -21,21 +32,26 @@ const LocationsCard = (props) => {
   const [
     setActive,
     locations,
+    subLocations,
     removeLocation,
     pinned,
     addPinned,
     removePinned,
+    toggleSubLocationVisibility,
   ] = useLocationStore(
     (state) => [
       state.setActive,
       state.locations,
+      state.subLocations,
       state.removeLocation,
       state.pinned,
       state.addPinned,
       state.removePinned,
+      state.toggleSubLocationVisibility,
     ],
     shallow
   );
+  console.log(subLocations);
   const [showLocations, setShowLocations, setExpandLocations] =
     useLocationStore(
       (state) => [
@@ -82,10 +98,17 @@ const LocationsCard = (props) => {
 
   // toggles pinned status of a location when the pin button is clicked
   const handlePin = (location) => {
-    return () => {
-      const isPinned = isLocationPinned(location);
-      isPinned && removePinned(location);
-      !isPinned && addPinned(location);
+    return (event, subLocation) => {
+      console.log(event, subLocation, subLocations);
+      // if there is no sublocation, turn off the parent
+      if (!subLocation) {
+        const isPinned = isLocationPinned(location);
+        isPinned && removePinned(location);
+        !isPinned && addPinned(location);
+      }
+      if (subLocation) {
+        toggleSubLocationVisibility(subLocation.id);
+      }
     };
   };
 
@@ -144,6 +167,10 @@ const LocationsCard = (props) => {
             name={location.properties.name}
             color={locationColors[i]}
             pinned={isLocationPinned(location)}
+            subLocations={
+              activeView === "series" &&
+              getSubLocations(location.properties.id, subLocations)
+            }
             onClick={handleSelect(location)}
             onDismiss={handleRemove(location)}
             onPin={handlePin(location)}

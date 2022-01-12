@@ -2,7 +2,12 @@ import React, { useEffect } from "react";
 
 import Dashboard, { formatDate } from "../Dashboard";
 import { useLanguageStore } from "../Language";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import { About } from "../About";
 
 const GEOJSON_ROOT = process.env.REACT_APP_GEOJSON_ENDPOINT;
@@ -23,7 +28,7 @@ const App = ({ lang = "en", langDict, config }) => {
         <Route path="/about">
           <About />
         </Route>
-        <Redirect to='/' />
+        <Redirect to="/" />
       </Switch>
     </Router>
   );
@@ -226,6 +231,43 @@ App.defaultProps = {
     zoom: 8,
     latitude: 32.74,
     longitude: -96.96,
+    subLocations: [
+      {
+        id: "481131",
+        children: [
+          { id: "4811311", name: "Sub-precint 1" },
+          { id: "4811312", name: "Sub-precint 2" },
+        ],
+      },
+      {
+        id: "481132",
+        children: [
+          { id: "4811321", name: "Sub-precint 1" },
+          { id: "4811322", name: "Sub-precint 2" },
+        ],
+      },
+      {
+        id: "481133",
+        children: [
+          { id: "4811331", name: "Sub-precint 1" },
+          { id: "4811332", name: "Sub-precint 2" },
+        ],
+      },
+      {
+        id: "481134",
+        children: [
+          { id: "4811341", name: "Sub-precint 1" },
+          { id: "4811342", name: "Sub-precint 2" },
+        ],
+      },
+      {
+        id: "481135",
+        children: [
+          { id: "4811351", name: "Sub-precint 1" },
+          { id: "4811352", name: "Sub-precint 2" },
+        ],
+      },
+    ],
   },
   lang: "en",
   langDict: {
