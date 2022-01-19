@@ -64,7 +64,7 @@ const LocationPanel = ({
     if (bodyRef.current) {
       bodyRef.current.scrollTop = scrollPosition;
     }
-  }, [scrollPosition]); 
+  }, [scrollPosition]);
 
   // 👇 Demographic Metric Summary
   // get formatters and labels for demographic metrics
@@ -99,12 +99,10 @@ const LocationPanel = ({
         />
       )}
       <Divider />
-      <TimeComparison 
-        years={['2019', '2020', '2021']}
-        colors = {['#CCCCCC', '#9DC58F', '#A57A9F']}
-        legendLabels = {['2019 (Pre-COVID)', '2020', '2021']}
-        compareToYear = {'2019'}
-        feature = {feature}
+      <TimeComparison
+        labelOverrides={{ 2019: "2019 (Pre-COVID)" }}
+        compareToYear={"2019"}
+        feature={feature}
       />
       <Divider />
       <Typography variant="overline" color="textSecondary">

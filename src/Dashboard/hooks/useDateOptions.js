@@ -5,7 +5,6 @@ import useDashboardStore from "./useDashboardStore";
 
 export default function useDateOptions() {
   const dateRange = useDashboardStore((state) => state.dateRange, shallow);
-
   return [
     {
       id: "7",
