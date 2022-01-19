@@ -15,6 +15,8 @@ export const styles = (theme) => ({
   },
 });
 
+const getMonth = (d) => d?.split("-")[1];
+
 const TimeComparisonChart = ({
   lines = [],
   view,
@@ -32,12 +34,15 @@ const TimeComparisonChart = ({
 }) => {
   //need slightly modified tooltip for comparison chart vs time series
   const tooltipRenderer = ({ tooltipData }) => {
-    const entries = Object.values(tooltipData?.datumByKey ?? {}).sort(
-      (a, b) => {
-        return a.key - b.key;
-      }
-    );
     const nearest = tooltipData?.nearestDatum?.datum;
+    const entries = Object.values(tooltipData?.datumByKey ?? {})
+      .filter(
+        (entry) => getMonth(entry?.datum?.date) === getMonth(nearest?.date)
+      )
+      .sort((a, b) => {
+        return a.key - b.key;
+      });
+
     return (
       <Paper elevation={2}>
         <Box clone p={2} pb={0} bt={"none"}>

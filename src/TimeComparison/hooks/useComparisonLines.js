@@ -80,7 +80,7 @@ export default function useComparisonLines(
   activeLocation?.data.forEach((year, yrIndex) => {
     //groupbymonth is returning backwards array (december first)
     year.reverse();
-    if (averageForYear(year) > 0 && year.length > 1) {
+    if (averageForYear(year) > 0) {
       lines.push({
         id: `${years[yrIndex]}`,
         color:
