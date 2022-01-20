@@ -8,7 +8,10 @@ import { TIME_COMPARISON_LINE_COLORS } from "../../Dashboard/constants";
 const splitDataByYear = (years, data) => {
   const dataByYear = {};
   years.forEach((year) => {
-    dataByYear[year] = data.filter((d) => d.date.includes(year));
+    dataByYear[year] = groupByMonth(
+      data.filter((d) => d.date.includes(year)),
+      "ef"
+    );
   });
   return dataByYear;
 };
@@ -19,6 +22,18 @@ const getYears = (currentYear) => {
     years.push(`${i}`);
   }
   return years;
+};
+
+const guideYear = () => {
+  let gYear = [];
+  for (let i = 11; i >= 0; i--) {
+    gYear.push({
+      date: `2000-${i < 9 ? `0${i + 1}` : i + 1}-01`,
+      ef: 1,
+      name: "guide",
+    });
+  }
+  return gYear;
 };
 
 const buildDateRange = (latestData) => {
@@ -52,7 +67,7 @@ export default function useComparisonLines(
   ]);
   const allDateRange = useDashboardStore((state) => state.dateRange, shallow);
   const dateRange = buildDateRange(allDateRange[1]);
-  const years = getYears(allDateRange[1].substr(0, 4));
+  const years = getYears(allDateRange[1].split("-")[0]);
   const locationSeries = useLocationSeries(locations, dateRange);
   const series = locationSeries?.map((location) => {
     if (!location?.data?.series) return [];
@@ -60,16 +75,12 @@ export default function useComparisonLines(
     const dataByYear = splitDataByYear(years, data);
     return {
       id: location.data.id,
-      data: Object.keys(dataByYear).map((year) =>
-        groupByMonth(dataByYear?.[year], "ef")
-      ),
+      data: dataByYear,
     };
   });
-  const activeLocation = series?.find((line) => line?.id === `${featureId}`);
+  let activeLocation = series?.find((line) => line?.id === `${featureId}`);
   //if comparing to a specific year, log data for that year
-  const compareToYearData = activeLocation?.data?.find(
-    (year, index) => compareToYear === years[index]
-  );
+  const compareToYearData = activeLocation?.data[compareToYear];
   //while data loads (compareToYearData is undefined), assume canCompare will be true
   const canCompare = compareToYearData
     ? !!compareToYearData.reduce((prev, curr) => {
@@ -77,35 +88,41 @@ export default function useComparisonLines(
       }, 0)
     : true;
   let lines = [];
-  activeLocation?.data.forEach((year, yrIndex) => {
-    //groupbymonth is returning backwards array (december first)
-    year.reverse();
-    if (averageForYear(year) > 0 && year.length > 1) {
-      lines.push({
-        id: `${years[yrIndex]}`,
-        color:
-          compareToYear === years[yrIndex] && view === "relative"
-            ? "#000"
-            : colors[yrIndex % colors.length],
-        data: year.map((month, mIndex) => {
-          return {
-            date: `2000-${month.date.substr(5, 9)}`,
-            ef: compareToYearData
-              ? view === "relative"
-                ? (month.ef / compareToYearData[mIndex].ef - 1) * 100
-                : month.ef
-              : month.ef,
-            name: years[yrIndex],
-          };
-        }),
-        visible: true,
-        dashArray:
-          compareToYear === years[yrIndex] && view === "relative" ? "4,4" : "",
-        legendLabel: labelOverrides[years[yrIndex]]
-          ? labelOverrides[years[yrIndex]]
-          : `${years[yrIndex]}`,
-      });
-    }
-  });
+  if (activeLocation?.data) {
+    activeLocation.data["guide"] = guideYear();
+    Object.keys(activeLocation?.data).forEach((yearName, yrIndex) => {
+      const year = activeLocation.data[yearName];
+      //groupbymonth is returning backwards array (december first)
+      year.reverse();
+      if (averageForYear(year) > 0 && year.length > 1) {
+        lines.push({
+          id: `${yearName}`,
+          color:
+            compareToYear === `${yearName}` && view === "relative"
+              ? "#000"
+              : colors[yrIndex % colors.length],
+          data: year.map((month, mIndex) => {
+            const dividedDate = month.date.split("-");
+            return {
+              date: `2000-${dividedDate[1]}-${dividedDate[2]}`,
+              ef: compareToYearData
+                ? view === "relative"
+                  ? (month.ef / compareToYearData[mIndex].ef - 1) * 100
+                  : month.ef
+                : month.ef,
+              name: `${yearName}`,
+            };
+          }),
+          visible: true,
+          dashArray:
+            compareToYear === `${yearName}` && view === "relative" ? "4,4" : "",
+          legendLabel: labelOverrides[yearName]
+            ? labelOverrides[yearName]
+            : `${yearName}`,
+          opacity: yearName === "guide" ? 0 : 1,
+        });
+      }
+    });
+  }
   return { lines, canCompare };
 }

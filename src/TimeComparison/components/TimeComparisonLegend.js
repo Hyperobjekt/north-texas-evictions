@@ -70,18 +70,20 @@ const TimeComparisonLegend = ({
         {(labels) =>
           labels.map((label, index) => {
             return (
-              <LegendItem key={label.index} label={label.text}>
-                <LegendLabel>
-                  {view === "relative" && label.text === compareToYear ? (
-                    <Line width={12} />
-                  ) : (
-                    <Bullet bulletSize={8} label={label} />
-                  )}
-                  <Typography className={classes.label}>
-                    {lines[index].legendLabel}
-                  </Typography>
-                </LegendLabel>
-              </LegendItem>
+              label.text !== "guide" && (
+                <LegendItem key={label.index} label={label.text}>
+                  <LegendLabel>
+                    {view === "relative" && label.text === compareToYear ? (
+                      <Line width={12} />
+                    ) : (
+                      <Bullet bulletSize={8} label={label} />
+                    )}
+                    <Typography className={classes.label}>
+                      {lines[index].legendLabel}
+                    </Typography>
+                  </LegendLabel>
+                </LegendItem>
+              )
             );
           })
         }
