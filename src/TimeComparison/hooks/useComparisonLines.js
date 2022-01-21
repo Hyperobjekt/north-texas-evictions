@@ -114,7 +114,8 @@ export default function useComparisonLines(
               date: `2000-${dividedDate[1]}-${dividedDate[2]}`,
               ef:
                 view === "relative"
-                  ? (month.ef / compareToYearData[mIndex].ef - 1) * 100 === 0
+                  ? //don't allow -0%
+                    -0.005 < month.ef / compareToYearData[mIndex].ef - 1 < 0
                     ? 0
                     : (month.ef / compareToYearData[mIndex].ef - 1) * 100
                   : month.ef,
