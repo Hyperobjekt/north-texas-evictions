@@ -64,14 +64,23 @@ export default function useComparisonLines(
   view
 ) {
   const colors = TIME_COMPARISON_LINE_COLORS;
+  //get all selected locations and the current location in view
   const [locations] = useLocationStore((state) => [
     state.locations,
     state.active,
   ]);
-  const allDateRange = useDashboardStore((state) => state.dateRange, shallow);
-  const dateRange = buildDateRange(allDateRange[1]);
-  const years = getYears(allDateRange[1].split("-")[0]);
+  //get range of all available dates
+  const allAvailableDates = useDashboardStore(
+    (state) => state.dateRange,
+    shallow
+  );
+  //get range of dates from 2019 to current year
+  const dateRange = buildDateRange(allAvailableDates[1]);
+  //build array of dates from 2019 to current year
+  const years = getYears(dateRange[1].split("-")[0]);
+  //get data for all selected locations over the date range (2019-currentYear)
   const locationSeries = useLocationSeries(locations, dateRange);
+  //create new array of objects, one for each location, coupling the location id with that locations yearly data
   const series = locationSeries?.map((location) => {
     if (!location?.data?.series) return [];
     const data = location.data.series;
@@ -81,8 +90,9 @@ export default function useComparisonLines(
       data: dataByYear,
     };
   });
+  //find the current location in view
   let activeLocation = series?.find((line) => line?.id === `${featureId}`);
-  //if comparing to a specific year, log data for that year
+  //if comparing to a specific year, store data for that year for calculation of difference
   const compareToYearData = activeLocation?.data[compareToYear];
   //while data loads (compareToYearData is undefined), assume canCompare will be false. If all values are 0 don't show, if location is in tarrant county don't show
   const canCompare = compareToYearData
