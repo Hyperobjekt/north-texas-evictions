@@ -30,6 +30,7 @@ const TimeComparisonChart = ({
   margin,
   ...props
 }) => {
+  const [currDate, setCurrDate] = React.useState("");
   //need slightly modified tooltip for comparison chart vs time series
   const tooltipRenderer = ({ tooltipData }) => {
     const entries = Object.values(tooltipData?.datumByKey ?? {}).sort(
@@ -37,19 +38,30 @@ const TimeComparisonChart = ({
         return a.key - b.key;
       }
     );
-    const nearest = tooltipData?.nearestDatum?.datum;
+    const currIndex = tooltipData?.datumByKey["guide"]?.index;
+    setCurrDate(tooltipData?.datumByKey["guide"]?.datum.date);
+    const showInTip = ({ datum, index }) => {
+      return (
+        //if the view is counts, don't show the guide or any lines without a value at the current index
+        (view === "counts" && datum.name !== "guide" && index === currIndex) ||
+        //if the view is relative, don't show line being compared to, the guide, or any lines without a value at the current index
+        (compareToYear !== datum.name &&
+          view === "relative" &&
+          datum.name !== "guide" &&
+          index === currIndex)
+      );
+    };
     return (
       <Paper elevation={2}>
         <Box clone p={2} pb={0} bt={"none"}>
           <Typography variant="h2">
-            {xTooltipFormatter(parseDate(nearest.date))}
+            {xTooltipFormatter(parseDate(currDate))}
           </Typography>
         </Box>
         <Stack between="sm" direction="vertical" around="md">
           {entries.map(
-            ({ key, datum }) =>
-              (view === "counts" ||
-                (compareToYear !== datum.name && view === "relative")) && (
+            ({ key, datum, index }) =>
+              showInTip({ datum, index }) && (
                 <Stat
                   key={key}
                   label={datum.name}
@@ -73,7 +85,9 @@ const TimeComparisonChart = ({
   };
 
   const glyphRenderer = ({ datum }) => {
-    return datum.name === compareToYear && view === "relative" ? (
+    return datum.name === "guide" ||
+      datum.date !== currDate ||
+      (datum.name === compareToYear && view === "relative") ? (
       <></>
     ) : (
       <circle r={4} fill={datum.color} />
