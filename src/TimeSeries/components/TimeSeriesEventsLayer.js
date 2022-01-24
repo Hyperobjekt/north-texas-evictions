@@ -50,13 +50,13 @@ const TimeSeriesEventsLayer = (props) => {
         dates.push({ start, end, color, id });
       }
     });
+    console.log(dates);
     return dates;
   };
 
   const topPos = margin.top + 10;
-  const botPos = margin.bottom;
 
-  const Glyph = ({ event, cx, cy, r, fill, center, arrowDir, children }) => {
+  const Glyph = ({ cx, cy, r, fill, center, arrowDir, children }) => {
     const angle = arrowDir === "right" ? 0 : arrowDir === "left" ? 180 : 90;
     return (
       <g
@@ -92,84 +92,83 @@ const TimeSeriesEventsLayer = (props) => {
     );
   };
 
-  const EventRange = ({ event, xScale, index }) => {
+  const EventRange = ({ event, xScale }) => {
+    const color = event.color;
+    const coords = [xScale(event.start), xScale(event.end)];
+    const id = event.id;
+
+    const height = yScale(0) - yScale(yScale.domain()[1]);
+
     return (
       <>
         <defs>
           <linearGradient id="Gradient" x1="0" x2="0" y1="0" y2="1">
-            <stop
-              offset="0%"
-              stop-color={event.color}
-              stop-opacity={hoveredEvent?.id === event.id ? 0.15 : 0.07}
-            />
+            <stop offset="0%" stop-color={color} stop-opacity={0.07} />
             <stop offset="100%" stop-color="transparent" />
           </linearGradient>
         </defs>
         <g>
           <rect
-            x={xScale(event.start)}
+            x={coords[0]}
             y={topPos}
-            width={xScale(event.end) - xScale(event.start)}
-            height={yScale(0) - yScale(yScale.domain()[1])}
+            width={coords[1] - coords[0]}
+            height={height}
             fill="url(#Gradient)"
           />
           <line
-            x1={xScale(event.start)}
-            x2={xScale(event.end)}
+            x1={coords[0]}
+            x2={coords[1]}
             y1={topPos}
             y2={topPos}
-            stroke={event.color}
+            stroke={color}
             strokeWidth={2}
             strokeDasharray={"4,4"}
           />
-          <Glyph
-            cx={xScale(event.start)}
-            cy={topPos}
-            r={9}
-            center={[xScale(event.start), topPos]}
-            arrowDir="right"
-            fill={event.color}
-            event={event}
-          >
-            {index}
-          </Glyph>
-          <Glyph
-            cx={xScale(event.end)}
-            cy={topPos}
-            r={9}
-            center={[xScale(event.end), topPos]}
-            arrowDir="left"
-            fill={event.color}
-            event={event}
-          >
-            {index}
-          </Glyph>
+          {coords.map((coord, i) => {
+            return (
+              <Glyph
+                cx={coord}
+                cy={topPos}
+                r={9}
+                center={[coord, topPos]}
+                arrowDir={i === 0 ? "right" : "left"}
+                fill={color}
+                event={event}
+              >
+                {id}
+              </Glyph>
+            );
+          })}
         </g>
       </>
     );
   };
 
   const EventPoint = ({ event, xScale, index }) => {
+    const start = xScale(event.start);
+    const color = event.color;
+    const id = event.id;
+
     return (
       <>
         <g>
           <line
-            x1={xScale(event.start)}
-            x2={xScale(event.start)}
+            x1={start}
+            x2={start}
             y1={topPos}
-            y2={yScale(0) - botPos}
-            stroke={event.color}
+            y2={yScale(0)}
+            stroke={color}
             strokeWidth={2}
             strokeDasharray={"4,4"}
           />
           <Glyph
-            cx={xScale(event.start)}
+            cx={start}
             cy={topPos}
             r={9}
-            center={[xScale(event.start), topPos]}
-            fill={event.color}
+            center={[start, topPos]}
+            fill={color}
           >
-            {index}
+            {id}
           </Glyph>
         </g>
       </>
@@ -182,9 +181,9 @@ const TimeSeriesEventsLayer = (props) => {
         {processedDates(events, xScale.domain())?.map((event) => {
           //if event.end > event.start it is a range, if they are the same it is a point
           return event.end > event.start ? (
-            <EventRange event={event} xScale={xScale} index={event.id} />
+            <EventRange event={event} xScale={xScale} />
           ) : (
-            <EventPoint event={event} xScale={xScale} index={event.id} />
+            <EventPoint event={event} xScale={xScale} />
           );
         })}
       </>
