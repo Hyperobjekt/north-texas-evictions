@@ -9,6 +9,8 @@ const useTimeSeriesStore = create((set) => ({
   setShowOverall: (showOverall) => set({ showOverall }),
   group: "avg7",
   setGroup: (group) => set({ group }),
+  hoveredEvent: "",
+  setHoveredEvent: (hoveredEvent) => set({ hoveredEvent }),
 }));
 
 export default useTimeSeriesStore;

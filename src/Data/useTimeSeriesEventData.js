@@ -13,7 +13,9 @@ export const fetchEvents = (url) => {
       let count = 0;
       return csvParse(csv, (d) => {
         d.end = d.end === "" ? (d.end = d.start) : d.end;
-        d["color"] = EVENT_COLORS[count++ % EVENT_COLORS.length];
+        d["color"] = EVENT_COLORS[count % EVENT_COLORS.length];
+        d["id"] = count + 1;
+        count++;
         return d;
       });
     });

@@ -10,10 +10,24 @@ export const parseDate = timeParse("%Y-%m-%d");
  * @param {*} end
  * @returns
  */
-export const formatDateString = (start, end, options = { short: false }) => {
+export const formatDateString = (
+  start,
+  end,
+  options = { short: false, point: false }
+) => {
   if (!start || !end) return ["", ""];
+
   const startDate = parseDate(start);
   const endDate = parseDate(end);
+
+  //if not formatting a date range
+  if (options.point) {
+    return new Intl.DateTimeFormat("en-US", {
+      month: options.short ? "short" : "long",
+      day: "numeric",
+      year: "numeric",
+    }).format(startDate);
+  }
 
   const startDateLabel = new Intl.DateTimeFormat("en-US", {
     month: options.short ? "short" : "long",
