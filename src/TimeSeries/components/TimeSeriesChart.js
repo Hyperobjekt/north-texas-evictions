@@ -29,7 +29,6 @@ const TimeSeriesChart = ({
   const customTheme = buildChartTheme({
     colors: lines.map((line) => line.color).reverse(),
   });
-
   const renderTooltip = tooltipRenderer
     ? tooltipRenderer
     : ({ tooltipData }) => {
@@ -93,7 +92,7 @@ const TimeSeriesChart = ({
           hideTicks
         />
         <AnimatedGrid columns={false} numTicks={5} stroke="rgba(0,0,0,0.08)" />
-        {lines.map(({ id, color, data, visible, dashArray }) => {
+        {lines.map(({ id, color, data, visible, dashArray, opacity }) => {
           if (!visible) return null;
           return (
             <AnimatedLineSeries
@@ -109,6 +108,7 @@ const TimeSeriesChart = ({
               xAccessor={xAccessor}
               yAccessor={yAccessor}
               stroke={color}
+              opacity={opacity}
               strokeDasharray={dashArray}
             />
           );

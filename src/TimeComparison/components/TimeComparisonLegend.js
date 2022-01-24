@@ -9,11 +9,13 @@ export const styles = (theme) => ({
     marginTop: "0px !important",
     display: "flex",
     justifyContent: "space-evenly",
+    flexWrap: "wrap",
   },
   label: {
     display: "flex",
     alignItems: "center",
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(0.5),
+    marginRight: theme.spacing(0.5),
     fontWeight: 500,
   },
 });
@@ -68,18 +70,20 @@ const TimeComparisonLegend = ({
         {(labels) =>
           labels.map((label, index) => {
             return (
-              <LegendItem key={label.index} label={label.text}>
-                <LegendLabel>
-                  {view === "relative" && label.text === compareToYear ? (
-                    <Line width={12} />
-                  ) : (
-                    <Bullet bulletSize={8} label={label} />
-                  )}
-                  <Typography className={classes.label}>
-                    {lines[index].legendLabel}
-                  </Typography>
-                </LegendLabel>
-              </LegendItem>
+              label.text !== "guide" && (
+                <LegendItem key={label.index} label={label.text}>
+                  <LegendLabel>
+                    {view === "relative" && label.text === compareToYear ? (
+                      <Line width={12} />
+                    ) : (
+                      <Bullet bulletSize={8} label={label} />
+                    )}
+                    <Typography className={classes.label}>
+                      {lines[index].legendLabel}
+                    </Typography>
+                  </LegendLabel>
+                </LegendItem>
+              )
             );
           })
         }
@@ -89,18 +93,22 @@ const TimeComparisonLegend = ({
 };
 
 TimeComparisonLegend.propTypes = {
-  lines: PropTypes.arrayOf(PropTypes.shape({
-    legendLabel: PropTypes.string,
-    color: PropTypes.string,
-    dashArray: PropTypes.string,
-    id: PropTypes.string,
-    visible: PropTypes.bool,
-    data: PropTypes.arrayOf(PropTypes.shape({
-      date: PropTypes.string,
-      ef: PropTypes.number,
-      name: PropTypes.string,
-    })),
-  })),
+  lines: PropTypes.arrayOf(
+    PropTypes.shape({
+      legendLabel: PropTypes.string,
+      color: PropTypes.string,
+      dashArray: PropTypes.string,
+      id: PropTypes.string,
+      visible: PropTypes.bool,
+      data: PropTypes.arrayOf(
+        PropTypes.shape({
+          date: PropTypes.string,
+          ef: PropTypes.number,
+          name: PropTypes.string,
+        })
+      ),
+    })
+  ),
   compareToYear: PropTypes.string.isRequired,
   view: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired,

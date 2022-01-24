@@ -17,13 +17,7 @@ import shallow from "zustand/shallow";
 
 export const styles = (theme) => ({});
 
-const TimeComparison = ({
-  colors,
-  years,
-  legendLabels = years,
-  compareToYear,
-  feature,
-}) => {
+const TimeComparison = ({ labelOverrides, compareToYear, feature }) => {
   const [view, setView] = useLocationStore(
     (state) => [state.comparisonType, state.setComparisonType],
     shallow
@@ -31,11 +25,9 @@ const TimeComparison = ({
 
   const { lines, canCompare } = useComparisonLines(
     feature.properties.id,
-    years,
-    colors,
     compareToYear,
-    view,
-    legendLabels
+    labelOverrides,
+    view
   );
   const yAccessor = (d) => d?.ef;
   const xAccessor = (d) => d && new Date(`${d["date"]}T00:00:00`);
