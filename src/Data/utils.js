@@ -1,6 +1,7 @@
 import { quantile } from "d3-array";
 import { timeDay } from "d3-time";
 import { parseDate } from "../Dashboard";
+import { getDailyAverage } from "../TimeSeries/utils";
 
 /**
  * Fills entries in the series with 0 for dates with no value
@@ -121,4 +122,29 @@ export const getAdjustedScaleOptions = (
   if (data && minQuantile) options.min = quantile(data, minQuantile);
   if (data && maxQuantile) options.max = quantile(data, maxQuantile);
   return options;
+};
+
+/**
+ * Returns an object containing averages for last 7 days, last 30 days, and
+ * also the difference between the previous 7 / 30 days.
+ * @param {*} series
+ * @returns { avg7, avg30, past7, past30, diff7, diff30 }
+ */
+export const getAvgDiffs = (series) => {
+  const result = {
+    avg7: getDailyAverage("ef", series, 7),
+    avg30: getDailyAverage("ef", series, 30),
+    past7: getDailyAverage("ef", series, 7, 7),
+    past30: getDailyAverage("ef", series, 30, 30),
+  };
+  // add diff values if available
+  result["diff7"] =
+    Number.isFinite(result.avg7) &&
+    Number.isFinite(result.past7) &&
+    Math.round(result.avg7 - result.past7);
+  result["diff30"] =
+    Number.isFinite(result.avg30) &&
+    Number.isFinite(result.past30) &&
+    Math.round(result.avg30 - result.past30);
+  return result;
 };

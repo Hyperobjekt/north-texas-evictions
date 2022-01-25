@@ -264,7 +264,11 @@ const About = ({ props, classes }) => {
           <Grid container>
             <Grid item xs={12} sm={6}>
               <Box clone width="100%" textAlign="center">
-                <img className={classes.headerImg} alt="About" src="./assets/aboutHead.png" />
+                <img
+                  className={classes.headerImg}
+                  alt="About"
+                  src="./assets/aboutHead.png"
+                />
               </Box>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -284,7 +288,7 @@ const About = ({ props, classes }) => {
                     className={classes.link}
                     href="https://childpovertyactionlab.org/eviction-dashboard"
                   >
-                    Dallas County Eviction Filling Dashboard
+                    Dallas County Eviction Filing Dashboard
                   </a>{" "}
                   is still live and might help with data questions that aren't
                   yet answered here.

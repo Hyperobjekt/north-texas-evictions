@@ -35,12 +35,18 @@ const shortIntFormatter = (value) => {
  * @returns {string}
  */
 const shortCurrencyFormatter = (value) => {
+  if (value === 0) return "--";
   const smallFormatter = format("$,d");
   const largeFormatter = format("$.2~s");
   if (value < 1000) {
     return smallFormatter(value);
   }
   return largeFormatter(value);
+};
+
+const longCurrencyFormatter = (value) => {
+  if (value === 0) return "--";
+  return format("$,.0f")(value);
 };
 
 const perDayFormatter = (value) => {
@@ -63,7 +69,7 @@ export const getFormatter = (type, options = { short: false }) => {
     case "decimal":
       return format(".2f");
     case "currency":
-      return options.short ? shortCurrencyFormatter : format("$,.0f");
+      return options.short ? shortCurrencyFormatter : longCurrencyFormatter;
     case "integer":
       return options.short ? shortIntFormatter : format(",d");
     case "perday":

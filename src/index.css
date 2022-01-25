@@ -30,8 +30,8 @@ body {
 }
 
 /** rotate x axis tick labels on small devices */
-@media(max-width: 600px) {
-  .visx-axis:first-child .visx-axis-tick text {
+@media (max-width: 600px) {
+  .time-series__chart .visx-axis:first-child .visx-axis-tick text {
     transform: translate(0, 10px) rotate(-45deg);
   }
 }

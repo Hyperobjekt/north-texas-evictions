@@ -3,7 +3,7 @@ import { EVICTION_DATA_ENDPOINT } from "../../Dashboard/constants";
 import { fillSeries } from "../../Data/utils";
 import { getDailyAverage } from "../../TimeSeries/utils";
 import { getNameParts } from "../components/LocationName";
-import { getRegionFromId } from "../utils";
+import { getFeatureProp, getRegionFromFeature } from "../utils";
 
 /**
  * Fetches the data series for a single location
@@ -35,6 +35,7 @@ const fetchLocationSeries = (locationId, dateRange, region, feature) => {
           const totalFilings = locationSummary?.ef;
           const result = {
             id: series.location,
+            rhh: renterHouseholds,
             ef: totalFilings,
             tfa: locationSummary?.tfa,
             mfa: locationSummary?.mfa,
@@ -70,17 +71,6 @@ const fetchLocationSeries = (locationId, dateRange, region, feature) => {
 };
 
 /**
- * Returns a property from a feature if it exists
- */
-const getFeatureProp = (feature, prop = "id") => feature?.properties?.[prop];
-
-const getRegionFromFeature = (feature) => {
-  const source = feature?.source || feature?.layer?.source;
-  if (!source) return getRegionFromId(getFeatureProp(feature, "id"));
-  return source.split("-")[0];
-};
-
-/**
  * Fetches eviction metrics by day for a given location string and date range
  * @param {*} locationIds array of id strings
  * @param {*} dateRange array containing [ startDate, endDate ] in ISO 8601 format
@@ -88,7 +78,7 @@ const getRegionFromFeature = (feature) => {
  */
 export default function useLocationSeries(features = [], dateRange) {
   return useQueries(
-    features.map((feature) => {
+    features?.map((feature) => {
       const id = getFeatureProp(feature, "id");
       const region = getRegionFromFeature(feature);
       return {
