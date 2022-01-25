@@ -1,6 +1,6 @@
 {
   "name": "dashboard",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "private": true,
   "dependencies": {
     "@date-io/date-fns": "1.x",
@@ -17,7 +17,11 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@turf/bbox": "^6.5.0",
+    "@turf/boolean-within": "^6.5.0",
+    "@turf/flatten": "^6.5.0",
+    "@turf/intersect": "^6.5.0",
     "@visx/curve": "^2.1.0",
+    "@visx/legend": "^2.2.2",
     "@visx/responsive": "^2.1.2",
     "@visx/scale": "^2.1.0",
     "@visx/shape": "^2.1.0",

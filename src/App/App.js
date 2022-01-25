@@ -2,7 +2,12 @@ import React, { useEffect } from "react";
 
 import Dashboard, { formatDate } from "../Dashboard";
 import { useLanguageStore } from "../Language";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import { About } from "../About";
 
 const GEOJSON_ROOT = process.env.REACT_APP_GEOJSON_ENDPOINT;
@@ -23,7 +28,7 @@ const App = ({ lang = "en", langDict, config }) => {
         <Route path="/about">
           <About />
         </Route>
-        <Redirect to='/' />
+        <Redirect to="/" />
       </Switch>
     </Router>
   );
@@ -226,6 +231,43 @@ App.defaultProps = {
     zoom: 8,
     latitude: 32.74,
     longitude: -96.96,
+    subLocations: [
+      {
+        id: "481131",
+        children: [
+          { id: "4811311", name: "Sub-precinct 1-1" },
+          { id: "4811312", name: "Sub-precinct 1-2" },
+        ],
+      },
+      {
+        id: "481132",
+        children: [
+          { id: "4811321", name: "Sub-precinct 2-1" },
+          { id: "4811322", name: "Sub-precinct 2-2" },
+        ],
+      },
+      {
+        id: "481133",
+        children: [
+          { id: "4811331", name: "Sub-precinct 3-1" },
+          { id: "4811332", name: "Sub-precinct 3-2" },
+        ],
+      },
+      {
+        id: "481134",
+        children: [
+          { id: "4811341", name: "Sub-precinct 4-1" },
+          { id: "4811342", name: "Sub-precinct 4-2" },
+        ],
+      },
+      {
+        id: "481135",
+        children: [
+          { id: "4811351", name: "Sub-precinct 5-1" },
+          { id: "4811352", name: "Sub-precinct 5-2" },
+        ],
+      },
+    ],
   },
   lang: "en",
   langDict: {
@@ -288,6 +330,12 @@ App.defaultProps = {
         "Average eviction filings per day in the last 30 days.  The leftmost number shows the change compared to the previous 30-day period.",
       HINT_MFA:
         "Median filing amounts are only available within Dallas County.",
+      HINT_WEEK: "Trend line shows 7-day moving average of eviction filings.",
+      HINT_DAY: "Trend line shows daily eviction filings.",
+      HINT_LOCATION_SELECT:
+        "Click a location on the map or use the location search to add them here.",
+      HINT_LOCATIONDATA:
+        "Select locations using the map or search to enable this option.",
       LABEL_ALL_COURTS: "All Courts",
       LABEL_FIT_BOUNDS: "Zoom to all {{region}}",
       LABEL_UNAVAILABLE: "Unavailable",
@@ -295,6 +343,10 @@ App.defaultProps = {
       LABEL_SHOW_LEGEND: "Show Full Legend",
       LABEL_HIDE_LEGEND: "Show Full Map",
       LABEL_SHOW_DATA_OPTIONS: "Show All Data Options",
+      LABEL_COMPARE: "Compare Locations",
+      LABEL_VIEW_LOCATION: "View Location Data",
+      LABEL_ALLDATA: "All Data",
+      LABEL_LOCATIONDATA: "Selected Locations",
     },
   },
 };

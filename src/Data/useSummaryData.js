@@ -1,8 +1,8 @@
+import { sum } from "d3-array";
 import { useQuery } from "react-query";
 import { EVICTION_DATA_ENDPOINT } from "../Dashboard/constants";
 import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
-import { getDailyAverage } from "../TimeSeries/utils";
-import { fillSeries } from "./utils";
+import { fillSeries, getAvgDiffs } from "./utils";
 
 // TODO: sum together the county rhh values to get this number
 let RENTER_HOUSEHOLDS = 119335 + 464121 + 101387 + 279622;
@@ -35,10 +35,7 @@ const fetchSummary = ({ start, end }) => {
             (entry) => entry.id === "48113"
           );
           // sum all counties for total eviction filings
-          const totalFilings = summary.result.reduce(
-            (sum, entry) => sum + entry.ef,
-            0
-          );
+          const totalFilings = sum(summary.result, (d) => d.ef);
           const result = {
             ef: totalFilings,
             efr: 1000 * (totalFilings / RENTER_HOUSEHOLDS),
@@ -53,20 +50,8 @@ const fetchSummary = ({ start, end }) => {
                   ? 1000 * (d.ef / RENTER_HOUSEHOLDS)
                   : null,
             })),
-            avg7: getDailyAverage("ef", filledSeries, 7),
-            avg30: getDailyAverage("ef", filledSeries, 30),
-            past7: getDailyAverage("ef", filledSeries, 7, 7),
-            past30: getDailyAverage("ef", filledSeries, 30, 30),
+            ...getAvgDiffs(filledSeries),
           };
-          // add diff values if available
-          result["diff7"] =
-            Number.isFinite(result.avg7) &&
-            Number.isFinite(result.past7) &&
-            Math.round(result.avg7 - result.past7);
-          result["diff30"] =
-            Number.isFinite(result.avg30) &&
-            Number.isFinite(result.past30) &&
-            Math.round(result.avg30 - result.past30);
           return result;
         });
     });
