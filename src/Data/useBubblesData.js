@@ -23,6 +23,9 @@ const fetchBubbleGeojson = (url) => {
  */
 const fetchBubbleData = ({ region, start, end }) => {
   if (!region) return Promise.reject("no region provided for bubble data");
+  if (!start || !end) {
+    return Promise.reject("no dates provided for bubble data");
+  }
   const params = { region, start, end };
   const paramString = new URLSearchParams(params).toString();
   return fetch(`${EVICTION_DATA_ENDPOINT}/summary?${paramString}`).then(
