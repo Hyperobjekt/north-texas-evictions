@@ -52,8 +52,12 @@ const LocationPanel = ({
   const filingsLabel = useLang("METRIC_EF");
   // list of secondary stats
   const stats = useSummaryStats(summary?.data);
-  // use the 7 day moving average if more than 14 days
-  const series = useTrendSeries(summary?.data?.series, dateRange, "ef");
+  // get line data for trend line
+  const [series, interval] = useTrendSeries(
+    summary?.data?.series,
+    dateRange,
+    "ef"
+  );
   // scroll position
   const bodyRef = React.useRef();
   const [scrollPosition, setScrollPosition] = useLocationStore(
@@ -96,6 +100,7 @@ const LocationPanel = ({
           label={filingsLabel}
           series={series}
           stats={stats}
+          interval={interval}
         />
       )}
       <Divider />

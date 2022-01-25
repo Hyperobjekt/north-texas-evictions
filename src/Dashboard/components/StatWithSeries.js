@@ -1,8 +1,10 @@
 import React from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Tooltip, Typography } from "@material-ui/core";
 import TrendLine from "../../TimeSeries/components/TrendLine";
+import { useLang } from "../../Language";
 
-const StatWithSeries = ({ value, series, label, ...props }) => {
+const StatWithSeries = ({ value, series, label, interval, ...props }) => {
+  const tooltipLang = useLang(`HINT_${interval}`);
   return (
     <Box
       display="flex"
@@ -22,7 +24,11 @@ const StatWithSeries = ({ value, series, label, ...props }) => {
           {label}
         </Typography>
       </Box>
-      {series && <TrendLine data={series} height={48} width={144} />}
+      <Tooltip title={tooltipLang} arrow placement="right">
+        <div>
+          <TrendLine data={series} height={48} width={144} />
+        </div>
+      </Tooltip>
     </Box>
   );
 };
