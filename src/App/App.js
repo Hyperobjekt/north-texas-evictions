@@ -330,6 +330,12 @@ App.defaultProps = {
         "Average eviction filings per day in the last 30 days.  The leftmost number shows the change compared to the previous 30-day period.",
       HINT_MFA:
         "Median filing amounts are only available within Dallas County.",
+      HINT_WEEK: "Trend line shows 7-day moving average of eviction filings.",
+      HINT_DAY: "Trend line shows daily eviction filings.",
+      HINT_LOCATION_SELECT:
+        "Click a location on the map or use the location search to add them here.",
+      HINT_LOCATIONDATA:
+        "Select locations using the map or search to enable this option.",
       LABEL_ALL_COURTS: "All Courts",
       LABEL_FIT_BOUNDS: "Zoom to all {{region}}",
       LABEL_UNAVAILABLE: "Unavailable",
@@ -337,6 +343,10 @@ App.defaultProps = {
       LABEL_SHOW_LEGEND: "Show Full Legend",
       LABEL_HIDE_LEGEND: "Show Full Map",
       LABEL_SHOW_DATA_OPTIONS: "Show All Data Options",
+      LABEL_COMPARE: "Compare Locations",
+      LABEL_VIEW_LOCATION: "View Location Data",
+      LABEL_ALLDATA: "All Data",
+      LABEL_LOCATIONDATA: "Selected Locations",
     },
   },
 };
