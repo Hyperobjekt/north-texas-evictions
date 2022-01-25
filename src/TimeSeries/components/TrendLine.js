@@ -8,8 +8,15 @@ import { curveMonotoneX } from "d3-shape";
 const getX = (d) => new Date(`${d.date}T00:00:00`);
 const getY = (d) => Number(d.ef);
 
-const TrendLine = ({ data, width = 116, height = 24, color = "#EC7406" }) => {
+const TrendLine = ({
+  data = [],
+  width = 116,
+  height = 24,
+  color = "#EC7406",
+  ...props
+}) => {
   data = data.filter((d) => Number.isFinite(d.ef));
+  const hasData = data.length > 0;
   // scales
   const xScale = scaleTime({
     domain: extent(data, getX),
@@ -35,26 +42,31 @@ const TrendLine = ({ data, width = 116, height = 24, color = "#EC7406" }) => {
       viewBox={`0 0 ${width} ${height + 2}`}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
-      <LinePath
-        data={dataFilled}
-        x={(d) => xScale(getX(d)) ?? 0}
-        y={(d) => yScale(getY(d)) ?? height}
-        fill={color}
-        opacity={0.3}
-        shapeRendering="geometricPrecision"
-        curve={curveMonotoneX}
-      />
-      <LinePath
-        data={data}
-        x={(d) => xScale(getX(d)) ?? 0}
-        y={(d) => yScale(getY(d)) ?? height}
-        stroke={color}
-        strokeWidth={1}
-        strokeOpacity={1}
-        shapeRendering="geometricPrecision"
-        curve={curveMonotoneX}
-      />
+      {hasData && (
+        <LinePath
+          data={dataFilled}
+          x={(d) => xScale(getX(d)) ?? 0}
+          y={(d) => yScale(getY(d)) ?? height}
+          fill={color}
+          opacity={0.3}
+          shapeRendering="geometricPrecision"
+          curve={curveMonotoneX}
+        />
+      )}
+      {hasData && (
+        <LinePath
+          data={data}
+          x={(d) => xScale(getX(d)) ?? 0}
+          y={(d) => yScale(getY(d)) ?? height}
+          stroke={color}
+          strokeWidth={1}
+          strokeOpacity={1}
+          shapeRendering="geometricPrecision"
+          curve={curveMonotoneX}
+        />
+      )}
     </svg>
   );
 };
