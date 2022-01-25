@@ -9,10 +9,23 @@ import Stat from "./Stat";
  * Displays a primary statistic with a time series, and a
  * list of secondary stats below.
  */
-const StatsSummary = ({ value, label, series, stats, children, ...props }) => {
+const StatsSummary = ({
+  value,
+  label,
+  series,
+  stats,
+  interval,
+  children,
+  ...props
+}) => {
   return (
     <Stack direction="vertical" alignItems="stretch" between="md" {...props}>
-      <StatWithSeries value={value} label={label} series={series} />
+      <StatWithSeries
+        value={value}
+        label={label}
+        series={series}
+        interval={interval}
+      />
       <Divider style={{ marginTop: 4, background: "transparent" }} />
       {Array.isArray(stats) &&
         stats.map((stat) => <Stat key={stat.id} {...stat} />)}

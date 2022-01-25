@@ -30,6 +30,8 @@ const useDashboardStore = create((set) => ({
   setDefaultViewport: (defaultViewport) => set({ defaultViewport }),
   mapInstance: null,
   setMapInstance: (mapInstance) => set({ mapInstance }),
+  summaryView: "all",
+  setSummaryView: (summaryView) => set({ summaryView }),
 }));
 
 export default useDashboardStore;

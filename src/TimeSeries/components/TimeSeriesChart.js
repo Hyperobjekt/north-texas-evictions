@@ -51,7 +51,6 @@ const TimeSeriesChart = ({
                   key={key}
                   label={datum.name}
                   value={yFormatter(yAccessor(datum))}
-                  labelColor={datum.color}
                   minWidth={200}
                 >
                   <svg

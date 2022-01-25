@@ -78,7 +78,7 @@ const TimeComparison = ({ labelOverrides, compareToYear, feature }) => {
           variant={view === "relative" && "contained"}
           component={!canCompare ? "div" : undefined} // use div when disabled so button emits events
           disabled={!canCompare}
-          onClick={canCompare && handleToggleView("relative")}
+          onClick={canCompare ? handleToggleView("relative") : undefined}
         >
           {relativeButtonLabel}
         </Button>
@@ -126,10 +126,7 @@ const TimeComparison = ({ labelOverrides, compareToYear, feature }) => {
 };
 
 TimeComparison.propTypes = {
-  colors: PropTypes.object.isRequired,
-  years: PropTypes.array.isRequired,
   compareToYear: PropTypes.string.isRequired,
-  featureId: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles)(TimeComparison);

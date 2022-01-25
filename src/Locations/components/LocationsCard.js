@@ -2,7 +2,7 @@ import React from "react";
 import useSelectedLocations from "../hooks/useSelectedLocations";
 import useLocationStore from "../hooks/useLocationStore";
 import Card from "../../Dashboard/components/Card";
-import { Box, Button, List, Tooltip, Typography } from "@material-ui/core";
+import { Box, Button, List, Typography } from "@material-ui/core";
 import shallow from "zustand/shallow";
 import useLocationColors from "../hooks/useLocationColors";
 import { useDashboardStore } from "../../Dashboard";
@@ -13,6 +13,7 @@ import useLocationLoader from "../hooks/useLocationLoader";
 import CardActions from "../../Dashboard/components/CardActions";
 import ExpandIcon from "../../Icons/ExpandIcon";
 import { getSubLocations } from "../utils";
+import { useLang } from "../../Language";
 
 /**
  * A card showing all selected locations, along with toggles for visibility,
@@ -65,6 +66,13 @@ const LocationsCard = (props) => {
   // an effect hook that loads locations when they are added to the load queue
   useLocationLoader();
 
+  // get language for card
+  const [compareLabel, viewLocationLabel, locationSelectHint] = useLang([
+    "LABEL_COMPARE",
+    "LABEL_VIEW_LOCATION",
+    "HINT_LOCATION_SELECT",
+  ]);
+
   // helper function that determines pinned status of a location
   const isLocationPinned = (location) =>
     pinned.findIndex((l) => l.id === location.id) > -1;
@@ -108,28 +116,11 @@ const LocationsCard = (props) => {
   // toggles the side-by-side card view (location comparison)
   const handleToggleCompare = () => {
     setShowLocations(!showLocations);
-    setExpandLocations(true);
+    locations.length > 1 && setExpandLocations(true);
   };
 
   const hasLocations = locations.length > 0;
   const hasMultipleLocations = locations.length > 1;
-  const compareHint =
-    !hasMultipleLocations &&
-    `Select two or more locations using the map or search to compare.`;
-
-  // actions for the card (compare locations button)
-  const actions = (
-    <CardActions>
-      <Button
-        disabled={!hasMultipleLocations}
-        variant="outlined"
-        onClick={handleToggleCompare}
-      >
-        <ExpandIcon style={{ marginRight: 8, fontSize: 20 }} /> Compare
-        Locations
-      </Button>
-    </CardActions>
-  );
 
   return (
     <Card noPadding title="Selected Locations" {...props}>
@@ -169,18 +160,23 @@ const LocationsCard = (props) => {
       {!hasLocations && (
         <Box p={2} pt={1}>
           <Typography component="em" color="textSecondary">
-            Click a location on the map or use the location search to add them
-            here.
+            {locationSelectHint}
           </Typography>
         </Box>
       )}
       {/* card actions */}
-      {compareHint && (
-        <Tooltip title={compareHint} placement="top" arrow>
-          {actions}
-        </Tooltip>
+      {hasLocations && (
+        <CardActions>
+          <Button
+            disabled={!hasLocations}
+            variant="outlined"
+            onClick={handleToggleCompare}
+          >
+            <ExpandIcon style={{ marginRight: 8, fontSize: 20 }} />{" "}
+            {hasMultipleLocations ? compareLabel : viewLocationLabel}
+          </Button>
+        </CardActions>
       )}
-      {!compareHint && actions}
     </Card>
   );
 };
