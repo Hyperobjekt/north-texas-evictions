@@ -1,23 +1,9 @@
 import React, { useContext } from "react";
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Tooltip,
-  Typography,
-  withStyles,
-} from "@material-ui/core";
-import PropTypes from "prop-types";
 import { useTimeSeriesEventData } from "../../Data/useTimeSeriesEventData";
-import useTimeSeriesStore from "../../TimeSeries/hooks/useTimeSeriesStore";
 import { DataContext } from "@visx/xychart";
 
 /** Renders the events overlay on the time series chart */
 const TimeSeriesEventsLayer = (props) => {
-  const [setHoveredEvent, hoveredEvent] = useTimeSeriesStore((state) => [
-    state.setHoveredEvent,
-    state.hoveredEvent,
-  ]);
   const { yScale, xScale, margin } = useContext(DataContext);
   const eventsSeries = useTimeSeriesEventData().data;
   if (!xScale || !margin?.top) return null;
@@ -28,6 +14,67 @@ const TimeSeriesEventsLayer = (props) => {
       (eventDates.start > rangeDates.end && eventDates.end > rangeDates.end)
       ? false
       : true;
+  };
+
+  const doesEventOverlap = (eventDates, rangeDates) => {
+    const isEventPoint =
+      eventDates.start.toISOString() === eventDates.end.toISOString();
+    const isRangePoint =
+      rangeDates.start.toISOString() === rangeDates.end.toISOString();
+
+    if (isEventInRange(eventDates, rangeDates)) {
+      //if neither event nor range is a point, they overlap
+      if (!isEventPoint && !isRangePoint) {
+        return true;
+        //thus, the range or event is a point, and if one of their starts or ends is the same, they overlap
+      } else if (
+        eventDates.start.toISOString() === rangeDates.start.toISOString() ||
+        eventDates.end.toISOString() === rangeDates.end.toISOString()
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  };
+
+  const createTiers = (events) => {
+    const tiers = [];
+    events.forEach((event) => {
+      let fits = null;
+      //if the levels array has already been populated
+      if (tiers.length > 0) {
+        //check every tier in the tiers array
+        for (let index = 0; index < tiers.length; index++) {
+          const tier = tiers[index];
+          let isOverlapping = false;
+          //check every range in the current tier
+          for (let i = 0; i < tier.length; i++) {
+            const range = tier[i];
+            if (doesEventOverlap(event, range)) {
+              isOverlapping = true;
+              break;
+            }
+            //if none of the ranges in the tier overlap with the event (or if the event is a single date), set the fits var to the index of the tier and stop checking
+          }
+          if (!isOverlapping) {
+            fits = index;
+            break;
+          }
+        }
+        //if the fits var was set to a level index, add the event to that level
+        if (fits !== null) {
+          tiers[fits].push(event);
+          //else make a new level with the event
+        } else {
+          tiers.push([event]);
+        }
+        //if the levels array is empty, create a new level with the event
+      } else {
+        tiers.push([event]);
+      }
+    });
+    return tiers;
   };
 
   const processedDates = (events, range) => {
@@ -50,7 +97,6 @@ const TimeSeriesEventsLayer = (props) => {
         dates.push({ start, end, color, id });
       }
     });
-    console.log(dates);
     return dates;
   };
 
@@ -92,17 +138,19 @@ const TimeSeriesEventsLayer = (props) => {
     );
   };
 
-  const EventRange = ({ event, xScale }) => {
+  const EventRange = ({ event, xScale, tier }) => {
     const color = event.color;
     const coords = [xScale(event.start), xScale(event.end)];
     const id = event.id;
-
-    const height = yScale(0) - yScale(yScale.domain()[1]);
+    const glyphRadius = 9;
+    const tierModifier = (glyphRadius + 1) * 2 * tier;
+    const top = topPos + tierModifier;
+    const height = yScale(0) - yScale(yScale.domain()[1]) - tierModifier;
 
     return (
       <>
         <defs>
-          <linearGradient id="Gradient" x1="0" x2="0" y1="0" y2="1">
+          <linearGradient id={`${id}-gradient`} x1="0" x2="0" y1="0" y2="1">
             <stop offset="0%" stop-color={color} stop-opacity={0.07} />
             <stop offset="100%" stop-color="transparent" />
           </linearGradient>
@@ -110,16 +158,16 @@ const TimeSeriesEventsLayer = (props) => {
         <g>
           <rect
             x={coords[0]}
-            y={topPos}
+            y={top}
             width={coords[1] - coords[0]}
             height={height}
-            fill="url(#Gradient)"
+            fill={`url(#${id}-gradient)`}
           />
           <line
             x1={coords[0]}
             x2={coords[1]}
-            y1={topPos}
-            y2={topPos}
+            y1={top}
+            y2={top}
             stroke={color}
             strokeWidth={2}
             strokeDasharray={"4,4"}
@@ -128,9 +176,9 @@ const TimeSeriesEventsLayer = (props) => {
             return (
               <Glyph
                 cx={coord}
-                cy={topPos}
-                r={9}
-                center={[coord, topPos]}
+                cy={top}
+                r={glyphRadius}
+                center={[coord, top]}
                 arrowDir={i === 0 ? "right" : "left"}
                 fill={color}
                 event={event}
@@ -144,10 +192,13 @@ const TimeSeriesEventsLayer = (props) => {
     );
   };
 
-  const EventPoint = ({ event, xScale, index }) => {
+  const EventPoint = ({ event, xScale, tier }) => {
     const start = xScale(event.start);
     const color = event.color;
     const id = event.id;
+    const glyphRadius = 9;
+    const tierModifier = (glyphRadius + 1) * 2 * tier;
+    const top = topPos + tierModifier;
 
     return (
       <>
@@ -155,19 +206,13 @@ const TimeSeriesEventsLayer = (props) => {
           <line
             x1={start}
             x2={start}
-            y1={topPos}
-            y2={yScale(0)}
+            y1={top}
+            y2={yScale(0) - 15}
             stroke={color}
             strokeWidth={2}
             strokeDasharray={"4,4"}
           />
-          <Glyph
-            cx={start}
-            cy={topPos}
-            r={9}
-            center={[start, topPos]}
-            fill={color}
-          >
+          <Glyph cx={start} cy={top} r={9} center={[start, top]} fill={color}>
             {id}
           </Glyph>
         </g>
@@ -175,17 +220,21 @@ const TimeSeriesEventsLayer = (props) => {
     );
   };
 
-  const EventOverlay = ({ events, xScale, margin }) => {
+  const EventOverlay = ({ events, xScale }) => {
     return (
       <>
-        {processedDates(events, xScale.domain())?.map((event) => {
-          //if event.end > event.start it is a range, if they are the same it is a point
-          return event.end > event.start ? (
-            <EventRange event={event} xScale={xScale} />
-          ) : (
-            <EventPoint event={event} xScale={xScale} />
-          );
-        })}
+        {createTiers(processedDates(events, xScale.domain()))?.map(
+          (tier, tierIndex) => {
+            return tier.map((event) => {
+              //if event.end > event.start it is a range, if they are the same it is a point
+              return event.end > event.start ? (
+                <EventRange event={event} xScale={xScale} tier={tierIndex} />
+              ) : (
+                <EventPoint event={event} xScale={xScale} tier={tierIndex} />
+              );
+            });
+          }
+        )}
       </>
     );
   };

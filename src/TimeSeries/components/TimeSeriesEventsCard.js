@@ -1,7 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Box, List, ListItem, Typography } from "@material-ui/core";
-import useTimeSeriesStore from "../../TimeSeries/hooks/useTimeSeriesStore";
 import { useTimeSeriesEventData } from "../../Data/useTimeSeriesEventData";
 import { Card, formatDateString } from "../../Dashboard";
 import { withStyles } from "@material-ui/styles";
