@@ -5,8 +5,9 @@ import {
   AnimatedLineSeries,
   buildChartTheme,
   XYChart,
+  Tooltip,
 } from "@visx/xychart";
-import { Tooltip } from "@visx/xychart";
+
 import { withParentSize } from "@visx/responsive";
 import { curveMonotoneX } from "d3-shape";
 import { parseDate, Stat } from "../../Dashboard";
@@ -15,57 +16,63 @@ import { Stack } from "@hyperobjekt/material-ui-website";
 
 const TimeSeriesChart = ({
   lines,
+  tooltipRenderer,
+  glyphRenderer,
   xAccessor,
   yAccessor,
   yFormatter,
   xTickFormatter,
+  yTickFormatter,
   xTooltipFormatter,
+  ...props
 }) => {
   const customTheme = buildChartTheme({
     colors: lines.map((line) => line.color).reverse(),
   });
-  const renderTooltip = ({ tooltipData }) => {
-    const entries = Object.values(tooltipData?.datumByKey ?? {}).sort(
-      (a, b) => {
-        return yAccessor(b.datum) - yAccessor(a.datum);
-      }
-    );
-    const nearest = tooltipData?.nearestDatum?.datum;
-    return (
-      <Paper elevation={2}>
-        <Box clone p={2} pb={0}>
-          <Typography variant="h2">
-            {xTooltipFormatter(parseDate(nearest.date))}
-          </Typography>
-        </Box>
-        <Stack between="sm" direction="vertical" around="md">
-          {entries.map(({ key, datum }) => (
-            <Stat
-              key={key}
-              label={datum.name}
-              value={yFormatter(yAccessor(datum))}
-              labelColor={datum.color}
-              minWidth={200}
-            >
-              <svg
-                width="8"
-                height="8"
-                style={{ marginLeft: "auto", marginRight: 8 }}
-              >
-                <circle r="4" cx="4" cy="4" fill={datum.color} />
-              </svg>
-            </Stat>
-          ))}
-        </Stack>
-      </Paper>
-    );
-  };
+  const renderTooltip = tooltipRenderer
+    ? tooltipRenderer
+    : ({ tooltipData }) => {
+        const entries = Object.values(tooltipData?.datumByKey ?? {}).sort(
+          (a, b) => {
+            return yAccessor(b.datum) - yAccessor(a.datum);
+          }
+        );
+        const nearest = tooltipData?.nearestDatum?.datum;
+        return (
+          <Paper elevation={2}>
+            <Box clone p={2} pb={0} bt={"none"}>
+              <Typography variant="h2">
+                {xTooltipFormatter(parseDate(nearest.date))}
+              </Typography>
+            </Box>
+            <Stack between="sm" direction="vertical" around="md">
+              {entries.map(({ key, datum }) => (
+                <Stat
+                  key={key}
+                  label={datum.name}
+                  value={yFormatter(yAccessor(datum))}
+                  minWidth={200}
+                >
+                  <svg
+                    width="8"
+                    height="8"
+                    style={{ marginLeft: "auto", marginRight: 8 }}
+                  >
+                    <circle r="4" cx="4" cy="4" fill={datum.color} />
+                  </svg>
+                </Stat>
+              ))}
+            </Stack>
+          </Paper>
+        );
+      };
   return (
     <>
       <XYChart
         xScale={{ type: "time" }}
-        yScale={{ type: "linear" }}
+        yScale={{ type: "" }}
         theme={customTheme}
+        {...props}
       >
         <AnimatedAxis
           orientation="bottom"
@@ -78,12 +85,13 @@ const TimeSeriesChart = ({
           orientation="left"
           left={48}
           numTicks={5}
+          tickFormat={yTickFormatter}
           labelOffset={16}
           hideAxisLine
           hideTicks
         />
         <AnimatedGrid columns={false} numTicks={5} stroke="rgba(0,0,0,0.08)" />
-        {lines.map(({ id, color, data, visible }) => {
+        {lines.map(({ id, color, data, visible, dashArray, opacity }) => {
           if (!visible) return null;
           return (
             <AnimatedLineSeries
@@ -99,6 +107,8 @@ const TimeSeriesChart = ({
               xAccessor={xAccessor}
               yAccessor={yAccessor}
               stroke={color}
+              opacity={opacity}
+              strokeDasharray={dashArray}
             />
           );
         })}
@@ -106,9 +116,11 @@ const TimeSeriesChart = ({
           showVerticalCrosshair
           showSeriesGlyphs
           renderTooltip={renderTooltip}
-          renderGlyph={({ datum }) => {
-            return <circle r={4} fill={datum.color} />;
-          }}
+          renderGlyph={
+            glyphRenderer
+              ? glyphRenderer
+              : ({ datum }) => <circle r={4} fill={datum.color} />
+          }
           unstyled
           verticalCrosshairStyle={{ stroke: "#ccc" }}
         />

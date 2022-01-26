@@ -3,15 +3,17 @@ import create from "zustand";
 /**
  * This store contains app state.  For hovered + selected locations use the map store
  */
-const useLocationStore = create((set) => ({
+const useLocationStore = create((set, get) => ({
+  // determines if the slide out locations panel is active
   showLocations: false,
   setShowLocations: (showLocations) => set({ showLocations }),
+  // determines if the slide out locations panel is expanded
   expandLocations: false,
   setExpandLocations: (expandLocations) => set({ expandLocations }),
   // active location (displayed in the location details panel)
   active: null,
   setActive: (location) => set({ active: location }),
-  // list of all locations
+  // list of all locations (geojson features)
   locations: [],
   addLocation: (location) => {
     set((state) => ({
@@ -70,8 +72,33 @@ const useLocationStore = create((set) => ({
       ),
     }));
   },
+  // scroll position of the locations panel, used for syncing
   scrollPosition: 0,
   setScrollPosition: (scrollPosition) => set({ scrollPosition }),
+  // determines if time comparison show counts or relative to 2019
+  comparisonType: "counts",
+  setComparisonType: (comparisonType) => set({ comparisonType }),
+  // a collection of child locations for parent locations
+  subLocations: [],
+  setSubLocations: (subLocations) => set({ subLocations }),
+  toggleSubLocationVisibility: (id, visibility) => {
+    const subLocations = get().subLocations.map((l) => {
+      const subLocation = l.children.find((c) => c.id === id);
+      if (!subLocation) return l;
+      const currentVisibility = subLocation.pinned || false;
+      // set new value to visibility if provided, otherwise toggle existing value
+      const newValue = {
+        ...subLocation,
+        pinned:
+          typeof visibility === "undefined" ? !currentVisibility : visibility,
+      };
+      return {
+        ...l,
+        children: l.children.map((c) => (c.id === id ? newValue : c)),
+      };
+    });
+    set({ subLocations });
+  },
 }));
 
 export default useLocationStore;

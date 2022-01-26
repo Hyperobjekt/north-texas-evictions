@@ -24,6 +24,7 @@ export default createTheme({
     text: {
       primary: "rgba(68, 71, 67, 1)",
       secondary: "rgba(114, 116, 109, 1)",
+      disabled: "rgba(173, 175, 167, 0.8)",
     },
     action: {
       hover: "rgba(236, 236, 213, 0.333)",
@@ -174,6 +175,25 @@ export default createTheme({
         },
         "&:disabled, &.Mui-disabled": {
           borderColor: "#eaeaea",
+        },
+      },
+    },
+    MuiButtonGroup: {
+      groupedHorizontal: {
+        "&:not(.dark)": {
+          padding: `6px 8px`,
+          fontWeight: "normal",
+          flex: "min-content",
+          whiteSpace: "nowrap",
+        },
+        // turn on pointer events for disabled buttons
+        "&.Mui-disabled": {
+          pointerEvents: "auto",
+          "&:focus, &:hover": {
+            outline: "none",
+            boxShadow: "none",
+            borderColor: "rgba(0, 0, 0, 0.26)",
+          },
         },
       },
     },

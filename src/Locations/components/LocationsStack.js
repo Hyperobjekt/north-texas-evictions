@@ -135,17 +135,27 @@ const ToggleExpandButton = () => {
 
   const tooltipText = "Click to toggle location comparison";
 
+  const clearTooltip = useCallback(() => {
+    showTooltipHint && setShowHint(false);
+    showTooltipHint && setHintDismissed(true);
+  }, [showTooltipHint, setShowHint, setHintDismissed]);
+
   // show tooltip after 1 second delay
   useLayoutEffect(() => {
     if (showTooltipHint) {
       setTimeout(() => setShowHint(true), 1000);
+      // clear tooltip on next click
+      document.addEventListener("mousedown", clearTooltip);
     }
-  }, [showTooltipHint, setShowHint]);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", clearTooltip);
+    };
+  }, [showTooltipHint, setShowHint, clearTooltip]);
 
   // toggle the expanded locations view
   const handleToggleExpand = () => {
-    showTooltipHint && setHintDismissed(true);
-    showTooltipHint && setShowHint(false);
+    clearTooltip();
     setExpandLocations(!expandLocations);
   };
 
