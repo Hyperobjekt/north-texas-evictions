@@ -4,7 +4,7 @@ import {
   Card,
   useDashboardStore,
   useFormatter,
-  formatDateString,
+  formatDateRange,
 } from "../../Dashboard";
 import { useLang } from "../../Language";
 import { LocationName } from "../../Locations";
@@ -33,7 +33,7 @@ const RankingsCard = (props) => {
   ]);
   // pull current date range
   const dateRange = useDashboardStore((state) => state.activeDateRange);
-  const dateRangeLabel = formatDateString(...dateRange, { short: true }).join(
+  const dateRangeLabel = formatDateRange(...dateRange, { short: true }).join(
     " - "
   );
   // get summary card language
