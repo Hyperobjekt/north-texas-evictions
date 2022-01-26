@@ -7,7 +7,7 @@ export const EVENT_COLORS = [
   "#F07300",
   "#666666",
   "#CE0000",
-  "#ce0067",
+  "#a953cf",
   "#0000CE",
 ];
 
