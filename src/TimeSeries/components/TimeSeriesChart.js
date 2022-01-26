@@ -13,6 +13,8 @@ import { curveMonotoneX } from "d3-shape";
 import { parseDate, Stat } from "../../Dashboard";
 import { Box, Paper, Typography } from "@material-ui/core";
 import { Stack } from "@hyperobjekt/material-ui-website";
+import { useTimeSeriesEventData } from "../../Data/useTimeSeriesEventData";
+import TimeSeriesEvent from "./TimeSeriesEvent";
 
 const TimeSeriesChart = ({
   lines,
@@ -27,6 +29,7 @@ const TimeSeriesChart = ({
   children,
   ...props
 }) => {
+  const { data: eventData } = useTimeSeriesEventData();
   const customTheme = buildChartTheme({
     colors: lines.map((line) => line.color).reverse(),
   });
@@ -62,6 +65,16 @@ const TimeSeriesChart = ({
                     <circle r="4" cx="4" cy="4" fill={datum.color} />
                   </svg>
                 </Stat>
+              ))}
+            </Stack>
+            <Stack between="sm" direction="vertical" around="md">
+              {eventData?.map((event, i) => (
+                <TimeSeriesEvent
+                  key={event.name}
+                  radius={9}
+                  mt={i === 0 ? 0 : 2}
+                  {...event}
+                />
               ))}
             </Stack>
           </Paper>
