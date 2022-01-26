@@ -4,13 +4,23 @@ export const formatDate = timeFormat("%Y-%m-%d");
 
 export const parseDate = timeParse("%Y-%m-%d");
 
+export const formatDateString = (date, options = { short: false }) => {
+  if (!date) return "";
+  const startDate = parseDate(date);
+  return new Intl.DateTimeFormat("en-US", {
+    month: options.short ? "short" : "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(startDate);
+};
+
 /**
  * Formats the custom date range lable for the legend
  * @param {*} start
  * @param {*} end
  * @returns
  */
-export const formatDateString = (
+export const formatDateRange = (
   start,
   end,
   options = { short: false, point: false }
@@ -62,7 +72,7 @@ export const getDateRangeLabel = (start, end, dateOptions) => {
     return option.value[0] === start && option.value[1] === end;
   });
   if (!selectedOption)
-    return ["between", formatDateString(start, end).join(" and ")];
+    return ["between", formatDateRange(start, end).join(" and ")];
   if (selectedOption.id === "alltime") return ["for", "all time"];
   if (selectedOption.id === "2020") return ["", "since 2020"];
   return ["in the", selectedOption.label];
