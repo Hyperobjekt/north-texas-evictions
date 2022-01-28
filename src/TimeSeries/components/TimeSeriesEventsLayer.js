@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { useTimeSeriesEventData } from "../../Data/useTimeSeriesEventData";
 import useTimeSeriesEventsInRange from "../hooks/useTimeSeriesEventsInRange";
 import { DataContext } from "@visx/xychart";
 import EventMarker from "./EventMarker";
