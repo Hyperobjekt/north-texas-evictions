@@ -13,6 +13,9 @@ import { curveMonotoneX } from "d3-shape";
 import { parseDate, Stat } from "../../Dashboard";
 import { Box, Paper, Typography } from "@material-ui/core";
 import { Stack } from "@hyperobjekt/material-ui-website";
+import useTimeSeriesEventsInRange from "../hooks/useTimeSeriesEventsInRange";
+import TimeSeriesEvent from "./TimeSeriesEvent";
+import { isEventInRange } from "../utils";
 
 const TimeSeriesChart = ({
   lines,
@@ -27,6 +30,7 @@ const TimeSeriesChart = ({
   children,
   ...props
 }) => {
+  const eventData = useTimeSeriesEventsInRange();
   const customTheme = buildChartTheme({
     colors: lines.map((line) => line.color).reverse(),
   });
@@ -39,6 +43,17 @@ const TimeSeriesChart = ({
           }
         );
         const nearest = tooltipData?.nearestDatum?.datum;
+        const eventsInRange = eventData.reduce((eventsInRange, event) => {
+          if (
+            isEventInRange(
+              { start: new Date(nearest.date), end: new Date(nearest.date) },
+              event
+            )
+          ) {
+            eventsInRange.push(event);
+          }
+          return eventsInRange;
+        }, []);
         return (
           <Paper elevation={2}>
             <Box clone p={2} pb={0} bt={"none"}>
@@ -64,6 +79,18 @@ const TimeSeriesChart = ({
                 </Stat>
               ))}
             </Stack>
+            {eventsInRange.length > 0 && (
+              <Stack between="sm" direction="vertical" around="md">
+                {eventsInRange?.map((event, i) => (
+                  <TimeSeriesEvent
+                    key={event.name}
+                    radius={9}
+                    mt={i === 0 ? 0 : 2}
+                    {...event}
+                  />
+                ))}
+              </Stack>
+            )}
           </Paper>
         );
       };

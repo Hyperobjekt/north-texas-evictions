@@ -36,8 +36,16 @@ const TimeSeriesEvent = ({
 }) => {
   const dateLabel =
     start === end
-      ? formatDateString(start, { short: true })
-      : formatDateRange(...[start, end], { short: true }).join(" - ");
+      ? formatDateString(start?.toISOString().split("T")[0], { short: true })
+      : formatDateRange(
+          ...[
+            start?.toISOString().split("T")[0],
+            end?.toISOString().split("T")[0],
+          ],
+          {
+            short: true,
+          }
+        ).join(" - ");
   return (
     <Box
       mt={2}

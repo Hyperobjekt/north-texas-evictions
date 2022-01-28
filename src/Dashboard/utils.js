@@ -43,7 +43,9 @@ export const formatDateRange = (
     month: options.short ? "short" : "long",
     day: "numeric",
     year:
-      startDate.getFullYear() === endDate.getFullYear() ? undefined : "numeric",
+      startDate?.getFullYear() === endDate?.getFullYear()
+        ? undefined
+        : "numeric",
   }).format(startDate);
   const endDateLabel = new Intl.DateTimeFormat("en-US", {
     month: options.short ? "short" : "long",

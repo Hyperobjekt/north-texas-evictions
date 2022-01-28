@@ -1,99 +1,9 @@
 import React, { useContext } from "react";
 import { useTimeSeriesEventData } from "../../Data/useTimeSeriesEventData";
+import useTimeSeriesEventsInRange from "../hooks/useTimeSeriesEventsInRange";
 import { DataContext } from "@visx/xychart";
 import EventMarker from "./EventMarker";
-
-/**
- * Returns false if the eventDates date range falls outside
- * of the rangeDates date range, or true if there is some overlap.
- * @param {*} eventDates
- * @param {*} rangeDates
- * @returns
- */
-const isEventInRange = (eventDates, rangeDates) => {
-  return !(
-    (eventDates.start < rangeDates.start &&
-      eventDates.end < rangeDates.start) ||
-    (eventDates.start > rangeDates.end && eventDates.end > rangeDates.end)
-  );
-};
-
-const doesEventOverlap = (eventDates, rangeDates) => {
-  if (!isEventInRange(eventDates, rangeDates)) return false;
-  const isEventPoint =
-    eventDates.start.toISOString() === eventDates.end.toISOString();
-  const isRangePoint =
-    rangeDates.start.toISOString() === rangeDates.end.toISOString();
-  // if neither event nor range is a point, they overlap
-  if (!isEventPoint && !isRangePoint) return true;
-  // thus, the range or event is a point, and if one of their starts or ends is the same, they overlap
-  return (
-    eventDates.start.toISOString() === rangeDates.start.toISOString() ||
-    eventDates.end.toISOString() === rangeDates.end.toISOString()
-  );
-};
-
-const createTiers = (events) => {
-  const tiers = [];
-  events.forEach((event) => {
-    let fits = null;
-    //if the levels array has already been populated
-    if (tiers.length > 0) {
-      //check every tier in the tiers array
-      for (let index = 0; index < tiers.length; index++) {
-        const tier = tiers[index];
-        let isOverlapping = false;
-        //check every range in the current tier
-        for (let i = 0; i < tier.length; i++) {
-          const range = tier[i];
-          if (doesEventOverlap(event, range)) {
-            isOverlapping = true;
-            break;
-          }
-          //if none of the ranges in the tier overlap with the event (or if the event is a single date), set the fits var to the index of the tier and stop checking
-        }
-        if (!isOverlapping) {
-          fits = index;
-          break;
-        }
-      }
-      //if the fits var was set to a level index, add the event to that level
-      if (fits !== null) {
-        tiers[fits].push(event);
-        //else make a new level with the event
-      } else {
-        tiers.push([event]);
-      }
-      //if the levels array is empty, create a new level with the event
-    } else {
-      tiers.push([event]);
-    }
-  });
-  return tiers;
-};
-
-const processedDates = (events, range) => {
-  const rangeDates = { start: range[0], end: range[1] };
-  let dates = [];
-  events.forEach((event) => {
-    const eventDates = {
-      start: new Date(event.start),
-      end: new Date(event.end),
-    };
-    if (isEventInRange(eventDates, rangeDates)) {
-      const start =
-        eventDates.start < rangeDates.start
-          ? rangeDates.start
-          : eventDates.start;
-      const end =
-        eventDates.end > rangeDates.end ? rangeDates.end : eventDates.end;
-      const color = event.color;
-      const id = event.id;
-      dates.push({ start, end, color, id });
-    }
-  });
-  return dates;
-};
+import { createTiers } from "../utils";
 
 const EventRange = ({ event, xScale, tier, top: topPos, yScale }) => {
   const color = event.color;
@@ -177,10 +87,11 @@ const EventPoint = ({ event, xScale, tier, top: topPos, yScale }) => {
 /** Renders the events overlay on the time series chart */
 const TimeSeriesEventsLayer = (props) => {
   const { yScale, xScale, margin } = useContext(DataContext);
-  const eventsSeries = useTimeSeriesEventData().data;
+  const eventsSeries = useTimeSeriesEventsInRange();
   if (!xScale || !margin?.top) return null;
   const top = margin.top + 10;
-  const tiers = createTiers(processedDates(eventsSeries, xScale.domain()));
+  //console.log(createTiers2(eventsSeries));
+  const tiers = createTiers(eventsSeries);
   if (tiers.length === 0) return null;
   return (
     <>
