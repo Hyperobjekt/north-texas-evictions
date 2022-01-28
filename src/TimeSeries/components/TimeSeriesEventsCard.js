@@ -1,6 +1,6 @@
 import React from "react";
 import { List } from "@material-ui/core";
-import { useTimeSeriesEventData } from "../../Data/useTimeSeriesEventData";
+import useTimeSeriesEventsInRange from "../hooks/useTimeSeriesEventsInRange";
 import { Card } from "../../Dashboard";
 import TimeSeriesEvent from "./TimeSeriesEvent";
 import { useLang } from "../../Language";
@@ -10,7 +10,7 @@ import { useLang } from "../../Language";
  */
 const TimeSeriesEventsCard = (props) => {
   const cardTitle = useLang("TITLE_EVENTS");
-  const eventsSeries = useTimeSeriesEventData().data;
+  const eventsSeries = useTimeSeriesEventsInRange();
   const glyphRadius = 9;
   return (
     <Card title={cardTitle} {...props}>
