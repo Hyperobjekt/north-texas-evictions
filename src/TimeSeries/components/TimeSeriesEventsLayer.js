@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import useTimeSeriesEventsInRange from "../hooks/useTimeSeriesEventsInRange";
 import { DataContext } from "@visx/xychart";
 import EventMarker from "./EventMarker";
-import { createTiers } from "../utils";
+import { createTiers, processDates } from "../utils";
 
 const EventRange = ({ event, xScale, tier, top: topPos, yScale }) => {
   const color = event.color;
   const coords = [xScale(event.start), xScale(event.end)];
+  console.log(xScale(new Date("2021-01-22")));
   const id = event.id;
   const glyphRadius = 9;
   const tierModifier = (glyphRadius + 1) * 2 * tier;
@@ -84,12 +84,11 @@ const EventPoint = ({ event, xScale, tier, top: topPos, yScale }) => {
 };
 
 /** Renders the events overlay on the time series chart */
-const TimeSeriesEventsLayer = (props) => {
+const TimeSeriesEventsLayer = ({ events }) => {
   const { yScale, xScale, margin } = useContext(DataContext);
-  const eventsSeries = useTimeSeriesEventsInRange();
   if (!xScale || !margin?.top) return null;
+  const eventsSeries = processDates(events, xScale.domain());
   const top = margin.top + 10;
-  //console.log(createTiers2(eventsSeries));
   const tiers = createTiers(eventsSeries);
   if (tiers.length === 0) return null;
   return (

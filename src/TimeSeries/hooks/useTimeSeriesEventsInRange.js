@@ -4,7 +4,7 @@ import { useDashboardDateRange } from "../../Dashboard";
 import { EVENT_COLORS } from "../../Dashboard/constants";
 
 export default function useTimeSeriesEventsInRange() {
-  const processedDates = (events, range) => {
+  const eventsInRange = (events, range) => {
     const rangeDates = { start: new Date(range[0]), end: new Date(range[1]) };
     const dates = events.reduce((dates, event) => {
       const eventDates = {
@@ -12,16 +12,10 @@ export default function useTimeSeriesEventsInRange() {
         end: new Date(event.end),
       };
       if (isEventInRange(eventDates, rangeDates)) {
-        const start =
-          eventDates.start < rangeDates.start
-            ? rangeDates.start
-            : eventDates.start;
-        const end =
-          eventDates.end > rangeDates.end ? rangeDates.end : eventDates.end;
         const color = event.color;
         const id = event.id;
         const name = event.name;
-        dates.push({ start, end, color, id, name });
+        dates.push({ ...eventDates, color, id, name });
       }
       return dates;
     }, []);
@@ -36,6 +30,6 @@ export default function useTimeSeriesEventsInRange() {
   const events = useTimeSeriesEventData().data;
   const [activeDateRange] = useDashboardDateRange();
   const data =
-    events && activeDateRange ? processedDates(events, activeDateRange) : [];
+    events && activeDateRange ? eventsInRange(events, activeDateRange) : [];
   return data;
 }

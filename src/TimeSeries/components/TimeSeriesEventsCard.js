@@ -13,19 +13,21 @@ const TimeSeriesEventsCard = (props) => {
   const eventsSeries = useTimeSeriesEventsInRange();
   const glyphRadius = 9;
   return (
-    <Card title={cardTitle} {...props}>
-      <List disablePadding>
-        {eventsSeries?.map((event, i) => (
-          <TimeSeriesEvent
-            key={event.name}
-            component={"li"}
-            radius={glyphRadius}
-            mt={i === 0 ? 0 : 2}
-            {...event}
-          />
-        ))}
-      </List>
-    </Card>
+    eventsSeries.length > 0 && (
+      <Card title={cardTitle} {...props}>
+        <List disablePadding>
+          {eventsSeries?.map((event, i) => (
+            <TimeSeriesEvent
+              key={event.name}
+              component={"li"}
+              radius={glyphRadius}
+              mt={i === 0 ? 0 : 2}
+              {...event}
+            />
+          ))}
+        </List>
+      </Card>
+    )
   );
 };
 

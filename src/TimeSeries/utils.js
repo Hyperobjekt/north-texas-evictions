@@ -1,3 +1,4 @@
+import { ContactsOutlined } from "@material-ui/icons";
 import { timeDay, timeSunday } from "d3-time";
 import { timeFormat } from "d3-time-format";
 import { formatDate, parseDate } from "../Dashboard";
@@ -260,4 +261,20 @@ export const createTiers = (events) => {
     }
     return tiers;
   }, []);
+};
+
+export const processDates = (events, range) => {
+  const rangeDates = { start: new Date(range[0]), end: new Date(range[1]) };
+  console.log(events);
+  const dates = events.reduce((dates, event) => {
+    const start =
+      event.start < rangeDates.start ? rangeDates.start : event.start;
+    const end = event.end > rangeDates.end ? rangeDates.end : event.end;
+    const color = event.color;
+    const id = event.id;
+    const name = event.name;
+    dates.push({ start, end, color, id, name });
+    return dates;
+  }, []);
+  return dates;
 };
