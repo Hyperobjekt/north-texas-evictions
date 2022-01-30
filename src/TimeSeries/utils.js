@@ -1,4 +1,3 @@
-import { ContactsOutlined } from "@material-ui/icons";
 import { timeDay, timeSunday } from "d3-time";
 import { timeFormat } from "d3-time-format";
 import { formatDate, parseDate } from "../Dashboard";
