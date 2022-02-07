@@ -7,7 +7,6 @@ import {
   XYChart,
   Tooltip,
 } from "@visx/xychart";
-
 import { withParentSize } from "@visx/responsive";
 import { curveMonotoneX } from "d3-shape";
 import { parseDate, Stat } from "../../Dashboard";
@@ -16,6 +15,59 @@ import { Stack } from "@hyperobjekt/material-ui-website";
 import useTimeSeriesEventsInRange from "../hooks/useTimeSeriesEventsInRange";
 import TimeSeriesEvent from "./TimeSeriesEvent";
 import { isEventInRange } from "../utils";
+
+const TimeSeriesTooltip = ({
+  entries,
+  events,
+  date,
+  yFormatter,
+  yAccessor,
+  ...props
+}) => {
+  return (
+    <Paper elevation={2} {...props}>
+      <Box clone p={2} pb={0} bt={"none"}>
+        <Typography variant="h2">{date}</Typography>
+      </Box>
+      <Stack between="sm" direction="vertical" around="md">
+        {entries.map(({ key, datum }) => (
+          <Stat
+            key={key}
+            label={datum.name}
+            value={yFormatter(yAccessor(datum))}
+            minWidth={200}
+          >
+            <svg
+              width="8"
+              height="8"
+              style={{ marginLeft: "auto", marginRight: 8 }}
+            >
+              <circle r="4" cx="4" cy="4" fill={datum.color} />
+            </svg>
+          </Stat>
+        ))}
+      </Stack>
+      {events.length > 0 && (
+        <Stack
+          between="sm"
+          direction="vertical"
+          around="md"
+          borderTop={1}
+          borderColor="grey.200"
+        >
+          {events?.map((event, i) => (
+            <TimeSeriesEvent
+              key={event.name}
+              radius={9}
+              mt={i === 0 ? 0 : 2}
+              {...event}
+            />
+          ))}
+        </Stack>
+      )}
+    </Paper>
+  );
+};
 
 const TimeSeriesChart = ({
   lines,
@@ -38,60 +90,22 @@ const TimeSeriesChart = ({
     ? tooltipRenderer
     : ({ tooltipData }) => {
         const entries = Object.values(tooltipData?.datumByKey ?? {}).sort(
-          (a, b) => {
-            return yAccessor(b.datum) - yAccessor(a.datum);
-          }
+          (a, b) => yAccessor(b.datum) - yAccessor(a.datum)
         );
         const nearest = tooltipData?.nearestDatum?.datum;
-        const eventsInRange = eventData.reduce((eventsInRange, event) => {
-          if (
-            isEventInRange(
-              { start: new Date(nearest.date), end: new Date(nearest.date) },
-              event
-            )
-          ) {
-            eventsInRange.push(event);
-          }
-          return eventsInRange;
-        }, []);
+        const nearestDate = parseDate(nearest.date);
+        const eventsInRange = eventData.filter((event) => {
+          const range = { start: nearestDate, end: nearestDate };
+          return isEventInRange(range, event);
+        });
         return (
-          <Paper elevation={2}>
-            <Box clone p={2} pb={0} bt={"none"}>
-              <Typography variant="h2">
-                {xTooltipFormatter(parseDate(nearest.date))}
-              </Typography>
-            </Box>
-            <Stack between="sm" direction="vertical" around="md">
-              {entries.map(({ key, datum }) => (
-                <Stat
-                  key={key}
-                  label={datum.name}
-                  value={yFormatter(yAccessor(datum))}
-                  minWidth={200}
-                >
-                  <svg
-                    width="8"
-                    height="8"
-                    style={{ marginLeft: "auto", marginRight: 8 }}
-                  >
-                    <circle r="4" cx="4" cy="4" fill={datum.color} />
-                  </svg>
-                </Stat>
-              ))}
-            </Stack>
-            {eventsInRange.length > 0 && (
-              <Stack between="sm" direction="vertical" around="md">
-                {eventsInRange?.map((event, i) => (
-                  <TimeSeriesEvent
-                    key={event.name}
-                    radius={9}
-                    mt={i === 0 ? 0 : 2}
-                    {...event}
-                  />
-                ))}
-              </Stack>
-            )}
-          </Paper>
+          <TimeSeriesTooltip
+            events={eventsInRange}
+            entries={entries}
+            date={xTooltipFormatter(nearestDate)}
+            yFormatter={yFormatter}
+            yAccessor={yAccessor}
+          />
         );
       };
   return (

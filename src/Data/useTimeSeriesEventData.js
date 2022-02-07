@@ -3,7 +3,7 @@ import { csvParse } from "d3-dsv";
 import { EVENT_COLORS } from "../Dashboard/constants";
 
 /**
- *
+ * Fetches events from a csv file in the repo
  */
 export const fetchEvents = (url) => {
   if (!url) return Promise.reject("no url provided for series event data");
@@ -21,11 +21,6 @@ export const fetchEvents = (url) => {
     });
 };
 
-/**
- *
- */
-export function useTimeSeriesEventData() {
-  return useQuery("events", () =>
-    fetchEvents("/assets/time-series-events.csv")
-  );
+export function useTimeSeriesEventData(dataUrl) {
+  return useQuery(dataUrl, () => fetchEvents(dataUrl));
 }

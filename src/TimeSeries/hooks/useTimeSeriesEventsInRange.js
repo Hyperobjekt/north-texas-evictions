@@ -1,35 +1,42 @@
 import { useTimeSeriesEventData } from "../../Data/useTimeSeriesEventData";
 import { isEventInRange } from "../utils";
-import { useDashboardDateRange } from "../../Dashboard";
+import { useDashboardDateRange, parseDate } from "../../Dashboard";
 import { EVENT_COLORS } from "../../Dashboard/constants";
 
-export default function useTimeSeriesEventsInRange() {
-  const eventsInRange = (events, range) => {
-    const rangeDates = { start: new Date(range[0]), end: new Date(range[1]) };
-    const dates = events.reduce((dates, event) => {
+/**
+ * Returns events that fall within the given date range
+ * @param {*} events
+ * @param {*} range
+ * @returns
+ */
+const getEventsInRange = (events, range) => {
+  const rangeDates = { start: parseDate(range[0]), end: parseDate(range[1]) };
+  return events
+    .reduce((dates, event) => {
       const eventDates = {
-        start: new Date(event.start),
-        end: new Date(event.end),
+        start: parseDate(event.start),
+        end: parseDate(event.end),
       };
-      if (isEventInRange(eventDates, rangeDates)) {
-        const color = event.color;
-        const id = event.id;
-        const name = event.name;
-        dates.push({ ...eventDates, color, id, name });
-      }
+      if (isEventInRange(eventDates, rangeDates))
+        dates.push({ ...event, ...eventDates });
       return dates;
-    }, []);
-    return dates.map((date, index) => {
-      return {
-        ...date,
-        id: index + 1,
-        color: EVENT_COLORS[index % EVENT_COLORS.length],
-      };
-    });
-  };
-  const events = useTimeSeriesEventData().data;
+    }, [])
+    .map((date, index) => ({
+      ...date,
+      id: index + 1,
+      color: EVENT_COLORS[index % EVENT_COLORS.length],
+    }));
+};
+
+/**
+ * Returns events that are within the current active range
+ */
+export default function useTimeSeriesEventsInRange() {
+  const dataUrl =
+    process.env.REACT_APP_EVENTS_ENDPOINT || "./assets/NTEP_events.csv";
+  const events = useTimeSeriesEventData(dataUrl).data;
   const [activeDateRange] = useDashboardDateRange();
-  const data =
-    events && activeDateRange ? eventsInRange(events, activeDateRange) : [];
-  return data;
+  return events && activeDateRange
+    ? getEventsInRange(events, activeDateRange)
+    : [];
 }
