@@ -106,14 +106,16 @@ export function groupByMonth(data, metric = "ef") {
   const grouped = {};
   data.forEach((d) => {
     //dates are converted to local time, add timezone offset to get UTC
-    const date = new Date(d.date + "T00:00:00");
+    const date = parseDate(d.date);
     const month = date.getMonth();
     const year = date.getFullYear();
     const key = `${year}-${month + 1}`;
     if (!grouped[key]) {
       grouped[key] = {
         ...d,
-        date: formatDate(new Date(date.getFullYear(), date.getMonth(), 1, 12)),
+        date: formatDate(
+          parseDate(`${date.getFullYear()}-${date.getMonth()}-1`)
+        ),
         [metric]: 0,
       };
     }
@@ -263,8 +265,7 @@ export const createTiers = (events) => {
 };
 
 export const processDates = (events, range) => {
-  const rangeDates = { start: new Date(range[0]), end: new Date(range[1]) };
-  console.log(events);
+  const rangeDates = { start: parseDate(range[0]), end: parseDate(range[1]) };
   const dates = events.reduce((dates, event) => {
     const start =
       event.start < rangeDates.start ? rangeDates.start : event.start;

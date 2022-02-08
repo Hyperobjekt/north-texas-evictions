@@ -3,9 +3,10 @@ import { extent, max } from "d3-array";
 import { LinePath } from "@visx/shape";
 import { scaleTime, scaleLinear } from "@visx/scale";
 import { curveMonotoneX } from "d3-shape";
+import { parseDate } from "../../Dashboard";
 
 // data accessors
-const getX = (d) => new Date(`${d.date}T00:00:00`);
+const getX = (d) => parseDate(d.date);
 const getY = (d) => Number(d.ef);
 
 const TrendLine = ({
