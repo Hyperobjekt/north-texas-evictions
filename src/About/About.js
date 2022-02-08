@@ -6,7 +6,7 @@ import { Body, Header, Page } from "../App";
 import { Block } from "@hyperobjekt/material-ui-website";
 import clsx from "clsx";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import { DownloadButton } from "../Cards/Cards";
+import { DownloadDataButton } from "../Data";
 
 const styles = (theme) => ({
   root: {
@@ -461,7 +461,7 @@ const About = ({ props, classes }) => {
                   </Typography>
                 </li>
               </ul>
-              <DownloadButton style={{ width: 200 }} />
+              <DownloadDataButton style={{ width: 200 }} />
             </Box>
           </Box>
         </Section>

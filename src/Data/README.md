@@ -22,17 +22,3 @@ example:
   ...
 }
 ```
-
-## `useDataStatus()`
-
-Provides an object containing overall data status. Status is pulled from the `react-query` status.
-
-example:
-
-```js
-{
-  isReady: true // true when `choropleth` and `bubble` data collections have successfully loaded,
-  bubble: "success",
-  choropleth: "success"
-}
-```

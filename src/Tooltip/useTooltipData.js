@@ -1,5 +1,5 @@
 import { useMapStore } from "@hyperobjekt/mapbox";
-import useBubblesData from "../Data/useBubblesData";
+import { useBubblesData } from "../Data";
 
 /**
  * Returns the data corresponding to the hovered location

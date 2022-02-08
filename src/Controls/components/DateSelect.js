@@ -29,6 +29,10 @@ const isValidDate = (dateString, dateRange) => {
   return date >= startDate && date <= endDate;
 };
 
+function isValidDateObject(d) {
+  return d instanceof Date && !isNaN(d);
+}
+
 /**
  * Start/end date picker
  */
@@ -43,6 +47,7 @@ const DateSelect = ({ type = "start", classes, ...props }) => {
   );
   const isStart = type === "start";
   const handleChange = (date) => {
+    if (!isValidDateObject(date)) return;
     const value = format(date, "yyyy-MM-dd");
     if (isValidDate(value, dateRange)) {
       isStart

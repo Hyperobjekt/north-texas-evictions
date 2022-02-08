@@ -38,7 +38,7 @@ const Null = () => null;
  * Displays a difference value along with colors and an icon indicating
  * whether the value is increasing or decreasing.
  */
-const Diff = ({ classes, className, value, ...props }) => {
+const StatDiff = ({ classes, className, value, ...props }) => {
   const increase = value > 0;
   const decrease = value < 0;
   const neutral = value === 0;
@@ -46,15 +46,15 @@ const Diff = ({ classes, className, value, ...props }) => {
   return (
     <Box
       className={clsx(
-        "HypDiff-root",
+        "HypStatDiff-root",
         classes.root,
         {
           [classes.increase]: increase,
-          "HypDiff-increase": increase,
+          "HypStatDiff-increase": increase,
           [classes.decrease]: decrease,
-          "HypDiff-decrease": decrease,
+          "HypStatDiff-decrease": decrease,
           [classes.neutral]: neutral,
-          "HypDiff-neutral": neutral,
+          "HypStatDiff-neutral": neutral,
         },
         className
       )}
@@ -62,12 +62,12 @@ const Diff = ({ classes, className, value, ...props }) => {
       alignItems="center"
       {...props}
     >
-      <Icon className={clsx("HypDiff-icon", classes.icon)} />
+      <Icon className={clsx("HypStatDiff-icon", classes.icon)} />
       {Math.abs(value)}
     </Box>
   );
 };
 
-Diff.propTypes = {};
+StatDiff.propTypes = {};
 
-export default withStyles(styles, { name: "HypDiff" })(Diff);
+export default withStyles(styles, { name: "HypStatDiff" })(StatDiff);

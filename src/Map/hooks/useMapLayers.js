@@ -4,12 +4,12 @@ import {
   DEFAULT_BUBBLE_COLOR,
   DEFAULT_CHOROPLETH_COLORS,
 } from "../../Dashboard/constants";
-import useDashboardStore from "../../Dashboard/hooks/useDashboardStore";
 import shallow from "zustand/shallow";
-import useDataExtents from "../../Data/useDataExtents";
 import { getScales } from "@hyperobjekt/legend/lib/Scales/utils";
 import { usePinnedLayers } from "../../Locations";
 import { getAdjustedScaleOptions } from "../../Data/utils";
+import { useDashboardStore } from "../../Dashboard";
+import { useDataExtents } from "../../Data";
 
 /**
  * Returns an array of from / to values with the given number of steps between.

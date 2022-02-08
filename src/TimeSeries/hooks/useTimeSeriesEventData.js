@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { csvParse } from "d3-dsv";
-import { EVENT_COLORS } from "../Dashboard/constants";
+import { EVENT_COLORS } from "../../Dashboard/constants";
 
 /**
  * Fetches events from a csv file in the repo

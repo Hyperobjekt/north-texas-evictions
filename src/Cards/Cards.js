@@ -2,46 +2,15 @@ import React, { useLayoutEffect } from "react";
 import MapLegendCard from "../Map/components/MapLegendCard";
 import EvictionSummaryCard from "./components/EvictionSummaryCard";
 import LocationsCard from "../Locations/components/LocationsCard";
-import { DataFlags, useDataFlags } from "../Flags";
+import { DataFlags, useDataFlags } from "../Data";
 import { useDashboardStore } from "../Dashboard";
 import { animated, useSpring } from "react-spring";
-import { Box, Button } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import useMediaQueries from "../App/hooks/useMediaQueries";
 import RankingsCard from "./components/RankingsCard";
 import TimeSeriesEventsCard from "../TimeSeries/components/TimeSeriesEventsCard";
-import DownloadIcon from "@material-ui/icons/GetApp";
-
-const StyledButton = withStyles({
-  root: {
-    borderRadius: 6,
-    paddingRight: 12,
-    paddingLeft: 16,
-  },
-  label: {
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-})(Button);
-
-export const DownloadButton = (props) => {
-  return (
-    <StyledButton
-      component="a"
-      fullWidth
-      variant="contained"
-      color="secondary"
-      href="https://github.com/childpovertyactionlab/cpal-evictions/blob/production/filing%20data/NTEP_datadownload.csv?raw=true"
-      download
-      target="_blank"
-      referrerPolicy="no-referrer"
-      {...props}
-    >
-      <span>Download Raw Data</span>
-      <DownloadIcon />
-    </StyledButton>
-  );
-};
+import { DownloadDataButton } from "../Data";
 
 const AnimatedStack = animated(Box);
 
@@ -99,7 +68,7 @@ const MapCards = ({ active, ...props }) => {
       <LocationsCard />
       <EvictionSummaryCard />
       <RankingsCard />
-      <DownloadButton />
+      <DownloadDataButton />
     </StyledStack>
   );
 };
@@ -146,7 +115,7 @@ const TimeSeriesCards = ({ active, ...props }) => {
       <LocationsCard />
       <EvictionSummaryCard />
       <TimeSeriesEventsCard />
-      <DownloadButton />
+      <DownloadDataButton />
     </StyledStack>
   );
 };

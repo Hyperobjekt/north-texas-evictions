@@ -1,13 +1,12 @@
 import React from "react";
 import { Box, Typography, withStyles } from "@material-ui/core";
 import { useTooltipData } from "../../Tooltip";
-import useDataExtents from "../../Data/useDataExtents";
 import { Scale, useScaleContext } from "@hyperobjekt/legend";
 import { DEFAULT_CHOROPLETH_COLORS } from "../../Dashboard/constants";
-import useFormatter from "../../Dashboard/hooks/useFormatter";
 import { useLang } from "../../Language";
-import useDashboardChoropleth from "../../Dashboard/hooks/useDashboardChoropleth";
 import { getAdjustedScaleOptions } from "../../Data/utils";
+import { useDashboardChoropleth, useFormatter } from "../../Dashboard";
+import { useDataExtents } from "../../Data";
 
 const styles = (theme) => ({
   root: {
@@ -42,7 +41,10 @@ const ChoroplethLegend = (props) => {
   const extents = useDataExtents();
   const scaleType = choroplethConfig?.scale || "continuous";
   const scaleColors = choroplethConfig?.colors || DEFAULT_CHOROPLETH_COLORS;
-  const scaleOptions = getAdjustedScaleOptions(extents?.[activeChoropleth]?.[2], choroplethConfig?.scaleOptions || {});
+  const scaleOptions = getAdjustedScaleOptions(
+    extents?.[activeChoropleth]?.[2],
+    choroplethConfig?.scaleOptions || {}
+  );
   const width = 144;
   const activeValue = tooltipData && tooltipData[activeChoropleth];
   const margin = { left: 16, right: 16, top: 0, bottom: 2 };

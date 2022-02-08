@@ -1,7 +1,7 @@
 import { useFlyToBounds } from "@hyperobjekt/mapbox";
 import bbox from "@turf/bbox";
 import { useCallback } from "react";
-import useChoroplethData from "../../Data/useChoroplethData";
+import { useChoroplethData } from "../../Data";
 
 /**
  * Returns a callback function that will fly to map to the bounds of the current region
