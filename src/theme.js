@@ -12,7 +12,7 @@ const DARK_FOCUS_STATE = {
 
 const SECONDARY = "#008097";
 
-const fontFamily = `"franklin-gothic-urw", "Roboto", "Helvetica", "Arial", sans-serif`;
+export const fontFamily = `franklin-gothic-urw, Roboto, sans-serif`;
 const altFontFamily = `"degular", "Roboto", "Helvetica", "Arial", sans-serif`;
 
 export default createTheme({

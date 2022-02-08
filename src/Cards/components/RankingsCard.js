@@ -4,7 +4,7 @@ import {
   Card,
   useDashboardStore,
   useFormatter,
-  formatDateString,
+  formatDateRange,
 } from "../../Dashboard";
 import { useLang } from "../../Language";
 import { LocationName } from "../../Locations";
@@ -33,7 +33,7 @@ const RankingsCard = (props) => {
   ]);
   // pull current date range
   const dateRange = useDashboardStore((state) => state.activeDateRange);
-  const dateRangeLabel = formatDateString(...dateRange, { short: true }).join(
+  const dateRangeLabel = formatDateRange(...dateRange, { short: true }).join(
     " - "
   );
   // get summary card language
@@ -42,13 +42,11 @@ const RankingsCard = (props) => {
   const regionLabel = useLang(`REGION_${activeRegion}`);
   // pull the top locations for the current metric
   const topLocations = bubbleSource?.data?.features
-    ?.sort(
-      (a, b) => {
-        if (!a?.properties?.[activeBubble]) return 1;
-        if (!b?.properties?.[activeBubble]) return -1;
-        return b.properties[activeBubble] - a.properties[activeBubble]
-      }
-    )
+    ?.sort((a, b) => {
+      if (!a?.properties?.[activeBubble]) return 1;
+      if (!b?.properties?.[activeBubble]) return -1;
+      return b.properties[activeBubble] - a.properties[activeBubble];
+    })
     .slice(0, 5);
 
   // set hovered location when hovering locations in the list

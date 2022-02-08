@@ -23,6 +23,6 @@ export { default as useDashboardDefaults } from "./hooks/useDashboardDefaults";
 export {
   parseDate,
   formatDate,
-  formatDateString,
+  formatDateRange,
   getDateRangeLabel,
 } from "./utils";

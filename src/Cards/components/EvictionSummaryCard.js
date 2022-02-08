@@ -15,7 +15,7 @@ import {
   parseDate,
   useDashboardStore,
   useFormatter,
-  formatDateString,
+  formatDateRange,
 } from "../../Dashboard";
 import { useLang } from "../../Language";
 import useTrendSeries from "../../TimeSeries/hooks/useTrendSeries";
@@ -57,7 +57,7 @@ const EvictionSummaryCard = (props) => {
   const langKeys = [`METRIC_EF`, `SUMMARY_UPDATED`, `SUMMARY`];
   const [label, lastUpdated, title] = useLang(langKeys, {
     date: timeFormat("%b %e, %Y")(parseDate(dateRange[1])),
-    dateRange: formatDateString(...dateRange, { short: true }).join(" - "),
+    dateRange: formatDateRange(...dateRange, { short: true }).join(" - "),
   });
 
   // get stats and series for card

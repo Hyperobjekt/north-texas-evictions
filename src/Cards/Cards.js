@@ -9,6 +9,7 @@ import { Box } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import useMediaQueries from "../App/hooks/useMediaQueries";
 import RankingsCard from "./components/RankingsCard";
+import TimeSeriesEventsCard from "../TimeSeries/components/TimeSeriesEventsCard";
 
 const AnimatedStack = animated(Box);
 
@@ -111,6 +112,7 @@ const TimeSeriesCards = ({ active, ...props }) => {
     >
       <LocationsCard />
       <EvictionSummaryCard />
+      <TimeSeriesEventsCard />
     </StyledStack>
   );
 };
