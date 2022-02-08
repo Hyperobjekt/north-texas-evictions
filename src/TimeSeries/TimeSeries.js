@@ -2,7 +2,7 @@ import React from "react";
 import { Box } from "@material-ui/core";
 import TimeSeriesChart from "./components/TimeSeriesChart";
 import TimeSeriesTitle from "./components/TimeSeriesTitle";
-import { useDashboardStore } from "../Dashboard";
+import { parseDate, useDashboardStore } from "../Dashboard";
 import useTimeSeriesLines from "./hooks/useTimeSeriesLines";
 import useFormatter, { getFormatter } from "../Dashboard/hooks/useFormatter";
 import useTimeSeriesStore from "./hooks/useTimeSeriesStore";
@@ -11,7 +11,7 @@ import useXTickFormatter from "./hooks/useXTickFormatter";
 import TimeSeriesEventsLayer from "./components/TimeSeriesEventsLayer";
 import useTimeSeriesEventsInRange from "./hooks/useTimeSeriesEventsInRange";
 
-const xAccessor = (d) => d && new Date(`${d["date"]}T00:00:00`);
+const xAccessor = (d) => d && parseDate(d["date"]);
 
 const TimeSeries = (props) => {
   // show y series based on the current eviction bubble metric

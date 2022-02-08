@@ -16,8 +16,8 @@ const EventRange = ({ event, xScale, tier, top: topPos, yScale }) => {
     <>
       <defs>
         <linearGradient id={`${id}-gradient`} x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stop-color={color} stop-opacity={0.07} />
-          <stop offset="100%" stop-color="transparent" />
+          <stop offset="0%" stopColor={color} stopOpacity={0.07} />
+          <stop offset="100%" stopColor="transparent" />
         </linearGradient>
       </defs>
       <g>
@@ -40,6 +40,7 @@ const EventRange = ({ event, xScale, tier, top: topPos, yScale }) => {
         {coords.map((coord, i) => {
           return (
             <EventMarker
+              key={i}
               cx={coord}
               cy={top}
               r={glyphRadius}

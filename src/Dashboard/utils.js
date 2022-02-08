@@ -1,8 +1,8 @@
-import { timeFormat, timeParse } from "d3-time-format";
+import { timeFormat } from "d3-time-format";
 
 export const formatDate = timeFormat("%Y-%m-%d");
 
-export const parseDate = timeParse("%Y-%m-%d");
+export const parseDate = (date) => new Date(date + "T00:00:00");
 
 export const formatDateString = (date, options = { short: false }) => {
   if (!date) return "";

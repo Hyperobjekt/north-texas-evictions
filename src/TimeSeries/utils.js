@@ -106,14 +106,16 @@ export function groupByMonth(data, metric = "ef") {
   const grouped = {};
   data.forEach((d) => {
     //dates are converted to local time, add timezone offset to get UTC
-    const date = new Date(d.date + "T00:00:00");
+    const date = parseDate(d.date);
     const month = date.getMonth();
     const year = date.getFullYear();
     const key = `${year}-${month + 1}`;
     if (!grouped[key]) {
       grouped[key] = {
         ...d,
-        date: formatDate(new Date(date.getFullYear(), date.getMonth(), 1, 12)),
+        date: formatDate(
+          new Date(date.getFullYear(), date.getMonth(), 1, 12, 0, 0, 0)
+        ),
         [metric]: 0,
       };
     }
@@ -220,10 +222,6 @@ export const doesEventOverlap = (eventDates, rangeDates) => {
   );
 };
 
-export const dateToString = (date) => {
-  return;
-};
-
 export const createTiers = (events) => {
   return events.reduce((tiers, event) => {
     let fits = null;
@@ -262,18 +260,16 @@ export const createTiers = (events) => {
   }, []);
 };
 
+/**
+ * Adjusts the start / end date of the event to fit within the range
+ * @param {*} events
+ * @param {*} range
+ * @returns
+ */
 export const processDates = (events, range) => {
-  const rangeDates = { start: new Date(range[0]), end: new Date(range[1]) };
-  console.log(events);
-  const dates = events.reduce((dates, event) => {
-    const start =
-      event.start < rangeDates.start ? rangeDates.start : event.start;
-    const end = event.end > rangeDates.end ? rangeDates.end : event.end;
-    const color = event.color;
-    const id = event.id;
-    const name = event.name;
-    dates.push({ start, end, color, id, name });
-    return dates;
-  }, []);
-  return dates;
+  return events.map((event) => {
+    const start = event.start < range[0] ? range[0] : event.start;
+    const end = event.end > range[1] ? range[1] : event.end;
+    return { ...event, start, end };
+  });
 };
