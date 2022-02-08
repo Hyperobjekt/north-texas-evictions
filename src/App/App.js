@@ -309,6 +309,7 @@ App.defaultProps = {
       SELECT_COURT: "Court",
       SELECT_DATE_RANGE: "Date Range",
       TITLE_DATA_OPTIONS: "Data Options",
+      TITLE_EVENTS: "Events Legend",
       SUMMARY: "Summary ({{dateRange}})",
       SUMMARY_UPDATED: "Data last updated on {{date}}.",
       LEGEND: "Map Legend",

@@ -2,6 +2,15 @@
 export const DEFAULT_CHOROPLETH_COLORS = ["#f0f7f9", "#a5d5db", "#008097"];
 export const DEFAULT_BUBBLE_COLOR = "#e98816";
 
+// time series events colors
+export const EVENT_COLORS = [
+  "#F07300",
+  "#666666",
+  "#CE0000",
+  "#a953cf",
+  "#0000CE",
+];
+
 export const TIME_COMPARISON_LINE_COLORS = [
   "#CCCCCC",
   "#9DC58F",

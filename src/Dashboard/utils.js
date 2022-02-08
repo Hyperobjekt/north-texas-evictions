@@ -1,8 +1,18 @@
-import { timeFormat, timeParse } from "d3-time-format";
+import { timeFormat } from "d3-time-format";
 
 export const formatDate = timeFormat("%Y-%m-%d");
 
-export const parseDate = timeParse("%Y-%m-%d");
+export const parseDate = (date) => new Date(date + "T00:00:00");
+
+export const formatDateString = (date, options = { short: false }) => {
+  if (!date) return "";
+  const startDate = parseDate(date);
+  return new Intl.DateTimeFormat("en-US", {
+    month: options.short ? "short" : "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(startDate);
+};
 
 /**
  * Formats the custom date range lable for the legend
@@ -10,16 +20,32 @@ export const parseDate = timeParse("%Y-%m-%d");
  * @param {*} end
  * @returns
  */
-export const formatDateString = (start, end, options = { short: false }) => {
+export const formatDateRange = (
+  start,
+  end,
+  options = { short: false, point: false }
+) => {
   if (!start || !end) return ["", ""];
+
   const startDate = parseDate(start);
   const endDate = parseDate(end);
+
+  //if not formatting a date range
+  if (options.point) {
+    return new Intl.DateTimeFormat("en-US", {
+      month: options.short ? "short" : "long",
+      day: "numeric",
+      year: "numeric",
+    }).format(startDate);
+  }
 
   const startDateLabel = new Intl.DateTimeFormat("en-US", {
     month: options.short ? "short" : "long",
     day: "numeric",
     year:
-      startDate.getFullYear() === endDate.getFullYear() ? undefined : "numeric",
+      startDate?.getFullYear() === endDate?.getFullYear()
+        ? undefined
+        : "numeric",
   }).format(startDate);
   const endDateLabel = new Intl.DateTimeFormat("en-US", {
     month: options.short ? "short" : "long",
@@ -48,7 +74,7 @@ export const getDateRangeLabel = (start, end, dateOptions) => {
     return option.value[0] === start && option.value[1] === end;
   });
   if (!selectedOption)
-    return ["between", formatDateString(start, end).join(" and ")];
+    return ["between", formatDateRange(start, end).join(" and ")];
   if (selectedOption.id === "alltime") return ["for", "all time"];
   if (selectedOption.id === "2020") return ["", "since 2020"];
   return ["in the", selectedOption.label];

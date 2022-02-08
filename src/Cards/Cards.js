@@ -5,10 +5,42 @@ import LocationsCard from "../Locations/components/LocationsCard";
 import { DataFlags, useDataFlags } from "../Flags";
 import { useDashboardStore } from "../Dashboard";
 import { animated, useSpring } from "react-spring";
-import { Box } from "@material-ui/core";
+import { Box, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import useMediaQueries from "../App/hooks/useMediaQueries";
 import RankingsCard from "./components/RankingsCard";
+import TimeSeriesEventsCard from "../TimeSeries/components/TimeSeriesEventsCard";
+import DownloadIcon from "@material-ui/icons/GetApp";
+
+const StyledButton = withStyles({
+  root: {
+    borderRadius: 6,
+    paddingRight: 12,
+    paddingLeft: 16,
+  },
+  label: {
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+})(Button);
+
+const DownloadButton = () => {
+  return (
+    <StyledButton
+      component="a"
+      fullWidth
+      variant="contained"
+      color="secondary"
+      href="https://github.com/childpovertyactionlab/cpal-evictions/blob/production/filing%20data/NTEP_datadownload.csv?raw=true"
+      download
+      target="_blank"
+      referrerPolicy="no-referrer"
+    >
+      <span>Download Raw Data</span>
+      <DownloadIcon />
+    </StyledButton>
+  );
+};
 
 const AnimatedStack = animated(Box);
 
@@ -66,6 +98,7 @@ const MapCards = ({ active, ...props }) => {
       <LocationsCard />
       <EvictionSummaryCard />
       <RankingsCard />
+      <DownloadButton />
     </StyledStack>
   );
 };
@@ -111,6 +144,8 @@ const TimeSeriesCards = ({ active, ...props }) => {
     >
       <LocationsCard />
       <EvictionSummaryCard />
+      <TimeSeriesEventsCard />
+      <DownloadButton />
     </StyledStack>
   );
 };
