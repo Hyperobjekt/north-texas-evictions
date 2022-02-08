@@ -24,7 +24,7 @@ const StyledButton = withStyles({
   },
 })(Button);
 
-const DownloadButton = () => {
+export const DownloadButton = (props) => {
   return (
     <StyledButton
       component="a"
@@ -35,6 +35,7 @@ const DownloadButton = () => {
       download
       target="_blank"
       referrerPolicy="no-referrer"
+      {...props}
     >
       <span>Download Raw Data</span>
       <DownloadIcon />
