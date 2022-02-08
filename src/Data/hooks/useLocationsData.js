@@ -1,12 +1,12 @@
 import { useQuery } from "react-query";
-import { EVICTION_DATA_ENDPOINT } from "../Dashboard/constants";
-import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
-import { useLocationStore } from "../Locations";
-import { getFeatureProp, getRegionFromFeature } from "../Locations/utils";
-import { fillSeries, getAvgDiffs } from "./utils";
+import { EVICTION_DATA_ENDPOINT } from "../../Dashboard/constants";
+import { useLocationStore } from "../../Locations";
+import { getFeatureProp, getRegionFromFeature } from "../../Locations/utils";
+import { fillSeries, getAvgDiffs } from "../utils";
 import booleanWithin from "@turf/boolean-within";
 import flatten from "@turf/flatten";
 import { sum } from "d3-array";
+import { useDashboardStore } from "../../Dashboard";
 
 /**
  * Returns true if feat2 is contained within feat1.

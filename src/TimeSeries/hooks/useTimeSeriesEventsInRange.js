@@ -1,4 +1,4 @@
-import { useTimeSeriesEventData } from "../../Data/useTimeSeriesEventData";
+import { useTimeSeriesEventData } from "./useTimeSeriesEventData";
 import { isEventInRange } from "../utils";
 import { useDashboardDateRange, parseDate } from "../../Dashboard";
 import { EVENT_COLORS } from "../../Dashboard/constants";

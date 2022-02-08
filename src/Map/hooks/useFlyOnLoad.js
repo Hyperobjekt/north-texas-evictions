@@ -2,7 +2,7 @@ import { useFlyToBounds } from "@hyperobjekt/mapbox";
 import bbox from "@turf/bbox";
 import { useRef, useEffect } from "react";
 import { useDashboardStore } from "../../Dashboard";
-import useChoroplethData from "../../Data/useChoroplethData";
+import { useChoroplethData } from "../../Data";
 import { parseRoute } from "../../HashRouter";
 
 export default function useFlyOnLoad() {

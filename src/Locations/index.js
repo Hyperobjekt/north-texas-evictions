@@ -10,3 +10,5 @@ export { default as useLocationStore } from "./hooks/useLocationStore";
 export { default as usePinnedLayers } from "./hooks/usePinnedLayers";
 export { default as usePinnedSource } from "./hooks/usePinnedSource";
 export { default as useSelectedLocation } from "./hooks/useSelectedLocations";
+export { default as useLocationColors } from "./hooks/useLocationColors";
+export { default as useLocationSeries } from "./hooks/useLocationSeries";

@@ -7,7 +7,6 @@ import {
   Tooltip,
 } from "@material-ui/core";
 import { timeFormat } from "d3-time-format";
-import useSummaryData from "../../Data/useSummaryData";
 import { useLocationStore } from "../../Locations";
 import {
   Card,
@@ -20,8 +19,8 @@ import {
 import { useLang } from "../../Language";
 import useTrendSeries from "../../TimeSeries/hooks/useTrendSeries";
 import useSummaryStats from "../../Locations/hooks/useSummaryStats";
-import useLocationsData from "../../Data/useLocationsData";
 import shallow from "zustand/shallow";
+import { useLocationsData, useSummaryData } from "../../Data";
 
 // metrics to show on the summary card
 const SUMMARY_METRICS = ["avg7", "avg30", "efr", "tfa"];

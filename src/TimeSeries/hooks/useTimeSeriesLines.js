@@ -2,10 +2,12 @@ import { useEffect } from "react";
 import { groupByMonth, groupByWeek, movingAverage } from "..";
 import { parseDate, useDashboardStore } from "../../Dashboard";
 import { ALL_DATA_COLOR } from "../../Dashboard/constants";
-import useSummaryData from "../../Data/useSummaryData";
-import { useLocationStore } from "../../Locations";
-import useLocationColors from "../../Locations/hooks/useLocationColors";
-import useLocationSeries from "../../Locations/hooks/useLocationSeries";
+import { useSummaryData } from "../../Data";
+import {
+  useLocationStore,
+  useLocationColors,
+  useLocationSeries,
+} from "../../Locations";
 import {
   getFeatureProp,
   getSubLocationColor,

@@ -1,7 +1,7 @@
 import bbox from "@turf/bbox";
 import { useQueries, useQuery } from "react-query";
-import { useDashboardStore } from "../Dashboard";
-import { addFeatureIds, extractExtentsFromGeojson } from "./utils";
+import { useDashboardStore } from "../../Dashboard";
+import { addFeatureIds, extractExtentsFromGeojson } from "../utils";
 
 /**
  * Fetches bubble GeoJSON and returns and object
