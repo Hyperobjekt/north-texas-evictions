@@ -11,7 +11,9 @@ import { getDailyAverage } from "../TimeSeries/utils";
  */
 export const fillSeries = (series, start, end) => {
   // array of all days between start and end, starting with the most recent
-  const allDays = timeDay.range(parseDate(start), parseDate(end)).reverse();
+  const allDays = timeDay
+    .range(parseDate(start), timeDay.offset(parseDate(end), 1))
+    .reverse();
   const result = [];
   allDays.forEach((day) => {
     const date = day.toISOString().slice(0, 10);
