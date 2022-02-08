@@ -51,8 +51,9 @@ const TimeSeries = (props) => {
       <TimeSeriesTitle />
       <Box
         boxSizing="border-box"
-        pl={3}
+        pl={1}
         flex={1}
+        pt={1}
         height={`calc(100% - 64px)`}
         style={{ touchAction: "none" }}
         className="time-series__chart"

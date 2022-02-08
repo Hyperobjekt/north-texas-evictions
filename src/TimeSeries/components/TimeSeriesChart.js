@@ -112,7 +112,7 @@ const TimeSeriesChart = ({
     <>
       <XYChart
         xScale={{ type: "time" }}
-        yScale={{ type: "" }}
+        yScale={{ type: "linear", zero: true }}
         theme={customTheme}
         {...props}
       >
@@ -120,8 +120,9 @@ const TimeSeriesChart = ({
           orientation="bottom"
           numTicks={5}
           tickFormat={xTickFormatter}
-          strokeWidth={4}
-          hideAxisLine
+          stroke="#ccc"
+          tickStroke="#ccc"
+          strokeWidth={1}
         />
         <AnimatedAxis
           orientation="left"

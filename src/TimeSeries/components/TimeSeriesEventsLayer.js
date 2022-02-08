@@ -6,7 +6,6 @@ import { createTiers, processDates } from "../utils";
 const EventRange = ({ event, xScale, tier, top: topPos, yScale }) => {
   const color = event.color;
   const coords = [xScale(event.start), xScale(event.end)];
-  console.log(xScale(new Date("2021-01-22")));
   const id = event.id;
   const glyphRadius = 9;
   const tierModifier = (glyphRadius + 1) * 2 * tier;
@@ -71,7 +70,7 @@ const EventPoint = ({ event, xScale, tier, top: topPos, yScale }) => {
         x1={start}
         x2={start}
         y1={top}
-        y2={yScale(0) - 15}
+        y2={yScale(0)}
         stroke={color}
         strokeWidth={2}
         strokeDasharray={"4,4"}
@@ -88,7 +87,7 @@ const TimeSeriesEventsLayer = ({ events }) => {
   const { yScale, xScale, margin } = useContext(DataContext);
   if (!xScale || !margin?.top) return null;
   const eventsSeries = processDates(events, xScale.domain());
-  const top = margin.top + 10;
+  const top = margin.top;
   const tiers = createTiers(eventsSeries);
   if (tiers.length === 0) return null;
   return (
