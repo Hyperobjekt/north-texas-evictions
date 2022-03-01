@@ -45,7 +45,7 @@ const weekTooltipFormat = (date) => {
 // month tooltip formatter
 const monthTooltipFormat = (includeYear) => {
   return includeYear ? timeFormat("%B %Y") : timeFormat("%B");
-}
+};
 
 /**
  * Returns a x tick formatter function for the provided group type
@@ -102,24 +102,37 @@ export function groupByWeek(data, metric = "ef") {
 /**
  * Accepts data by day and aggregates it by month
  */
- export function groupByMonth(data, metric = "ef") {
+export function groupByMonth(data, metric = "ef", options = {}) {
+  options.skipCurrentMonth = options.skipCurrentMonth || true;
   const grouped = {};
+  const currentDate = new Date();
+  const currentMonthKey =
+    currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1);
   data.forEach((d) => {
     //dates are converted to local time, add timezone offset to get UTC
-    const date = new Date(d.date+"T00:00:00");
+    const date = parseDate(d.date);
     const month = date.getMonth();
     const year = date.getFullYear();
     const key = `${year}-${month + 1}`;
+    // do not add current month if skipCurrentMonth is true
+    if (options.skipCurrentMonth && key === currentMonthKey) return;
+    // create the base entry for the year-month if it doesn't exist
     if (!grouped[key]) {
       grouped[key] = {
         ...d,
-        date: formatDate(new Date(date.getFullYear(), date.getMonth(), 1, 12)),
+        date: formatDate(
+          new Date(date.getFullYear(), date.getMonth(), 1, 12, 0, 0, 0)
+        ),
         [metric]: 0,
       };
     }
+    // sum the metric value
     if (d[metric]) grouped[key][metric] += d[metric];
   });
-  return Object.values(grouped).sort((a, b) => (a.date > b.date ? -1 : 1));
+  const result = Object.values(grouped).sort((a, b) =>
+    a.date > b.date ? -1 : 1
+  );
+  return result;
 }
 
 /**
@@ -189,3 +202,85 @@ export const getDailyAverage = (metric, data, n = 7, offset = 0) => {
 
 export const getDaysBetween = (dateRange) =>
   timeDay.count(...dateRange.map(parseDate));
+
+/**
+ * Returns false if the eventDates date range falls outside
+ * of the rangeDates date range, or true if there is some overlap.
+ * @param {Date} eventDates
+ * @param {Date} rangeDates
+ * @returns
+ */
+export const isEventInRange = (eventDates, rangeDates) => {
+  return !(
+    (eventDates.start < rangeDates.start &&
+      eventDates.end < rangeDates.start) ||
+    (eventDates.start > rangeDates.end && eventDates.end > rangeDates.end)
+  );
+};
+
+export const doesEventOverlap = (eventDates, rangeDates) => {
+  if (!isEventInRange(eventDates, rangeDates)) return false;
+  const isEventPoint =
+    eventDates.start.toISOString() === eventDates.end.toISOString();
+  const isRangePoint =
+    rangeDates.start.toISOString() === rangeDates.end.toISOString();
+  // if neither event nor range is a point, they overlap
+  if (!isEventPoint && !isRangePoint) return true;
+  // thus, the range or event is a point, and if one of their starts or ends is the same, they overlap
+  return (
+    eventDates.start.toISOString() === rangeDates.start.toISOString() ||
+    eventDates.end.toISOString() === rangeDates.end.toISOString()
+  );
+};
+
+export const createTiers = (events) => {
+  return events.reduce((tiers, event) => {
+    let fits = null;
+    //if the levels array has already been populated
+    if (tiers.length > 0) {
+      //check every tier in the tiers array
+      for (let index = 0; index < tiers.length; index++) {
+        const tier = tiers[index];
+        let isOverlapping = false;
+        //check every range in the current tier
+        for (let i = 0; i < tier.length; i++) {
+          const range = tier[i];
+          if (doesEventOverlap(event, range)) {
+            isOverlapping = true;
+            break;
+          }
+          //if none of the ranges in the tier overlap with the event (or if the event is a single date), set the fits var to the index of the tier and stop checking
+        }
+        if (!isOverlapping) {
+          fits = index;
+          break;
+        }
+      }
+      //if the fits var was set to a level index, add the event to that level
+      if (fits !== null) {
+        tiers[fits].push(event);
+        //else make a new level with the event
+      } else {
+        tiers.push([event]);
+      }
+      //if the levels array is empty, create a new level with the event
+    } else {
+      tiers.push([event]);
+    }
+    return tiers;
+  }, []);
+};
+
+/**
+ * Adjusts the start / end date of the event to fit within the range
+ * @param {*} events
+ * @param {*} range
+ * @returns
+ */
+export const processDates = (events, range) => {
+  return events.map((event) => {
+    const start = event.start < range[0] ? range[0] : event.start;
+    const end = event.end > range[1] ? range[1] : event.end;
+    return { ...event, start, end };
+  });
+};

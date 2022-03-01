@@ -14,6 +14,7 @@ import PropTypes from "prop-types";
 import { getXTooltipFormatter, getXTickFormatter } from "../TimeSeries/utils";
 import { useLocationStore } from "../Locations";
 import shallow from "zustand/shallow";
+import { parseDate } from "../Dashboard";
 
 export const styles = (theme) => ({});
 
@@ -30,7 +31,7 @@ const TimeComparison = ({ labelOverrides, compareToYear, feature }) => {
     view
   );
   const yAccessor = (d) => d?.ef;
-  const xAccessor = (d) => d && new Date(`${d["date"]}T00:00:00`);
+  const xAccessor = (d) => d && parseDate(d["date"]);
   const xTooltipFormatter = getXTooltipFormatter("monthly");
   const xTickFormatter = getXTickFormatter({
     group: "monthly",

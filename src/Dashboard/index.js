@@ -8,6 +8,7 @@ export { default as Panel } from "./components/Panel";
 export { default as Stat } from "./components/Stat";
 export { default as StatsSummary } from "./components/StatsSummary";
 export { default as StatWithSeries } from "./components/StatWithSeries";
+export { default as StatDiff } from "./components/StatDiff";
 
 // hooks
 export { default as useDashboardStore } from "./hooks/useDashboardStore";
@@ -23,6 +24,6 @@ export { default as useDashboardDefaults } from "./hooks/useDashboardDefaults";
 export {
   parseDate,
   formatDate,
-  formatDateString,
+  formatDateRange,
   getDateRangeLabel,
 } from "./utils";

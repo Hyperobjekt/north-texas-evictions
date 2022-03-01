@@ -1,8 +1,7 @@
 import { useMemo } from "react";
-import useDashboardRegion from "../../Dashboard/hooks/useDashboardRegion";
-import useBubblesData from "../../Data/useBubblesData";
-import useChoroplethData from "../../Data/useChoroplethData";
-import usePinnedSource from "../../Locations/hooks/usePinnedSource";
+import { useDashboardRegion } from "../../Dashboard";
+import { useBubblesData, useChoroplethData } from "../../Data";
+import { usePinnedSource } from "../../Locations";
 
 export default function useMapSources() {
   const bubble = useBubblesData();

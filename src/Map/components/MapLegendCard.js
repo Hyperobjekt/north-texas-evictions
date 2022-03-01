@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import { useLang } from "../../Language";
-import { BubbleLegend, ChoroplethLegend } from "../../Legend";
+import { BubbleLegend, ChoroplethLegend } from "../";
 import { Stack } from "@hyperobjekt/material-ui-website";
 import {
   Card,

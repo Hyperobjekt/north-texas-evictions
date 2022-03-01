@@ -1,8 +1,8 @@
 import { sum } from "d3-array";
 import { useQuery } from "react-query";
-import { EVICTION_DATA_ENDPOINT } from "../Dashboard/constants";
-import useDashboardStore from "../Dashboard/hooks/useDashboardStore";
-import { fillSeries, getAvgDiffs } from "./utils";
+import { EVICTION_DATA_ENDPOINT } from "../../Dashboard/constants";
+import useDashboardStore from "../../Dashboard/hooks/useDashboardStore";
+import { fillSeries, getAvgDiffs } from "../utils";
 
 // TODO: sum together the county rhh values to get this number
 let RENTER_HOUSEHOLDS = 119335 + 464121 + 101387 + 279622;

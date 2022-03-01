@@ -7,7 +7,6 @@ import {
   Tooltip,
 } from "@material-ui/core";
 import { timeFormat } from "d3-time-format";
-import useSummaryData from "../../Data/useSummaryData";
 import { useLocationStore } from "../../Locations";
 import {
   Card,
@@ -15,13 +14,13 @@ import {
   parseDate,
   useDashboardStore,
   useFormatter,
-  formatDateString,
+  formatDateRange,
 } from "../../Dashboard";
 import { useLang } from "../../Language";
 import useTrendSeries from "../../TimeSeries/hooks/useTrendSeries";
 import useSummaryStats from "../../Locations/hooks/useSummaryStats";
-import useLocationsData from "../../Data/useLocationsData";
 import shallow from "zustand/shallow";
+import { useLocationsData, useSummaryData } from "../../Data";
 
 // metrics to show on the summary card
 const SUMMARY_METRICS = ["avg7", "avg30", "efr", "tfa"];
@@ -57,7 +56,7 @@ const EvictionSummaryCard = (props) => {
   const langKeys = [`METRIC_EF`, `SUMMARY_UPDATED`, `SUMMARY`];
   const [label, lastUpdated, title] = useLang(langKeys, {
     date: timeFormat("%b %e, %Y")(parseDate(dateRange[1])),
-    dateRange: formatDateString(...dateRange, { short: true }).join(" - "),
+    dateRange: formatDateRange(...dateRange, { short: true }).join(" - "),
   });
 
   // get stats and series for card

@@ -2,14 +2,16 @@ import React from "react";
 import { Box } from "@material-ui/core";
 import TimeSeriesChart from "./components/TimeSeriesChart";
 import TimeSeriesTitle from "./components/TimeSeriesTitle";
-import { useDashboardStore } from "../Dashboard";
+import { parseDate, useDashboardStore } from "../Dashboard";
 import useTimeSeriesLines from "./hooks/useTimeSeriesLines";
 import useFormatter, { getFormatter } from "../Dashboard/hooks/useFormatter";
 import useTimeSeriesStore from "./hooks/useTimeSeriesStore";
 import { getXTooltipFormatter } from "./utils";
 import useXTickFormatter from "./hooks/useXTickFormatter";
+import TimeSeriesEventsLayer from "./components/TimeSeriesEventsLayer";
+import useTimeSeriesEventsInRange from "./hooks/useTimeSeriesEventsInRange";
 
-const xAccessor = (d) => d && new Date(`${d["date"]}T00:00:00`);
+const xAccessor = (d) => d && parseDate(d["date"]);
 
 const TimeSeries = (props) => {
   // show y series based on the current eviction bubble metric
@@ -27,6 +29,8 @@ const TimeSeries = (props) => {
   const lines = useTimeSeriesLines();
 
   const xTickFormatter = useXTickFormatter();
+
+  const eventsInRange = useTimeSeriesEventsInRange();
 
   return (
     <Box
@@ -47,8 +51,9 @@ const TimeSeries = (props) => {
       <TimeSeriesTitle />
       <Box
         boxSizing="border-box"
-        pl={3}
+        pl={1}
         flex={1}
+        pt={1}
         height={`calc(100% - 64px)`}
         style={{ touchAction: "none" }}
         className="time-series__chart"
@@ -60,7 +65,9 @@ const TimeSeries = (props) => {
           xTickFormatter={xTickFormatter}
           xTooltipFormatter={getXTooltipFormatter(group, true)}
           lines={lines}
-        />
+        >
+          <TimeSeriesEventsLayer events={eventsInRange} />
+        </TimeSeriesChart>
       </Box>
     </Box>
   );

@@ -7,8 +7,12 @@
   YARN_FLAGS = "--no-ignore-optional"
   REACT_APP_API_ENDPOINT = "https://sq4aq22yzb.execute-api.us-east-1.amazonaws.com/"
   REACT_APP_GEOJSON_ENDPOINT = "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/"
+  REACT_APP_EVENTS_ENDPOINT= "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/filing%20data/NTEP_events.csv"
   REACT_APP_MAPBOX_TOKEN = "pk.eyJ1IjoidW50ZCIsImEiOiJja2gyYzVxanQwMzhoMnFxcjlxZnUwMHkzIn0.xKV8oPfM6BUJ9EcpGqAwVQ"
   REACT_APP_MAPBOX_STYLE = "mapbox://styles/untd/cktapb92z086e17qvsxdkzvyf"
+  REACT_APP_VERSION = "3.1.1"
+  REACT_APP_DATA_DOWNLOAD="https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/main/filing%20data/NTEP_datadownload.csv"
 [context.production.environment]
   REACT_APP_API_ENDPOINT = "https://ihjhaky4k5.execute-api.us-east-1.amazonaws.com/"
   REACT_APP_GEOJSON_ENDPOINT = "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/production/"
+  REACT_APP_EVENTS_ENDPOINT= "https://raw.githubusercontent.com/childpovertyactionlab/cpal-evictions/production/filing%20data/NTEP_events.csv"

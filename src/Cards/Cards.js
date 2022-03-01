@@ -2,13 +2,15 @@ import React, { useLayoutEffect } from "react";
 import MapLegendCard from "../Map/components/MapLegendCard";
 import EvictionSummaryCard from "./components/EvictionSummaryCard";
 import LocationsCard from "../Locations/components/LocationsCard";
-import { DataFlags, useDataFlags } from "../Flags";
+import { DataFlags, useDataFlags } from "../Data";
 import { useDashboardStore } from "../Dashboard";
 import { animated, useSpring } from "react-spring";
 import { Box } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import useMediaQueries from "../App/hooks/useMediaQueries";
 import RankingsCard from "./components/RankingsCard";
+import TimeSeriesEventsCard from "../TimeSeries/components/TimeSeriesEventsCard";
+import { DownloadDataButton } from "../Data";
 
 const AnimatedStack = animated(Box);
 
@@ -66,6 +68,7 @@ const MapCards = ({ active, ...props }) => {
       <LocationsCard />
       <EvictionSummaryCard />
       <RankingsCard />
+      <DownloadDataButton />
     </StyledStack>
   );
 };
@@ -110,7 +113,9 @@ const TimeSeriesCards = ({ active, ...props }) => {
       {...props}
     >
       <LocationsCard />
+      <TimeSeriesEventsCard />
       <EvictionSummaryCard />
+      <DownloadDataButton />
     </StyledStack>
   );
 };

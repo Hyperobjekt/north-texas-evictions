@@ -1,7 +1,6 @@
-import useDashboardContext from "../Dashboard/hooks/useDashboardContext";
 import { timeDay } from "d3-time";
-import { useLang } from "../Language";
-import { parseDate } from "../Dashboard/utils";
+import { parseDate, useDashboardContext } from "../../Dashboard";
+import { useLang } from "../../Language";
 
 export default function useDataFlags() {
   const { activeBubble, activeDateRange } = useDashboardContext();

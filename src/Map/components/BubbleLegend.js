@@ -1,11 +1,10 @@
 import React from "react";
 import { Box, darken, lighten, useTheme, withStyles } from "@material-ui/core";
-import useDashboardContext from "../../Dashboard/hooks/useDashboardContext";
 import { useTooltipData } from "../../Tooltip";
 import { BubbleScale } from "@hyperobjekt/legend";
-import useDataExtents from "../../Data/useDataExtents";
 import { DEFAULT_BUBBLE_COLOR } from "../../Dashboard/constants";
-import useFormatter from "../../Dashboard/hooks/useFormatter";
+import { useDashboardContext, useFormatter } from "../../Dashboard";
+import { useDataExtents } from "../../Data";
 
 const styles = (theme) => ({
   root: {

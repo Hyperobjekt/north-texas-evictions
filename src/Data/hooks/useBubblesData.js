@@ -1,12 +1,11 @@
 import { useQuery } from "react-query";
-import { EVICTION_DATA_ENDPOINT } from "../Dashboard/constants";
-import useDashboardContext from "../Dashboard/hooks/useDashboardContext";
-import useDashboardRegion from "../Dashboard/hooks/useDashboardRegion";
+import { useDashboardDateRange, useDashboardRegion } from "../../Dashboard";
+import { EVICTION_DATA_ENDPOINT } from "../../Dashboard/constants";
 import {
   addDataToGeojson,
   addFeatureIds,
   extractExtentsFromGeojson,
-} from "./utils";
+} from "../utils";
 
 /**
  * Fetches bubble GeoJSON and returns and object
@@ -95,9 +94,7 @@ const fetchAllBubbleData = (params, geojsonUrl) => {
  * @returns { data: { geojson: object, extents: object }, status: string }
  */
 export default function useBubblesData() {
-  const {
-    activeDateRange: [start, end],
-  } = useDashboardContext();
+  const [[start, end]] = useDashboardDateRange();
   const [activeRegion, , regions] = useDashboardRegion();
 
   const region = regions.find((r) => r.id === activeRegion);
