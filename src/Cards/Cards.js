@@ -113,8 +113,8 @@ const TimeSeriesCards = ({ active, ...props }) => {
       {...props}
     >
       <LocationsCard />
-      <EvictionSummaryCard />
       <TimeSeriesEventsCard />
+      <EvictionSummaryCard />
       <DownloadDataButton />
     </StyledStack>
   );

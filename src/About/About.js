@@ -283,16 +283,10 @@ const About = ({ props, classes }) => {
                   </svg>
                 </Box>
                 <Typography className={classes.titleBody} variant="body1">
-                  The North Texas Eviction Project will release additional
-                  features monthly. In the meantime, the{" "}
-                  <a
-                    className={classes.link}
-                    href="https://childpovertyactionlab.org/eviction-dashboard"
-                  >
-                    Dallas County Eviction Filing Dashboard
-                  </a>{" "}
-                  is still live and might help with data questions that aren't
-                  yet answered here.
+                  NTEP makes local eviction data accessible and actionable so
+                  that frontline providers, government and agency staff, and
+                  policymakers can activate upstream eviction solutions to keep
+                  families securely housed.
                 </Typography>
               </Box>
             </Grid>
@@ -429,12 +423,6 @@ const About = ({ props, classes }) => {
           <Box clone maxWidth="36em">
             <Box>
               <Typography>
-                NTEP makes local eviction data accessible and actionable so that
-                frontline providers, government and agency staff, and
-                policymakers can activate upstream eviction solutions to keep
-                families securely housed.
-                <br />
-                <br />
                 <span className={classes.bold}>
                   NTEP data has been used to:
                 </span>
