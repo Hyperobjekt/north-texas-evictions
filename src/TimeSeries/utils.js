@@ -102,14 +102,21 @@ export function groupByWeek(data, metric = "ef") {
 /**
  * Accepts data by day and aggregates it by month
  */
-export function groupByMonth(data, metric = "ef") {
+export function groupByMonth(data, metric = "ef", options = {}) {
+  options.skipCurrentMonth = options.skipCurrentMonth || true;
   const grouped = {};
+  const currentDate = new Date();
+  const currentMonthKey =
+    currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1);
   data.forEach((d) => {
     //dates are converted to local time, add timezone offset to get UTC
     const date = parseDate(d.date);
     const month = date.getMonth();
     const year = date.getFullYear();
     const key = `${year}-${month + 1}`;
+    // do not add current month if skipCurrentMonth is true
+    if (options.skipCurrentMonth && key === currentMonthKey) return;
+    // create the base entry for the year-month if it doesn't exist
     if (!grouped[key]) {
       grouped[key] = {
         ...d,
@@ -119,9 +126,13 @@ export function groupByMonth(data, metric = "ef") {
         [metric]: 0,
       };
     }
+    // sum the metric value
     if (d[metric]) grouped[key][metric] += d[metric];
   });
-  return Object.values(grouped).sort((a, b) => (a.date > b.date ? -1 : 1));
+  const result = Object.values(grouped).sort((a, b) =>
+    a.date > b.date ? -1 : 1
+  );
+  return result;
 }
 
 /**
