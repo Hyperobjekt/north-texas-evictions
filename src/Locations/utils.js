@@ -18,7 +18,26 @@ export const getRegionFromId = (id) => {
     case 11:
       return "tracts";
     default:
-      throw new Error(`No region for ID: ${id}`);
+      // TODO: formalize/simplify with client
+      // elem: 101 - 312;
+      // mid: 12, 42 - 100, 352 - 354;
+      // hi: 1 - 32, 388;
+      const idN = Number(id);
+      if (isNaN(idN)) {
+        throw new Error(`No region for ID: ${id}`);
+      } else if (idN >= 101 && idN <= 312) {
+        return "attendanceel";
+      } else if (idN >= 42 && idN <= 100) {
+        return "attendancemi";
+      } else if (idN >= 352 && idN <= 354) {
+        return "attendancemi";
+      } else if (idN >= 1 && idN <= 32) {
+        return "attendancehi";
+      } else if (idN === 388) {
+        return "attendancehi";
+      } else {
+        throw new Error(`No region for ID: ${id}`);
+      }
   }
 };
 
