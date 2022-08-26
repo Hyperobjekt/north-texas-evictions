@@ -15,6 +15,7 @@ export const getRegionFromId = (id) => {
       }[id[0]];
 
       if (region) return region;
+      break;
     case 5:
       return id.substring(0, 2) === "48" ? "counties" : "zips";
     case 6:
@@ -25,6 +26,8 @@ export const getRegionFromId = (id) => {
       return "districts";
     case 11:
       return "tracts";
+    default:
+      break;
   }
   throw new Error(`No region for ID: ${id}`);
 };
