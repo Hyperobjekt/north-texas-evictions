@@ -7,6 +7,15 @@ import { lighten } from "@material-ui/core";
  */
 export const getRegionFromId = (id) => {
   switch (id.length) {
+    case 4:
+      const region = {
+        1: "attendanceel",
+        2: "attendancemi",
+        3: "attendancehi",
+      }[id[0]];
+
+      if (region) return region;
+      break;
     case 5:
       return id.substring(0, 2) === "48" ? "counties" : "zips";
     case 6:
@@ -18,8 +27,9 @@ export const getRegionFromId = (id) => {
     case 11:
       return "tracts";
     default:
-      throw new Error(`No region for ID: ${id}`);
+      break;
   }
+  throw new Error(`No region for ID: ${id}`);
 };
 
 /**

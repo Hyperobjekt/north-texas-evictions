@@ -6,6 +6,7 @@ import { withStyles } from "@material-ui/styles";
 import { Stack } from "@hyperobjekt/material-ui-website";
 import CloseIcon from "@material-ui/icons/Close";
 import useMediaQueries from "../../App/hooks/useMediaQueries";
+import { HEADER_HEIGHT } from "../../theme";
 
 const styles = (theme) => ({
   root: {
@@ -19,7 +20,7 @@ const styles = (theme) => ({
   right: {},
   float: {
     position: "fixed",
-    top: 64,
+    top: HEADER_HEIGHT,
     maxHeight: "calc(100% - 64px)",
     "&$right": {
       right: 0,
@@ -46,14 +47,18 @@ const styles = (theme) => ({
   },
   header: {
     padding: theme.spacing(2, 3, 2, 3),
-    height: 64,
+    height: HEADER_HEIGHT,
     borderBottom: `1px solid ${theme.palette.divider}`,
     boxSizing: "border-box",
+  },
+  title: {
+    // so icons don't obscure name
+    paddingRight: theme.spacing(5),
   },
   body: {
     padding: theme.spacing(3, 3),
     overflow: "auto",
-    maxHeight: "calc(100% - 64px)",
+    maxHeight: `calc(100% - ${HEADER_HEIGHT}px)`,
     boxSizing: "border-box",
   },
 });
@@ -143,7 +148,9 @@ const Panel = ({
           alignItems="center"
           className={clsx("HypPanel-header", classes.header)}
         >
-          <Typography variant="h2">{title}</Typography>
+          <Typography variant="h2" className={classes.title}>
+            {title}
+          </Typography>
           {onClose && (
             <IconButton ref={buttonRef} size="small" onClick={onClose}>
               <CloseIcon />

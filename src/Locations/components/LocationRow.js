@@ -13,7 +13,10 @@ import { HiddenIcon, VisibleIcon } from "../../Icons";
 import { getSubLocationColor } from "../utils";
 
 const LocationListItem = withStyles((theme) => ({
-  root: {},
+  root: {
+    // so icons don't obscure name
+    paddingRight: theme.spacing(10),
+  },
 }))(ListItem);
 
 const SubLocationList = withStyles((theme) => ({
