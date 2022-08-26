@@ -36,7 +36,7 @@ export const addFeatureIds = (geojson) => {
     features: geojson.features.map((feature, i) => {
       // feature ID should only contain numbers
       const newFeatureId = feature.properties.id
-        ? feature.properties.id.replace(/\D/g, "")
+        ? String(feature.properties.id).replace(/\D/g, "")
         : i + 1;
       return {
         ...feature,

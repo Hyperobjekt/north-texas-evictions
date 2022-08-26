@@ -1,5 +1,5 @@
 import { useLocationStore } from "..";
-import { useRegionGeojson } from "../../Data";
+import { useRegionsGeojson } from "../../Data/hooks/useRegionGeojson";
 import { getRegionFromId } from "../utils";
 
 export default function useLocationLoader() {
@@ -17,7 +17,7 @@ export default function useLocationLoader() {
       if (all.indexOf(current) === -1) all.push(current);
       return all;
     }, []);
-  const regionsGeojson = useRegionGeojson(regionIds, "choropleth");
+  const regionsGeojson = useRegionsGeojson(regionIds, "choropleth");
   if (loadQueue.length === 0) return;
   const matches = [];
   const loadQueueIds = loadQueue.map((l) => l.id);

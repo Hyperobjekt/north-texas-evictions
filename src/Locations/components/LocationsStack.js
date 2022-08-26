@@ -8,7 +8,11 @@ import LocationPanel from "./LocationPanel";
 import clsx from "clsx";
 import { withStyles } from "@material-ui/styles";
 import { animated, useSpring } from "react-spring";
-import { HEADER_BACKGROUND_COLOR } from "../../theme";
+import {
+  HEADER_BACKGROUND_COLOR,
+  HEADER_HEIGHT,
+  SEARCH_HEIGHT_SM,
+} from "../../theme";
 import ExpandIcon from "../../Icons/ExpandIcon";
 
 const Wrapper = withStyles((theme) => ({
@@ -32,9 +36,13 @@ const Wrapper = withStyles((theme) => ({
       left: 0,
     },
     [theme.breakpoints.up("sm")]: {
-      maxHeight: `calc(100vh - ${theme.spacing(8)}px)`,
+      maxHeight: `calc(100vh - ${HEADER_HEIGHT + SEARCH_HEIGHT_SM}px)`,
+      top: HEADER_HEIGHT + SEARCH_HEIGHT_SM,
       zIndex: 100,
-      top: theme.spacing(8),
+    },
+    [theme.breakpoints.up("md")]: {
+      maxHeight: `calc(100vh - ${HEADER_HEIGHT}px)`,
+      top: HEADER_HEIGHT,
     },
   },
 }))(Box);
@@ -70,7 +78,7 @@ const BackButton = withStyles((theme) => ({
     fontSize: theme.typography.pxToRem(18),
     color: theme.palette.primary.main,
     padding: theme.spacing(0, 3),
-    height: 64,
+    height: HEADER_HEIGHT,
     top: 0,
     left: 0,
     width: "100%",
@@ -92,7 +100,7 @@ const CloseStackButton = ({ show, ...props }) => {
   const handleCloseLocations = useToggleLocations();
 
   const style = useSpring({
-    y: show ? 0 : -64,
+    y: show ? 0 : -1 * HEADER_HEIGHT,
   });
 
   return (

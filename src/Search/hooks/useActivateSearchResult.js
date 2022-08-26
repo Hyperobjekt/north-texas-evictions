@@ -10,6 +10,9 @@ const ZOOM_LEVELS = {
   zips: 12,
   counties: 9,
   districts: 14,
+  attendanceel: 14,
+  attendancemi: 14,
+  attendancehi: 14,
   courts: 14,
 };
 

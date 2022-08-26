@@ -137,6 +137,54 @@ App.defaultProps = {
           },
         ],
       },
+      {
+        id: "attendanceel",
+        layers: [
+          {
+            id: "bubble",
+            type: "geojson",
+            source: GEOJSON_ROOT + "bubble/NTEP_bubble_elemschool.geojson",
+            options: { scaleFactor: 1.5 },
+          },
+          {
+            id: "choropleth",
+            type: "geojson",
+            source: GEOJSON_ROOT + "demo/NTEP_demographics_elemschool.geojson",
+          },
+        ],
+      },
+      {
+        id: "attendancemi",
+        layers: [
+          {
+            id: "bubble",
+            type: "geojson",
+            source: GEOJSON_ROOT + "bubble/NTEP_bubble_middschool.geojson",
+            options: { scaleFactor: 1.5 },
+          },
+          {
+            id: "choropleth",
+            type: "geojson",
+            source: GEOJSON_ROOT + "demo/NTEP_demographics_midschool.geojson",
+          },
+        ],
+      },
+      {
+        id: "attendancehi",
+        layers: [
+          {
+            id: "bubble",
+            type: "geojson",
+            source: GEOJSON_ROOT + "bubble/NTEP_bubble_highschool.geojson",
+            options: { scaleFactor: 1.5 },
+          },
+          {
+            id: "choropleth",
+            type: "geojson",
+            source: GEOJSON_ROOT + "demo/NTEP_demographics_highschool.geojson",
+          },
+        ],
+      },
     ],
     metrics: [
       { id: "ef", type: "bubble", format: "integer" },
@@ -298,6 +346,9 @@ App.defaultProps = {
       REGION_ZIPS: "ZIP Codes",
       REGION_CITIES: "Cities",
       REGION_DISTRICTS: "Council Districts",
+      REGION_ATTENDANCEEL: "Elementary School Attendance Zones",
+      REGION_ATTENDANCEMI: "Middle School Attendance Zones",
+      REGION_ATTENDANCEHI: "High School Attendance Zones",
       REGION_COURTS: "Justice of the Peace Precincts",
       LEGEND_SUMMARY: "between {{start}} and {{end}}",
       BUTTON_CHANGE_OPTIONS: "Change Data Options",

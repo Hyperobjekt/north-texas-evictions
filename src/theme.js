@@ -1,5 +1,9 @@
 import { alpha, createTheme, darken } from "@material-ui/core";
 
+export const HEADER_HEIGHT = 64;
+export const SEARCH_HEIGHT = 42;
+export const SEARCH_HEIGHT_SM = 48;
+
 export const HEADER_TEXT_COLOR = "#E1DFDF";
 export const HEADER_BACKGROUND_COLOR = "#292929";
 

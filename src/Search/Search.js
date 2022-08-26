@@ -10,6 +10,7 @@ import useSearchData from "./hooks/useSearchData";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import clsx from "clsx";
 import useActivateSearchResult from "./hooks/useActivateSearchResult";
+import { HEADER_HEIGHT, SEARCH_HEIGHT, SEARCH_HEIGHT_SM } from "../theme";
 
 const SearchInput = withStyles((theme) => ({
   root: {
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 0,
     [theme.breakpoints.down("sm")]: {
       position: "absolute",
-      top: 64,
+      top: HEADER_HEIGHT,
       left: 0,
       right: 0,
       maxWidth: "none",
@@ -62,9 +63,9 @@ const useStyles = makeStyles((theme) => ({
     right: "0.75rem",
   },
   input: {
-    height: 42,
+    height: SEARCH_HEIGHT,
     [theme.breakpoints.down("sm")]: {
-      height: 48,
+      height: SEARCH_HEIGHT_SM,
     },
   },
   groupLabel: {
