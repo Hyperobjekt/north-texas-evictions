@@ -51,6 +51,10 @@ const styles = (theme) => ({
     borderBottom: `1px solid ${theme.palette.divider}`,
     boxSizing: "border-box",
   },
+  title: {
+    // so icons don't obscure name
+    paddingRight: theme.spacing(5),
+  },
   body: {
     padding: theme.spacing(3, 3),
     overflow: "auto",
@@ -144,7 +148,9 @@ const Panel = ({
           alignItems="center"
           className={clsx("HypPanel-header", classes.header)}
         >
-          <Typography variant="h2">{title}</Typography>
+          <Typography variant="h2" className={classes.title}>
+            {title}
+          </Typography>
           {onClose && (
             <IconButton ref={buttonRef} size="small" onClick={onClose}>
               <CloseIcon />
