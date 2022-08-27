@@ -4,7 +4,7 @@
 
 ### Updating the dataset
 
-See [data flow overview](https://github.com/Hyperobjekt/nte-backend/blob/main/CONTRIBUTING.md#data-flow).
+See [data flow overview](https://github.com/Hyperobjekt/nte-backend/blob/main/CONTRIBUTING.md#data-flow) in the BE repo.
 
 ### Troubleshooting / Confirming the data was updated correctly
 
