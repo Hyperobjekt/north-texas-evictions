@@ -1,22 +1,10 @@
 # Contributing to the North Texas Evictions Project
 
-## Summary
-
-This project consists of multiple repos:
-
-- [Hyperobjekt/nte-backend](https://github.com/Hyperobjekt/nte-backend): contains backend infrastructure code and lambda functions for the api
-- [childpovertyactionlab/cpal-evictions](https://github.com/childpovertyactionlab/cpal-evictions): this repo contains source data for populating the database in the nte-backend
-- [Hyperobjekt/north-texas-evictions](https://github.com/Hyperobjekt/north-texas-evictions) (this repo): contains front end app code
-
 ## Common Tasks
 
 ### Updating the dataset
 
-New data can be deployed by uploading a new source file to the source data bucket (AWS permissions required).
-
-When a new file is uploaded to the S3 source data, an AWS Lambda function is triggered that clears the database and loads entries from the new source file.
-
-The data file must be formatted as described in the [data dictionary](https://github.com/Hyperobjekt/nte-backend/blob/main/docs).
+See [data flow overview](https://github.com/Hyperobjekt/nte-backend/blob/main/CONTRIBUTING.md#data-flow) in the BE repo.
 
 ### Troubleshooting / Confirming the data was updated correctly
 

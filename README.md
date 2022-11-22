@@ -1,5 +1,13 @@
 # North Texas Evictions Project
 
+## Summary
+
+This project consists of multiple repos:
+
+- [Hyperobjekt/nte-backend](https://github.com/Hyperobjekt/nte-backend): contains backend infrastructure code and lambda functions for the api (and [data flow overview](https://github.com/Hyperobjekt/nte-backend/blob/main/CONTRIBUTING.md#data-flow))
+- [childpovertyactionlab/cpal-evictions](https://github.com/childpovertyactionlab/cpal-evictions): this repo contains source data for populating the database in the nte-backend
+- [Hyperobjekt/north-texas-evictions](https://github.com/Hyperobjekt/north-texas-evictions) (this repo): contains front end app code
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -44,3 +52,5 @@ You will also need to set the following variables for mapbox:
 REACT_APP_MAPBOX_TOKEN={{api token}}
 REACT_APP_MAPBOX_STYLE={{mapbox style url}}
 ```
+
+see [CONTRIBUTING.md](./CONTRIBUTING.md)
