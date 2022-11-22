@@ -42,6 +42,7 @@
     "react-scripts": "4.0.3",
     "react-spring": "^9.2.4",
     "react-use-measure": "^2.0.4",
+    "use-local-storage-state": "17",
     "web-vitals": "^1.0.1",
     "zustand": "^3.5.7"
   },
