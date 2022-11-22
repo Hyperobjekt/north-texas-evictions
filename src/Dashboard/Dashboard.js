@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Page, Header, Body, Loading, TwoColumnLayout } from "../App";
 import { useDashboardDefaults, useDashboardStore } from ".";
 import { Tooltip } from "../Tooltip";
