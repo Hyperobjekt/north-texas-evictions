@@ -444,7 +444,7 @@ const About = ({ props, classes }) => {
                 </li>
                 <li>
                   <Typography>
-                    Compare where evicitions are happening to where rent relief
+                    Compare where evictions are happening to where rent relief
                     is going to ensure help is administered in the right places.
                   </Typography>
                 </li>
