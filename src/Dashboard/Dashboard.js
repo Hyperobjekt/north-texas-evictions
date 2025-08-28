@@ -16,7 +16,7 @@ import { LocationsStack } from "../Locations";
 
 const Dashboard = ({ config, ...props }) => {
   // No longer need to show this Modal, but we will keep the logic here to quickly be able to add it again if needed.
-  const [isIntroModalOpen, setIsIntroModalOpen] = useState(false);
+  const [isIntroModalOpen, setIsIntroModalOpen] = useState(true);
   // const [isIntroModalOpen, setIsIntroModalOpen] = useLocalStorageState(
   //   "intro-modal",
   //   {
@@ -80,10 +80,13 @@ const Dashboard = ({ config, ...props }) => {
             }}
           >
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Note: Dallas County is transitioning to a new data system. As a
-              result, the most recent upload of new eviction filing data for
-              Dallas County was October 25, 2022. Collin, Denton, and Tarrant
-              Counties continue to be updated weekly.
+              August 19, 2025: CPAL recently acquired a more complete dataset of
+              Dallas County eviction filings via public record request. The
+              North Texas Eviction Project has now been updated and includes
+              additional Dallas County filings not present in earlier versions
+              of the dataset. Collin, Denton, and Tarrant County data is
+              unchanged. The data is now available for the entire state of
+              Texas.
             </Typography>
             <Button
               className={"dark"}
