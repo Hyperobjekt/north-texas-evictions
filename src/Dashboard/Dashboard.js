@@ -80,7 +80,7 @@ const Dashboard = ({ config, ...props }) => {
             }}
           >
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              September 17, 2025: CPAL recently acquired a more complete dataset
+              September 18, 2025: CPAL recently acquired a more complete dataset
               of Dallas County eviction filings via public record request. The
               North Texas Eviction Project has now been updated and includes
               additional Dallas County filings not present in earlier versions
