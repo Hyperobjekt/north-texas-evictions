@@ -80,8 +80,8 @@ const Dashboard = ({ config, ...props }) => {
             }}
           >
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              August 19, 2025: CPAL recently acquired a more complete dataset of
-              Dallas County eviction filings via public record request. The
+              September 17, 2025: CPAL recently acquired a more complete dataset
+              of Dallas County eviction filings via public record request. The
               North Texas Eviction Project has now been updated and includes
               additional Dallas County filings not present in earlier versions
               of the dataset. Collin, Denton, and Tarrant County data is
