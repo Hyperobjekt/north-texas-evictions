@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Page, Header, Body, Loading, TwoColumnLayout } from "../App";
 import { useDashboardDefaults, useDashboardStore } from ".";
 import { Tooltip } from "../Tooltip";
@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { Box, Button, Typography, Modal } from "@material-ui/core";
 import { Analytics } from "../Analytics/Analytics";
 import { LocationsStack } from "../Locations";
+import useLocalStorageState from "use-local-storage-state";
 
 const Dashboard = ({ config, ...props }) => {
   // No longer need to show this Modal, but we will keep the logic here to quickly be able to add it again if needed.
