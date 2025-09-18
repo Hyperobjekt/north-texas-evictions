@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Page, Header, Body, Loading, TwoColumnLayout } from "../App";
 import { useDashboardDefaults, useDashboardStore } from ".";
 import { Tooltip } from "../Tooltip";
@@ -13,16 +13,17 @@ import { Link } from "react-router-dom";
 import { Box, Button, Typography, Modal } from "@material-ui/core";
 import { Analytics } from "../Analytics/Analytics";
 import { LocationsStack } from "../Locations";
+import useLocalStorageState from "use-local-storage-state";
 
 const Dashboard = ({ config, ...props }) => {
   // No longer need to show this Modal, but we will keep the logic here to quickly be able to add it again if needed.
-  const [isIntroModalOpen, setIsIntroModalOpen] = useState(false);
-  // const [isIntroModalOpen, setIsIntroModalOpen] = useLocalStorageState(
-  //   "intro-modal",
-  //   {
-  //     defaultValue: false,
-  //   }
-  // );
+  // const [isIntroModalOpen, setIsIntroModalOpen] = useState(true);
+  const [isIntroModalOpen, setIsIntroModalOpen] = useLocalStorageState(
+    "intro-modal",
+    {
+      defaultValue: true,
+    }
+  );
 
   // pull ready state from the store
   const ready = useDashboardStore((state) => state.ready);
@@ -80,10 +81,13 @@ const Dashboard = ({ config, ...props }) => {
             }}
           >
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Note: Dallas County is transitioning to a new data system. As a
-              result, the most recent upload of new eviction filing data for
-              Dallas County was October 25, 2022. Collin, Denton, and Tarrant
-              Counties continue to be updated weekly.
+              September 18, 2025: CPAL recently acquired a more complete dataset
+              of Dallas County eviction filings via public record request. The
+              North Texas Eviction Project has now been updated and includes
+              additional Dallas County filings not present in earlier versions
+              of the dataset. Collin, Denton, and Tarrant County data is
+              unchanged. The data is now available for the entire state of
+              Texas.
             </Typography>
             <Button
               className={"dark"}
