@@ -16,13 +16,13 @@ import { LocationsStack } from "../Locations";
 
 const Dashboard = ({ config, ...props }) => {
   // No longer need to show this Modal, but we will keep the logic here to quickly be able to add it again if needed.
-  const [isIntroModalOpen, setIsIntroModalOpen] = useState(true);
-  // const [isIntroModalOpen, setIsIntroModalOpen] = useLocalStorageState(
-  //   "intro-modal",
-  //   {
-  //     defaultValue: false,
-  //   }
-  // );
+  // const [isIntroModalOpen, setIsIntroModalOpen] = useState(true);
+  const [isIntroModalOpen, setIsIntroModalOpen] = useLocalStorageState(
+    "intro-modal",
+    {
+      defaultValue: true,
+    }
+  );
 
   // pull ready state from the store
   const ready = useDashboardStore((state) => state.ready);
