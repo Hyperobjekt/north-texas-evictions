@@ -86,8 +86,7 @@ const Dashboard = ({ config, ...props }) => {
               North Texas Eviction Project has now been updated and includes
               additional Dallas County filings not present in earlier versions
               of the dataset. Collin, Denton, and Tarrant County data is
-              unchanged. The data is now available for the entire state of
-              Texas.
+              unchanged.
             </Typography>
             <Button
               className={"dark"}
